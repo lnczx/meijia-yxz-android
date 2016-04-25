@@ -72,7 +72,6 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
 
     private LinearLayout layout_msg; // 消息View
     private LinearLayout layout_friend; // 好友View
-    private LinearLayout layout_dynamic; // 动态View
 
     /** 秘友Tab下所有控件 **/
     private FriendAdapter friendAdapter;
@@ -132,7 +131,6 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         userInfo = DBHelper.getUserInfo(getActivity());
         layout_msg = (LinearLayout) v.findViewById(R.id.layout_msg);
         layout_friend = (LinearLayout) v.findViewById(R.id.layout_friend);
-        layout_dynamic = (LinearLayout) v.findViewById(R.id.layout_friend_dynamic);
         tv_has_company = (TextView) v.findViewById(R.id.tv_has_company);
         layout_mask = v.findViewById(R.id.layout_mask);
 

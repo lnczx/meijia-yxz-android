@@ -4,13 +4,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar') 
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
+    compile project(':umeng_libs')
 	compile 'com.android.support:multidex:1.0.1'
 }
 
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 21
+    buildToolsVersion "23.0.2"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

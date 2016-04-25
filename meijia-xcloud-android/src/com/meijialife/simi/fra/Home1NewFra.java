@@ -57,6 +57,8 @@ import com.meijialife.simi.ui.SignPopWindow;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.impl.CommunityFactory;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -607,7 +609,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             break;
 
         case R.id.m_home3:
-            postSign();
+//            postSign();
+            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
+            // 打开微社区的接口, 参数1为Context类型
+            mCommSDK.openCommunity(getActivity());
             break;
 
         case R.id.m_home4:// 积分商城
