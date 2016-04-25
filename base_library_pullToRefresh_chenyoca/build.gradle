@@ -2,11 +2,14 @@ apply plugin: 'com.android.library'
 
 dependencies {
    compile fileTree(dir: 'libs', include: '*.jar') 
+   compile ('com.android.support:support-v4:20.0.0')  {
+    	exclude module: 'support-v4'
+    }
 }
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
     enforceUniquePackageName=false
 	
 	defaultConfig { 

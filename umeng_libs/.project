@@ -3,6 +3,7 @@
 	<name>Umeng_community</name>
 	<comment></comment>
 	<projects>
+		<project>base_library_pullToRefresh_chenyoca</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
