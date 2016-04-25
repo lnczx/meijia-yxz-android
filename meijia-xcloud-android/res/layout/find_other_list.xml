@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/find_other_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/bg_gv"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activity_bg_color" 
+        android:orientation="vertical"
+        >
+
+        <View
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cut_off_rule" />
+
+        <RelativeLayout
+            android:id="@+id/rl_tab"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/simi_color_white" 
+            android:visibility="gone"
+            >
+
+            <com.meijialife.simi.ui.SyncHorizontalScrollView
+                android:id="@+id/mHsv"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:fadingEdge="none"
+                android:scrollbars="none"
+                android:background="@color/simi_color_white"
+                 >
+
+                <RelativeLayout
+                    android:id="@+id/rl_nav"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:background="@color/simi_color_white"
+                     >
+
+                    <RadioGroup
+                        android:id="@+id/rg_nav_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="38dip"
+                        android:layout_alignParentTop="true"
+                        android:orientation="horizontal"
+                        android:background="@color/simi_color_white"
+                         >
+                    </RadioGroup>
+
+                    <ImageView
+                        android:id="@+id/iv_nav_indicator"
+                        android:layout_width="1dp"
+                        android:layout_height="2dp"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/transparent"
+                        android:scaleType="matrix" />
+                </RelativeLayout>
+            </com.meijialife.simi.ui.SyncHorizontalScrollView>
+
+            <ImageView
+                android:id="@+id/iv_nav_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="1dip"
+                android:src="@drawable/iv_navagation_scroll_left"
+                android:visibility="gone" >
+            </ImageView>
+
+            <ImageView
+                android:id="@+id/iv_nav_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="1dip"
+                android:src="@drawable/iv_navagation_scroll_right"
+                android:visibility="visible" >
+            </ImageView>
+        </RelativeLayout>
+        
+        
+        <View
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent" />
+        
+         <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/pull_refresh_finds_list"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+           	android:layout_weight="1.0"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:smoothScrollbar="true"
+            ptr:ptrAnimationStyle="flip"
+            ptr:ptrListViewExtrasEnabled="false"
+            ptr:ptrScrollingWhileRefreshingEnabled="true"
+            android:layout_marginBottom="60dp"
+             >
+        </com.handmark.pulltorefresh.library.PullToRefreshListView>
+   </LinearLayout>
+</LinearLayout>

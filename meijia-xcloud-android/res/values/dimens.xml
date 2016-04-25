@@ -1,0 +1,70 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    
+     <!-- 字体size值 -->
+    <dimen name="font_size_max">24sp</dimen>
+    <dimen name="font_size_large">22sp</dimen>
+    <dimen name="font_size_mid">20sp</dimen>
+    <dimen name="font_size_small">18sp</dimen>
+    <dimen name="font_size_16">16sp</dimen>
+    <dimen name="title_button_vertical_margin">4dp</dimen>
+    
+    <!-- title size值 -->
+	<dimen name="title_bar_height">48dp</dimen>
+    <dimen name="title_bar_text_size">20sp</dimen>
+    
+    <!-- 输入框高度 -->
+	<dimen name="edittext_height">40dp</dimen>
+	
+    <!-- 左侧边栏宽度 -->
+	<dimen name="left_width">260dp</dimen>
+	
+	<!-- Item选项一行的高度 -->
+    <dimen name="list_item_height">54dp</dimen>
+    <!-- 橙色实心按钮高度 -->
+    <dimen name="btn_long_orange_height">54dp</dimen>
+    <!-- 橙色空心按钮高度 -->
+    <dimen name="btn_hollow_orange_height">35dp</dimen>
+    
+    <!-- 卡片icon宽高 -->
+    <dimen name="card_icon_size">35dp</dimen>
+    <!--卡片icon与边距-->
+	<dimen name="card_icon_margin_left">10dp</dimen>
+	<!--卡片时间（几小时前）字体大小-->
+	<dimen name="card_time_tip">11sp</dimen>
+    
+    
+    <!--首页下边栏字体大小-->
+    <dimen name="bottom_bar_text_size">9sp</dimen>
+    <dimen name="bottom_bar_icon_width_size">25dp</dimen>
+    <dimen name="bottom_bar_icon_height_size">25dp</dimen>
+    <dimen name="bottom_padding_top_size">5dp</dimen>
+    
+    <!--加号中文字大小-->
+   <dimen name="main_plus_text_size">16sp</dimen>
+   
+   <!--动态头像大小-->
+    <dimen name="feed_icon_size">43dp</dimen>
+    
+    
+    <!--我的（我的发布+我参与）字体大小 -->
+    <dimen name="my_publish_text_size">13sp</dimen>
+	<!--上传多张图片大小-->
+	 <dimen name="ui_10_dip">10dip</dimen> 
+	 <!--账号信息字体大小 -->
+	<dimen name="account_text_size">15sp</dimen>
+	<!--登录图标大小  -->
+	<dimen name="login_btn_size">40dp</dimen>
+	<!--发现中动态标题-->
+	<dimen name="rdo1">0dp</dimen>
+    <dimen name="rdo2">100dp</dimen>
+    <dimen name="rdo3">200dp</dimen>
+    <dimen name="rdo4">300dp</dimen>
+    <dimen name="rdo5">400dp</dimen>
+    <dimen name="rdo6">500dp</dimen>
+	
+	 
+</resources>
