@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:text="当前积分"
+                        android:text="当前金币"
                         android:textColor="@color/score_current_text" />
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="15dp"
-                        android:text="4000分"
+                        android:text="4000金币"
                         android:textColor="@color/score_num"
                         android:textSize="30sp"
                         android:textStyle="bold" />
@@ -65,8 +65,8 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal" 
-                    android:gravity="center"
-                    >
+                    android:gravity="center">
+                    
                     
                     <ImageView
                         android:layout_width="20dp"
@@ -79,7 +79,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="积分说明"
+                        android:text="金币说明"
                         android:gravity="center"
                         android:textColor="@color/score_help_text" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/my_score_btn"
                     android:gravity="center"
-                    android:text="积分兑换商品"
+                    android:text="金币兑换商品"
                     android:textColor="@color/simi_color_white" />
             </RelativeLayout>
         </LinearLayout>
@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="积分记录"
+                android:text="金币记录"
                 android:textColor="@color/score_sub_title_text"
                  />
         </LinearLayout>

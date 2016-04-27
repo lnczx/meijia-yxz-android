@@ -7,7 +7,7 @@ dependencies {
     }
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
-	compile ('com.android.support:support-v4:20.0.0')  {
+	compile ('com.android.support:support-v4:23.3.0')  {
     	exclude module: 'support-v4'
     }
 	compile 'com.android.support:multidex:1.0.1'
@@ -55,7 +55,7 @@ android {
         release {
             keyAlias 'meijialife'   
             keyPassword 'a123456'   
-            storeFile file('/workspace/work/android/meijia-yxz-android/meijialife.keystore')   
+            storeFile file('D:/workspace/meijia-wsp/meijia-kestore/form/meijialife.keystore')   
             storePassword 'a123456'   
         }
     }

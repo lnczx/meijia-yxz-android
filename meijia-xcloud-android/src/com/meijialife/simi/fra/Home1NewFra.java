@@ -42,9 +42,12 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
+import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
+import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
+import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.AdData;
 import com.meijialife.simi.bean.HomePosts;
@@ -55,10 +58,13 @@ import com.meijialife.simi.ui.MyViewPager;
 import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SignPopWindow;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.community.share.UMShareServiceFactory;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -151,6 +157,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         v.findViewById(R.id.m_home2).setOnClickListener(this);
         v.findViewById(R.id.m_home3).setOnClickListener(this);
         v.findViewById(R.id.m_home4).setOnClickListener(this);
+        v.findViewById(R.id.m_homes1).setOnClickListener(this);
+        v.findViewById(R.id.m_homes2).setOnClickListener(this);
+        v.findViewById(R.id.m_homes3).setOnClickListener(this);
+        v.findViewById(R.id.m_homes4).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
 
     }
@@ -240,7 +250,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         // 当Activity显示出来后，每两秒切换一次图片显示
        
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 0, 3, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 0, 4, TimeUnit.SECONDS);
     }
 
     @Override
@@ -596,32 +606,67 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent;
+        boolean is_login = false;
         switch (v.getId()) {
-        case R.id.m_home1:
+        case R.id.m_home1://同行热聊
+            // 打开微社区的接口, 参数1为Context类型
+            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
+            mCommSDK.openCommunity(getActivity());
+            UMShareServiceFactory.getSocialService().getConfig()
+                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN,
+                            SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+            UMShareServiceFactory.getSocialService().getConfig()
+                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN,
+                            SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+            break;
+        case R.id.m_home2://精品课程
+            intent = new Intent(getActivity(), WebViewsActivity.class);
+            intent.putExtra("url", Constants.JIN_PIN_KE_CHENG_URL);
+            getActivity().startActivity(intent);
+            break;
+
+        case R.id.m_home3://知识学院
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
             getActivity().startActivity(intent);
             break;
+        case R.id.m_home4:// 签到有礼
+            is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+            if(!is_login){
+                startActivity(new Intent(getActivity(),LoginActivity.class));
+            }else{
+                postSign();
+            }
+            break;
+        case R.id.m_homes1://赏金猎人
+            intent = new Intent(getActivity(), WebViewsActivity.class);
+            intent.putExtra("url", Constants.SHANG_JIN_LIE_REN_URL);
+            getActivity().startActivity(intent);
+            break;
 
-        case R.id.m_home2:
+        case R.id.m_homes2://简历交换
+            intent = new Intent(getActivity(), WebViewsActivity.class);
+            intent.putExtra("url", Constants.JIAN_LI_JIAO_HUAN_URL);
+            getActivity().startActivity(intent);
+            break;
+
+        case R.id.m_homes3://服务大厅
             intent = new Intent(getActivity(), AllPartnerListActivity.class);
             getActivity().startActivity(intent);
             break;
 
-        case R.id.m_home3:
-//            postSign();
-            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
-            // 打开微社区的接口, 参数1为Context类型
-            mCommSDK.openCommunity(getActivity());
-            break;
-
-        case R.id.m_home4:// 积分商城
-            Intent intent6 = new Intent();
-            intent6.setClass(getActivity(), PointsShopActivity.class);
-            intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
-            intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
-            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
-            getActivity().startActivity(intent6);
+        case R.id.m_homes4://福利商城
+            is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+            if(!is_login){
+                startActivity(new Intent(getActivity(),LoginActivity.class));
+            }else{
+                Intent intent6 = new Intent();
+                intent6.setClass(getActivity(), PointsShopActivity.class);
+                intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
+                intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
+                intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
+                getActivity().startActivity(intent6);
+            }
             break;
         case R.id.btn_saoma:// 二维码
             Intent intents = new Intent();

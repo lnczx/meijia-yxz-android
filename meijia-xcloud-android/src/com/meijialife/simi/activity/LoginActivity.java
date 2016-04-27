@@ -52,9 +52,15 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.BasicToolUtil;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
+import com.umeng.comm.core.CommunitySDK;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.constants.ErrorCode;
+import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.login.LoginListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -156,6 +162,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private void initView() {
 
         setTitleName("快速注册与登录");
+        int is_show_back = getIntent().getIntExtra("is_show_back",1);
+        if(is_show_back==1){
+            requestBackBtn();
+        }
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.login_logo);
         et_user = (EditText) findViewById(R.id.login_user_name);
@@ -646,10 +656,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                 Gson gson = new Gson();
                                 userInfo = gson.fromJson(data, UserInfo.class);
                                 DBHelper.updateUserInfo(LoginActivity.this, userInfo);
-                                // 去登陆环信
-                                loginIm();
+                                loginUmengComm();//登陆友盟社区
+                                loginIm();// 去登陆环信
                                 updateCalendarMark();// 请求日历数据
-
+                                
                             } else {
                                 // UIUtils.showToast(LoginActivity.this, "数据错误");
                             }
@@ -679,6 +689,28 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     }
 
+    private void loginUmengComm(){
+        //创建CommUser前必须先初始化CommunitySDK
+        CommunitySDK sdk = CommunityFactory.getCommSDK(this);
+        CommUser user = new CommUser();
+        user.name = userInfo.getName();
+        user.id = userInfo.getUser_id();
+        sdk.loginToUmengServer(this, user, new LoginListener() {
+            @Override
+            public void onStart() {
+
+            }
+            @Override
+            public void onComplete(int stCode, CommUser commUser) {
+                if (ErrorCode.NO_ERROR==stCode) {
+                    //在此处可以跳转到任何一个你想要的activity
+                }
+
+           }
+        });
+    }
+    
+    
     /**
      * 登录环信
      * 
@@ -766,7 +798,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                            overridePendingTransition(R.anim.activity_open, 0);
                            startActivity(intent);
                        }
-                        finish();
+                       //登录成功标志位
+                       SpFileUtil.saveBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, true);
+                       finish();
                     }
                 });
 

@@ -27,7 +27,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -51,6 +50,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
@@ -65,6 +65,7 @@ import com.meijialife.simi.ui.SyncHorizontalScrollView;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -116,6 +117,8 @@ public class Find2Fra extends BaseFragment {
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
     private View vs;//
+    
+    private boolean loginStatus = false;
 
 
     @Override
@@ -131,6 +134,10 @@ public class Find2Fra extends BaseFragment {
     }
 
     private void findViewById(View v) {
+        
+        loginStatus = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        
+        
         /**
          * 标题滑动
          */
@@ -163,7 +170,10 @@ public class Find2Fra extends BaseFragment {
         listview.setAdapter(adapter);*/
         
         //请求帮助接口
-        getAppHelp();
+        if(loginStatus){
+            getAppHelp();
+            
+        }
         initFindBeanView(v);
         getChanelList();
     }
@@ -244,10 +254,15 @@ public class Find2Fra extends BaseFragment {
                     intent.putExtra("service_type_ids", "");
                     startActivity(intent);
                 } else if (goto_type.equals("app")) {
-                    Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
-                    intent.putExtra("service_type_ids", service_type_ids);
-                    intent.putExtra("title_name", title_name);
-                    startActivity(intent);
+                    boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+                    if(!is_login){
+                        startActivity(new Intent(getActivity(),LoginActivity.class));
+                    }else{
+                        Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
+                        intent.putExtra("service_type_ids", service_type_ids);
+                        intent.putExtra("title_name", title_name);
+                        startActivity(intent);
+                    }
                 } else if (goto_type.equals("h5+list")) {
                     Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
                     intent.putExtra("url", goto_url);
@@ -321,7 +336,12 @@ public class Find2Fra extends BaseFragment {
         rl_total_search.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SearchViewActivity.class));
+                boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+                if(!is_login){
+                    startActivity(new Intent(getActivity().getApplication(),LoginActivity.class));
+                }else{
+                    startActivity(new Intent(getActivity(), SearchViewActivity.class));
+                }
             }
         });
 

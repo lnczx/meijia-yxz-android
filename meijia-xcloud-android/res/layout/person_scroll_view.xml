@@ -27,7 +27,9 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/iconfont_gongju" />
+                    android:src="@drawable/iconfont_gongju"
+                    android:visibility="gone"
+                     />
 
                 <TextView
                     android:id="@+id/tv_person_tools"
@@ -36,9 +38,9 @@
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_person_tools"
-                    android:text="工具箱"
+                    android:text="@string/m_ps_fra_sub1"
                     android:textColor="@color/simi_color_dark_gray"
-                    android:textStyle="bold" />
+                    />
 
                 
                 <TextView
@@ -49,7 +51,6 @@
                     android:layout_marginRight="30dp"
                     android:text="更多"
                     android:textColor="@color/simi_color_dark_gray"
-                    android:textStyle="bold"
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:visibility="gone"
                      />
@@ -62,7 +63,7 @@
                     android:src="@drawable/arrow_right" 
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:layout_marginTop="2dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     />
                
             </RelativeLayout>
@@ -80,7 +81,7 @@
                 android:orientation="horizontal" >
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_wallet"
+                    android:id="@+id/rl_person_dong_tai"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -94,7 +95,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="10dp"
                         android:gravity="center_vertical"
-                        android:src="@drawable/iconfont_qianbao" />
+                        android:src="@drawable/ps_dong_tai" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -102,11 +103,11 @@
                         android:layout_below="@id/iv_person_wallet"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="钱包" />
+                        android:text="@string/m_ps_fra_item1" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_coupon"
+                    android:id="@+id/rl_person_hua_ti"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -118,7 +119,7 @@
                         android:layout_width="30dp"
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/iconfont_youhuiquan" />
+                        android:src="@drawable/ps_hua_ti" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -126,11 +127,11 @@
                         android:layout_below="@id/iv_person_coupon"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="优惠券" />
+                        android:text="@string/m_ps_fra_item2" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_order"
+                    android:id="@+id/rl_person_guan_zhu"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -143,7 +144,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_dingdan" />
+                        android:src="@drawable/ps_guan_zhu" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -151,11 +152,11 @@
                         android:layout_below="@id/iv_person_order"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="订单" />
+                        android:text="@string/m_ps_fra_item3" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_score"
+                    android:id="@+id/rl_person_fen_si"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -169,7 +170,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_changyongdizhi" />
+                        android:src="@drawable/ps_fen_si" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -177,7 +178,7 @@
                         android:layout_below="@id/iv_person_score"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="常用地址" />
+                        android:text="@string/m_ps_fra_item4" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -203,7 +204,9 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/iconfont_chengzhang" />
+                    android:src="@drawable/iconfont_chengzhang"
+                    android:visibility="gone"
+                     />
 
                 <TextView
                     android:id="@+id/tv_person_group"
@@ -211,9 +214,35 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/iv_person_group"
-                    android:text="会员服务"
+                    android:text="@string/m_ps_fra_sub2"
                     android:textColor="@color/simi_color_dark_gray"
-                    android:textStyle="bold" />
+                   />
+                
+                  <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="170dp"
+                    android:layout_marginRight="30dp"
+                    android:text="充值有优惠"
+                    android:textColor="@color/simi_color_line_gray"
+                    android:textStyle="bold"
+                    android:textSize="11sp"
+                    android:layout_alignBaseline="@id/iv_person_group"
+                    android:visibility="visible"
+                     />
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/arrow_right" 
+                    android:layout_alignBaseline="@id/iv_person_group"
+                    android:layout_marginTop="2dp"
+                    android:visibility="visible"
+                    />
+               
              
             </RelativeLayout>
 
@@ -231,7 +260,7 @@
                 android:orientation="horizontal" >
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_shop"
+                    android:id="@+id/rl_person_ding_dan"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -244,7 +273,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_zhishiku" />
+                        android:src="@drawable/ps_ding_dan" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -252,11 +281,11 @@
                         android:layout_below="@id/iv_person_shop"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="知识库" />
+                        android:text="@string/m_ps_fra_item5" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_attest"
+                    android:id="@+id/rl_person_you_hui_quan"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -269,7 +298,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_peixun" />
+                        android:src="@drawable/ps_you_hui_quan" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -277,11 +306,11 @@
                         android:layout_below="@id/iv_person_attest"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="培训讲座" />
+                        android:text="@string/m_ps_fra_item6" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_train"
+                    android:id="@+id/rl_person_ji_fen"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -294,7 +323,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_jifen" />
+                        android:src="@drawable/ps_ji_fen_shang_cheng" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -302,11 +331,11 @@
                         android:layout_below="@id/iv_person_train"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="积分商城" />
+                        android:text="@string/m_ps_fra_item7" />
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_person_money"
+                    android:id="@+id/rl_person_fu_wu"
                     android:layout_width="30dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
@@ -320,7 +349,7 @@
                         android:layout_height="40dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:src="@drawable/iconfont_jianzhizhuanqian" />
+                        android:src="@drawable/ps_hui_yuan_fu_wu" />
 
                     <TextView
                         android:layout_width="60dp"
@@ -328,7 +357,7 @@
                         android:layout_below="@id/iv_person_money"
                         android:layout_centerHorizontal="true"
                         android:gravity="center_horizontal"
-                        android:text="开店" />
+                        android:text="@string/m_ps_fra_item8" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
@@ -350,7 +379,9 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/iconfont_tuijian" />
+                android:src="@drawable/iconfont_tuijian"
+                android:visibility="gone"
+                 />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -360,7 +391,7 @@
                 android:layout_toRightOf="@id/iv_person_promote_friend"
                 android:text="推荐给好友"
                 android:textColor="@color/simi_color_dark_gray"
-                android:textStyle="bold" />
+                />
 
             <ImageView
                 android:layout_width="13dp"
@@ -377,7 +408,7 @@
             android:background="@color/simi_color_line_gray" />
 
         <RelativeLayout
-            android:id="@+id/rl_person_items4"
+            android:id="@+id/rl_person_items5"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/btn_list_item_bg" >
@@ -388,7 +419,9 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/iconfont_more" />
+                android:src="@drawable/iconfont_more" 
+                android:visibility="gone"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -396,9 +429,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_more"
-                android:text="更多"
+                android:text="我是服务者"
                 android:textColor="@color/simi_color_dark_gray"
-                android:textStyle="bold" />
+                />
 
             <ImageView
                 android:layout_width="13dp"
@@ -415,7 +448,7 @@
             android:background="@color/activity_bg_color" />
 
         <RelativeLayout
-            android:id="@+id/rl_person_items5"
+            android:id="@+id/rl_person_items4"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/btn_list_item_bg" >
@@ -426,7 +459,9 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/iconfont_shangjia" />
+                android:src="@drawable/iconfont_shangjia"
+                android:visibility="gone"
+                 />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -434,9 +469,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_business"
-                android:text="我是商家"
+                android:text="更多"
                 android:textColor="@color/simi_color_dark_gray"
-                android:textStyle="bold" />
+               />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -444,7 +479,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toLeftOf="@id/iv_arrow"
-                android:text="4001691615"
+                android:text=""
                 android:textColor="@color/simi_color_dark_gray" />
 
             <ImageView

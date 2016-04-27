@@ -24,9 +24,9 @@
 
 package com.umeng.comm.impl;
 
-import activeandroid.ActiveAndroid;
 import android.os.Handler;
 
+import activeandroid.ActiveAndroid;
 import com.umeng.comm.core.db.engine.DatabaseExecutor;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 

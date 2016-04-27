@@ -47,10 +47,16 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.LogOut;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.utils.HTTPUtils;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.impl.CommunitySDKImpl;
+import com.umeng.comm.core.login.LoginListener;
+import com.umeng.comm.core.utils.CommonUtils;
+import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
 /**
  * 账号信息
@@ -399,7 +405,8 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(User.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(CalendarMark.class);
-
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+        
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {
             @Override
@@ -409,11 +416,26 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
                     public void run() {
                         dismissDialog();
                         // 重新显示登陆页面
-                        startActivity(new Intent(AccountInfoActivity.this, LoginActivity.class));
+                        Intent intent = new Intent(AccountInfoActivity.this, LoginActivity.class);
+                        intent.putExtra("is_show_back", 0);
+                        startActivity(intent);
                         if (MainActivity.activity != null) {
                             MainActivity.activity.finish();
                         }
                         AccountInfoActivity.this.finish();
+                        if(CommonUtils.isLogin(AccountInfoActivity.this)){
+                            CommunitySDKImpl.getInstance().logout(AccountInfoActivity.this, new LoginListener() {
+                                @Override
+                                public void onStart() {
+
+                                }
+                                @Override
+                                public void onComplete(int stCode, CommUser userInfo) {
+                                    BroadcastUtils.sendUserLogoutBroadcast(getApplication());
+                                    finish();
+                                }
+                            });
+                        }
                     }
                 });
             }

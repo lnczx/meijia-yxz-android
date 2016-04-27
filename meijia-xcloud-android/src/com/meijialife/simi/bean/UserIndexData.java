@@ -24,9 +24,21 @@ public class UserIndexData implements Serializable {
     private int is_friend;// 0=不是好友，1=是好友
     private int total_feed;// 动态数量
     private int score;// 积分
+    private String exp;// 经验
 
     public UserIndexData() {
     }
+
+    
+    public String getExp() {
+        return exp;
+    }
+
+
+    public void setExp(String exp) {
+        this.exp = exp;
+    }
+
 
     public int getTotal_feed() {
         return total_feed;

@@ -45,7 +45,6 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.simi.easemob.EMConstant;
 import com.simi.easemob.ui.ChatActivity;
 
 /**
@@ -149,7 +148,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 Intent intent = new Intent(FriendPageActivity.this, CardDetailsActivity.class);
-                intent.putExtra("Cards", cardlist_1.get(arg2));
+                intent.putExtra("card_id", cardlist_1.get(arg2).getCard_id());
                 startActivity(intent);
             }
         });
@@ -390,6 +389,7 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
 //        map.put("service_date", "");
         map.put("user_id", friend_id);
         map.put("card_from", card_from+"");
+        
         AjaxParams param = new AjaxParams(map);
 
         showDialog();

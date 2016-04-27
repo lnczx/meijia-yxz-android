@@ -18,7 +18,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,7 +25,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -48,8 +46,6 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
-import com.meijialife.simi.activity.AddressActivity;
-import com.meijialife.simi.activity.ApplicationsCenterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;
@@ -72,6 +68,10 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
+import com.umeng.comm.core.beans.CommConfig;
+import com.umeng.comm.ui.activities.FollowedTopicActivity;
+import com.umeng.comm.ui.activities.NewMsgActivity;
+import com.umeng.comm.ui.activities.UserInfoActivity;
 
 /**
  * @description：我的页面
@@ -107,7 +107,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private RelativeLayout rl_top;
     private FrameLayout vs;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layoutInflater = inflater;
@@ -118,6 +117,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         
         return v;
     }
+ 
     @SuppressLint("ResourceAsColor")
 	private void init(LayoutInflater inflater, View view) {
         finalBitmap = FinalBitmap.create(getActivity());
@@ -147,28 +147,28 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
 
         // 为每一栏增加点击事件
-//        view.findViewById(R.id.rl_person_items1).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_items1).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items2).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items3).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items4).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items5).setOnClickListener(this);
         // 为每种类别增加点击事件
-        view.findViewById(R.id.rl_person_wallet).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_coupon).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_order).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_score).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_shop).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_attest).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_money).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_train).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_dong_tai).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_hua_ti).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_guan_zhu).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_fen_si).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_ding_dan).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_you_hui_quan).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_ji_fen).setOnClickListener(this);
+        view.findViewById(R.id.rl_person_fu_wu).setOnClickListener(this);
         //长按进入应用中心
-        view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
+     /*   view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
               startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
                 return false;
             }
-        });
+        });*/
         ll_rq.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +199,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         //请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        getAppHelp();
+            getAppHelp();
 
     }
     private SystemBarTintManager mTintManager;
@@ -271,15 +271,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.iv_top_head:
             intent = new Intent(getActivity(), AccountInfoActivity.class);
             intent.putExtra("user", user);
-            startActivity(intent);
+            getActivity().startActivity(intent);
             break;
         case R.id.ibtn_person:
             MainActivity.slideMenu();
             break;
-        case R.id.item_qianbao:// 动态
-            MainActivity mainActivity = (MainActivity)getActivity();
-            mainActivity.changeFeeds();
-            Constants.checkedIndex =0;
+        case R.id.item_qianbao:// 经验
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.JING_YAN+user.getId());
+            startActivity(intent);
             break;
         case R.id.item_youhui:// 好友
             MainActivity mainActivity1 = (MainActivity)getActivity();
@@ -289,63 +289,72 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.item_jifen:// 积分
             startActivity(new Intent(getActivity(),MyIntegralActivity.class));
             break;
-     /*   case R.id.rl_person_items1:// 工具箱--更多
-//             startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
-            break;*/
-        case R.id.rl_person_items2:// 我的成长--LV
+        case R.id.rl_person_items1:// 我的消息
+            intent = new Intent(getActivity(), NewMsgActivity.class);
+            intent.putExtra(com.umeng.comm.core.constants.Constants.USER, user.getId());
+            startActivity(intent);
+            break;
+        case R.id.rl_person_items2://我的钱包
+            startActivity(new Intent(getActivity(), MyWalletActivity.class));
+
             break;
         case R.id.rl_person_items3:// 推荐给好友
-//            startActivity(new Intent(getActivity(), ShareActivity.class));
-//          context.startActivity(new Intent(context, ShareActivity.class));
             ShareConfig.getInstance().init(getActivity());;
             postShare();
             break;
         case R.id.rl_person_items4:// 更多
             startActivity(new Intent(getActivity(), MoreActivity.class));
             break;
-        case R.id.rl_person_items5:// 我是商家
-            intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
+        case R.id.rl_person_items5:// 我是服务商
+          /*  intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);*/
+            Intent intent1 = new Intent(getActivity(),WebViewsActivity.class);
+            intent1.putExtra("url", Constants.KAI_DIAN+user.getId());
+            getActivity().startActivity(intent1);
+            break;
+        case R.id.rl_person_dong_tai:// 动态
+            intent = new Intent(getActivity(), UserInfoActivity.class);
+            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
+            intent.putExtra("flag",0);
+            startActivity(intent);
+            
+            break;
+        case R.id.rl_person_hua_ti:// 话题
+            intent = new Intent(getActivity(), FollowedTopicActivity.class);
+            intent.putExtra(com.umeng.comm.core.constants.Constants.USER_ID_KEY, user.getId());
             startActivity(intent);
             break;
-        case R.id.rl_person_wallet:// 钱包
-            startActivity(new Intent(getActivity(), MyWalletActivity.class));
+        case R.id.rl_person_guan_zhu:// 关注
+            intent = new Intent(getActivity(), UserInfoActivity.class);
+            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
+            intent.putExtra("flag",1);
+            startActivity(intent);
             break;
-        case R.id.rl_person_coupon:// 优惠券
-            startActivity(new Intent(getActivity(), DiscountCardActivity.class));
+        case R.id.rl_person_fen_si:// 粉丝
+            intent = new Intent(getActivity(), UserInfoActivity.class);
+            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
+            intent.putExtra("flag",2);
+            startActivity(intent);
             break;
-        case R.id.rl_person_order:// 订单
+        case R.id.rl_person_ding_dan:// 订单
             startActivity(new Intent(getActivity(), MyOrderActivity.class));
             break;
-        case R.id.rl_person_score:// 常用地址
-            startActivity(new Intent(getActivity(), AddressActivity.class));
+        case R.id.rl_person_you_hui_quan:// 优惠券
+            startActivity(new Intent(getActivity(), DiscountCardActivity.class));
             break;
-        case R.id.rl_person_shop:// 知识库
-//            popWebView(Constants.SHOP_URL);
-            intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
-            startActivity(intent);
-            break;
-        case R.id.rl_person_attest:// 培训讲座
-//            popWebView(Constants.ATTEST_URL);
-            intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.JOB_URL);
-            startActivity(intent);
-            break;
-        case R.id.rl_person_money:// 开店
-//            popWebView(Constants.MONEY_URL);
-            intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.KAI_DIAN+user.getId());
-//            intent.putExtra("url", Constants.MONEY_URL);
-            startActivity(intent);
-            break;
-        case R.id.rl_person_train:// 积分商城
-           Intent intent2 = new Intent();
+        case R.id.rl_person_ji_fen:// 积分商城
+            Intent intent2 = new Intent();
             intent2.setClass(getActivity(), PointsShopActivity.class);
             intent2.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
             intent2.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
             intent2.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
             startActivity(intent2);
+            break;
+        case R.id.rl_person_fu_wu:// 会员服务
+            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent.putExtra("url", Constants.HUI_YUAN_FU_WU);
+            startActivity(intent);
             break;
         default:
             break;
@@ -557,7 +566,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         if (StringUtils.isNotEmpty(user.getPoi_distance())) {
             tv_distance.setText("距离你" + user.getPoi_distance() + "米");
         }
-        tv_money_num.setText(user.getTotal_feed()+"");
+        tv_money_num.setText(user.getExp()+"");
         tv_coupon_num.setText(user.getTotal_friends() + "");
         tv_score_num.setText(user.getScore() + "");
         userInfo.setScore(user.getScore());

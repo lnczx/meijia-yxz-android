@@ -24,13 +24,10 @@
 
 package com.umeng.comm.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.text.TextUtils;
 
 import activeandroid.query.Delete;
 import activeandroid.query.Select;
-import android.text.TextUtils;
-
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.beans.Comment;
 import com.umeng.comm.core.beans.FeedItem;
@@ -38,9 +35,14 @@ import com.umeng.comm.core.beans.ImageItem;
 import com.umeng.comm.core.beans.relation.DBRelationOP;
 import com.umeng.comm.core.beans.relation.EntityRelationFactory;
 import com.umeng.comm.core.db.ctrl.CommentDBAPI;
+
+import com.umeng.comm.core.db.ctrl.impl.DatabaseAPI;
+import com.umeng.comm.core.listeners.Listeners;
 import com.umeng.comm.core.listeners.Listeners.SimpleFetchListener;
 import com.umeng.comm.core.utils.Log;
-import com.umeng.comm.impl.AbsDbAPI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 评论的数据库相关操作

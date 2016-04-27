@@ -26,7 +26,9 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.bean.FindBean;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -87,10 +89,15 @@ public class AllPartnerListActivity extends BaseActivity {
                     intent.putExtra("service_type_ids", "");
                     startActivity(intent);
                 } else if (goto_type.equals("app")) {
-                    Intent intent = new Intent(AllPartnerListActivity.this, Find2DetailActivity.class);
-                    intent.putExtra("service_type_ids", service_type_ids);
-                    intent.putExtra("title_name", title_name);
-                    startActivity(intent);
+                   boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+                    if(!is_login){
+                        startActivity(new Intent(AllPartnerListActivity.this,LoginActivity.class));
+                    }else{
+                        Intent intent = new Intent(AllPartnerListActivity.this, Find2DetailActivity.class);
+                        intent.putExtra("service_type_ids", service_type_ids);
+                        intent.putExtra("title_name", title_name);
+                        startActivity(intent);
+                    }
                 } else if (goto_type.equals("h5+list")) {
                     Intent intent = new Intent(AllPartnerListActivity.this, WebViewsFindActivity.class);
                     intent.putExtra("url", goto_url);

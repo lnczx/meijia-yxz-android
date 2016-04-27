@@ -21,11 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 
+import com.meijialife.simi.Constants;
+import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.PopupMenu;
 import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.utils.ShareConfig;
 
@@ -157,10 +160,16 @@ public class WebViewsFindActivity  extends Activity{
         bt_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WebViewsFindActivity.this,Find2DetailActivity.class);
-                intent.putExtra("service_type_ids", service_type_ids);
-                intent.putExtra("title_name",title_name);
-                startActivity(intent);
+                boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+                if(!is_login){
+                    startActivity(new Intent(WebViewsFindActivity.this,LoginActivity.class));
+                }else{
+                    Intent intent = new Intent(WebViewsFindActivity.this,Find2DetailActivity.class);
+                    intent.putExtra("service_type_ids", service_type_ids);
+                    intent.putExtra("title_name",title_name);
+                    startActivity(intent);
+                }
+               
             }
         });
         

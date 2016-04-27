@@ -16,8 +16,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_below="@id/m_banner"
+            >
+        <LinearLayout
+            android:id="@+id/m_item1"
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -35,7 +41,7 @@
                     android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_zhishixueyuan"
+                    android:src="@drawable/index_tonghangreliao"
                     imagecontrol:border_inside_color="@color/simi_color_white"
                     imagecontrol:border_outside_color="@color/simi_color_white"
                     imagecontrol:border_thickness_in="1dp"
@@ -47,7 +53,7 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="知识学院" />
+                    android:text="@string/m_new_fra_item1" />
             </LinearLayout>
 
             <LinearLayout
@@ -65,7 +71,7 @@
                     android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_fuwudating"
+                    android:src="@drawable/index_jingpinkecheng"
                     imagecontrol:border_inside_color="@color/simi_color_white"
                     imagecontrol:border_outside_color="@color/simi_color_white"
                     imagecontrol:border_thickness_in="1dp"
@@ -78,7 +84,7 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="服务大厅" />
+                    android:text="@string/m_new_fra_item2" />
             </LinearLayout>
 
             <LinearLayout
@@ -96,7 +102,7 @@
                     android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_qiandaoyouli"
+                    android:src="@drawable/index_zhishixueyuan"
                     imagecontrol:border_inside_color="@color/simi_color_white"
                     imagecontrol:border_outside_color="@color/simi_color_white"
                     imagecontrol:border_thickness_in="1dp"
@@ -109,7 +115,7 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="签到有礼" />
+                    android:text="@string/m_new_fra_item3" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,7 +133,7 @@
                     android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_jifenshangcheng"
+                    android:src="@drawable/index_qiandaoyouli"
                     imagecontrol:border_inside_color="@color/simi_color_white"
                     imagecontrol:border_outside_color="@color/simi_color_white"
                     imagecontrol:border_thickness_in="1dp"
@@ -140,8 +146,138 @@
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:text="积分兑换" />
+                    android:text="@string/m_new_fra_item4" />
             </LinearLayout>
+        </LinearLayout>
+          <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:orientation="horizontal"
+             >
+
+            <LinearLayout
+                android:id="@+id/m_homes1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/index_shangjinlieren"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/m_new_fra_item5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_homes2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/index_jianlijiaohuan"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/m_new_fra_item6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_homes3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/index_fuwudating"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/m_new_fra_item7" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/m_homes4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="8dp" >
+
+                <com.meijialife.simi.ui.RoundImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/index_fulishangcheng"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/m_new_fra_item8" />
+            </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
   <RelativeLayout

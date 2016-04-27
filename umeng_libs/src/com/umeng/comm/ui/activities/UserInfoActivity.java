@@ -25,23 +25,19 @@
 package com.umeng.comm.ui.activities;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.umeng.comm.core.beans.BaseBean;
 import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.constants.Constants;
 import com.umeng.comm.core.listeners.Listeners.LoginOnViewClickListener;
 import com.umeng.comm.core.utils.ResFinder;
-
 import com.umeng.comm.ui.fragments.PostedFeedsFragment;
 import com.umeng.comm.ui.fragments.PostedFeedsFragment.OnDeleteListener;
-import com.umeng.comm.ui.imagepicker.activities.*;
+import com.umeng.comm.ui.imagepicker.activities.UserInfoBaseActivity;
 import com.umeng.comm.ui.imagepicker.fragments.FansFragment;
 import com.umeng.comm.ui.imagepicker.fragments.FollowedUserFragment;
-import com.umeng.comm.ui.imagepicker.presenter.impl.UserInfoPresenter;
-import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 import com.umeng.comm.ui.imagepicker.util.ViewFinder;
 
 
@@ -70,7 +66,7 @@ public final class UserInfoActivity extends UserInfoBaseActivity {
 
 
     @Override
-    public void initFragment() {
+    public void initFragment(int flag) {
         mPostedFragment = PostedFeedsFragment.newInstance(mUser);
         mPostedFragment.setOnAnimationResultListener(mListener);
         // 视图查找器
@@ -86,6 +82,47 @@ public final class UserInfoActivity extends UserInfoBaseActivity {
         });
         addFragment(ResFinder.getId("umeng_comm_user_info_fragment_container"),
                 mPostedFragment);
+        showCurrentFragments(flag);
+    }
+    /**
+     * 判断显示Fragment动态-关注-- 
+     * @param flag
+     */
+    public void showCurrentFragments(int flag){
+     /*  if (flag == 0) {// 已发消息
+    	   	if(mPostedFragment == null){
+    	   		mPostedFragment = PostedFeedsFragment.newInstance(mUser);
+    	   	}
+            if (mCurrentFragment instanceof PostedFeedsFragment) { // 已经处于当前页面，判断是否需要滚动到起始位置
+                mPostedFragment.executeScrollToTop();
+            } else {
+                showFragment(mPostedFragment);
+            }
+        } else*/ if (flag == 1) {// 关注用户
+            if (mFolloweredUserFragment == null) {
+                mFolloweredUserFragment = FollowedUserFragment.newInstance(mUser.id);
+//                mFolloweredUserFragment.setOnAnimationResultListener(mListener);
+//                mFolloweredUserFragment.setOnResultListener(mFollowListener);
+            }
+            if (mCurrentFragment instanceof FollowedUserFragment
+                    && !(mCurrentFragment instanceof FansFragment)) {
+                mFolloweredUserFragment.executeScrollTop();
+            } else {
+                showFragment(mFolloweredUserFragment);
+            }
+        } else if (flag ==2) { // 我的粉丝
+            if (mFansFragment == null) {
+                mFansFragment = FansFragment.newFansFragment(mUser.id);
+//                mFansFragment.setOnAnimationResultListener(mListener);
+//                mFansFragment.setOnResultListener(mFansListener);
+            }
+            if (mCurrentFragment instanceof FansFragment) {
+                mFansFragment.executeScrollTop();
+            } else {
+                showFragment(mFansFragment);
+            }
+        }
+    	
     }
 
 

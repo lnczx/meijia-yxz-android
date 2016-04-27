@@ -37,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.core.beans.CommUser;
@@ -158,19 +159,26 @@ public abstract  class UserInfoBaseActivity extends BaseFragmentActivity impleme
     protected LinearLayout typeContainer;
     protected SquareImageView mUserMedalImg;
     protected ImgDisplayOption mUserMedalImgOption;
+    
+    public int flag = 0;
+    protected TextView mTitle;
+    protected RelativeLayout umeng_comm_info_layout;//三个页签
+    
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(GetLayout());
         mUser = getIntent().getExtras().getParcelable(Constants.TAG_USER);
+        flag =  getIntent().getIntExtra("flag",99);
         if (mUser == null) {
             return;
         }
 
         mUserMedalImgOption = new ImgDisplayOption();
         mPresenter = new UserInfoPresenter(this, this, mUser);
-        initFragment();
+        initFragment(flag);
 
         typeContainer = (LinearLayout) findViewById(ResFinder.getId("user_type_icon_container"));
         // 初始化UI
@@ -184,12 +192,20 @@ public abstract  class UserInfoBaseActivity extends BaseFragmentActivity impleme
 
     }
 
-    public abstract void initFragment();
+    public abstract void initFragment(int flag);
     protected void initCommentView() {
         mCommentEditText = mViewFinder.findViewById(ResFinder
                 .getId("umeng_comm_comment_edittext"));
         mCommentLayout = findViewById(ResFinder.getId("umeng_comm_commnet_edit_layout"));
 
+        mTitle = (TextView)findViewById(ResFinder.getId("m_title"));
+        if(flag==0){
+        	mTitle.setText("动态");
+        }else if (flag ==1) {
+			mTitle.setText("关注");
+		}else if (flag==2) {
+			mTitle.setText("粉丝");
+		} 
         findViewById(ResFinder.getId("umeng_comm_comment_send_button")).setOnClickListener(this);
         mCommentEditText.setEditTextBackListener(new CommentEditText.EditTextBackEventListener() {
 
@@ -378,6 +394,11 @@ public abstract  class UserInfoBaseActivity extends BaseFragmentActivity impleme
         mHeaderView = findViewById(ResFinder.getId("umeng_comm_portrait_layout"));
         mHeaderView.getViewTreeObserver().addOnGlobalFocusChangeListener(mChangeListener);
         mTitleView = findViewById(ResFinder.getId("umeng_comm_title_layout"));
+        umeng_comm_info_layout = (RelativeLayout)findViewById(ResFinder.getId("umeng_comm_info_layout"));
+        if(flag !=99){
+        	mHeaderView.setVisibility(View.GONE);
+        	umeng_comm_info_layout.setVisibility(View.GONE);
+        }
     }
 
     protected CustomAnimator mCustomAnimator = new UserInfoAnimator();

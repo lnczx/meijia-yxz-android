@@ -42,6 +42,7 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
+import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.ListAdapter;
@@ -66,6 +67,7 @@ import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.zbar.lib.CaptureActivity;
@@ -112,6 +114,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
      * 广告轮播控件
      */
     private ImageCycleView mAdView;
+    private Boolean is_log = false;
 
     /**
      * 用户消息
@@ -125,7 +128,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.index_1, null);
-        
         init(v);
         initCalendar(v);
         initUserMsgView(v);
@@ -133,8 +135,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 
         return v;
     }
-
-   
 
     @SuppressLint("ResourceAsColor")
     private void init(View v) {
@@ -153,7 +153,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        getAppHelp();
+        if(is_log){
+          getAppHelp();
+        }
     }
 
     /**

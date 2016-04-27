@@ -18,6 +18,9 @@ public class Constants {
     public static final String SERVICE_NUMBER = "400-169-1615";
     public static final String DESCRIPTOR = "com.umeng.share";
     
+    //登录状态key
+    public static final String LOGIN_STATUS = "login_status";
+    
     //登录图标URL
     public static final String SPLASH_ICON_URL = "http://123.57.173.36/simi-h5/img/load-ad-update.jpg";
     public static final String LOGO_ICON_URL = "http://123.57.173.36/simi-h5/img/login_logo_update.jpg";
@@ -377,6 +380,10 @@ public class Constants {
      public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
      //开店
      public static final String KAI_DIAN = "http://123.57.173.36/simi-h5/show/store-my-index.html?user_id=";
+     //会员服务
+     public static final String HUI_YUAN_FU_WU = "http://h5.eqxiu.com/s/kdhQZ0t4";
+     //经验
+     public static final String JING_YAN = "http://123.57.173.36/simi-h5/show/level-my-index.html?user_id=";
      
      
      /**保存卡片创建的联系人**/
@@ -525,8 +532,10 @@ public class Constants {
      public static final String GET_HOME1_BANNERS_URL =ROOT_URL +"dict/get_ads.json";
      public static final String GET_HOME1_MSG_URL ="http://51xingzheng.cn/";
      public static final String ZHI_SHI_XUE_YUAN_URL ="http://51xingzheng.cn";
-  
-
+     public static final String JIAN_LI_JIAO_HUAN_URL ="http://123.57.173.36/simi-h5/show/cv-switch-list.html";
+     public static final String SHANG_JIN_LIE_REN_URL ="http://123.57.173.36/simi-h5/show/job-reward-list.html";
+     public static final String JIN_PIN_KE_CHENG_URL ="http://edu.51xingzheng.cn";
+   
      
      
      

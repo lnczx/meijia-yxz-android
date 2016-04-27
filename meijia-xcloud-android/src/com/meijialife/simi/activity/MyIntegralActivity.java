@@ -89,7 +89,7 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
         mTextScore = (TextView) findViewById(R.id.tv_money);// 积分
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);// 标题
         mTitleIcon.setVisibility(View.GONE);
-        mTextScore.setText(userInfo.getScore() + "分");
+        mTextScore.setText(userInfo.getScore() + "金币");
     }
 
     private void initListView() {
@@ -176,7 +176,7 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
      * @param cardType
      */
     private void setTitleColor() {
-        mCardTitle.setText("我的积分");
+        mCardTitle.setText("我的金币");
         mLlCard.setBackgroundColor(getResources().getColor(R.color.score_title_bg));
         mRlCard.setBackgroundColor(getResources().getColor(R.color.score_title_bg));
     }

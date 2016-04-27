@@ -144,7 +144,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         // 分享页面初始化
         ShareConfig.getInstance().init(this);
 
-        getReminds();
+//        getReminds();
 
         layout_mask = findViewById(R.id.layout_mask);
         layout_guide = findViewById(R.id.layout_guide);
@@ -301,6 +301,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     @Override
     public void onClick(View arg0) {
         Intent intent;
+        boolean is_login = false;
         switch (arg0.getId()) {
         case R.id.tab_bt_1: // 首页
             currentTabIndex = 1;
@@ -317,16 +318,31 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             changeFind();
             break;
         case R.id.tab_bt_3: // 圈子
-            currentTabIndex = 3;
-            change2Home1();
+            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+            if(!is_login){
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }else{
+                currentTabIndex = 3;
+                change2Home1();
+            }
             break;
         case R.id.tab_bt_4: // 我的
-            changePersonal();
+            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+            if(!is_login){
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }else{
+                changePersonal();
+            }
             break;
         case R.id.tab_bt_5: // 加号
-            Intent intent2 = new Intent(this, MainPlusActivity.class);
-            this.startActivity(intent2);
-            this.overridePendingTransition(R.anim.activity_open, 0);
+            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+            if(!is_login){
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
+            }else{
+                Intent intent2 = new Intent(this, MainPlusActivity.class);
+                this.startActivity(intent2);
+                this.overridePendingTransition(R.anim.activity_open, 0);
+            }
             break;
         case R.id.item_0: // 个人信息
             intent = new Intent(this, AccountInfoActivity.class);
@@ -366,18 +382,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             break;
         case R.id.item_8: // 更多
             startActivity(new Intent(this, MoreActivity.class));
-          /*  AlarmManager am;
-            Calendar calendar = Calendar.getInstance();  
-            calendar.setTimeInMillis(System.currentTimeMillis());  
-            calendar.add(Calendar.SECOND, 10); 
-
-            intent = new Intent(this,MoreActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            // 获取系统进程
-            am = (AlarmManager)getSystemService(this.ALARM_SERVICE);
-//          am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,c.getTimeInMillis(),pendingIntent);
-            am.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-            */
             break;
         default:
             break;
@@ -787,7 +791,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
      * 获取提醒闹钟的卡片列表
      * 
      */
-    public void getReminds() {
+  /*  public void getReminds() {
 
         String user_id = DBHelper.getUser(this).getId();
 
@@ -855,12 +859,12 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 }
             }
         });
-    }
+    }*/
 
     /**
      * 重新注册提醒闹钟，避免被硬件重启杀掉
      */
-    private void resetAlerm(Remind remind) {
+/*    private void resetAlerm(Remind remind) {
         long remindTime = Long.parseLong(remind.getRemind_time());
         Date mdate = new Date(remindTime);
 
@@ -872,7 +876,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         // 初始化本地提醒闹钟
         AlermUtils.initAlerm(MainActivity.this, mdate, remind.getCard_type_name(), remind.getRemind_content());
 
-    }
+    }*/
 
     /**
      * 该卡片提醒是否过期

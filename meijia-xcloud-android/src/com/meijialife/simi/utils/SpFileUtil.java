@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
  */
 public class SpFileUtil {
    
+    public static final String LOGIN_STATUS = "login_status";
     public static final String FILE_UI_PARAMETER = "ui_parameter";
      
     public static final String KEY_SHORTCUT_ADDED = "shortcut_added";

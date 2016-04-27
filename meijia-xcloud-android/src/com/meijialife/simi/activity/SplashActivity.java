@@ -105,7 +105,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
                 if (searchAll.size() <= 0) {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     SplashActivity.this.finish();
                     timer.cancel();
                 } else {

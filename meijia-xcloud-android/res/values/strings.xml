@@ -63,7 +63,28 @@
 	<!--快递、送水、保洁、废品回收、团建拓展 位子统一-->
 	<string name="function_card">智能贴心服务</string>
 	
+	<!-- 首页小标题 -->
+	<string name="m_new_fra_item1">同行热聊</string>
+	<string name="m_new_fra_item2">精品课程</string>
+	<string name="m_new_fra_item3">知识学院</string>
+	<string name="m_new_fra_item4">签到有礼</string>
+	<string name="m_new_fra_item5">赏金猎人</string>
+	<string name="m_new_fra_item6">简历交换</string>
+	<string name="m_new_fra_item7">服务大厅</string>
+	<string name="m_new_fra_item8">福利商城</string>
 	
+	<!-- 我的页面小标题 -->
+	<string name="m_ps_fra_item1">动态</string>
+	<string name="m_ps_fra_item2">话题</string>
+	<string name="m_ps_fra_item3">关注</string>
+	<string name="m_ps_fra_item4">粉丝</string>
+	<string name="m_ps_fra_item5">我的订单</string>
+	<string name="m_ps_fra_item6">优惠券</string>
+	<string name="m_ps_fra_item7">积分商城</string>
+	<string name="m_ps_fra_item8">会员服务</string>
+	
+	<string name="m_ps_fra_sub1">我的消息</string>
+	<string name="m_ps_fra_sub2">我的钱包</string>
 	
 	
 	

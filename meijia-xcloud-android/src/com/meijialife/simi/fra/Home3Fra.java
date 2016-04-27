@@ -112,6 +112,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.index_3, null);
         vs = getActivity().getLayoutInflater().inflate(R.layout.index_3, null);
+        
         init(v);// 初始化
         initTab(v);
 
