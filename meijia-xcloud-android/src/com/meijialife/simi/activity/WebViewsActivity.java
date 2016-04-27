@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.view.View.OnClickListener;
 import android.webkit.GeolocationPermissions.Callback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -123,7 +126,14 @@ public class WebViewsActivity extends Activity {
         webSettings.setAppCacheEnabled(false);// 是否使用缓存
         webSettings.setDomStorageEnabled(true);// DOM Storage
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        
+//        webSettings.setUseWideViewPort(true);
+//        webSettings.setLoadWithOverviewMode(true);
+//        webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//        webSettings.setLoadWithOverviewMode(true);
 
+
+        
         // webview设置启用数据库
         webSettings.setDatabaseEnabled(true);
         // 设置定位的数据库路径
@@ -208,4 +218,10 @@ public class WebViewsActivity extends Activity {
 
         return true;
     }
+    
+   /* @Override
+    protected void onDestroy() {
+        webview.destroy();
+        super.onDestroy();
+    }*/
 }
