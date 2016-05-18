@@ -1,20 +1,11 @@
 package com.meijialife.simi;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
@@ -43,8 +34,6 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
@@ -56,10 +45,8 @@ import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
 import com.meijialife.simi.activity.WebViewActivity;
-import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
-import com.meijialife.simi.bean.Remind;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -72,15 +59,14 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
-import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
-import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.ui.ConversationListFragment;
 import com.simi.easemob.ui.EMBaseActivity;
 import com.simi.easemob.ui.EMLoginActivity;
 import com.simi.easemob.utils.ShareConfig;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * fragment 的切换类
@@ -617,7 +603,16 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             tv_user_name.setText(name);
             finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
         }
+        //友盟统计
+        MobclickAgent.onResume(this);
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //友盟统计
+        MobclickAgent.onPause(this);
+    }
+    
 
     @Override
     protected void onStop() {

@@ -42,12 +42,10 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
-import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
-import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.AdData;
 import com.meijialife.simi.bean.HomePosts;
@@ -61,6 +59,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.community.share.UMShareServiceFactory;
@@ -258,6 +257,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         super.onResume();
         scheduledExecutorService=null;
         startAd();
+        MobclickAgent.onPageStart("MainActivity");
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainActivity"); 
+        
     }
 
     private class ScrollTask implements Runnable {
@@ -438,7 +445,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -512,7 +521,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -592,7 +603,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
 
                 }
                 // 操作失败，显示错误信息
@@ -783,7 +796,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getActivity().getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getActivity().getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {

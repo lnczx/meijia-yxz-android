@@ -68,6 +68,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.comm.core.beans.CommConfig;
 import com.umeng.comm.ui.activities.FollowedTopicActivity;
 import com.umeng.comm.ui.activities.NewMsgActivity;
@@ -250,6 +251,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     public void onResume() {
         super.onResume();
         getUserData();
+        MobclickAgent.onPageStart("MainActivity");
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainActivity"); 
     }
 
     @Override
@@ -537,8 +545,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
-
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息|
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -632,7 +641,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
 
                 }
                 // 操作失败，显示错误信息
@@ -792,7 +803,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if(!StringUtils.isEmpty(errorMsg.trim())){

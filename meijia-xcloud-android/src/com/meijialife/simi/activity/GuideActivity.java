@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.meijialife.simi.R;
 import com.meijialife.simi.ui.FristSplashLayout;
 import com.meijialife.simi.ui.FristSplashOnViewChangeListener;
+import com.umeng.analytics.MobclickAgent;
 
 public class GuideActivity extends Activity implements FristSplashOnViewChangeListener{
    
@@ -33,7 +34,8 @@ public class GuideActivity extends Activity implements FristSplashOnViewChangeLi
 			this.finish();
 			return;
 		}
-		
+		//禁止默认的页面统计方式，这样将不会再自动统计Activity。
+		MobclickAgent.openActivityDurationTrack(false);
 		setContentView(R.layout.guide_activity);
 		initView();
 	}

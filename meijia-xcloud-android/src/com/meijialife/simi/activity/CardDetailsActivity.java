@@ -72,7 +72,8 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
     private ImageView iv_icon;
     private ImageView iv_image;
-    private TextView tv_title;
+    private TextView tv_title;//创建者名字
+    private TextView tv_time;//创建时间
     private TextView tv_status;// 状态
     private TextView tv_1, tv_2, tv_3;// 中间文字内容
     private TextView tv_remark;// 备注
@@ -149,6 +150,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         iv_icon = (ImageView) findViewById(R.id.iv_icon);
         iv_image = (ImageView) findViewById(R.id.iv_image);
         tv_title = (TextView) findViewById(R.id.tv_title);
+        tv_time = (TextView) findViewById(R.id.tv_time);
         tv_status = (TextView) findViewById(R.id.tv_status);
         tv_1 = (TextView) findViewById(R.id.tv_1);
         tv_2 = (TextView) findViewById(R.id.tv_2);
@@ -256,8 +258,8 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_cancel.setClickable(false);
             tv_cancel.setTextColor(getResources().getColor(R.color.simi_color_gray));
         }
-        
-        tv_title.setText(time);
+        tv_title.setText(card.getCreate_user_name());
+        tv_time.setText(time);
         tv_remark.setText(remark);
         tv_date_str.setText(timeStr);
         tv_zan.setText(total_zan);

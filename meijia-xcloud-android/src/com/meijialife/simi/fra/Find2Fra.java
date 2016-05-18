@@ -68,6 +68,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @description：发现--秘书助理，综合服务，设计策划
@@ -485,7 +486,9 @@ public class Find2Fra extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -494,6 +497,19 @@ public class Find2Fra extends BaseFragment {
             }
         });
     }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("MainActivity");
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainActivity"); 
+    }
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -646,7 +662,9 @@ public class Find2Fra extends BaseFragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if(!StringUtils.isEmpty(errorMsg.trim())){

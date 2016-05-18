@@ -70,6 +70,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.zbar.lib.CaptureActivity;
 
 /**
@@ -149,6 +150,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         tv_service_type_ids = (TextView) v.findViewById(R.id.tv_service_type_ids);
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
+        is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
 
         // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
@@ -336,7 +338,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         // getCardListData(today_date, card_from);
         // getAdListByChannelId("0");
         // getUserInfo();
-
+        
+        MobclickAgent.onPageStart("MainActivity");
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("MainActivity"); 
     }
 
     @Override
@@ -437,7 +446,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
 
                 }
                 // 操作失败，显示错误信息
@@ -515,8 +526,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
-
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -614,7 +626,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
 
                 }
                 // 操作失败，显示错误信息
@@ -683,7 +697,9 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                    if(isAdded()){
+                        errorMsg = getString(R.string.servers_error);
+                    }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
@@ -958,7 +974,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
      */
 
     private void getAppHelp() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;

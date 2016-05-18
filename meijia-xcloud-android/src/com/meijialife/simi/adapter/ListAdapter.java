@@ -153,7 +153,7 @@ public class ListAdapter extends BaseAdapter {
 //        String date = dateFormat.format(timeL*1000);
         String  date = new SimpleDateFormat("yyyy年MM月dd日 HH:mm").format(timeL*1000);
         
-        vh.tv_title.setText(title);
+        vh.tv_title.setText(cards.getCreate_user_name());
         vh.tv_date_str.setText(timeStr);
         vh.tv_zan.setText(""+list.get(position).getTotal_zan());
         vh.tv_comment.setText(""+list.get(position).getTotal_comment());

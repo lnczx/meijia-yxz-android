@@ -47,6 +47,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @description：应用中心卡片列表
@@ -476,6 +477,20 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     protected void onRestart() {
         super.onRestart();
         getCardListData(page,mToday, mCardType);
+    }
+    //友盟统计
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SplashActivity");
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageStart("SplashActivity");
+        MobclickAgent.onPause(this);
     }
 
 }

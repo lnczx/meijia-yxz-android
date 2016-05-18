@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
+
 import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +25,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -39,6 +43,7 @@ import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @description：我的积分明细列表
@@ -306,5 +311,18 @@ public class MyIntegralActivity extends Activity implements OnClickListener {
             break;
         }
     }
-
+    //友盟统计
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SplashActivity");
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageStart("SplashActivity");
+        MobclickAgent.onPause(this);
+    }
 }
