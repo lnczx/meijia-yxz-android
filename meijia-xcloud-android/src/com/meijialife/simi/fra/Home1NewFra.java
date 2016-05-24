@@ -27,6 +27,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -34,27 +39,39 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
+import com.meijialife.simi.activity.ArticleDetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
+import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.AdData;
 import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.bean.HomeTag;
+import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.inter.ListItemClickHelps;
+import com.meijialife.simi.ui.IndicatorTabBar;
 import com.meijialife.simi.ui.MyViewPager;
 import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SignPopWindow;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
@@ -72,7 +89,7 @@ import com.zbar.lib.CaptureActivity;
  * @author RUI
  * 
  */
-public class Home1NewFra extends BaseFragment implements OnClickListener {
+public class Home1NewFra extends BaseFragment implements OnClickListener, ListItemClickHelps {
 
     private View v;
     private View v1;
@@ -102,7 +119,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     boolean canscoll = false;
 
     // 列表
-    private ListView mListView;
+    private PullToRefreshListView mListView;
     private HomeTag homeTag;
     private List<HomePosts> homePosts;
     private List<HomePosts> allHomePosts;
@@ -113,6 +130,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     private LinearLayout mLlLoadMore;
 
     private int page = 1;
+
+    private IndicatorTabBar mIndicatorTabBar1;
+    private IndicatorTabBar mIndicatorTabBar2;
+    private List<String> tabNames;
+    private ParamsBean pBean = new ParamsBean();
+
+    private RelativeLayout m_rl_category;
+    private LinearLayout new_frg_search;
 
     // 定时任务
     private ScheduledExecutorService scheduledExecutorService;
@@ -127,12 +152,16 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.home_1, null);
         v1 = inflater.inflate(R.layout.home_1, null);
-        headerView = inflater.inflate(R.layout.home1_banner, null);
+//        headerView = inflater.inflate(R.layout.home1_banner, null);
         footView = inflater.inflate(R.layout.load_more, null);
-
+        pBean.setJson("get_tag_posts");
+        pBean.setCount("10");
+        pBean.setOrder("DESC");
+        pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
+        pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
 
         initView(v);
-        getMsgList(page);
+        getMsgList(page, pBean);
         getAdList();
         return v;
     }
@@ -142,13 +171,32 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getActivity().getResources().getDrawable(R.drawable.ad_loading);
         finalBitmap.configDiskCachePath(getActivity().getApplication().getFilesDir().toString());
-        finalBitmap.configDiskCacheSize(1024*1024*10);
+        finalBitmap.configDiskCacheSize(1024 * 1024 * 10);
         finalBitmap.configLoadfailImage(R.drawable.ad_loading);
-        
-        
-        
+
+        m_rl_category = (RelativeLayout) v.findViewById(R.id.m_rl_category);
+        new_frg_search = (LinearLayout) v.findViewById(R.id.new_frg_search);
+
         initListView(v);
         setListener(v);
+
+        tabNames = new ArrayList<String>();
+        tabNames.add("精选");
+        tabNames.add("管理");
+        tabNames.add("职场");
+        tabNames.add("创业");
+        tabNames.add("动态");
+        tabNames.add("认证");
+        tabNames.add("其他");
+
+        mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
+        mIndicatorTabBar1.setCallBack(this);
+        mIndicatorTabBar1.setMaxColumn(6);
+        mIndicatorTabBar1.initView(tabNames);
+        mIndicatorTabBar2 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator2);
+        mIndicatorTabBar2.setCallBack(this);
+        mIndicatorTabBar2.setMaxColumn(6);
+        mIndicatorTabBar2.initView(tabNames);
     }
 
     private void setListener(View v) {
@@ -161,39 +209,123 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         v.findViewById(R.id.m_homes3).setOnClickListener(this);
         v.findViewById(R.id.m_homes4).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
-
+        v.findViewById(R.id.rl_total_search).setOnClickListener(this);
     }
 
     private void initListView(View v) {
         homePosts = new ArrayList<HomePosts>();
         allHomePosts = new ArrayList<HomePosts>();
-        mListView = (ListView) v.findViewById(R.id.m_lv_home);
+        mListView = (PullToRefreshListView) v.findViewById(R.id.m_lv_home);
+        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        headerView = getActivity().getLayoutInflater().inflate(R.layout.home1_banner, mListView, false);
+        headerView.setLayoutParams(layoutParams);
+        ListView listView =mListView.getRefreshableView();
+        listView.addHeaderView(headerView);
+        listView.addFooterView(footView);
+        mListView.setMode(Mode.BOTH);
+        initIndicator();
         mLlLoadMore = (LinearLayout) v.findViewById(R.id.m_ll_load_more);
-        mListView.addHeaderView(headerView);
-        mListView.addFooterView(footView);
-        loadMoreButton = (Button) v.findViewById(R.id.loadMoreButton);
+      
         homeListAdapter = new HomeListAdapter(getActivity());
         mListView.setAdapter(homeListAdapter);
+        
+        mListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                page = 1;
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                getMsgList(page, pBean);    
+                homeListAdapter.notifyDataSetChanged(); 
+            }
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                //上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
+                        "MM_dd HH:mm");
+                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+                if(homePosts!=null && homePosts.size()>=10){
+                    page = page+1;
+                    getMsgList(page, pBean);    
+                    homeListAdapter.notifyDataSetChanged(); 
+                }else {
+                    Toast.makeText(getActivity(),"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
+                    mListView.onRefreshComplete(); 
+                }
+            }
+        });
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int p = position - 1;
+                // int p = position;
                 HomePosts homePost = allHomePosts.get(p);
-                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+//                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
                 intent.putExtra("url", homePost.getUrl());
+                intent.putExtra("p_id", homePost.getId());// 文章Id
+                intent.putExtra("is_show", true);
+                intent.putExtra("home_post",homePost);
+                intent.putExtra("article_content",homePost.getContent());
                 getActivity().startActivity(intent);
             }
         });
-        // 加载更多
-        loadMoreButton.setOnClickListener(new OnClickListener() {
+
+        mListView.setOnScrollListener(new OnScrollListener() {
+
             @Override
-            public void onClick(View v) {
-                page += 1;
-                getMsgList(page);
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+       
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem >= 1) {
+                   
+                  /*  TranslateAnimation ta = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.1f, Animation.RELATIVE_TO_SELF, 0.1f,
+                            Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
+                    ta.setDuration(1000);
+                    */
+                        AnimationSet as = new AnimationSet(true);
+                        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+                        aa.setDuration(500);
+                        as.addAnimation(aa);
+                        LayoutAnimationController ac = new LayoutAnimationController(as);
+                        new_frg_search.setLayoutAnimation(ac);
+                        new_frg_search.setVisibility(View.VISIBLE);
+                        m_rl_category.setVisibility(View.VISIBLE);
+                } else {
+                        m_rl_category.setVisibility(View.GONE);
+                        AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
+                        aa.setDuration(1500);
+                        LayoutAnimationController ac = new LayoutAnimationController(aa);
+                        new_frg_search.setLayoutAnimation(ac);
+                        new_frg_search.setVisibility(View.GONE);
+                }
             }
         });
 
+    }
+    
+    /**
+     * 设置下拉刷新提示
+     */
+    private void initIndicator()  
+    {  
+        ILoadingLayout startLabels = mListView  
+                .getLoadingLayoutProxy(true, false);  
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
+  
+        ILoadingLayout endLabels = mListView.getLoadingLayoutProxy(  
+                false, true);  
+        endLabels.setPullLabel("上拉加载");
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
     }
 
     private void initBanner(View v) {
@@ -247,7 +379,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
 
     private void startAd() {
         // 当Activity显示出来后，每两秒切换一次图片显示
-       
+
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 0, 4, TimeUnit.SECONDS);
     }
@@ -255,16 +387,16 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        scheduledExecutorService=null;
+        scheduledExecutorService = null;
         startAd();
         MobclickAgent.onPageStart("MainActivity");
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MainActivity"); 
-        
+        MobclickAgent.onPageEnd("MainActivity");
+
     }
 
     private class ScrollTask implements Runnable {
@@ -445,7 +577,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
@@ -467,17 +599,21 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     /**
      * 获得所有首页列表接口
      */
-    public void getMsgList(int page) {
+    public void getMsgList(int page, ParamsBean params) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("json", "get_tag_posts");
-        map.put("count", "5");
-        map.put("order", "DESC");
-        map.put("slug", "%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
-        map.put("include", "id,title,modified,url,thumbnail,custom_fields");
+        map.put("json", params.getJson());
+        map.put("count", params.getCount());
+        map.put("order", params.getOrder());
+        if (StringUtils.isEquals(params.getJson(), "get_tag_posts")) {
+            map.put("slug", params.getSlug());
+        } else {
+            map.put("id", params.getId());
+        }
+        map.put("include", params.getInclude());
         map.put("page", page + "");
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.GET_HOME1_MSG_URL, param, new AjaxCallBack<Object>() {
@@ -495,25 +631,17 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
                         String status = obj.getString("status");
-                        int count = obj.getInt("count");
                         String data = obj.getString("pages");
-                        String tag = obj.getString("tag");
+                        // String tag = obj.getString("tag");
                         String posts = obj.getString("posts");
                         if (StringUtils.isEquals(status, "ok")) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 homePosts = gson.fromJson(posts, new TypeToken<ArrayList<HomePosts>>() {
                                 }.getType());
-                                homeTag = gson.fromJson(tag, HomeTag.class);
+                                // homeTag = gson.fromJson(tag, HomeTag.class);
+                                homeTag = new HomeTag();
                                 showData(homePosts, homeTag);
-                                if (homePosts.size() < 5) {
-                                    loadMoreButton.setText("没有更多");
-                                    loadMoreButton.setTextColor(getActivity().getResources().getColor(R.color.simi_color_gray));
-                                    loadMoreButton.setClickable(false);
-                                } else {
-                                    loadMoreButton.setText("查看更多");
-                                    loadMoreButton.setClickable(true);
-                                }
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -521,12 +649,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    mListView.onRefreshComplete();
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    mListView.onRefreshComplete();
                     UIUtils.showToast(getActivity(), errorMsg);
                 }
             }
@@ -541,8 +671,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             for (HomePosts homePost : homePosts) {
                 allHomePosts.add(homePost);
             }
+            homeListAdapter.setData(allHomePosts, homeTag);
         }
-        homeListAdapter.setData(allHomePosts, homeTag);
+        mListView.onRefreshComplete();
     }
 
     /**
@@ -603,7 +734,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
 
@@ -619,60 +750,57 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent;
-        boolean is_login = false;
+        boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()) {
-        case R.id.m_home1://同行热聊
+        case R.id.m_home1:// 同行热聊
             // 打开微社区的接口, 参数1为Context类型
             CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
             mCommSDK.openCommunity(getActivity());
             UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN,
-                            SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
             UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN,
-                            SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
             break;
-        case R.id.m_home2://精品课程
+        case R.id.m_home2:// 精品课程
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.JIN_PIN_KE_CHENG_URL);
             getActivity().startActivity(intent);
             break;
 
-        case R.id.m_home3://知识学院
+        case R.id.m_home3:// 知识学院
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
             getActivity().startActivity(intent);
             break;
         case R.id.m_home4:// 签到有礼
-            is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-            if(!is_login){
-                startActivity(new Intent(getActivity(),LoginActivity.class));
-            }else{
+            if (!is_login) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            } else {
                 postSign();
             }
             break;
-        case R.id.m_homes1://赏金猎人
+        case R.id.m_homes1:// 赏金猎人
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.SHANG_JIN_LIE_REN_URL);
             getActivity().startActivity(intent);
             break;
 
-        case R.id.m_homes2://简历交换
+        case R.id.m_homes2:// 简历交换
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.JIAN_LI_JIAO_HUAN_URL);
             getActivity().startActivity(intent);
             break;
 
-        case R.id.m_homes3://服务大厅
+        case R.id.m_homes3:// 服务大厅
             intent = new Intent(getActivity(), AllPartnerListActivity.class);
             getActivity().startActivity(intent);
             break;
 
-        case R.id.m_homes4://福利商城
+        case R.id.m_homes4:// 福利商城
             is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-            if(!is_login){
-                startActivity(new Intent(getActivity(),LoginActivity.class));
-            }else{
+            if (!is_login) {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            } else {
                 Intent intent6 = new Intent();
                 intent6.setClass(getActivity(), PointsShopActivity.class);
                 intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
@@ -687,7 +815,13 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
             intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
             break;
-
+        case R.id.rl_total_search:// 跳到到搜索页面
+            if (!is_login) {
+                startActivity(new Intent(getActivity().getApplication(), LoginActivity.class));
+            } else {
+                startActivity(new Intent(getActivity(), SearchViewActivity.class));
+            }
+            break;
         default:
             break;
         }
@@ -796,7 +930,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getActivity().getString(R.string.servers_error);
                     }
                 }
@@ -808,4 +942,16 @@ public class Home1NewFra extends BaseFragment implements OnClickListener {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        page = 1;
+        homePosts.clear();
+        allHomePosts.clear();
+    }
+    
+    @Override
+    public void onClick(ParamsBean params) {
+        getMsgList(page, params);
+    }
 }

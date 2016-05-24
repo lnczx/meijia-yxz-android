@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -53,9 +56,11 @@ public class BaseActivity extends Activity{
 		title_btn_left.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+			    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			    finish();
 	            SpFileUtil.clearFile(BaseActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
-	            SpFileUtil.clearFile(BaseActivity.this,SpFileUtil.KEY_CHECKED_STAFFS);;
+                SpFileUtil.clearFile(BaseActivity.this,SpFileUtil.KEY_CHECKED_STAFFS);;
 			}
 		});
 	}

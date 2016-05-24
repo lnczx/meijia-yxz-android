@@ -11,5 +11,4 @@
         />
     
     <include layout="@layout/common_webview_center" />
-    
 </LinearLayout>

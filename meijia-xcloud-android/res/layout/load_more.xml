@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     android:id="@+id/m_ll_load_more"
+    android:layout_marginBottom="70dp"
+    android:visibility="gone"
     >
     
    <Button

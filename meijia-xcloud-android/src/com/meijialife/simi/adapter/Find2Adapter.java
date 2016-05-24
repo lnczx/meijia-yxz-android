@@ -34,6 +34,8 @@ public class Find2Adapter extends BaseAdapter {
 		findBeanList = new ArrayList<FindBean>();
 		contexts = context;
 		finalBitmap = FinalBitmap.create(context);
+		finalBitmap.configDiskCachePath(context.getFilesDir().toString());
+        finalBitmap.configDiskCacheSize(1024*1024*10);
 		//获取默认头像
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
 	}

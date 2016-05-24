@@ -55,7 +55,7 @@ public class AllPartnerListActivity extends BaseActivity {
     }
 
     private void initView() {
-        setTitleName("服务大厅");
+        setTitleName("找服务商");
         requestBackBtn();
         
         

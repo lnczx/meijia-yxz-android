@@ -68,9 +68,9 @@
 	<string name="m_new_fra_item2">精品课程</string>
 	<string name="m_new_fra_item3">知识学院</string>
 	<string name="m_new_fra_item4">签到有礼</string>
-	<string name="m_new_fra_item5">赏金猎人</string>
+	<string name="m_new_fra_item5">内推悬赏</string>
 	<string name="m_new_fra_item6">简历交换</string>
-	<string name="m_new_fra_item7">服务大厅</string>
+	<string name="m_new_fra_item7">找服务商</string>
 	<string name="m_new_fra_item8">福利商城</string>
 	
 	<!-- 我的页面小标题 -->
@@ -85,8 +85,5 @@
 	
 	<string name="m_ps_fra_sub1">我的消息</string>
 	<string name="m_ps_fra_sub2">我的钱包</string>
-	
-	
-	
-	
+
 </resources>

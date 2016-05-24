@@ -152,6 +152,10 @@ public class Constants {
     public static final String URL_POST_DYNAMIC_COMMENT = ROOT_URL + "feed/post_comment.json";
     //关于好友的接口
     public static final String URL_GET_COMPANY_DETAIL =ROOT_URL +"company/get_detail.json";
+    /**获取是否点赞**/
+    public static final String URL_FEED_GET_ZAN =ROOT_URL +"feed/get_zan.json";
+    /**点赞接口**/
+    public static final String URL_FEED_POST_ZAN =ROOT_URL +"feed/post_zan.json";
     
     //关于用户消息接口
     /**用户消息列表接口**/

@@ -75,5 +75,15 @@
         <attr name="android:scaleType" />
     </declare-styleable>
     
+     
+     <!-- IndicatorTabBar Attribute -->
+    <declare-styleable name="IndicatorTabBar">
+        <attr name="tab_text_size" format="dimension" />
+        <attr name="tab_text_color" format="color" />
+        <attr name="tab_text_selected_color" format="color" />
+        <attr name="tab_underline_color" format="color" />
+        <attr name="tab_underline_height" format="dimension" />
+        <attr name="tab_max_column" format="integer" />
+    </declare-styleable>
     
 </resources>

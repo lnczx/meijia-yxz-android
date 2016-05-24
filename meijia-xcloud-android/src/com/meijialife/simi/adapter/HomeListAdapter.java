@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.meijialife.simi.R;
@@ -46,7 +47,10 @@ public final class HomeListAdapter extends BaseAdapter {
 		this.homePosts = new ArrayList<HomePosts>();
 		this.homeTag = new HomeTag();
 		  finalBitmap = FinalBitmap.create(context);
-	        defDrawable = (BitmapDrawable)context.getResources().getDrawable(R.drawable.ad_loading);
+		  //设置缓存路径和缓存大小
+		  finalBitmap.configDiskCachePath(context.getFilesDir().toString());
+		  finalBitmap.configDiskCacheSize(1024*1024*10);
+		  defDrawable = (BitmapDrawable)context.getResources().getDrawable(R.drawable.ad_loading);
 	}
 	
 	public void setData(List<HomePosts> homePosts,HomeTag homeTags) {
@@ -86,7 +90,6 @@ public final class HomeListAdapter extends BaseAdapter {
 	
 		HomePosts  homePost = homePosts.get(position);
 		holder.tv_title.setText(homePost.getTitle());
-		Gson gson = new Gson();
 		CustomFields customFields = homePost.getCustom_fields();
 		if(customFields!=null && customFields.getViews()!=null && customFields.getViews().size()>0){
 		    holder.tv_summary.setText(customFields.getViews().get(0)+"人已看过");
