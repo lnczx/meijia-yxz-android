@@ -319,11 +319,11 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                         as.addAnimation(aa);
                         LayoutAnimationController ac = new LayoutAnimationController(as);
                         new_frg_search.setLayoutAnimation(ac);
-//                        new_frg_search.setVisibility(View.VISIBLE);
+                        new_frg_search.setVisibility(View.VISIBLE);
                         m_rl_category.setVisibility(View.VISIBLE);
                 } else {
                         m_rl_category.setVisibility(View.GONE);
-//                        new_frg_search.setVisibility(View.GONE);
+                        new_frg_search.setVisibility(View.GONE);
                 }
             }
         });
