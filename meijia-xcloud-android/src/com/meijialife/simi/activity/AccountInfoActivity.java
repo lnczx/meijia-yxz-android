@@ -405,7 +405,10 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(User.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(CalendarMark.class);
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+//        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+       
+        SpFileUtil.saveBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS,false);
+
         
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {

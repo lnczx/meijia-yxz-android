@@ -47,6 +47,7 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
+import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
@@ -65,6 +66,7 @@ import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
@@ -107,6 +109,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private static View layout_mask;
     private RelativeLayout rl_top;
     private FrameLayout vs;
+    private Boolean is_log = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -200,8 +203,12 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         //请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
+        is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(is_log){
             getAppHelp();
-
+          }else {
+              startActivity(new Intent(getActivity(),LoginActivity.class));
+        }
     }
     private SystemBarTintManager mTintManager;
     @SuppressLint("ResourceAsColor")
@@ -751,7 +758,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
      */
     
     private void getAppHelp() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;

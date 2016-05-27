@@ -51,6 +51,7 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
@@ -173,7 +174,8 @@ public class Find2Fra extends BaseFragment {
         //请求帮助接口
         if(loginStatus){
             getAppHelp();
-            
+        }else {
+            startActivity(new Intent(getActivity(),LoginActivity.class));
         }
         initFindBeanView(v);
         getChanelList();
@@ -611,7 +613,6 @@ public class Find2Fra extends BaseFragment {
      */
     
     private void getAppHelp() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;

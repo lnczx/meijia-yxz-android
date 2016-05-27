@@ -151,12 +151,14 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
         is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-
+Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
         // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
         if(is_log){
           getAppHelp();
+        }else {
+            startActivity(new Intent(getActivity(),LoginActivity.class));
         }
     }
 

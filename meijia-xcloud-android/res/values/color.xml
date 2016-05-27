@@ -111,16 +111,12 @@
   <color name="score_list_action">#333333</color>
   <color name="score_list_date">#C7C7C7</color>
   
-   <!-- IndicatorTabBar's Default Value -->
+   <!-- 自定义ViewGroup:IndicatorTabBar's 属性默认值 -->
     <dimen name="tab_text_size">15sp</dimen>
-
     <color name="tab_text_color1">#AFAFAF</color>
     <color name="tab_text_selected_color">#EE6E6C</color>
     <color name="tab_underline_color">#FA3E41</color>
-
     <dimen name="tab_underline_height">8px</dimen>
-
     <integer name="tab_max_column">3</integer>
-  
   
 </resources>

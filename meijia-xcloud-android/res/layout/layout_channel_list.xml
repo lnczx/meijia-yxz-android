@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/simi_color_line_gray"
+    android:orientation="vertical" >
+	
+   
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" 
+        android:visibility="gone"
+        />
+
+    <RelativeLayout
+        android:id="@+id/m_rl_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+	<ImageView
+	   	    android:id="@+id/m_iv_cancle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/channel_cancle"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+          />
+        <TextView
+            android:layout_below="@id/m_iv_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="我的订阅"
+            android:textColor="#222222"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/m_sc_channel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@id/m_rl_top"
+         >
+
+        <com.meijialife.simi.ui.ChannelGridView
+            android:id="@+id/m_channel_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dip"
+            android:layout_marginRight="14dip"
+            android:gravity="center"
+            android:horizontalSpacing="14dip"
+            android:listSelector="@color/simi_color_red"
+            android:numColumns="4"
+            android:scrollbars="vertical"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="14.0px" />
+    </ScrollView>
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/m_sc_channel"
+        android:gravity="center"
+         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:text="轻点标签即可在首页看到感兴趣的内容"
+            android:textColor="@color/simi_color_red"
+            android:textSize="12sp" />
+    </LinearLayout>
+    
+</RelativeLayout>

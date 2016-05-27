@@ -41,7 +41,6 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.HomePost;
-import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.utils.LogOut;
@@ -106,79 +105,41 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         if (is_show) {
             webview_comment.setVisibility(View.VISIBLE);
         }
-        WebChromeClient wvcc = new WebChromeClient() {
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                setTitleName(title);
-            }
-
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                } else {
-                    if (View.INVISIBLE == mProgressBar.getVisibility()) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                    }
-                    mProgressBar.setProgress(newProgress);
-                }
-            }
-
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, Callback callback) {
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
-                callback.invoke(origin, true, false);
-            }
-
-            @Override
-            public void onReceivedIcon(WebView view, Bitmap icon) {
-                super.onReceivedIcon(view, icon);
-            }
-
-        };
+       
         // 设置WebChromeClinent对象
-        webview.setWebChromeClient(wvcc);
-        webview.setInitialScale(100);  
+        webview.setWebChromeClient(new MyWebChromeClient());
+        webview.setBackgroundColor(0);
+        webview.getBackground().setAlpha(0); // 设置填充透明度 范围：0-255
+        webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);//解决图文混排滑动闪烁
         WebSettings webSettings = webview.getSettings();
-//        webSettings.setLoadsImagesAutomatically(true);
+        
         // 支持内容重新布局
-        webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
         webSettings.setDefaultTextEncodingName("utf-8");
-        webview.addJavascriptInterface(this, "Koolearn");
-        webview.setBackgroundColor(Color.parseColor("#00000000"));
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
-        webSettings.setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
-        webSettings.setSupportZoom(true);// 是否可以缩放，默认true
+//        webview.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
+//        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
+//        webSettings.setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
         // popwindow显示webview不能设置缩放按钮，否则触屏就会报错。
-        // webview.getSettings().setBuiltInZoomControls(true);// 是否显示缩放按钮，默认false
         webSettings.setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式
         webSettings.setLoadWithOverviewMode(true);// 和setUseWideViewPort(true)一起解决网页自适应问题
         webSettings.setAppCacheEnabled(false);// 是否使用缓存
         webSettings.setDomStorageEnabled(true);// DOM Storage
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
-        // webview设置启用数据库
-        webSettings.setDatabaseEnabled(true);
-        // 设置定位的数据库路径
-        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        
+        //禁止webView缩放
+        webSettings.setBuiltInZoomControls(false);
+        webSettings.setSupportZoom(false);
+        webSettings.setDisplayZoomControls(false);
+        
+        webSettings.setDatabaseEnabled(true);// webview设置启用数据库
+        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();// 设置定位的数据库路径
         webSettings.setGeolocationDatabasePath(dir);
-        // 启用地理定位
-        webSettings.setGeolocationEnabled(true);
-        // 开启DomStorage缓存
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setDefaultFontSize(40);
-
-        webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
+        webSettings.setDomStorageEnabled(true); // 开启DomStorage缓存
+        webSettings.setDefaultFontSize(40);//设置默认字体大小
+        webview.setWebViewClient(new MyWebViewClient());
 
     }
+    
+    
 
     TextWatcher tw = new TextWatcher() {
         private CharSequence temp;
@@ -208,7 +169,96 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             }
         }
     };
+    @SuppressLint("SetJavaScriptEnabled")
+	public class MyWebViewClient extends WebViewClient{
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+        
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            view.getSettings().setJavaScriptEnabled(true);  
+            super.onPageStarted(view, url, favicon);
+        }
+        
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            view.getSettings().setJavaScriptEnabled(true); 
+            addImageClickListner();
+            super.onPageFinished(view, url);
+        }
+    }
+    
+    
+    public class MyWebChromeClient extends WebChromeClient {
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            setTitleName(title);
+        }
 
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            if (newProgress == 100) {
+                mProgressBar.setVisibility(View.INVISIBLE);
+            } else {
+                if (View.INVISIBLE == mProgressBar.getVisibility()) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                mProgressBar.setProgress(newProgress);
+            }
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(String origin, Callback callback) {
+            super.onGeolocationPermissionsShowPrompt(origin, callback);
+            callback.invoke(origin, true, false);
+        }
+
+        @Override
+        public void onReceivedIcon(WebView view, Bitmap icon) {
+            super.onReceivedIcon(view, icon);
+        }
+
+    };
+    //定义JavaScript方法调用接口
+    public class JavascriptInterface {
+
+        private Context context;
+
+        public JavascriptInterface(Context context) {
+            this.context = context;
+        }
+
+        public void openImage(String img) {
+            Intent intent = new Intent();
+            intent.putExtra("image", img);
+            intent.setClass(context, ShowWebImageActivity.class);
+            context.startActivity(intent);
+        }
+    }
+    //增加图片点击事件
+    private void addImageClickListner() {
+     /*   webview.loadUrl("javascript:(function(){" +
+                "document.getElementsByTagName(\"a\").href='#'; " 
+                +"})()");*/
+      /*  webview.loadUrl("javascript:(function(){" +
+                "var objs = document.getElementsByTagName(\"img\"); " + 
+                "for(var i=0;i<objs.length;i++)  " + 
+                "{"
+                + "    objs[i].onclick=function()  " + 
+                "    {  " 
+                + "    window.imagelistner.openImage(this.src);  " + 
+                "    }  " + 
+                "}" + 
+                "})()");*/
+    }
+
+    
+    
     private void setOnClick() {
 
         comment_content = (EditText) findViewById(R.id.comment_content);
@@ -522,7 +572,10 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                             if (StringUtils.isNotEmpty(post)) {
                                 Gson gson = new Gson();
                                 homePost = gson.fromJson(post, HomePost.class);
-                                String temp = "<html><head><style>img{margin:10px;width:95%;height:auto !important;max-width:100%;max-height:auto;vertical-align:middle;}p{text-align:left;margin:10px;}</style><title>" + homePost.getTitle() + "</title></head><body>" + homePost.getContent() + "</body></html>";
+                                String a =homePost.getContent() .replaceAll("<a\\s+href\\s*=\\s*\".*?\">(.*?)</a>", "$1");
+
+                                String temp = "<html><head><meta content='initial-scale=1.0, user-scalable=no'/><style>img{margin:10px;width:95%;height:auto !important;max-width:100%;max-height:auto;vertical-align:middle;}p{text-align:left;margin:10px;}</style><title>" +homePost.getTitle()+ "</title></head><body>" + a + "</body></html>";
+                                String url = "<p>当年剧中的主演的现状又是怎样的呢？</p><p><img src='http://p3.pstatp.com/large/71e00015aeb216de9a6' img_width='640' img_height='506' alt='《情深深雨濛濛》3位主演相继去世，最小才33岁！看完我沉默了'onerror='javascript:errorimg.call(this);' ></p>"; 
                                 webview.loadData(temp, "text/html; charset=UTF-8", null);// 设置中文乱码
 
                             }

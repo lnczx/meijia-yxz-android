@@ -24,8 +24,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
@@ -39,7 +41,6 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -54,6 +55,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
 import com.meijialife.simi.activity.ArticleDetailActivity;
+import com.meijialife.simi.activity.ChannelListActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
@@ -133,11 +135,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     private IndicatorTabBar mIndicatorTabBar1;
     private IndicatorTabBar mIndicatorTabBar2;
+    private IndicatorTabBar mIndicatorTabBar3;
     private List<String> tabNames;
     private ParamsBean pBean = new ParamsBean();
 
-    private RelativeLayout m_rl_category;
+    private LinearLayout m_rl_category;
     private LinearLayout new_frg_search;
+    
+    private LinearLayout ll_more_columns;//更多频道
 
     // 定时任务
     private ScheduledExecutorService scheduledExecutorService;
@@ -174,29 +179,46 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         finalBitmap.configDiskCacheSize(1024 * 1024 * 10);
         finalBitmap.configLoadfailImage(R.drawable.ad_loading);
 
-        m_rl_category = (RelativeLayout) v.findViewById(R.id.m_rl_category);
+        m_rl_category = (LinearLayout) v.findViewById(R.id.m_rl_category);
         new_frg_search = (LinearLayout) v.findViewById(R.id.new_frg_search);
-
+        ll_more_columns = (LinearLayout) v.findViewById(R.id.ll_more_columns);
+        
+        boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(is_login){
+            ll_more_columns.setVisibility(View.VISIBLE);
+        }else {
+            ll_more_columns.setVisibility(View.GONE);
+        }
         initListView(v);
         setListener(v);
 
         tabNames = new ArrayList<String>();
         tabNames.add("精选");
-        tabNames.add("管理");
         tabNames.add("职场");
-        tabNames.add("创业");
-        tabNames.add("动态");
-        tabNames.add("认证");
-        tabNames.add("其他");
+        tabNames.add("案例");
+        tabNames.add("招聘");
+        tabNames.add("薪资");
+        tabNames.add("行政");
+        tabNames.add("培训");
+        tabNames.add("绩效");
+        tabNames.add("员工关系");
+        tabNames.add("人资规划");
+        tabNames.add("行业");
 
         mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
         mIndicatorTabBar1.setCallBack(this);
-        mIndicatorTabBar1.setMaxColumn(6);
+        mIndicatorTabBar1.setMaxColumn(5);
         mIndicatorTabBar1.initView(tabNames);
         mIndicatorTabBar2 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator2);
         mIndicatorTabBar2.setCallBack(this);
-        mIndicatorTabBar2.setMaxColumn(6);
+        mIndicatorTabBar2.setMaxColumn(5);
         mIndicatorTabBar2.initView(tabNames);
+        
+        mIndicatorTabBar3 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator3);
+        mIndicatorTabBar3.setCallBack(this);
+        mIndicatorTabBar3.setMaxColumn(5);
+        mIndicatorTabBar3.initView(tabNames);
+        
     }
 
     private void setListener(View v) {
@@ -210,6 +232,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         v.findViewById(R.id.m_homes4).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
         v.findViewById(R.id.rl_total_search).setOnClickListener(this);
+        ll_more_columns.setOnClickListener(this);
     }
 
     private void initListView(View v) {
@@ -221,7 +244,12 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         headerView.setLayoutParams(layoutParams);
         ListView listView =mListView.getRefreshableView();
         listView.addHeaderView(headerView);
-        listView.addFooterView(footView);
+        
+        View headview2= View.inflate(getActivity(), R.layout.new_frg_bottom,null);
+        listView.addHeaderView(headview2);//ListView条目中的悬浮部分 添加到头部
+        
+        
+//        listView.addFooterView(footView);
         mListView.setMode(Mode.BOTH);
         initIndicator();
         mLlLoadMore = (LinearLayout) v.findViewById(R.id.m_ll_load_more);
@@ -285,29 +313,20 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem >= 1) {
                    
-                  /*  TranslateAnimation ta = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0.1f, Animation.RELATIVE_TO_SELF, 0.1f,
-                            Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-                    ta.setDuration(1000);
-                    */
                         AnimationSet as = new AnimationSet(true);
                         AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
                         aa.setDuration(500);
                         as.addAnimation(aa);
                         LayoutAnimationController ac = new LayoutAnimationController(as);
                         new_frg_search.setLayoutAnimation(ac);
-                        new_frg_search.setVisibility(View.VISIBLE);
+//                        new_frg_search.setVisibility(View.VISIBLE);
                         m_rl_category.setVisibility(View.VISIBLE);
                 } else {
                         m_rl_category.setVisibility(View.GONE);
-                        AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
-                        aa.setDuration(1500);
-                        LayoutAnimationController ac = new LayoutAnimationController(aa);
-                        new_frg_search.setLayoutAnimation(ac);
-                        new_frg_search.setVisibility(View.GONE);
+//                        new_frg_search.setVisibility(View.GONE);
                 }
             }
         });
-
     }
     
     /**
@@ -822,6 +841,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 startActivity(new Intent(getActivity(), SearchViewActivity.class));
             }
             break;
+        case R.id.ll_more_columns:// 频道列表页面
+                startActivity(new Intent(getActivity(), ChannelListActivity.class));
+            break;
         default:
             break;
         }
@@ -952,6 +974,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     
     @Override
     public void onClick(ParamsBean params) {
+        allHomePosts.clear();
         getMsgList(page, params);
     }
 }

@@ -3,7 +3,6 @@ package com.meijialife.simi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -212,45 +211,79 @@ public class IndicatorTabBar extends HorizontalScrollView {
 				mCurrentTab = tabView;
 				mTabContainer.postInvalidate();
 				ParamsBean pBean =new ParamsBean();
-				if(index==0){
+				if(index==0){//精选
 				    pBean.setJson("get_tag_posts");
 				    pBean.setCount("10");
 				    pBean.setOrder("DESC");
 				    pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
 				    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-				}else if (index==1) {
+				}else if (index==1) {//职场
 			        pBean.setJson("get_category_posts");
-                    pBean.setCount("10");
-                    pBean.setOrder("DESC");
-                    pBean.setId("3");
-                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-                
-                }else if (index==2) {
-                    pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("50");
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-                
-                }else if (index==3) {
+                }else if (index==2) {//案例
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
-                    pBean.setId("2");
+                    pBean.setId("69");
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
-                }else if (index==4) {
+                }else if (index==3) {//招聘
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
-                    pBean.setId("39");
+                    pBean.setId("62");
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
-                }else if (index==5) {
+                }else if (index==4) {//薪资
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
-                    pBean.setId("5");
+                    pBean.setId("64");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==5) {//行政
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("21");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==6) {//培训
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("63");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==7) {//绩效
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("65");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==8) {//员工关系
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("66");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==8) {//人资规划
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("67");
+                    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
+                
+                }else if (index==8) {//行业
+                    pBean.setJson("get_category_posts");
+                    pBean.setCount("10");
+                    pBean.setOrder("DESC");
+                    pBean.setId("70");
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }

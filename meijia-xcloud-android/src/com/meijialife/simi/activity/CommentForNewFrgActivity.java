@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
     private ArrayList<WebViewComment> totalCommentList;
     //布局控件定义
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private LinearLayout m_ll_comments;//评论文字
     private int page = 1;
     private String fid = "0";//文章Id
     
@@ -72,6 +74,8 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
     	 */
     	totalCommentList = new ArrayList<WebViewComment>();
     	myCommentList = new ArrayList<WebViewComment>();
+    	m_ll_comments = (LinearLayout)findViewById(R.id.m_ll_comments);
+    	m_ll_comments.setVisibility(View.VISIBLE);
     	mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_list);
     	mPullRefreshListView.setOnItemClickListener(this);
         adapter = new CommentForNewFrgAdapter(this);

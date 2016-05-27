@@ -11,7 +11,6 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,9 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,9 +44,9 @@ import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SelectableRoundedImageView;
 import com.meijialife.simi.utils.FontHelper;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
-import com.simi.easemob.EMConstant;
 import com.simi.easemob.ui.ChatActivity;
 
 public class MainPlusActivity extends Activity implements OnClickListener {
@@ -57,6 +54,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     private FindPlusAdapter mFindPlusAdapter;
     private GridView mGvFind;
     private ArrayList<FindPlusData> mFindPlusDatas;
+    private Boolean is_log =false;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +85,13 @@ public class MainPlusActivity extends Activity implements OnClickListener {
         //请求帮助接口
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        getAppHelp();
+        is_log = SpFileUtil.getBoolean(MainPlusActivity.this.getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(is_log){
+            getAppHelp();
+          }else {
+              startActivity(new Intent(MainPlusActivity.this,LoginActivity.class));
+        }
+
     }
     
     private void setClick(){

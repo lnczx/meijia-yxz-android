@@ -76,7 +76,7 @@
     </declare-styleable>
     
      
-     <!-- IndicatorTabBar Attribute -->
+     <!-- 自定义ViewGroup:可滑动的IndicatorTabBar Attribute -->
     <declare-styleable name="IndicatorTabBar">
         <attr name="tab_text_size" format="dimension" />
         <attr name="tab_text_color" format="color" />

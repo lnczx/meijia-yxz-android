@@ -27,6 +27,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -125,6 +127,17 @@ public class SplashActivity extends Activity {
          getCitys(getCityAddtime());
 //         getBaseDatas(getXcompanySettings());
          getBaseDatas();
+         
+         //增加图片点击事件
+         mWelcome2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://www.baidu.com");                            
+                Intent intent = new Intent(Intent.ACTION_VIEW,uri);  
+                startActivity(intent);
+            }
+        });
+         
          
     }
     private void initDb() {

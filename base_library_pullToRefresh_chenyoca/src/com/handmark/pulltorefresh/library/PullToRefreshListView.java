@@ -337,7 +337,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		public void setEmptyViewInternal(View emptyView) {
 			super.setEmptyView(emptyView);
 		}
-
 	}
+	
 
 }

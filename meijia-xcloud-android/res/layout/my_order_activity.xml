@@ -16,10 +16,13 @@
         android:background="@color/simi_color_line_gray" />
 
     <LinearLayout
+        android:id="@+id/m_ll_comments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/simi_color_white"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:visibility="gone"
+         >
 
         <TextView
             android:layout_width="wrap_content"

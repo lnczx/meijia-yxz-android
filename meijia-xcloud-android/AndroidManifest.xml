@@ -1197,6 +1197,19 @@ _
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
         </activity>
+          <activity
+            android:name="com.meijialife.simi.activity.ShowWebImageActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+ 			android:theme="@style/Transparent"             >
+        </activity>
+        <!-- 首页频道列表页面 -->
+          <activity
+            android:name="com.meijialife.simi.activity.ChannelListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+ 			android:theme="@style/Transparent"             >
+        </activity>
     </application>
 
 </manifest>

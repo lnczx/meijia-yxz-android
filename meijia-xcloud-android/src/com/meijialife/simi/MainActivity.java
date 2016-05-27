@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.EMCallBack;
 import com.easemob.EMEventListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.chat.EMChatManager;
@@ -34,7 +35,6 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
-import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.LoginActivity;
@@ -67,6 +67,11 @@ import com.simi.easemob.ui.EMBaseActivity;
 import com.simi.easemob.ui.EMLoginActivity;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.impl.CommunitySDKImpl;
+import com.umeng.comm.core.login.LoginListener;
+import com.umeng.comm.core.utils.CommonUtils;
+import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
 /**
  * fragment 的切换类
@@ -331,7 +336,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             }
             break;
         case R.id.item_0: // 个人信息
-            intent = new Intent(this, AccountInfoActivity.class);
+            intent = new Intent(this, MainActivity.class);
             intent.putExtra("user", PersonalFragment.user);
             startActivity(intent);
             break;
@@ -737,6 +742,82 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     }
 
     /**
+     * 退出登录
+     */
+    private void logOut() {
+        DBHelper.getInstance(MainActivity.this).deleteAll(User.class);
+        DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
+        DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+//        SpFileUtil.saveBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS,false);
+        
+        
+        
+        showDialog();
+        EMDemoHelper.getInstance().logout(false, new EMCallBack() {
+            @Override
+            public void onSuccess() {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissDialog();
+                        // 重新显示登陆页面
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.putExtra("is_show_back", 0);
+                        startActivity(intent);
+                        if (MainActivity.activity != null) {
+                            MainActivity.activity.finish();
+                        }
+                        MainActivity.this.finish();
+                        if(CommonUtils.isLogin(MainActivity.this)){
+                            CommunitySDKImpl.getInstance().logout(MainActivity.this, new LoginListener() {
+                                @Override
+                                public void onStart() {
+
+                                }
+                                @Override
+                                public void onComplete(int stCode, CommUser userInfo) {
+                                    BroadcastUtils.sendUserLogoutBroadcast(getApplication());
+                                    finish();
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onProgress(int progress, String status) {
+
+            }
+
+            @Override
+            public void onError(int code, String message) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        dismissDialog();
+                        Toast.makeText(MainActivity.this, "unbind devicetokens failed", Toast.LENGTH_SHORT).show();
+
+                        // 重新显示登陆页面
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        if (MainActivity.activity != null) {
+                            MainActivity.activity.finish();
+                        }
+                        MainActivity.this.finish();
+
+                    }
+                });
+            }
+        });
+    }
+
+    
+    
+    
+    /**
      * 帐号被移除的dialog
      */
     private void showAccountRemovedDialog() {
@@ -774,13 +855,13 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     /**
      * 退出登陆
      */
-    private void logOut() {
+ /*   private void logOut() {
         DBHelper.getInstance(MainActivity.this).deleteAll(User.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         this.finish();
-    }
+    }*/
 
     /**
      * 获取提醒闹钟的卡片列表
