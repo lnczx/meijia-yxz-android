@@ -138,7 +138,7 @@ public class RouteUtil {
                         intent = new Intent(context, MainPlusTeamActivity.class);
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
-                    } else if (action.equals("expr")) {// 速通宝
+                    } else if (action.equals("expy")) {// 速通宝
                         intent = new Intent(context, MainPlusCarOrderActivity.class);
                         context.startActivity(intent);
                     } else if (action.equals("company_pass")) {// 跳转到公司申请列表
@@ -284,7 +284,7 @@ public class RouteUtil {
                 } else if (action.equals("teamwork")) {// 跳转到团队建设详情
                     intent = new Intent(context, MainPlusTeamActivity.class);
                     context.startActivity(intent);
-                } else if (action.equals("expr")) {// 速通宝
+                } else if (action.equals("expy")) {// 速通宝
                     intent = new Intent(context, MainPlusCarOrderActivity.class);
                     context.startActivity(intent);
                 } else if (action.equals("company_pass")) {// 跳转到公司申请列表
