@@ -73,6 +73,8 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
     private int buyNum = 0;// 购买数量
     private BadgeView buyNumView;// 购物车上的数量标签
     private EditText mEtCount;
+    
+    private String assetTypeId="0";//公司资产类别Id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         findViewById(R.id.m_btn_use).setOnClickListener(this);
 
         assetMap = new HashMap<String, List<AssetData>>();
-        list2 = new ArrayList<>();
+        list2 = new ArrayList<AssetData>();
         list = new ArrayList<XcompanySetting>();
 
     }
@@ -111,7 +113,11 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         goodsAdapter = new GoodsAdapter(this, list2, catograyAdapter);
         listView1.setAdapter(catograyAdapter);
         listView2.setAdapter(goodsAdapter);
-        getAssetList();
+        
+        if(list!=null && list.size()>0){
+            assetTypeId = list.get(0).getId();
+        }
+        getAssetList(assetTypeId);
     }
 
     private void addListener() {
@@ -213,11 +219,12 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
      * 
      * @param barcode
      */
-    private void getAssetList() {
+    private void getAssetList(String assetTypeId) {
         UserInfo userInfo = DBHelper.getUserInfo(this);
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
         map.put("company_id", userInfo.getCompany_id());
+        map.put("asset_type_id",assetTypeId);
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.GET_ASSET_LIST_URL, param, new AjaxCallBack<Object>() {
             @Override

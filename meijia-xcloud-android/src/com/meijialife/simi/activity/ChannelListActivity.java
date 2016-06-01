@@ -62,7 +62,7 @@ public class ChannelListActivity extends BaseActivity {
         m_channel_list.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mChannelAdapter.setCheckedId(position);
+                
             }
 
             @Override

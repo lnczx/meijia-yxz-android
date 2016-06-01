@@ -24,8 +24,6 @@ public final class ChannelAdapter extends BaseAdapter {
 
 	private LayoutInflater layoutInflater;
 	
-	private Integer CheckedId;
-
 	/**
 	 * @param context上下文
 	 * @param 数据列表
@@ -74,9 +72,7 @@ public final class ChannelAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		if(CheckedId==position){
-		    holder.text_item.setTextColor(context.getResources().getColor(R.color.simi_color_red));
-		}
+		holder.text_item.setTextColor(context.getResources().getColor(R.color.simi_color_red));
 		holder.text_item.setText(datas.get(position).getName());
 		return convertView;
 	}
@@ -84,18 +80,5 @@ public final class ChannelAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		TextView text_item; // 名称
 	}
-
-    public Integer getCheckedId() {
-        return CheckedId;
-    }
-
-    public void setCheckedId(Integer checkedId) {
-        CheckedId = checkedId;
-        notifyDataSetChanged();
-    }
-	
-	
-
-	 
 
 }

@@ -41,6 +41,7 @@ import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -90,12 +91,23 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         setContentView(R.layout.card_list_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         initView();
         
     }
     
-    private void initView(){
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+
+           startActivity(new Intent(CardListActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
         
+    }
+    
+    private void initView(){
         //接收参数
         mCardType = getIntent().getStringExtra("cardType");
 
@@ -351,15 +363,15 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
      */
     public void getCardListData(int page,String date, String card_type) {
 
-        String user_id = DBHelper.getUser(this).getId();
-
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("service_date", "");
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("card_from", "0" );
         map.put("card_type", card_type);
         map.put("lat","");
@@ -428,7 +440,10 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
                     UIUtils.showToast(CardListActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(CardListActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**

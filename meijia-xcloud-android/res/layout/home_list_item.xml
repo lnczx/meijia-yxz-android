@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/msg_iv_icon_url"
-            android:layout_width="130dp"
+            android:layout_width="170dp"
             android:layout_height="100dp"
             android:layout_marginLeft="@dimen/card_icon_margin_left"
             android:layout_marginRight="@dimen/card_icon_margin_left"

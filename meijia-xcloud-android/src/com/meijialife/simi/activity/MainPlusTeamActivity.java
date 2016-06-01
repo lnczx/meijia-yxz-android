@@ -41,10 +41,12 @@ import com.meijialife.simi.adapter.DefaultServiceAdapter;
 import com.meijialife.simi.adapter.MainPlusTeamAdapter;
 import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.TeamData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -95,10 +97,21 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
         setContentView(R.layout.water_list_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         initView();
         
     }
-    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusTeamActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView(){
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
@@ -308,13 +321,14 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
      * @param page
      */
     public void getTeamListData(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId());
         map.put("page",page+"");
         AjaxParams param = new AjaxParams(map);
 //        showDialog();
@@ -377,7 +391,10 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
                     UIUtils.showToast(MainPlusTeamActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusTeamActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**
@@ -421,13 +438,14 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
      * @param page
      */
     public void getDefaultServiceListData(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId());
         map.put("service_type_id", "79");
         map.put("page",pageDef+"");
         AjaxParams param = new AjaxParams(map);
@@ -478,7 +496,10 @@ public class MainPlusTeamActivity extends Activity implements ListItemClickHelp 
                     UIUtils.showToast(MainPlusTeamActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusTeamActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     @Override
     protected void onDestroy() {

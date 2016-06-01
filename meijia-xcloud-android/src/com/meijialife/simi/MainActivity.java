@@ -110,6 +110,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     GetContactsRunnable getContactsRunnable;
+    
+    private  User user;
 
     /**
      * 检查当前用户是否被删除
@@ -125,7 +127,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         setContentView(R.layout.main);
         super.onCreate(savedInstanceState);
          
-
         init();
         initLeft();
         mBt1.performClick();
@@ -292,7 +293,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     @Override
     public void onClick(View arg0) {
         Intent intent;
-        boolean is_login = false;
+        user = DBHelper.getUser(MainActivity.this);
         switch (arg0.getId()) {
         case R.id.tab_bt_1: // 首页
             currentTabIndex = 1;
@@ -309,36 +310,44 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             changeFind();
             break;
         case R.id.tab_bt_3: // 圈子
-            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-            if(!is_login){
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            }else{
+            if (user != null) {
                 currentTabIndex = 3;
                 change2Home1();
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
             break;
         case R.id.tab_bt_4: // 我的
-            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-            if(!is_login){
-                startActivity(new Intent(MainActivity.this,LoginActivity.class));
-            }else{
+            if (user != null) {
                 changePersonal();
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
             break;
         case R.id.tab_bt_5: // 加号
-            is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+         /*   is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
             if(!is_login){
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
             }else{
                 Intent intent2 = new Intent(this, MainPlusActivity.class);
                 this.startActivity(intent2);
                 this.overridePendingTransition(R.anim.activity_open, 0);
+            }*/
+            
+            if (user != null) {
+                Intent intent2 = new Intent(this, MainPlusActivity.class);
+                this.startActivity(intent2);
+                this.overridePendingTransition(R.anim.activity_open, 0);
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
             }
+            
+            
             break;
         case R.id.item_0: // 个人信息
-            intent = new Intent(this, MainActivity.class);
-            intent.putExtra("user", PersonalFragment.user);
-            startActivity(intent);
+                intent = new Intent(this, MainActivity.class);
+                intent.putExtra("user", PersonalFragment.user);
+                startActivity(intent);
             break;
         case R.id.item_1: // 我的钱包
             startActivity(new Intent(this, MyWalletActivity.class));

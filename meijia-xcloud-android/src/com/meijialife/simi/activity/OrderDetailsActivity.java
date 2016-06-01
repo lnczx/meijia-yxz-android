@@ -1,6 +1,8 @@
 package com.meijialife.simi.activity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -16,20 +18,26 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.OrderLogAdapter;
 import com.meijialife.simi.bean.CleanData;
 import com.meijialife.simi.bean.ExpressData;
+import com.meijialife.simi.bean.FindPlusData;
 import com.meijialife.simi.bean.MyOrderDetail;
+import com.meijialife.simi.bean.OrderLog;
 import com.meijialife.simi.bean.TeamData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.WaterData;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -61,8 +69,12 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
     private TextView mOrderPayType;
     private TextView mRemarks;
     private BitmapDrawable defaultBitmap;
-    private ImageView mHeadImage;
+    private RoundImageView mHeadImage;
     private TextView tv_city_name;
+    
+    private ListView m_lv_order_logs;
+    private List<OrderLog> orderLogDatas;
+    private OrderLogAdapter orderLogAdapter;
 
     
     private String orderStatus;
@@ -73,9 +85,18 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.order_details_activity);
         super.onCreate(savedInstanceState);
+        
+        isLogin();
         initView();
     }
-
+    //是否处于登录状态
+    private void isLogin(){
+        user = DBHelper.getUser(this);
+        if(user==null){
+            startActivity(new Intent(OrderDetailsActivity.this, LoginActivity.class));
+            finish();
+        }
+    }
     private void initView() {
         setTitleName("订单详情");
         requestBackBtn();
@@ -90,8 +111,13 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mOrderPayType = (TextView) findViewById(R.id.item_tv_pay_type);
         mRemarks = (TextView) findViewById(R.id.itemt_tv_remarks);
         mContent = (TextView) findViewById(R.id.item_tv_order_content);
-        mHeadImage = (ImageView) findViewById(R.id.item_tv_icon);
+        mHeadImage = (RoundImageView) findViewById(R.id.item_tv_icon);
         tv_city_name =(TextView)findViewById(R.id.item_tv_city_name);
+        
+        orderLogDatas = new ArrayList<OrderLog>();
+        m_lv_order_logs = (ListView)findViewById(R.id.m_lv_order_logs);
+        orderLogAdapter = new OrderLogAdapter(OrderDetailsActivity.this);
+        m_lv_order_logs.setAdapter(orderLogAdapter);
 
         //获取Intent中值
         user = DBHelper.getUser(this);
@@ -110,14 +136,86 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         }else if(orderType==4){
             getOrderDetailExpress();
         }
+        getOrderLog();
     }
+    /**
+     * 获得订单进度接口
+     */
+    public void getOrderLog() {
+        // 判断是否有网络
+        if (!NetworkUtils.isNetworkConnected(OrderDetailsActivity.this)) {
+            Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        if(user!=null){
+            
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user.getId());
+        map.put("order_id", "" + order_id);
+        AjaxParams params = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_ORDER_LOG, params, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(OrderDetailsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                orderLogDatas = gson.fromJson(data, new TypeToken<ArrayList<OrderLog>>() {
+                                }.getType());
+                                orderLogAdapter.setData(orderLogDatas);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
 
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
+                }
+            }
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
+    }
+    
+    
+    
     public void getOrderDetail() {
         // 判断是否有网络
         if (!NetworkUtils.isNetworkConnected(OrderDetailsActivity.this)) {
             Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("order_id", "" + order_id);
@@ -171,7 +269,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**
@@ -183,6 +284,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
             Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("order_id", "" + order_id);
@@ -236,7 +338,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 保洁订单详情
@@ -247,6 +352,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
             Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("order_id", "" + order_id);
@@ -300,7 +406,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 获得团建订单详情
@@ -311,6 +420,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
             Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("order_id", "" + order_id);
@@ -364,7 +474,11 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            
+            finish();
+        }
     }
     /**
      * 快递类订单详情接口
@@ -375,6 +489,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
             Toast.makeText(OrderDetailsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("id", "" + order_id);
@@ -428,7 +543,10 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(OrderDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(OrderDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 根据接口返回的值，赋值展示订单详情
@@ -445,7 +563,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mRemarks.setText(myOrderDetail.getRemarks().trim());
         mOrderPayType.setText(myOrderDetail.getPay_type_name().trim());
         tv_city_name.setText(myOrderDetail.getCity_name());
-        finalBitmap.display(mHeadImage, myOrderDetail.getPartner_user_head_img(), defaultBitmap.getBitmap(), defaultBitmap.getBitmap());
+        finalBitmap.display(mHeadImage, myOrderDetail.getService_type_img(), defaultBitmap.getBitmap(), defaultBitmap.getBitmap());
         mOrderStatus.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

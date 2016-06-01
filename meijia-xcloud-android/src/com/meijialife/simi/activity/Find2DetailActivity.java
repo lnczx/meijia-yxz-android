@@ -31,9 +31,11 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.Partner;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -60,9 +62,21 @@ public class Find2DetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.find_2_detail_activity);
         super.onCreate(savedInstanceState);
+        
+        isLogin();
         init();
     }
-    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(Find2DetailActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     /*
      * 初始化适配器
      */
@@ -143,13 +157,14 @@ public class Find2DetailActivity extends BaseActivity {
      * @param service_type_ids
      */
     public void getPartnerList(String service_type_ids,int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User  user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("page", ""+page);
         map.put("service_type_ids", service_type_ids);
         AjaxParams param = new AjaxParams(map);
@@ -205,7 +220,10 @@ public class Find2DetailActivity extends BaseActivity {
                     UIUtils.showToast(Find2DetailActivity.this, errorMsg);
                 }
             }
-        });
+        });}else{
+            startActivity(new Intent(Find2DetailActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     @Override
     protected void onDestroy() {

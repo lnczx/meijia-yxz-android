@@ -94,6 +94,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private TextView tv_score_num; // 积分数量
 
     public static UserIndexData user;
+    private User users;
 
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
@@ -115,24 +116,25 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         layoutInflater = inflater;
         v = inflater.inflate(R.layout.personal_fragment, null, false);
-        vs= (FrameLayout)getActivity().getLayoutInflater()
-                .inflate(R.layout.personal_fragment, null);
+        vs = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.personal_fragment, null);
         init(inflater, v);
-        
+
         return v;
     }
- 
+
     @SuppressLint("ResourceAsColor")
-	private void init(LayoutInflater inflater, View view) {
+    private void init(LayoutInflater inflater, View view) {
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
 
         iv_top_head = (RoundImageView) view.findViewById(R.id.iv_top_head);
-        rl_top = (RelativeLayout)view.findViewById(R.id.rl_top);
-        finalBitmap.display(rl_top,Constants.PERSON_ICON_URL);
+        rl_top = (RelativeLayout) view.findViewById(R.id.rl_top);
+        finalBitmap.display(rl_top, Constants.PERSON_ICON_URL);
+        
+        getAppHelp();
 
-        //将本地图片设为背景       
-        //setBackground(R.drawable.bg_person_page);
+        // 将本地图片设为背景
+        // setBackground(R.drawable.bg_person_page);
         layout_mask = v.findViewById(R.id.layout_mask);
         tv_top_nickname = (TextView) view.findViewById(R.id.tv_top_nickname);
         tv_city = (TextView) view.findViewById(R.id.tv_city);
@@ -165,14 +167,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         view.findViewById(R.id.rl_person_you_hui_quan).setOnClickListener(this);
         view.findViewById(R.id.rl_person_ji_fen).setOnClickListener(this);
         view.findViewById(R.id.rl_person_fu_wu).setOnClickListener(this);
-        //长按进入应用中心
-     /*   view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-              startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class));
-                return false;
-            }
-        });*/
+        // 长按进入应用中心
+        /*
+         * view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
+         * 
+         * @Override public boolean onLongClick(View v) { startActivity(new Intent(getActivity(),ApplicationsCenterActivity.class)); return false; }
+         * });
+         */
         ll_rq.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,60 +200,56 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         ibtn_person.setOnClickListener(this);
 
         // inflater = LayoutInflater.from(getActivity());
-        
-        //请求帮助接口
+
+        // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-        if(is_log){
-            getAppHelp();
-          }else {
-              startActivity(new Intent(getActivity(),LoginActivity.class));
-        }
+
     }
+
     private SystemBarTintManager mTintManager;
+
     @SuppressLint("ResourceAsColor")
-	private void initWindow(){
+    private void initWindow() {
         /**
          * 沉浸式状态栏(像ios那样的状态栏与应用统一颜色样式)android.4.4支持
          */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
-//            getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
+            // getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);// 透明导航栏
             mTintManager = new SystemBarTintManager(getActivity());
             mTintManager.setStatusBarTintEnabled(true);
-//            mTintManager.setNavigationBarTintEnabled(true);
+            // mTintManager.setNavigationBarTintEnabled(true);
             mTintManager.setTintColor(R.color.simi_color_red);
             mTintManager.setStatusBarTintColor(R.color.simi_color_red);
         }
     }
-    private void clearWindow(){
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+    private void clearWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
     }
+
     /**
      * 设置背景颜色模糊
+     * 
      * @param id
      */
     @SuppressWarnings("deprecation")
-    private void setBackground(int id)  
-    {       
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),id);//从资源文件中得到图片，并生成Bitmap图片       
-        final Bitmap blurBmp = BlurUtils.fastblur(getActivity(), bmp,1);//0-25，表示模糊值   
-        final Drawable newBitmapDrawable = new BitmapDrawable(blurBmp); // 将Bitmap转换为Drawable 
-        rl_top.post(new Runnable()  //调用UI线程
-        {           
-            @Override          
-            public void run() 
-            {               
-                rl_top.setBackgroundDrawable(newBitmapDrawable);//设置背景
-            }       
-        }); 
+    private void setBackground(int id) {
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), id);// 从资源文件中得到图片，并生成Bitmap图片
+        final Bitmap blurBmp = BlurUtils.fastblur(getActivity(), bmp, 1);// 0-25，表示模糊值
+        final Drawable newBitmapDrawable = new BitmapDrawable(blurBmp); // 将Bitmap转换为Drawable
+        rl_top.post(new Runnable() // 调用UI线程
+        {
+            @Override
+            public void run() {
+                rl_top.setBackgroundDrawable(newBitmapDrawable);// 设置背景
+            }
+        });
     }
-    
-    
 
     @Override
     public void onResume() {
@@ -260,11 +257,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         getUserData();
         MobclickAgent.onPageStart("MainActivity");
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MainActivity"); 
+        MobclickAgent.onPageEnd("MainActivity");
     }
 
     @Override
@@ -292,48 +289,49 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             MainActivity.slideMenu();
             break;
         case R.id.item_qianbao:// 经验
-            intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url", Constants.JING_YAN+user.getId());
+            intent = new Intent(getActivity(), WebViewsActivity.class);
+            intent.putExtra("url", Constants.JING_YAN + user.getId());
             startActivity(intent);
             break;
         case R.id.item_youhui:// 好友
-            MainActivity mainActivity1 = (MainActivity)getActivity();
+            MainActivity mainActivity1 = (MainActivity) getActivity();
             mainActivity1.changeFeeds();
-            Constants.checkedIndex =0;
+            Constants.checkedIndex = 0;
             break;
         case R.id.item_jifen:// 积分
-            startActivity(new Intent(getActivity(),MyIntegralActivity.class));
+            startActivity(new Intent(getActivity(), MyIntegralActivity.class));
             break;
         case R.id.rl_person_items1:// 我的消息
             intent = new Intent(getActivity(), NewMsgActivity.class);
             intent.putExtra(com.umeng.comm.core.constants.Constants.USER, user.getId());
             startActivity(intent);
             break;
-        case R.id.rl_person_items2://我的钱包
+        case R.id.rl_person_items2:// 我的钱包
             startActivity(new Intent(getActivity(), MyWalletActivity.class));
 
             break;
         case R.id.rl_person_items3:// 推荐给好友
-            ShareConfig.getInstance().init(getActivity());;
+            ShareConfig.getInstance().init(getActivity());
             postShare();
             break;
         case R.id.rl_person_items4:// 更多
             startActivity(new Intent(getActivity(), MoreActivity.class));
             break;
         case R.id.rl_person_items5:// 我是服务商
-          /*  intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);*/
-            Intent intent1 = new Intent(getActivity(),WebViewsActivity.class);
-            intent1.putExtra("url", Constants.KAI_DIAN+user.getId());
+            /*
+             * intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615")); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+             * startActivity(intent);
+             */
+            Intent intent1 = new Intent(getActivity(), WebViewsActivity.class);
+            intent1.putExtra("url", Constants.KAI_DIAN + user.getId());
             getActivity().startActivity(intent1);
             break;
         case R.id.rl_person_dong_tai:// 动态
             intent = new Intent(getActivity(), UserInfoActivity.class);
             intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag",0);
+            intent.putExtra("flag", 0);
             startActivity(intent);
-            
+
             break;
         case R.id.rl_person_hua_ti:// 话题
             intent = new Intent(getActivity(), FollowedTopicActivity.class);
@@ -343,13 +341,13 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.rl_person_guan_zhu:// 关注
             intent = new Intent(getActivity(), UserInfoActivity.class);
             intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag",1);
+            intent.putExtra("flag", 1);
             startActivity(intent);
             break;
         case R.id.rl_person_fen_si:// 粉丝
             intent = new Intent(getActivity(), UserInfoActivity.class);
             intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag",2);
+            intent.putExtra("flag", 2);
             startActivity(intent);
             break;
         case R.id.rl_person_ding_dan:// 订单
@@ -367,7 +365,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             startActivity(intent2);
             break;
         case R.id.rl_person_fu_wu:// 会员服务
-            intent = new Intent(getActivity(),WebViewsActivity.class);
+            intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.HUI_YUAN_FU_WU);
             startActivity(intent);
             break;
@@ -375,13 +373,14 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             break;
         }
     }
+
     private void postShare() {
         PersonalFragment.showMask();
         CustomShareBoard shareBoard = new CustomShareBoard(getActivity());
         shareBoard.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss() {
-                PersonalFragment.GoneMask(); 
+                PersonalFragment.GoneMask();
             }
         });
         shareBoard.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
@@ -395,8 +394,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         layout_mask.setVisibility(View.GONE);
     }
 
-    
-    
     private PopupWindow popupWindow;
     private WebView webview;
     private ImageView iv_person_left;
@@ -415,7 +412,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         View view = inflater.inflate(R.layout.personal_fragment, null);
 
         if (null == popupWindow || !popupWindow.isShowing()) {
-            popupWindow = new PopupWindow(popupWindow_view, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
+            popupWindow = new PopupWindow(popupWindow_view, android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
             popupWindow.setFocusable(false);
         }
         if (StringUtils.isEmpty(url)) {
@@ -485,7 +483,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     private void popRqCode() {
         if (null == mPopupWindow || !mPopupWindow.isShowing()) {
-            mPopupWindow = new PopupWindow(music_popunwindwow, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+            mPopupWindow = new PopupWindow(music_popunwindwow, android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                    android.view.ViewGroup.LayoutParams.MATCH_PARENT);
             mPopupWindow.showAtLocation(v.findViewById(R.id.fl_main), Gravity.RIGHT | Gravity.BOTTOM, 0, 0);
             getMyRqCode();
         }
@@ -501,16 +500,15 @@ public class PersonalFragment extends Fragment implements OnClickListener {
      * 获取个人信息数据
      */
     private void getUserData() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
-
+        users = DBHelper.getUser(getActivity());
+        if(users !=null){
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
-
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
-        map.put("view_user_id", user_id + "");
+        map.put("user_id", users.getId());
+        map.put("view_user_id",users.getId());
         AjaxParams param = new AjaxParams(map);
 
         new FinalHttp().get(Constants.URL_GET_USER_INDEX, param, new AjaxCallBack<Object>() {
@@ -519,6 +517,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -552,7 +551,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
@@ -562,6 +561,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 }
             }
         });
+        }else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
 
     }
 
@@ -582,7 +584,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         if (StringUtils.isNotEmpty(user.getPoi_distance())) {
             tv_distance.setText("距离你" + user.getPoi_distance() + "米");
         }
-        tv_money_num.setText(user.getExp()+"");
+        tv_money_num.setText(user.getExp() + "");
         tv_coupon_num.setText(user.getTotal_friends() + "");
         tv_score_num.setText(user.getScore() + "");
         userInfo.setScore(user.getScore());
@@ -648,7 +650,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
 
@@ -681,6 +683,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             m_pDialog = null;
         }
     }
+
     /**
      * 暂时不适用
      */
@@ -692,33 +695,33 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private TextView tip_tv_content;
     private TextView tip_tv_more;
     private AppHelpData appHelpData;
+
     /**
      * 弹出窗口
      */
     private void popWindow(final AppHelpData appHelpData) {
-        View view = getActivity().getLayoutInflater()
-                .inflate(R.layout.layout_tip_activity, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.layout_tip_activity, null);
         if (null == popupWindows || !popupWindows.isShowing()) {
-          /*  popupWindows = new PopupWindow(view);
-            popupWindows.setWidth(450);
-            popupWindows.setHeight(650);*/
-            popupWindow = new PopupWindow(view,android.view.ViewGroup.LayoutParams.WRAP_CONTENT,android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+            /*
+             * popupWindows = new PopupWindow(view); popupWindows.setWidth(450); popupWindows.setHeight(650);
+             */
+            popupWindow = new PopupWindow(view, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindows.setFocusable(false);
             popupWindows.setTouchable(true);
         }
-        mDone = (TextView)view.findViewById(R.id.tip_tv_done);
-        tip_tv_title = (TextView)view.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)view.findViewById(R.id.tip_tv_content);
-        tip_tv_more = (TextView)view.findViewById(R.id.tip_tv_more);
-//        selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
-        tip_iv_icon = (ImageView)view.findViewById(R.id.tip_iv_icon);
+        mDone = (TextView) view.findViewById(R.id.tip_tv_done);
+        tip_tv_title = (TextView) view.findViewById(R.id.tip_tv_title);
+        tip_tv_content = (TextView) view.findViewById(R.id.tip_tv_content);
+        tip_tv_more = (TextView) view.findViewById(R.id.tip_tv_more);
+        // selectableRoundedImageView = (SelectableRoundedImageView)view.findViewById(R.id.tip_iv_icon);
+        tip_iv_icon = (ImageView) view.findViewById(R.id.tip_iv_icon);
         tip_tv_title.setText(appHelpData.getTitle());
         tip_tv_content.setText(appHelpData.getContent());
-//        finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
+        // finalBitmap.display(selectableRoundedImageView, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
         finalBitmap.display(tip_iv_icon, appHelpData.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
-        popupWindow.setFocusable(true);  
+        popupWindow.setFocusable(true);
         popupWindow.setOutsideTouchable(true);
-        popupWindows.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式
+        popupWindows.setAnimationStyle(R.style.PopupAnimation); // 设置 popupWindow动画样式
         popupWindows.showAtLocation(vs, Gravity.CENTER, 0, 0);
         backgroundAlpha(0.5f);
         mDone.setOnClickListener(new OnClickListener() {
@@ -730,95 +733,103 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 }
             }
         });
-       tip_tv_more.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String goto_url = appHelpData.getGoto_url();
-            String action = appHelpData.getAction().trim();
-            Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-            intent.putExtra("url",goto_url);
-            startActivity(intent);
-            backgroundAlpha(1f);
-            popupWindows.dismiss();
-        }            
-    });
+        tip_tv_more.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String goto_url = appHelpData.getGoto_url();
+                String action = appHelpData.getAction().trim();
+                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", goto_url);
+                startActivity(intent);
+                backgroundAlpha(1f);
+                popupWindows.dismiss();
+            }
+        });
     }
+
     /**
-    * 设置添加屏幕的背景透明度
-    * @param bgAlpha
-    */
-    public void backgroundAlpha(float bgAlpha)
-    {
+     * 设置添加屏幕的背景透明度
+     * 
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha) {
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-            lp.alpha = bgAlpha; //0.0-1.0
-            getActivity().getWindow().setAttributes(lp);
+        lp.alpha = bgAlpha; // 0.0-1.0
+        getActivity().getWindow().setAttributes(lp);
     }
+
     /*
      * 帮助接口
      */
-    
+
     private void getAppHelp() {
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-            return;
-        }
-        User user = DBHelper.getUser(getActivity());
-        final String action = "mine";
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("action",action);
-        map.put("user_id",""+user.getId());
-        AjaxParams param = new AjaxParams(map);
-        showDialog();
-        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+        users = DBHelper.getUser(getActivity());
+        if (users != null) {
+            if (!NetworkUtils.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                return;
             }
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
-                                Gson gson = new Gson();
-                                appHelpData = gson.fromJson(data, AppHelpData.class); 
-//                                popWindow(appHelpData);
-                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
-                                addPopWindow.showPopupWindow(vs);
+            final String action = "mine";
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("action", action);
+            map.put("user_id", "" + users.getId());
+            AjaxParams param = new AjaxParams(map);
+            showDialog();
+            new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    dismissDialog();
+                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    dismissDialog();
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    appHelpData = gson.fromJson(data, AppHelpData.class);
+                                    // popWindow(appHelpData);
+                                    TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
+                                    addPopWindow.showPopupWindow(vs);
+                                }
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
+                            } else {
+                                errorMsg = getString(R.string.servers_error);
                             }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (isAdded()) {
                             errorMsg = getString(R.string.servers_error);
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if(isAdded()){
-                        errorMsg = getString(R.string.servers_error);
+                    // 操作失败，显示错误信息
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(getActivity(), errorMsg);
                     }
                 }
-                // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
+            });
+
+        } else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
     }
 
 }

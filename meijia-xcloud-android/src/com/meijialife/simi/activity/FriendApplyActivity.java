@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,6 +31,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.ApplyAdapter;
 import com.meijialife.simi.bean.FriendApplyData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
@@ -46,14 +48,24 @@ public class FriendApplyActivity extends BaseActivity implements ListItemClickHe
 
     private ArrayList<FriendApplyData> myApplyList;
     private ArrayList<FriendApplyData> totalApplyList;
+    
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_friend_apply);
         super.onCreate(savedInstanceState);
+        isLogin();
         initView();
     }
-
+    //是否处于登录状态
+    private void isLogin(){
+        user = DBHelper.getUser(this);
+        if(user==null){
+            startActivity(new Intent(FriendApplyActivity.this, LoginActivity.class));
+            finish();
+        }
+    }
     private void initView() {
 
         requestBackBtn();
@@ -126,15 +138,16 @@ public class FriendApplyActivity extends BaseActivity implements ListItemClickHe
      */
     public void getApplyList(int applyPage) {
 
-        String user_id = DBHelper.getUser(this).getId();
+        User  user = DBHelper.getUser(this);
 
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("page", "" + applyPage);
         AjaxParams param = new AjaxParams(map);
 
@@ -184,7 +197,10 @@ public class FriendApplyActivity extends BaseActivity implements ListItemClickHe
                     UIUtils.showToast(FriendApplyActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(FriendApplyActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     private void showApplyData(List<FriendApplyData> myApplyList) {

@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +36,7 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -65,9 +67,20 @@ public class MainPlusApplicationActivity extends BaseActivity implements ListIte
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_plus_center);
         super.onCreate(savedInstanceState);
+        isLogin();
         initView();
     }
-
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusApplicationActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView() {
         setTitleName("应用中心");
         requestBackBtn();
@@ -198,6 +211,7 @@ public class MainPlusApplicationActivity extends BaseActivity implements ListIte
             return;
         }
         User user = DBHelper.getUser(this);
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("app_type", "xcloud");
         map.put("user_id", user.getId());
@@ -252,7 +266,10 @@ public class MainPlusApplicationActivity extends BaseActivity implements ListIte
                     UIUtils.showToast(MainPlusApplicationActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusApplicationActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     private void dealData(ArrayList<AppToolsData> appToolsDatas) {

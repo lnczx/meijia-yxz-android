@@ -10,6 +10,7 @@ import net.tsz.afinal.http.AjaxParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,7 @@ import com.meijialife.simi.bean.CarInfo;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -46,10 +48,21 @@ public class MainPlusCarOrderActivity extends BaseActivity implements OnClickLis
         setContentView(R.layout.layout_main_plus_car);
         super.onCreate(savedInstanceState);
         userInfo = DBHelper.getUserInfo(this);
+        isLogin();
         initView();
 
     }
-
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusCarOrderActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView() {
 
         requestBackBtn();
@@ -71,6 +84,8 @@ public class MainPlusCarOrderActivity extends BaseActivity implements OnClickLis
      * 车辆速通下单接口
      */
     private void postCarAdd() {
+        
+        if(userInfo!=null){
         showDialog();
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
@@ -118,12 +133,16 @@ public class MainPlusCarOrderActivity extends BaseActivity implements OnClickLis
                     Toast.makeText(MainPlusCarOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusCarOrderActivity.this,LoginActivity.class));
+            finish();
+        }
     };
     /**
      * 用户车辆信息接口
      */
     private void getCarInfo() {
+        if(userInfo!=null){
         showDialog();
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
@@ -174,7 +193,10 @@ public class MainPlusCarOrderActivity extends BaseActivity implements OnClickLis
                     Toast.makeText(MainPlusCarOrderActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusCarOrderActivity.this,LoginActivity.class));
+            finish();
+        }
     };
     
     @Override

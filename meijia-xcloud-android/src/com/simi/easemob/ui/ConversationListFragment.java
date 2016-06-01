@@ -10,9 +10,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.RadioButton;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import com.easemob.util.NetUtils;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.simi.easemob.EMConstant;
 import com.simi.easemob.db.InviteMessgeDao;
 
 /**

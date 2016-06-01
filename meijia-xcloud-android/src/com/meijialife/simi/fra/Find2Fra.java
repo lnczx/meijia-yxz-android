@@ -121,6 +121,7 @@ public class Find2Fra extends BaseFragment {
     private View vs;//
     
     private boolean loginStatus = false;
+    private User user;
 
 
     @Override
@@ -167,12 +168,15 @@ public class Find2Fra extends BaseFragment {
          * 搜索+列表展现
          */
         rl_total_search = (RelativeLayout) v.findViewById(R.id.rl_total_search);
-      /*  listview = (ListView) v.findViewById(R.id.find_list_view);
+      /* 
+       *  listview = (ListView) v.findViewById(R.id.find_list_view);
         adapter = new Find2Adapter(activity);
         listview.setAdapter(adapter);*/
         
         //请求帮助接口
-        if(loginStatus){
+        
+        user = DBHelper.getUser(getActivity());
+        if(user!=null){
             getAppHelp();
         }else {
             startActivity(new Intent(getActivity(),LoginActivity.class));
@@ -180,6 +184,7 @@ public class Find2Fra extends BaseFragment {
         initFindBeanView(v);
         getChanelList();
     }
+    
     private void initFindBeanView(final View v){
         totalFindBeanList = new ArrayList<FindBean>();
         myFindBeanList = new ArrayList<FindBean>();
@@ -618,7 +623,6 @@ public class Find2Fra extends BaseFragment {
             return;
         }
         final String action ="discover";
-        User user = DBHelper.getUser(getActivity());
         Map<String, String> map = new HashMap<String, String>();
         map.put("action","discover");
         map.put("user_id",""+user.getId());

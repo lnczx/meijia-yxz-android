@@ -49,6 +49,7 @@ import com.meijialife.simi.utils.AlertWindow;
 import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -95,8 +96,20 @@ public class MainPlusSignInActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_sign);
         super.onCreate(savedInstanceState);
+        
+        isLogin();
         initView();
 
+    }
+    
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+
+           startActivity(new Intent(MainPlusSignInActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
     }
 
     private void initView() {
@@ -321,6 +334,8 @@ public class MainPlusSignInActivity extends Activity {
      * 员工考勤记录接口
      */
     public void getCheckInList(final int page) {
+        
+        if(user!=null){
         // 判断是否有网络
         if (!NetworkUtils.isNetworkConnected(MainPlusSignInActivity.this)) {
             Toast.makeText(MainPlusSignInActivity.this, getString(R.string.net_not_open), 0).show();
@@ -388,13 +403,18 @@ public class MainPlusSignInActivity extends Activity {
                     mPullRefreshListView.onRefreshComplete();
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusSignInActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     /**
      * 用户-公司配置信息接口
      */
     public void getCompanySetting() {
+        
+        if(user!=null){
         // 判断是否有网络
         if (!NetworkUtils.isNetworkConnected(MainPlusSignInActivity.this)) {
             Toast.makeText(MainPlusSignInActivity.this, getString(R.string.net_not_open), 0).show();
@@ -459,7 +479,10 @@ public class MainPlusSignInActivity extends Activity {
                     UIUtils.showToast(MainPlusSignInActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusSignInActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     /**

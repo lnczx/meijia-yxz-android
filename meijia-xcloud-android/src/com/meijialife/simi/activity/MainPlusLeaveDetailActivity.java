@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.OrderTypeUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -69,9 +71,18 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
         setContentView(R.layout.leave_detail_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         initView();
     }
     
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusLeaveDetailActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView(){
         
         requestBackBtn();
@@ -118,6 +129,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
             return;
         }
         User user = DBHelper.getUser(this);
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("leave_id", leave_id);
@@ -170,7 +182,10 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
                     UIUtils.showToast(MainPlusLeaveDetailActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusLeaveDetailActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     private void showData(LeaveDetailData leaveDetailData){
         mStartDate.setText(leaveDetailData.getStart_date());
@@ -227,6 +242,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
                 return;
             }
             User user = DBHelper.getUser(this);
+            if(user!=null){
             Map<String, String> map = new HashMap<String, String>();
             map.put("leave_id", leaveId);
             map.put("status",status);//1=审批通过，2=审批不通过
@@ -273,7 +289,10 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
                         UIUtils.showToast(MainPlusLeaveDetailActivity.this, errorMsg);
                     }
                 }
-            });
+            });}else {
+                startActivity(new Intent(MainPlusLeaveDetailActivity.this,LoginActivity.class));
+                finish();
+            }
         }
      /**
       * 请假撤销接口
@@ -286,6 +305,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
              return;
          }
          User user = DBHelper.getUser(this);
+         if(user!=null){
          Map<String, String> map = new HashMap<String, String>();
          map.put("user_id", user.getId());
          map.put("leave_id", leave_id);
@@ -333,6 +353,9 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
                      UIUtils.showToast(MainPlusLeaveDetailActivity.this, errorMsg);
                  }
              }
-         });
+         });}else {
+             startActivity(new Intent(MainPlusLeaveDetailActivity.this,LoginActivity.class));
+             finish();
+        }
      }
 }

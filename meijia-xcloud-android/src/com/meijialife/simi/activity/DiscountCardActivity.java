@@ -38,6 +38,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -69,10 +70,21 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.discount_card_activity);
         super.onCreate(savedInstanceState);
+        isLogin();
         initView();
 
     }
-
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(DiscountCardActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView() {
     	setTitleName("我的优惠券");
     	requestBackBtn();
@@ -189,6 +201,7 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
             return;
         }
         user = DBHelper.getUser(this);
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("card_passwd",card_password);
@@ -239,7 +252,10 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(DiscountCardActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(DiscountCardActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**
@@ -252,6 +268,7 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
             return;
         }
         user = DBHelper.getUser(DiscountCardActivity.this);
+        if(user!=null){
         Map<String,String> map = new HashMap<String,String>();
         map.put("user_id",user.getId());
         map.put("page",""+page);
@@ -307,7 +324,10 @@ public class DiscountCardActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(DiscountCardActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(DiscountCardActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 处理数据加载的方法

@@ -37,11 +37,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MainPlusWasterAdapter;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.WasterData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -84,8 +86,21 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
         setContentView(R.layout.water_list_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         initView();
         
+    }
+    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusWasterActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
     }
     
     private void initView(){
@@ -253,13 +268,14 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
      * @param page
      */
     public void getWasterListData(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId());
         map.put("page",page+"");
         AjaxParams param = new AjaxParams(map);
 //        showDialog();
@@ -322,7 +338,10 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
                     UIUtils.showToast(MainPlusWasterActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusWasterActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**

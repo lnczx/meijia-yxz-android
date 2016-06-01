@@ -194,6 +194,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.SplashActivity"

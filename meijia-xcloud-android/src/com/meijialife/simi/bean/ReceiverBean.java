@@ -17,6 +17,14 @@ public class ReceiverBean implements Serializable{
     
     
     
+    private String aj;//动作标识
+    
+    private String pa;//参数
+    
+    private String go;//跳转url
+    
+    
+    
     private String car_no;//车牌号
     private String car_color;
     private String mobile;
@@ -29,6 +37,26 @@ public class ReceiverBean implements Serializable{
     
     
     
+    
+    
+    public String getAj() {
+        return aj;
+    }
+    public void setAj(String aj) {
+        this.aj = aj;
+    }
+    public String getPa() {
+        return pa;
+    }
+    public void setPa(String pa) {
+        this.pa = pa;
+    }
+    public String getGo() {
+        return go;
+    }
+    public void setGo(String go) {
+        this.go = go;
+    }
     public String getOrder_type() {
         return order_type;
     }

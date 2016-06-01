@@ -35,6 +35,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -59,7 +60,21 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.my_order_activity);
         super.onCreate(savedInstanceState);
+        
+        isLogin();
         initView();
+    }
+    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MyOrderActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
     }
 
     private void initView() {
@@ -77,7 +92,12 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
         user = DBHelper.getUser(this);
-        getOrderList(page);
+        if(user!=null){
+            getOrderList(page);
+        }else {
+            startActivity(new Intent(MyOrderActivity.this, LoginActivity.class));
+            finish();
+        }
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -142,6 +162,7 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
              Toast.makeText(MyOrderActivity.this, getString(R.string.net_not_open), 0).show();
              return;
          }
+         if(user!=null){
          Map<String,String> map = new HashMap<String,String>();
          map.put("user_id",user.getId());
          map.put("page",""+page);
@@ -200,7 +221,10 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
                      UIUtils.showToast(MyOrderActivity.this, errorMsg);
                  }
              }
-         });
+         });}else {
+             startActivity(new Intent(MyOrderActivity.this,LoginActivity.class));
+             finish();
+        }
      }
      /**
       * 处理数据加载的方法

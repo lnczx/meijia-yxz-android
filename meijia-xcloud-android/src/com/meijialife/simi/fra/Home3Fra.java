@@ -45,6 +45,7 @@ import com.meijialife.simi.activity.ContactAddFriendsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
+import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
 import com.meijialife.simi.bean.AppHelpData;
@@ -100,6 +101,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
 
     private ArrayList<Friend> myFriendList;
     private ArrayList<Friend> totalFriendList;
+    
+    private User user;
 
     public Home3Fra() {
     }
@@ -148,7 +151,12 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         rl_company_contacts.setOnClickListener(this);
         rl_apply.setOnClickListener(this);
         // 请求帮助接口
-        getAppHelp();
+        user = DBHelper.getUser(getActivity());
+        if(user!=null){
+            getAppHelp();
+        }else {
+            startActivity(new Intent(getActivity(),LoginActivity.class));
+        }
     }
 
     private void initFriendView(View v) {

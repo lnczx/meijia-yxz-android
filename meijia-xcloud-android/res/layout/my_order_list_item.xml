@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="10dp"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -26,13 +27,16 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" >
 
-                <ImageView
+                <com.meijialife.simi.ui.RoundImageView
                     android:id="@+id/item_iv_icon"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_centerVertical="true"
-                   	android:scaleType="fitXY"
-                    android:background="@drawable/order_icon" />
+                    android:src="@drawable/iconfont_tongxunbu"
+                    imagecontrol:border_inside_color="@color/simi_color_white"
+                    imagecontrol:border_outside_color="@color/simi_color_white"
+                    imagecontrol:border_thickness_in="1dp"
+                    imagecontrol:border_thickness_out="1dp" />
 
                 <TextView
                     android:id="@+id/item_tv_name"
@@ -50,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="10dp"
-                    android:text="199元"
+                    android:text="199"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -100,28 +104,29 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/ll_order_status"
             android:layout_width="120dp"
             android:layout_height="100dp"
             android:layout_alignParentRight="true"
-            android:clickable="false"
-            >
-        <TextView
-            android:id="@+id/item_tv_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:clickable="false"
-            android:layout_alignParentRight="true"
-            android:text="已支付" 
-            android:gravity="right|center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:background="@drawable/btn_buy"
-            />
+            android:clickable="false" >
+
+            <TextView
+                android:id="@+id/item_tv_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:clickable="false"
+                android:gravity="right|center"
+                android:paddingBottom="5dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="5dp"
+                android:text="已支付"
+                android:textColor="@color/simi_color_blue" />
+ <!-- android:background="@drawable/btn_buy" -->
         </RelativeLayout>
     </RelativeLayout>
 

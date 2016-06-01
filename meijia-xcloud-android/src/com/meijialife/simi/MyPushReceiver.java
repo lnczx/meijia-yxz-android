@@ -25,6 +25,7 @@ import com.meijialife.simi.activity.NoticeActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.AndroidUtil;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.StringUtils;
@@ -92,6 +93,10 @@ public class MyPushReceiver extends BroadcastReceiver {
                         if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
                             //推送通知
                             setNotification(receiverBean);
+                            if(StringUtils.isNotEmpty(receiverBean.getAj())){
+                                RouteUtil ru = new RouteUtil(context);
+                                ru.Routings(receiverBean.getCa(),receiverBean.getAj(),receiverBean.getGo(),receiverBean.getPa());
+                            }
                         } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
                             //is_show=true表示显示通知栏，=false不显示通知栏
                             if(StringUtils.isEquals(receiverBean.getIs(), "true")){
@@ -115,7 +120,7 @@ public class MyPushReceiver extends BroadcastReceiver {
                               intent.putExtra("card_id",receiverBean.getCi());
                               intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                               context.startActivity(intent);
-                        }else if ( StringUtils.isEquals(receiverBean.getIs(), "false") &&
+                        }else if (StringUtils.isEquals(receiverBean.getIs(), "false") &&
                             StringUtils.isEquals(receiverBean.getAc(), ACTION_CAR_MSG)) {
                             Intent intent1 = new Intent(mContext, CarAlertActivity.class);
                             intent1.putExtra("bean",receiverBean);
@@ -131,6 +136,10 @@ public class MyPushReceiver extends BroadcastReceiver {
                         if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
                             //推送通知
                             setNotification(receiverBean);
+                            if(StringUtils.isNotEmpty(receiverBean.getAj())){
+                                RouteUtil ru = new RouteUtil(context);
+                                ru.Routings(receiverBean.getCa(),receiverBean.getAj(),receiverBean.getGo(),receiverBean.getPa());
+                            }
                         } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
                             //is_show=true表示显示通知栏，=false不显示通知栏
                             if(StringUtils.isEquals(receiverBean.getIs(), "true")){

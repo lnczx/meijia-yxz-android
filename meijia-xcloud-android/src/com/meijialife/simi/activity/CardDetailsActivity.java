@@ -52,6 +52,7 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
@@ -112,14 +113,25 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.card_details_activity);
         super.onCreate(savedInstanceState);
-
+        
+        isLogin();
         init();
 //        initView();
 
         getCommentList();
 
     }
-
+    
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
+        
+    
     private void init() {
       /*  card = (Cards) getIntent().getSerializableExtra("Cards");
         cardExtra = (CardExtra) getIntent().getSerializableExtra("card_extra");*/
@@ -501,15 +513,17 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      */
     private void CancelCardData() {
         showDialog();
-        String user_id = DBHelper.getUser(this).getId();
+        User  user = DBHelper.getUser(this);
 
+        if(user!=null){
+            
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
+        
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("card_id", card.getCard_id());
         map.put("status", "0");
         AjaxParams param = new AjaxParams(map);
@@ -559,13 +573,15 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                     UIUtils.showToast(CardDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
 
     }
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         getCardData(card_id);
     }
@@ -577,15 +593,16 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      */
     private void getCardData(String card_id) {
         showDialog();
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
 
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
 //        map.put("card_id", card_id);
         map.put("card_id", card_id);
         AjaxParams param = new AjaxParams(map);
@@ -647,7 +664,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                     UIUtils.showToast(CardDetailsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
 
     }
 
@@ -656,15 +676,16 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      */
     private void getCommentList() {
         showDialog();
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
 
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
+        if(user!=null){
+            
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("card_id", card_id);
         map.put("page", "0");
         AjaxParams param = new AjaxParams(map);
@@ -721,8 +742,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                     UIUtils.showToast(CardDetailsActivity.this, errorMsg);
                 }
             }
-        });
-
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();
+            }
     }
 
     /**
@@ -735,8 +758,8 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             return;
         }
 
-        String user_id = DBHelper.getUser(this).getId();
-
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
@@ -744,7 +767,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("card_id", card.getCard_id());
-        map.put("user_id", user_id);
+        map.put("user_id", user.getId());
         map.put("comment", comment);
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -793,7 +816,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 }
 
             }
-        });
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();        
+        }
 
     }
     @Override
@@ -806,16 +832,16 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      */
     private void postZan(final Cards card) {
 
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
 
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("card_id", card.getCard_id());
-        map.put("user_id", user_id);
+        map.put("user_id", user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().post(Constants.URL_POST_CARD_ZAN, param, new AjaxCallBack<Object>() {
@@ -859,7 +885,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 }
 
             }
-        });
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**
@@ -869,8 +898,8 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
      */
     private void postSecDo(final int cardStatus) {
 
-        String user_id = DBHelper.getUser(this).getId();
-
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
@@ -878,7 +907,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("card_id", card.getCard_id());
-        map.put("sec_id", user_id);
+        map.put("sec_id", user.getId());
         map.put("status", cardStatus+"");   //状态 0 = 已取消 1 = 处理中 2 = 秘书处理中 3 = 已完成.
         map.put("sec_remarks", "");     //处理内容
         AjaxParams param = new AjaxParams(map);
@@ -934,7 +963,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 }
 
             }
-        });
+        });}else {
+            startActivity(new Intent(CardDetailsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
 }

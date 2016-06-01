@@ -18,8 +18,12 @@
     <color name="simi_color_white">#FFFFFF</color>
     <!-- 统一黑色 -->
     <color name="simi_color_black">#000000</color>
+    <!--订单线条颜色-->
+    <color name="simi_color_order_line_black">#CBCBCB</color>
     <!-- 统一蓝色 -->
     <color name="simi_color_blue">#56abe4</color>
+    <!-- 统一绿色-->
+    <color name="simi_color_green">#64B229</color>
     <!-- 统一黄色 -->
     <color name="simi_color_yellow">#fc993f</color>
 

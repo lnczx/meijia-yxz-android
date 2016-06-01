@@ -19,6 +19,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.bean.MyOrder;
+import com.meijialife.simi.ui.RoundImageView;
 /**
  * @description：我的订单--列表--适配器
  * @author： kerryg
@@ -71,7 +72,7 @@ public class MyOrderAdapter extends BaseAdapter {
 			holder.tv_name = (TextView) convertView.findViewById(R.id.item_tv_name);
 			holder.tv_date = (TextView)convertView.findViewById(R.id.item_tv_date);
 			holder.tv_status = (TextView)convertView.findViewById(R.id.item_tv_status);
-			holder.iv_head_img = (ImageView)convertView.findViewById(R.id.item_iv_icon);
+			holder.iv_head_img = (RoundImageView)convertView.findViewById(R.id.item_iv_icon);
 			holder.tv_addr = (TextView)convertView.findViewById(R.id.item_tv_order_addr);
 			holder.ll_order_status = (RelativeLayout)convertView.findViewById(R.id.ll_order_status);
 			holder.tv_order_money = (TextView)convertView.findViewById(R.id.item_tv_order_money);
@@ -84,7 +85,7 @@ public class MyOrderAdapter extends BaseAdapter {
 	    holder.tv_date.setText(orderList.get(position).getAdd_time_str());
 	    holder.tv_status.setText(orderList.get(position).getOrder_status_name());
 	    holder.tv_order_money.setText(orderList.get(position).getOrder_money()+"元");
-	    finalBitmap.display(holder.iv_head_img, orderList.get(position).getPartner_user_head_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
+	    finalBitmap.display(holder.iv_head_img, orderList.get(position).getService_type_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
 		holder.tv_addr.setText(orderList.get(position).getAddr_name());
 		      holder.ll_order_status.setOnClickListener(new OnClickListener() {
 	              @Override
@@ -105,7 +106,7 @@ public class MyOrderAdapter extends BaseAdapter {
 		TextView tv_name;
 		TextView tv_date;
 		TextView tv_status;
-		ImageView iv_head_img;
+		RoundImageView iv_head_img;
 		TextView tv_addr;
 		TextView tv_order_money;
 		RelativeLayout ll_order_status;

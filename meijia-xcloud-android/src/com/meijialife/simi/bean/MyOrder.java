@@ -28,8 +28,16 @@ public class MyOrder implements Serializable{
     private String order_pay;//订单实际支付金额
     private int order_status;//订单状态Id 1 = 未支付 2 = 已支付
     private int is_addr;//是否需要地址   0 = 不需要 1 = 需要
+    private String service_type_img;
     
     
+    
+    public String getService_type_img() {
+        return service_type_img;
+    }
+    public void setService_type_img(String service_type_img) {
+        this.service_type_img = service_type_img;
+    }
     public Long getService_type_id() {
         return service_type_id;
     }

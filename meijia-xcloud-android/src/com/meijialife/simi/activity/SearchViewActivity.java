@@ -29,14 +29,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.SecretaryAdapter;
 import com.meijialife.simi.bean.Partner;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.TagGroup;
 import com.meijialife.simi.ui.TagGroup.OnTagClickListener;
@@ -66,6 +67,8 @@ public class SearchViewActivity extends BaseActivity {
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     public static String key="";
     
+    private User user;
+    
     
     private int page = 1;
     @Override
@@ -80,6 +83,7 @@ public class SearchViewActivity extends BaseActivity {
         tv_search = (TextView) findViewById(R.id.tv_search);
         et_search_kw = (EditText) findViewById(R.id.et_search_kw);
         tg = (TagGroup) findViewById(R.id.ll_user_tags);
+        user = DBHelper.getUser(SearchViewActivity.this);
 
         getHotKwList();
         initSearchView();
@@ -91,7 +95,12 @@ public class SearchViewActivity extends BaseActivity {
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 String kw = et_search_kw.getText().toString();
                 if (!StringUtils.isEmpty(kw)) {
-                    searchPartnerByKw(kw,page);
+                    
+                    if(user!=null){
+                        searchPartnerByKw(kw,page);
+                    }else {
+                        startActivity(new Intent(SearchViewActivity.this,LoginActivity.class));
+                    }
                 } else {
                     et_search_kw.setHint("请输入搜索内容");
                     return;
@@ -107,7 +116,11 @@ public class SearchViewActivity extends BaseActivity {
                     InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     key = tag;
-                    searchPartnerByKw(tag,page);
+                    if(user!=null){
+                        searchPartnerByKw(tag,page);
+                    }else {
+                        startActivity(new Intent(SearchViewActivity.this,LoginActivity.class));
+                    }
                 }
             }
         });

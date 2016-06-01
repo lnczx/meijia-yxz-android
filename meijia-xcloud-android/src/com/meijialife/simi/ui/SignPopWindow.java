@@ -22,8 +22,8 @@ public class SignPopWindow extends PopupWindow {
     private Context contexts;
     
     private LinearLayout mDone;
-    private TextView tip_tv_title;
-    private TextView tip_tv_content;
+    private TextView m_tv_exp;
+    private TextView m_tv_money;
     private TextView tip_tv_more;
     
     public SignPopWindow(final Activity context,String msg,String data) { 
@@ -44,12 +44,12 @@ public class SignPopWindow extends PopupWindow {
         
         //获得对应的控件
         mDone = (LinearLayout)conentView.findViewById(R.id.ll_status);
-        tip_tv_title = (TextView)conentView.findViewById(R.id.tip_tv_title);
-        tip_tv_content = (TextView)conentView.findViewById(R.id.tip_tv_content);
+        m_tv_exp = (TextView)conentView.findViewById(R.id.m_tv_exp);
+        m_tv_money = (TextView)conentView.findViewById(R.id.m_tv_money);
      
         //为控件赋值
-        tip_tv_title.setText(msg);
-        tip_tv_content.setText(data);
+        m_tv_exp.setText(data);
+        m_tv_money.setText(data);
       
         //设置动画和点击范围
         this.setAnimationStyle(R.style.PopupAnimation); //设置 popupWindow动画样式

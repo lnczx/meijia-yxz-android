@@ -11,6 +11,7 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,9 +34,11 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.CompanyListsAdapter;
 import com.meijialife.simi.bean.CompanyData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -64,9 +67,20 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
         setContentView(R.layout.layout_company_lists);
         super.onCreate(savedInstanceState);
         instance = this;
+        isLogin();
         initView();
     }
-    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(CompanyListsActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView(){
         
         requestBackBtn();
@@ -143,13 +157,14 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
      * 获取用户所属企业列表
      */
     private void getCompanyListByUserId(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId());
         map.put("page", page+"");
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -202,19 +217,23 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(CompanyListsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(CompanyListsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 设置默认企业接口
      */
     private void setDefaultCompany() {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId());
         map.put("company_id",mCompanyId);
         AjaxParams param = new AjaxParams(map);
         showDialog();
@@ -268,7 +287,10 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
                     UIUtils.showToast(CompanyListsActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(CompanyListsActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     @Override
     protected void onDestroy() {

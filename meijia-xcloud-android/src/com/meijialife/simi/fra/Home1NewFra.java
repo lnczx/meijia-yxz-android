@@ -24,10 +24,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
@@ -183,12 +181,12 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         new_frg_search = (LinearLayout) v.findViewById(R.id.new_frg_search);
         ll_more_columns = (LinearLayout) v.findViewById(R.id.ll_more_columns);
         
-        boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+       /* boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         if(is_login){
             ll_more_columns.setVisibility(View.VISIBLE);
         }else {
             ll_more_columns.setVisibility(View.GONE);
-        }
+        }*/
         initListView(v);
         setListener(v);
 
@@ -288,7 +286,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int p = position - 1;
+                int p = position - 2;
                 // int p = position;
                 HomePosts homePost = allHomePosts.get(p);
                 Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);

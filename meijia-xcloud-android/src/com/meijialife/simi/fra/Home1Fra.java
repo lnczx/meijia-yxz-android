@@ -116,6 +116,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
      */
     private ImageCycleView mAdView;
     private Boolean is_log = false;
+    private User user;
 
     /**
      * 用户消息
@@ -139,6 +140,12 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 
     @SuppressLint("ResourceAsColor")
     private void init(View v) {
+        user = DBHelper.getUser(getActivity());
+        if (user != null) {
+            getAppHelp();
+        } else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
         v.findViewById(R.id.btn_chakan).setOnClickListener(this);
         v.findViewById(R.id.ibtn_person).setOnClickListener(this);
         v.findViewById(R.id.btn_rili).setOnClickListener(this);
@@ -151,15 +158,10 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
         is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
         // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        if(is_log){
-          getAppHelp();
-        }else {
-            startActivity(new Intent(getActivity(),LoginActivity.class));
-        }
+
     }
 
     /**
@@ -230,8 +232,8 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
 
         @Override
         public void displayImage(String imageURL, ImageView imageView) {
-//            ImageLoader.getInstance().displayImage(imageURL, imageView);// 使用ImageLoader对图片进行加装！
-            finalBitmap.display(imageView,imageURL);
+            // ImageLoader.getInstance().displayImage(imageURL, imageView);// 使用ImageLoader对图片进行加装！
+            finalBitmap.display(imageView, imageURL);
         }
 
     };
@@ -306,8 +308,8 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
                 String goto_url = userMsg.getGoto_url().trim();
                 String params = userMsg.getParams().trim();
                 String action = userMsg.getAction().trim();
-                
-                RouteUtil routeUtil  = new RouteUtil(getActivity());
+
+                RouteUtil routeUtil = new RouteUtil(getActivity());
                 routeUtil.Routing(category, action, goto_url, params);
             }
         });
@@ -331,23 +333,26 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
     @Override
     public void onResume() {
         super.onResume();
-        LinearLayout ll = (LinearLayout) View.inflate(getActivity(), R.layout.home1_list_item, null);
-       
-        getUserMsgListData(today_date, page);
 
+        user = DBHelper.getUser(getActivity());
+        if (user != null) {
+            getUserMsgListData(today_date, page);
+        } /*else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }*/
         // mAdView.startImageCycle();//广告轮播
         // getTotalByMonth();
         // getCardListData(today_date, card_from);
         // getAdListByChannelId("0");
         // getUserInfo();
-        
+
         MobclickAgent.onPageStart("MainActivity");
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("MainActivity"); 
+        MobclickAgent.onPageEnd("MainActivity");
     }
 
     @Override
@@ -367,8 +372,8 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
     }
 
     /**
-     * 暂时不用
-     * 获取卡片数据
+     * 暂时不用 获取卡片数据
+     * 
      * @param date
      * @param card_from
      *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
@@ -386,8 +391,8 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
         map.put("service_date", date);
         map.put("user_id", user_id + "");
         map.put("card_from", "" + card_from);
-//        map.put("lat", latitude);
-//        map.put("lng", longitude);
+        // map.put("lat", latitude);
+        // map.put("lng", longitude);
         map.put("page", "1");
         AjaxParams param = new AjaxParams(map);
 
@@ -448,7 +453,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
 
@@ -470,8 +475,6 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
      */
     public void getUserMsgListData(String date, int page) {
 
-        String user_id = DBHelper.getUser(getActivity()).getId();
-
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
@@ -479,7 +482,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("service_date", date);
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("page", "" + page);
         AjaxParams param = new AjaxParams(map);
 
@@ -528,7 +531,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
@@ -551,94 +554,94 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
      */
     public void getTotalByMonth() {
 
-        String date = calendarManager.getHeaderText();
-        if (!date.contains("年")) {
-            return;
-        }
-
-        date = date.replace("年", "").replace("月", "");
-        final String year = date.substring(0, 4);
-        final String month = date.substring(date.length() - 3, date.length());
-
-        String user_id = DBHelper.getUser(getActivity()).getId();
-
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-            return;
-        }
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
-        map.put("year", year);
-        map.put("month", month);
-        AjaxParams param = new AjaxParams(map);
-
-        // showDialog();
-        new FinalHttp().get(Constants.URL_GET_TOTAL_BY_MONTH, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                // dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+        user = DBHelper.getUser(getActivity());
+        if (user != null) {
+            String date = calendarManager.getHeaderText();
+            if (!date.contains("年")) {
+                return;
             }
 
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                // dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
+            date = date.replace("年", "").replace("月", "");
+            final String year = date.substring(0, 4);
+            final String month = date.substring(date.length() - 3, date.length());
 
-                            // 先清除这个月的旧数据
-                            DBHelper.clearCalendarMark(getActivity(), year, month);
+            if (!NetworkUtils.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                return;
+            }
 
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                calendarMarks = gson.fromJson(data, new TypeToken<ArrayList<CalendarMark>>() {
-                                }.getType());
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("user_id", user.getId());
+            map.put("year", year);
+            map.put("month", month);
+            AjaxParams param = new AjaxParams(map);
 
-                                DBHelper db = DBHelper.getInstance(getActivity());
-                                for (int i = 0; i < calendarMarks.size(); i++) {
-                                    db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
+            new FinalHttp().get(Constants.URL_GET_TOTAL_BY_MONTH, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    // dismissDialog();
+                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+
+                                // 先清除这个月的旧数据
+                                DBHelper.clearCalendarMark(getActivity(), year, month);
+
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    calendarMarks = gson.fromJson(data, new TypeToken<ArrayList<CalendarMark>>() {
+                                    }.getType());
+
+                                    DBHelper db = DBHelper.getInstance(getActivity());
+                                    for (int i = 0; i < calendarMarks.size(); i++) {
+                                        db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
+                                    }
+
                                 }
 
+                                // 刷新日历UI
+                                calendarView.updateUI();
+
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
+                            } else {
+                                errorMsg = getString(R.string.servers_error);
                             }
-
-                            // 刷新日历UI
-                            calendarView.updateUI();
-
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (isAdded()) {
                             errorMsg = getString(R.string.servers_error);
                         }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if(isAdded()){
-                        errorMsg = getString(R.string.servers_error);
-                    }
 
+                    }
+                    // 操作失败，显示错误信息
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(getActivity(), errorMsg);
+                    }
                 }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
+            });
+        } else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
 
     }
 
@@ -699,7 +702,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if(isAdded()){
+                    if (isAdded()) {
                         errorMsg = getString(R.string.servers_error);
                     }
                 }
@@ -756,45 +759,45 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
                 Bundle bundle = data.getExtras();
                 String result = bundle.getString("result").trim();
                 if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
-                    //http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
-                
-                    if(!StringUtils.isEmpty(result) && result.contains("category=app")){
-                    String category="",action="",params="",goto_url="";
-                    if(result.contains("params") && result.contains("goto_url")){//两个参数都有
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                        goto_url = temp[3].substring(temp[3].lastIndexOf("=")+1,temp[3].length());
-                        
-                    }else if (result.contains("params") && !result.contains("goto_url")) {//只有参数params
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        params = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                        
-                    }else if (result.contains("goto_url") && !result.contains("params")) {//只有参数goto_url
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                        goto_url = temp[2].substring(temp[2].lastIndexOf("=")+1,temp[2].length());
-                    }else {
-                        String temp[] = result.split("&");
-                        category = temp[0].substring(temp[0].lastIndexOf("=")+1,temp[0].length());
-                        action = temp[1].substring(temp[1].lastIndexOf("=")+1,temp[1].length());
-                    }
-                        if (!StringUtils.isEmpty(result)) {
-                           RouteUtil routeUtil =new  RouteUtil(getActivity());
-                           routeUtil.Routing(category, action, goto_url, params);
+                    // http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
+
+                    if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
+                        String category = "", action = "", params = "", goto_url = "";
+                        if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
+
+                        } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+
+                        } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                        } else {
+                            String temp[] = result.split("&");
+                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
                         }
-                    }else {
-                        Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                        intent.putExtra("url",result);
+                        if (!StringUtils.isEmpty(result)) {
+                            RouteUtil routeUtil = new RouteUtil(getActivity());
+                            routeUtil.Routing(category, action, goto_url, params);
+                        }
+                    } else {
+                        Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                        intent.putExtra("url", result);
                         startActivity(intent);
                     }
-                } else {//非内部app扫描，webView显示
-                    Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                    intent.putExtra("url",result);
+                } else {// 非内部app扫描，webView显示
+                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                    intent.putExtra("url", result);
                     startActivity(intent);
                 }
             }
@@ -943,6 +946,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
             }
         });
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -951,6 +955,7 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
         totalUserMsgList = null;
         // mAdView.pushImageCycle();
     }
+
     /**
      * 处理数据加载的方法
      * 
@@ -970,71 +975,78 @@ Toast.makeText(getActivity(),"-----is_log"+is_log, Toast.LENGTH_LONG).show();
         userMsgAdapter.setData(totalUserMsgList);
         mPullRefreshListView.onRefreshComplete();
     }
+
     private AppHelpData appHelpData;
+
     /*
      * 帮助接口
      */
 
     private void getAppHelp() {
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-            return;
-        }
-        final String action = "index";
-        User user = DBHelper.getUser(getActivity());
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("action", "index");
-        map.put("user_id", "" + user.getId());
-        AjaxParams param = new AjaxParams(map);
-        showDialog();
-        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                appHelpData = gson.fromJson(data, AppHelpData.class);
-                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(),appHelpData,action);  
-                                addPopWindow.showPopupWindow(v); 
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
-                }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
+        if (user != null) {
+
+            if (!NetworkUtils.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                return;
             }
-        });
+            final String action = "index";
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("action", "index");
+            map.put("user_id", user.getId());
+            AjaxParams param = new AjaxParams(map);
+            showDialog();
+            new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    dismissDialog();
+                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    dismissDialog();
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    appHelpData = gson.fromJson(data, AppHelpData.class);
+                                    TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
+                                    addPopWindow.showPopupWindow(v);
+                                }
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
+                            } else {
+                                errorMsg = getString(R.string.servers_error);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        errorMsg = getString(R.string.servers_error);
+                    }
+                    // 操作失败，显示错误信息
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(getActivity(), errorMsg);
+                    }
+                }
+            });
+        } else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
     }
 
 }

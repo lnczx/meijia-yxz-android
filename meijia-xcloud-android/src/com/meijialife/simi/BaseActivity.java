@@ -5,15 +5,18 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.umeng.analytics.MobclickAgent;
 

@@ -37,6 +37,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -62,8 +63,20 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.my_wallet_activity);
         super.onCreate(savedInstanceState);
 
+        isLogin();
         initView();
 
+    }
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MyWalletActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
     }
 
     private void initView() {
@@ -233,6 +246,7 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
             return;
         }
         User user = DBHelper.getUser(MyWalletActivity.this);
+        if(user!=null){
         Map<String,String> map = new HashMap<String,String>();
         map.put("user_id",user.getId());
         map.put("page",""+page);
@@ -291,7 +305,10 @@ public class MyWalletActivity extends BaseActivity implements OnClickListener {
                     UIUtils.showToast(MyWalletActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MyWalletActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 处理数据加载的方法

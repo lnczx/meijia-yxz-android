@@ -38,10 +38,12 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MainPlusExpressAdapter;
 import com.meijialife.simi.bean.ExpressData;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -83,10 +85,21 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
         setContentView(R.layout.express_list_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         initView();
         
     }
-    
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusExpressActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView(){
         //标题+返回(控件)
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
@@ -248,13 +261,14 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
      * @param page
      */
     public void getExpressListData(int page) {
-        String user_id = DBHelper.getUser(this).getId();
+        User user = DBHelper.getUser(this);
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", user.getId()+"");
         map.put("page",page+"");
         AjaxParams param = new AjaxParams(map);
 //        showDialog();
@@ -317,7 +331,10 @@ public class MainPlusExpressActivity extends Activity implements ListItemClickHe
                     UIUtils.showToast(MainPlusExpressActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusExpressActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     
     /**

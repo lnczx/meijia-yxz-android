@@ -38,11 +38,13 @@ import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserIndexData;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.NoScrollViewPager;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.ui.ChatActivity;
@@ -102,10 +104,22 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
         setContentView(R.layout.friend_page_activity);
         super.onCreate(savedInstanceState);
         
+        isLogin();
         init(inflater);
         getUserData();
     }
     
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(FriendPageActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void init(LayoutInflater inflater) {
         friend_id = getIntent().getStringExtra("friend_id");
 
@@ -285,15 +299,16 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
      * 获取个人信息数据
      */
     private void getUserData() {
-        String user_id = DBHelper.getUser(FriendPageActivity.this).getId();
+        User  users = DBHelper.getUser(FriendPageActivity.this);
 
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(FriendPageActivity.this)) {
             Toast.makeText(FriendPageActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id+"");
+        map.put("user_id", users.getId());
         map.put("view_user_id", friend_id);
         AjaxParams param = new AjaxParams(map);
 
@@ -343,7 +358,10 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
                     UIUtils.showToast(FriendPageActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(FriendPageActivity.this,LoginActivity.class));
+            finish();
+        }
 
     }
     
@@ -475,15 +493,16 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
      */
     public void addFriend(final String friend_id) {
 
-        String user_id = DBHelper.getUser(FriendPageActivity.this).getId();
+        User user = DBHelper.getUser(FriendPageActivity.this);
 
+        if(user!=null){
         if (!NetworkUtils.isNetworkConnected(FriendPageActivity.this)) {
             Toast.makeText(FriendPageActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId());
         map.put("friend_id", friend_id);
         AjaxParams param = new AjaxParams(map);
 
@@ -528,7 +547,10 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
                     UIUtils.showToast(FriendPageActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(FriendPageActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
 }

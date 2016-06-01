@@ -43,6 +43,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -90,9 +91,22 @@ public class MainPlusAssetListActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_plus_asset_list);
         super.onCreate(savedInstanceState);
+        
+        isLogin();
         initView();
     }
 
+    /**
+     * 是否登录
+     */
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+           startActivity(new Intent(MainPlusAssetListActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
+    }
     private void initView() {
 
         myAssetList = new ArrayList<AssetData>();
@@ -299,6 +313,8 @@ public class MainPlusAssetListActivity extends Activity{
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
+        if(userInfo!=null){
+        
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
         map.put("page", page + "");
@@ -355,7 +371,10 @@ public class MainPlusAssetListActivity extends Activity{
                     UIUtils.showToast(MainPlusAssetListActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusAssetListActivity.this,LoginActivity.class));
+            finish();
+        }
     }
     /**
      * 公司资产领用列表接口
@@ -368,6 +387,8 @@ public class MainPlusAssetListActivity extends Activity{
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
+        if(userInfo!=null){
+            
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
         map.put("page", page + "");
@@ -424,7 +445,10 @@ public class MainPlusAssetListActivity extends Activity{
                     UIUtils.showToast(MainPlusAssetListActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusAssetListActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     /**

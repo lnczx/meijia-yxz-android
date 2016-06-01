@@ -42,6 +42,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -85,7 +86,18 @@ public class MainPlusLeaveListActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main_plus_leave_list);
         super.onCreate(savedInstanceState);
+        isLogin();
         initView();
+    }
+    
+    private void isLogin(){
+        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(!login){
+
+           startActivity(new Intent(MainPlusLeaveListActivity.this,LoginActivity.class));
+           finish();
+           return;
+       } 
     }
 
     private void initView() {
@@ -291,6 +303,7 @@ public class MainPlusLeaveListActivity extends Activity{
             return;
         }
         User user = DBHelper.getUser(this);
+        if(user!=null){
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("page", page + "");
@@ -357,7 +370,10 @@ public class MainPlusLeaveListActivity extends Activity{
                     UIUtils.showToast(MainPlusLeaveListActivity.this, errorMsg);
                 }
             }
-        });
+        });}else {
+            startActivity(new Intent(MainPlusLeaveListActivity.this,LoginActivity.class));
+            finish();
+        }
     }
 
     /**

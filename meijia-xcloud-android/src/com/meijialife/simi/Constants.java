@@ -124,6 +124,8 @@ public class Constants {
     public static final String URL_GET_ORDER_GET_LIST = ROOT_URL +"order/get_list.json";
     /**订单详情**/
     public static final String URL_GET_ORDER_DETAIL = ROOT_URL +"order/get_detail.json";
+    /**订单进度接口**/
+    public static final String URL_GET_ORDER_LOG = ROOT_URL +"order/get_log.json";
     /**我的优惠券列表接口**/
     public static final String URL_GET_MY_DISCOUNT_CARD_LIST = ROOT_URL +"user/get_coupons.json";
     /**兑换优惠券接口**/
