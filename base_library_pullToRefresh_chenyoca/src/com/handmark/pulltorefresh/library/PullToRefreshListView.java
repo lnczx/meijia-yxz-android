@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.os.IInterface;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
@@ -44,9 +45,13 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	public PullToRefreshListView(Context context) {
 		super(context);
 	}
-
+	
 	public PullToRefreshListView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		
+		
+			super(context, attrs);
+			if(!isInEditMode()){
+			}
 	}
 
 	public PullToRefreshListView(Context context, Mode mode) {

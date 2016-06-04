@@ -114,6 +114,10 @@
   <color name="score_help_text">#3190E8</color>
   <color name="score_list_action">#333333</color>
   <color name="score_list_date">#C7C7C7</color>
+
+  <!--首页文章标签字体颜色-->
+  <color name="tag_selected">#E8374A</color>
+  <color name="tag_not_selected">#505050</color>
   
    <!-- 自定义ViewGroup:IndicatorTabBar's 属性默认值 -->
     <dimen name="tab_text_size">15sp</dimen>

@@ -299,9 +299,8 @@ public class FriendPageActivity extends BaseActivity implements OnClickListener,
      * 获取个人信息数据
      */
     private void getUserData() {
-        User  users = DBHelper.getUser(FriendPageActivity.this);
-
-        if(user!=null){
+        User users = DBHelper.getUser(FriendPageActivity.this);
+        if(users!=null){
         if (!NetworkUtils.isNetworkConnected(FriendPageActivity.this)) {
             Toast.makeText(FriendPageActivity.this, getString(R.string.net_not_open), 0).show();
             return;

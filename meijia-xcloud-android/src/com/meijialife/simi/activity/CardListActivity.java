@@ -99,7 +99,6 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     private void isLogin(){
         Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         if(!login){
-
            startActivity(new Intent(CardListActivity.this,LoginActivity.class));
            finish();
            return;

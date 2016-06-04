@@ -20,6 +20,8 @@ public class Constants {
     
     //登录状态key
     public static final String LOGIN_STATUS = "login_status";
+
+    public static final String USER_TAGS = "user_tags";//用户所选标签key
     
     //登录图标URL
     public static final String SPLASH_ICON_URL = "http://123.57.173.36/simi-h5/img/load-ad-update.jpg";
@@ -523,6 +525,22 @@ public class Constants {
      public static final String GET_RECORD_BARCODE_URL =ROOT_URL +"record/barcode.json";
      /**公司资产列表接口**/
      public static final String GET_ASSET_LIST_URL =ROOT_URL +"record/get_asset_list.json";
+
+     //文章标签
+     /**获取默认订阅文章标签**/
+     public static final String GET_DEFAULT_SUBSCRIBE_TAGS_URL =ROOT_URL +"user/get_default_subscribe_tags.json";
+     /**获取用户订阅的文章标签接口**/
+     public static final String GET_USER_SUBSCRIBE_TAGS_URL =ROOT_URL +"user/get_user_subscribe_tags.json";
+     /**设置用户订阅的文章标签接口**/
+     public static final String SET_USER_SUBSCRIBE_TAGS_URL =ROOT_URL +"user/set_user_subscribe_tags.json";
+
+     //常用提醒
+     /**获取常用提醒接口**/
+     public static final String GET_UESR_ALARM =ROOT_URL +"user/get_alarm.json";
+     /**设置常用提醒接口**/
+     public static final String POST_SET_ALARM =ROOT_URL +"user/set_alarm.json";
+     
+     
      
      
      //卡片选择接收人
@@ -537,6 +555,7 @@ public class Constants {
      //新首页广告位
      public static final String GET_HOME1_BANNERS_URL =ROOT_URL +"dict/get_ads.json";
      public static final String GET_HOME1_MSG_URL ="http://51xingzheng.cn/";
+     public static final String GET_HOME3_MSG_URL ="http://51xingzheng.cn/api/tags/get_tag_posts/";
      public static final String ZHI_SHI_XUE_YUAN_URL ="http://51xingzheng.cn";
      public static final String JIAN_LI_JIAO_HUAN_URL ="http://123.57.173.36/simi-h5/show/cv-switch-list.html";
      public static final String SHANG_JIN_LIE_REN_URL ="http://123.57.173.36/simi-h5/show/job-reward-list.html";

@@ -51,7 +51,6 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
-import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.Find2Adapter;

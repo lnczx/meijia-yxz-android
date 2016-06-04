@@ -1211,6 +1211,13 @@ _
             android:screenOrientation="portrait"
  			android:theme="@style/Transparent"             >
         </activity>
+        <!-- 日程常用设置列表页面 -->
+          <activity
+            android:name="com.meijialife.simi.activity.AlarmListActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            </activity>
     </application>
 
 </manifest>

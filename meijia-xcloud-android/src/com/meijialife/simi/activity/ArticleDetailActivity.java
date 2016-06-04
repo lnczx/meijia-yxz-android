@@ -129,7 +129,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         webSettings.setBuiltInZoomControls(false);
         webSettings.setSupportZoom(false);
         webSettings.setDisplayZoomControls(false);
-        
         webSettings.setDatabaseEnabled(true);// webview设置启用数据库
         String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();// 设置定位的数据库路径
         webSettings.setGeolocationDatabasePath(dir);
@@ -572,7 +571,8 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                             if (StringUtils.isNotEmpty(post)) {
                                 Gson gson = new Gson();
                                 homePost = gson.fromJson(post, HomePost.class);
-                                String a =homePost.getContent() .replaceAll("<a\\s+href\\s*=\\s*\".*?\">(.*?)</a>", "$1");
+//                                String a =homePost.getContent() .replaceAll("<a\\s+href\\s*=\\s*\".*?\">(.*?)</a>", "$1");
+                                String a =homePost.getContent();
 
                                 String temp = "<html><head><meta content='initial-scale=1.0, user-scalable=no'/><style>img{margin:10px;width:95%;height:auto !important;max-width:100%;max-height:auto;vertical-align:middle;}p{text-align:left;margin:10px;}</style><title>" +homePost.getTitle()+ "</title></head><body>" + a + "</body></html>";
                                 String url = "<p>当年剧中的主演的现状又是怎样的呢？</p><p><img src='http://p3.pstatp.com/large/71e00015aeb216de9a6' img_width='640' img_height='506' alt='《情深深雨濛濛》3位主演相继去世，最小才33岁！看完我沉默了'onerror='javascript:errorimg.call(this);' ></p>"; 

@@ -5,7 +5,7 @@ import com.meijialife.simi.bean.ParamsBean;
 
 public interface ListItemClickHelps {
     
-    public void onClick(ParamsBean params);
+    public void onClick(ParamsBean params,boolean flag);
     
     
 }

@@ -36,11 +36,12 @@ public class SignPopWindow extends PopupWindow {
         //获取屏幕尺寸，设置Popwidow尺寸大小
         DisplayMetrics dm = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int h  = dm.widthPixels;
-        int w = dm.heightPixels;
+        int w  = dm.widthPixels;
+        int h = dm.heightPixels;
         this.setContentView(conentView);  
-        this.setWidth(LayoutParams.WRAP_CONTENT);  
+        this.setWidth(w*5/7);  
         this.setHeight(LayoutParams.WRAP_CONTENT);
+        
         
         //获得对应的控件
         mDone = (LinearLayout)conentView.findViewById(R.id.ll_status);

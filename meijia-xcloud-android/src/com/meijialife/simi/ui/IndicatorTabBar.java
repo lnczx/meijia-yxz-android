@@ -3,6 +3,7 @@ package com.meijialife.simi.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -21,10 +22,14 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.inter.ListItemClickHelps;
+import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.StringUtils;
 
 /**
  * Indicator TabBar
@@ -56,6 +61,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
 
 	/** the ViewPager used with the IndicatorTabBar, not necessary, you could use the IndicatorTabBar individually */
 	private ViewPager mViewPager;
+	private Context context;
 	
 	public IndicatorTabBar(Context context) {
 		this(context, null);
@@ -68,7 +74,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
 	public IndicatorTabBar(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		setFillViewport(true);
-
+		this.context = context;
 		mTabContainer = new TabContainer(context);
 		mTabContainer.setLayoutParams(new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -177,9 +183,6 @@ public class IndicatorTabBar extends HorizontalScrollView {
 	public void setViewPager(ViewPager viewPager) {
 		this.mViewPager = viewPager;
 	}
-	
-	
-
 
     public ListItemClickHelps getCallBack() {
         return callBack;
@@ -211,23 +214,33 @@ public class IndicatorTabBar extends HorizontalScrollView {
 				mCurrentTab = tabView;
 				mTabContainer.postInvalidate();
 				ParamsBean pBean =new ParamsBean();
+				boolean flag = false;
 				if(index==0){//精选
-				    pBean.setJson("get_tag_posts");
 				    pBean.setCount("10");
 				    pBean.setOrder("DESC");
-				    pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
+				    pBean.setJson("get_tag_posts");
+			        String userTags = SpFileUtil.getString(context,SpFileUtil.KEY_USER_TAGS, Constants.USER_TAGS,"");
+			        if(StringUtils.isNotEmpty(userTags)){
+			            pBean.setSlug(userTags);
+			            flag = true;
+				    }else {
+				        flag = false;
+				        pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
+                    }
 				    pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
 				}else if (index==1) {//职场
 			        pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("50");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 }else if (index==2) {//案例
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("69");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==3) {//招聘
@@ -235,6 +248,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("62");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==4) {//薪资
@@ -242,6 +256,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("64");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==5) {//行政
@@ -249,6 +264,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("21");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==6) {//培训
@@ -256,6 +272,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("63");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==7) {//绩效
@@ -263,6 +280,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("65");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }else if (index==8) {//员工关系
@@ -270,24 +288,27 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("66");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
-                }else if (index==8) {//人资规划
+                }else if (index==9) {//人资规划
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("67");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
-                }else if (index==8) {//行业
+                }else if (index==10) {//行业
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("70");
+                    flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }
-				callBack.onClick(pBean);//点击回调首页咨询文章
+				callBack.onClick(pBean,flag);//点击回调首页咨询文章
 				if (mViewPager != null) {
 					mViewPager.setCurrentItem(index);
 				}
@@ -423,7 +444,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
 			}
 		}
 
-		@Override
+	/*	@Override
 		public boolean onTouchEvent(MotionEvent event) {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
@@ -438,14 +459,49 @@ public class IndicatorTabBar extends HorizontalScrollView {
 			}
 			return true;
 		}
+		*/
+		@Override
+	    public boolean onTouchEvent(MotionEvent event) {
+	        this.getParent().requestDisallowInterceptTouchEvent(true);
+	        int x = (int) event.getRawX();
+	        int y = (int) event.getRawY();
+	        int lastX=(int)event.getX();
+	        int lastY =(int) event.getY();
+	        switch (event.getAction()) {
+	            case MotionEvent.ACTION_DOWN:
+	                lastX = x;
+	                lastY = y;
+	                performSelectAction();
+	                break;
+	            case MotionEvent.ACTION_MOVE:
+	                int deltaY = y - lastY;
+	                int deltaX = x - lastX;
+	                if (Math.abs(deltaX) < Math.abs(deltaY)) {
+	                    //为false表示父控件拦截事件，不继续传递到子控件
+	                    this.getParent().requestDisallowInterceptTouchEvent(false);
+	                } else {
+	                    //为true父控件不拦截，即事件传递到子控件
+	                    this.getParent().requestDisallowInterceptTouchEvent(true);
+	                }
+	                break;
+	            case MotionEvent.ACTION_UP:
+	                performSelectAction();
+	                break;
+	            default:
+	                break;
+	        }
+	        return false;
+	    }
+	    
 
 	}
-
 	/**
 	 * the interface will response when a Tab is selected
 	 */
 	public interface OnTabSelectedListener {
 		void onTabSelected(TabView tabView);
 	}
-
+	
+	
+	
 }

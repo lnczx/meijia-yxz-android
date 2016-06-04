@@ -1,7 +1,6 @@
 package com.meijialife.simi.activity;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -28,7 +27,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.GeolocationPermissions.Callback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -42,7 +40,6 @@ import android.widget.Toast;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.PopupMenu;

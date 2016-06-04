@@ -20,6 +20,8 @@ public class SpFileUtil {
 
     public static final String KEY_CHECKED_FRIENDS = "checked_friends";//卡片选人
     public static final String KEY_CHECKED_STAFFS = "checked_staffs";//请假选人
+ 
+    public static final String KEY_USER_TAGS = "user_tags";//用户选择的文章标签
 
     /**
      * @WARNING Be careful, this maybe overwrite a exist value.<br>

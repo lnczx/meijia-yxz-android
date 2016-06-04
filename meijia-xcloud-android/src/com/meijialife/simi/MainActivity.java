@@ -143,15 +143,15 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
         boolean fristFlag = getFristFlag();
         if (fristFlag) {
-            layout_mask.setVisibility(View.VISIBLE);
-            layout_guide.setVisibility(View.VISIBLE);
+//            layout_mask.setVisibility(View.VISIBLE);
+//            layout_guide.setVisibility(View.VISIBLE);
         }
         layout_guide.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                layout_mask.setVisibility(View.GONE);
-                layout_guide.setVisibility(View.GONE);
+//                layout_mask.setVisibility(View.GONE);
+//                layout_guide.setVisibility(View.GONE);
                 updateFristFlag();
             }
         });

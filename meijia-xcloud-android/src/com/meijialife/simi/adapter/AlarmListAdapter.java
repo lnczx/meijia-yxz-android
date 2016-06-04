@@ -11,34 +11,34 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.AlarmData;
+import com.meijialife.simi.utils.StringUtils;
 
 /**
- * 频道列表适配器
+ * 常用提醒列表适配器
  *
  */
-public final class ChannelAdapter extends BaseAdapter {
+public final class AlarmListAdapter extends BaseAdapter {
 
 	private Context context;
-	private List<String> datas;
-	private List<String> userTags;
+	private List<AlarmData> datas;
 
 	private LayoutInflater layoutInflater;
-	
+
 	/**
 	 * @param context上下文
 	 * @param 数据列表
 	 * @param showDel
 	 *            是否显示删除按钮
 	 */
-	public ChannelAdapter(Context context) {
+	public AlarmListAdapter(Context context) {
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
-		this.datas = new ArrayList<String>();
+		this.datas = new ArrayList<AlarmData>();
 	}
 	
-	public void setData(List<String> defaultTags,List<String> userTags) {
-		this.datas = defaultTags;
-		this.userTags = userTags;
+	public void setData(List<AlarmData> alarmDatas) {
+		this.datas = alarmDatas;
 		notifyDataSetChanged();
 	}
 
@@ -61,33 +61,34 @@ public final class ChannelAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = layoutInflater.inflate(R.layout.channel_item, null);//
+			convertView = layoutInflater.inflate(R.layout.alarm_list_item, null);//
 
 			holder = new ViewHolder();
 
-			holder.text_item = (TextView) convertView.findViewById(R.id.text_item);
+			holder.m_alarm_name = (TextView) convertView.findViewById(R.id.m_alarm_name);
+			holder.m_alarm_day = (TextView) convertView.findViewById(R.id.m_alarm_day);
 
 			convertView.setTag(holder);
 
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		String tag = datas.get(position);
-		if(userTags!=null && userTags.size()>0){
-		    if(userTags.contains(tag)){
-		        holder.text_item.setSelected(true);
-		    }else {
-                holder.text_item.setSelected(false);
-            }
+
+		AlarmData alarmData = datas.get(position);
+		holder.m_alarm_name.setText(alarmData.getName());
+		if(StringUtils.isEquals(alarmData.getAlarm_day(),"0")){
+		    holder.m_alarm_day.setText("不提醒");
 		}else {
-		    holder.text_item.setSelected(false);
+		    holder.m_alarm_day.setText(alarmData.getAlarm_day()+"天前");
         }
-		holder.text_item.setText(datas.get(position));
 		return convertView;
 	}
 
 	private static class ViewHolder {
-		TextView text_item; // 名称
+		TextView m_alarm_name; 
+		TextView m_alarm_day; 
 	}
+
+	 
 
 }

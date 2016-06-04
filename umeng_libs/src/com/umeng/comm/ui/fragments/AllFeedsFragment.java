@@ -32,6 +32,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.impl.CommunitySDKImpl;
@@ -43,6 +44,7 @@ import com.umeng.comm.core.utils.ResFinder;
 import com.umeng.comm.ui.activities.PostFeedActivity;
 import com.umeng.comm.ui.activities.SearchActivity;
 import com.umeng.comm.ui.imagepicker.presenter.impl.FeedListPresenter;
+import com.umeng.community.login.LoginActivity;
 
 /**
  * 主页的三个Tab之一的消息流页面,该页面返回用户关注的人、话题的Feed
@@ -73,7 +75,7 @@ public class AllFeedsFragment extends PostBtnAnimFragment<FeedListPresenter> {
                         CommunitySDKImpl.getInstance().login(getActivity(), new LoginListener() {
                             @Override
                             public void onStart() {
-
+//                            	startActivity(new Intent(getActivity(),LoginActivity.class));
                             }
 
                             @Override
@@ -81,6 +83,8 @@ public class AllFeedsFragment extends PostBtnAnimFragment<FeedListPresenter> {
 
                             }
                         });
+                        
+                        
 //                });
                     }
                 }

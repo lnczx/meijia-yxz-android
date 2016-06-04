@@ -129,14 +129,16 @@ public class SplashActivity extends Activity {
          getBaseDatas();
          
          //增加图片点击事件
-         mWelcome2.setOnClickListener(new OnClickListener() {
+        /* mWelcome2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("http://www.baidu.com");                            
-                Intent intent = new Intent(Intent.ACTION_VIEW,uri);  
+Toast.makeText(SplashActivity.this,"图片点击",Toast.LENGTH_LONG).show();
+              
+                Intent intent = new Intent(SplashActivity.this,WebViewsActivity.class);
+                intent.putExtra("url","https://www.baidu.com");
                 startActivity(intent);
             }
-        });
+        });*/
          
          
     }

@@ -535,7 +535,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         mTimePopup.setOutsideTouchable(true);
         mTimePopup.setBackgroundDrawable(new BitmapDrawable());
         mTimePopup.setAnimationStyle(R.style.PostBarShareAnim);
-
+ 
         mTimePopup.showAtLocation(view_mask, Gravity.BOTTOM, 0, 0);
 
         mTimePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {

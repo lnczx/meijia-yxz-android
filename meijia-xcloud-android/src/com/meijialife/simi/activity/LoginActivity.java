@@ -61,6 +61,7 @@ import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.core.login.LoginListener;
+import com.umeng.community.share.UMShareServiceFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -690,8 +691,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     }
 
     private void loginUmengComm(){
-        //创建CommUser前必须先初始化CommunitySDK
+        
+        
+        //创建CommUser前必须先初始化CommunitySDK----------------第三方初始化
         CommunitySDK sdk = CommunityFactory.getCommSDK(this);
+        UMShareServiceFactory.getSocialService().getConfig()
+                .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+        UMShareServiceFactory.getSocialService().getConfig()
+                .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
         CommUser user = new CommUser();
         user.name = userInfo.getName();
         user.id = userInfo.getUser_id();

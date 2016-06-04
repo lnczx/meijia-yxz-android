@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +39,7 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.AlarmListActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
@@ -65,7 +65,6 @@ import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.DateUtils;
-import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
@@ -150,6 +149,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         v.findViewById(R.id.ibtn_person).setOnClickListener(this);
         v.findViewById(R.id.btn_rili).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
+        v.findViewById(R.id.btn_alarm).setOnClickListener(this);
 
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
@@ -716,6 +716,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
         case R.id.btn_chakan: // 查看
             if (card_from == 0) {
@@ -741,10 +742,15 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
             calendarView.init(calendarManager, getActivity(), this);
             break;
         case R.id.btn_saoma:
-            Intent intents = new Intent();
-            intents.setClass(getActivity(), CaptureActivity.class);
-            intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
+            intent = new Intent();
+            intent.setClass(getActivity(), CaptureActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
+            break;
+        case R.id.btn_alarm://常用提醒
+            intent = new Intent();
+            intent.setClass(getActivity(), AlarmListActivity.class);
+            startActivity(intent);
             break;
         default:
             break;
