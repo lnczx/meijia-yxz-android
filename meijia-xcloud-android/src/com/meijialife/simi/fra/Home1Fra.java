@@ -349,6 +349,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         MobclickAgent.onPageStart("MainActivity");
     }
 
+    
     @Override
     public void onPause() {
         super.onPause();

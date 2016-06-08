@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activity_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar" />
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	            android:layout_below="@id/view_title_bar"
+	    
+	    >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/cut_off_rule"
+         />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/simi_color_white" >
+
+        <EditText
+            android:id="@+id/m_et_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:maxLength="1000" 
+            android:hint="@string/m_question_hint"
+            android:textSize="13sp"
+          	android:padding="10dp"
+            />
+
+        <TextView
+            android:id="@+id/m_tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            android:textColor="@color/simi_color_line_gray"
+            />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/cut_off_rule" />
+
+    <RelativeLayout
+        android:id="@+id/m_questoin_item1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/simi_color_white"
+        android:gravity="center_vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:text="我要悬赏"
+            android:textColor="#676767" />
+
+        <ImageView
+            android:id="@+id/iv_xiaoxi_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon_plus_arrowright" />
+
+        <TextView
+            android:id="@+id/m_tv_gold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_xiaoxi_arrow"
+            android:text="设置悬赏可能提高回答者的回答质量"
+            android:textColor="@color/simi_color_line_gray"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/cut_off_rule" />
+
+    <RelativeLayout
+        android:id="@+id/m_questoin_item2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/simi_color_white"
+        android:gravity="center_vertical"
+        android:padding="10dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:text="问题标签"
+            android:textColor="#676767" />
+
+        <ImageView
+            android:id="@+id/iv_xiaoxi_arrows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/icon_plus_arrowright" />
+
+        <TextView
+            android:id="@+id/m_question_tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_xiaoxi_arrows"
+            android:text="给题贴个合适的标签"
+            android:maxLength="20"
+            android:ellipsize="end"
+            android:textColor="@color/simi_color_line_gray"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/cut_off_rule" />
+    </LinearLayout>
+    <View
+        android:id="@+id/view_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a2000000"
+        android:visibility="gone" />
+</RelativeLayout>

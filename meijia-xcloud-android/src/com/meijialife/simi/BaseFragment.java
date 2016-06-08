@@ -45,5 +45,8 @@ public class BaseFragment extends Fragment{
             getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 透明状态栏
         }*/
     }
- 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

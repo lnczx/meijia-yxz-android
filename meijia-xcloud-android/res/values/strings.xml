@@ -87,4 +87,12 @@
 	<string name="m_ps_fra_sub1">我的消息</string>
 	<string name="m_ps_fra_sub2">我的钱包</string>
 
+	
+	<!--问答互助我要提问-->
+		<string name="m_question_hint">别着急，试着将问题尽可能清晰、详尽的描述，
+		    这样回答者们才能完善，更高质量的的为你解答</string>
+	
+	
+	
+
 </resources>

@@ -25,7 +25,6 @@
             android:text="提醒设置"
             android:visibility="gone"
              />
-            />
 
         <TextView
             android:id="@+id/tv_get_time"

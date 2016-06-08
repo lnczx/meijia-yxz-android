@@ -43,6 +43,7 @@ import com.simi.easemob.widget.ContactItemView;
  */
 public class ContactListFragment extends EaseContactListFragment {
 	
+    
     private static final String TAG = ContactListFragment.class.getSimpleName();
     private ContactSyncListener contactSyncListener;
     private BlackListSyncListener blackListSyncListener;

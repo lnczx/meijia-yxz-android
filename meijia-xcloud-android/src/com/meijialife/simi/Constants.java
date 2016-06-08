@@ -8,6 +8,7 @@ import android.os.Environment;
 import com.meijialife.simi.bean.AssetJsons;
 import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
+import com.meijialife.simi.bean.TagData;
 
 public class Constants {
 
@@ -154,12 +155,16 @@ public class Constants {
     public static final String URL_GET_DYNAMIC_COMMENT_LIST = ROOT_URL + "feed/get_comment_list.json";
     /**动态发表评论的接口**/
     public static final String URL_POST_DYNAMIC_COMMENT = ROOT_URL + "feed/post_comment.json";
+    /**动态关闭接口**/
+    public static final String URL_POST_CLOSE_COMMENT = ROOT_URL + "feed/post_close.json";
     //关于好友的接口
     public static final String URL_GET_COMPANY_DETAIL =ROOT_URL +"company/get_detail.json";
     /**获取是否点赞**/
     public static final String URL_FEED_GET_ZAN =ROOT_URL +"feed/get_zan.json";
     /**点赞接口**/
     public static final String URL_FEED_POST_ZAN =ROOT_URL +"feed/post_zan.json";
+    /**采纳接口**/
+    public static final String URL_POST_DONE =ROOT_URL +"feed/post_done.json";
     
     //关于用户消息接口
     /**用户消息列表接口**/
@@ -204,6 +209,11 @@ public class Constants {
     public static final String URL_POST_SET_DEFAULT = ROOT_URL +"company/set_default.json";
     /**用户-公司配置信息接口**/
     public static final String URL_GET_COMPANY_SETTING = ROOT_URL +"company/get_company_setting.json";
+    /**配置信息接口**/
+    public static final String URL_GET_USER_SETTING = ROOT_URL +"user/get_setting.json";
+  
+    
+    
     
     /** 添加通讯录好友接口 **/
     public static final String URL_POST_FRIEND = ROOT_URL + "user/post_friend.json";
@@ -534,6 +544,14 @@ public class Constants {
      /**设置用户订阅的文章标签接口**/
      public static final String SET_USER_SUBSCRIBE_TAGS_URL =ROOT_URL +"user/set_user_subscribe_tags.json";
 
+     //问题互助
+     /**获取标签列表接口**/
+     public static final String GET_TAG_LIST =ROOT_URL +"dict/get_tag_list.json";
+
+     
+     
+     
+     
      //常用提醒
      /**获取常用提醒接口**/
      public static final String GET_UESR_ALARM =ROOT_URL +"user/get_alarm.json";
@@ -560,8 +578,9 @@ public class Constants {
      public static final String JIAN_LI_JIAO_HUAN_URL ="http://123.57.173.36/simi-h5/show/cv-switch-list.html";
      public static final String SHANG_JIN_LIE_REN_URL ="http://123.57.173.36/simi-h5/show/job-reward-list.html";
      public static final String JIN_PIN_KE_CHENG_URL ="http://edu.51xingzheng.cn";
-   
      
-     
+     /**选中的问题互答标签**/
+     public static ArrayList<TagData> tagList = new ArrayList<TagData>();
+
      
 }

@@ -28,7 +28,7 @@
             android:background="@drawable/bg_personpage_tab_indicator"
             android:focusable="true"
             android:gravity="center"
-            android:text="工作与工具"
+            android:text="人事行政"
             android:textColor="@drawable/personpage_tab_selector"
             android:textSize="15sp" />
 
@@ -45,7 +45,7 @@
             android:background="@drawable/bg_personpage_tab_indicator"
             android:focusable="true"
             android:gravity="center"
-            android:text="成长与提升"
+            android:text="企业服务"
             android:textColor="@drawable/personpage_tab_selector"
             android:textSize="15sp" />
     </LinearLayout>

@@ -9,6 +9,11 @@
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/simi_color_line_gray" />
+
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"

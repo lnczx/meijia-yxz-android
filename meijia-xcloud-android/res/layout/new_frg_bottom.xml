@@ -38,13 +38,14 @@
             android:layout_weight="1"
             android:gravity="center"
             android:visibility="visible" 
-            android:background="#f4f4f4"
+            android:background="@color/simi_color_white"
             >
 
             <ImageView
                 android:id="@+id/button_more_columns2"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 android:layout_gravity="center"
                 android:src="@drawable/channel_add" />
         </LinearLayout>
