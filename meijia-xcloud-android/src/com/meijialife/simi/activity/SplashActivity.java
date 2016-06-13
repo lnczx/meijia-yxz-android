@@ -123,25 +123,21 @@ public class SplashActivity extends Activity {
         };
         timer.schedule(MyTask, 2000);
         initRoute();
-        // initCellsDb();
          getCitys(getCityAddtime());
-//         getBaseDatas(getXcompanySettings());
          getBaseDatas();
          
          //增加图片点击事件
-        /* mWelcome2.setOnClickListener(new OnClickListener() {
+         mWelcome2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-Toast.makeText(SplashActivity.this,"图片点击",Toast.LENGTH_LONG).show();
-              
-                Intent intent = new Intent(SplashActivity.this,WebViewsActivity.class);
-                intent.putExtra("url","https://www.baidu.com");
-                startActivity(intent);
+              Constants.IS_JUMP = true; 
             }
-        });*/
+        });
          
          
     }
+    
+    
     private void initDb() {
         // 初始化，只需要调用一次  
         AssetsDatabaseManager.initManager(getApplication());  

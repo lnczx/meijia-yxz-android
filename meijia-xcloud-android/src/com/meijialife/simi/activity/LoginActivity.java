@@ -695,6 +695,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         
         //创建CommUser前必须先初始化CommunitySDK----------------第三方初始化
         CommunitySDK sdk = CommunityFactory.getCommSDK(this);
+        sdk.initSDK(getApplication());
         UMShareServiceFactory.getSocialService().getConfig()
                 .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
         UMShareServiceFactory.getSocialService().getConfig()

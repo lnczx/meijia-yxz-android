@@ -66,15 +66,18 @@ import com.meijialife.simi.ui.SystemBarTintManager;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.beans.CommConfig;
+import com.umeng.comm.core.impl.CommunityFactory;
 import com.umeng.comm.ui.activities.FollowedTopicActivity;
 import com.umeng.comm.ui.activities.NewMsgActivity;
 import com.umeng.comm.ui.activities.UserInfoActivity;
+import com.umeng.community.share.UMShareServiceFactory;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 /**
  * @description：我的页面
@@ -117,9 +120,21 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         layoutInflater = inflater;
         v = inflater.inflate(R.layout.personal_fragment, null, false);
         vs = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.personal_fragment, null);
+      
+        initCommunity();
         init(inflater, v);
-
         return v;
+    }
+    
+    /**
+     * 初始化社区
+     */
+    private void initCommunity(){
+        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
+        UMShareServiceFactory.getSocialService().getConfig()
+                .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+        UMShareServiceFactory.getSocialService().getConfig()
+                .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
     }
 
     @SuppressLint("ResourceAsColor")

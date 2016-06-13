@@ -126,5 +126,14 @@
     <color name="tab_underline_color">#FA3E41</color>
     <dimen name="tab_underline_height">8px</dimen>
     <integer name="tab_max_column">3</integer>
+   
+    <!--职场问答样式定义-->
+    <color name="feed_gold_count">#ea9518</color>
+    <color name="feed_question_title">#333333</color>
+    <color name="feed_question_time">#9d9d9d</color>
+    <color name="feed_question_owner">#9d9d9d</color>
+    <color name="feed_answer_count">#9d9d9d</color>
+    <color name="feed_answer">#4690ff</color>
+    
   
 </resources>

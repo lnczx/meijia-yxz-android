@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -14,6 +14,12 @@
         android:gravity="center|left"
         android:orientation="horizontal" >
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="top|left"
+            >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,8 +27,8 @@
             android:textColor="@color/simi_color_blue" />
 
         <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:scaleType="fitXY"
             android:src="@drawable/icon_gold" />
 
@@ -33,15 +39,17 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="10"
-            android:textColor="@color/simi_color_yellow" />
+            android:textColor="@color/feed_gold_count" />
 
+        </LinearLayout>
         <TextView
             android:id="@+id/m_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="题目" />
+            android:text="题目"
+            android:textColor="@color/feed_question_title"
+            android:textStyle="bold"
+             />
     </LinearLayout>
 
     <RelativeLayout
@@ -56,7 +64,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:text="5分钟前" />
+            android:text="5分钟前" 
+            android:textColor="@color/feed_question_time"
+            />
 
         <TextView
             android:id="@+id/m_tv_count"
@@ -64,7 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:text="2个答案" />
+            android:text="2个答案" 
+            android:textColor="@color/feed_answer_count"
+            />
     </RelativeLayout>
 
     <View

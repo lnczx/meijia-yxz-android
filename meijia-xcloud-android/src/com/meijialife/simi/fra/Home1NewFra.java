@@ -53,7 +53,7 @@ import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
-import com.meijialife.simi.bean.AdData;
+import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.bean.HomeTag;
 import com.meijialife.simi.bean.ParamsBean;
@@ -89,7 +89,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private FinalBitmap finalBitmap;
     private final static int SCANNIN_GREQUEST_CODES = 5;
 
-    private List<AdData> adList;
+    private ArrayList<FindBean> findBeanList;
     boolean canscoll = false;
     // 列表
     private PullToRefreshListView mListView;
@@ -188,6 +188,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private void initListView(View v) {
         homePosts = new ArrayList<HomePosts>();
         allHomePosts = new ArrayList<HomePosts>();
+        findBeanList = new ArrayList<FindBean>();
         mListView = (PullToRefreshListView) v.findViewById(R.id.m_lv_home);
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
         headerView = getActivity().getLayoutInflater().inflate(R.layout.home1_banner, mListView, false);
@@ -196,6 +197,15 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         listView.addHeaderView(headerView);
         
         bannerLayout = (BannerLayout)headerView.findViewById(R.id.m_top_banner);
+        bannerLayout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                FindBean findBean =findBeanList.get(position);
+                Intent intent = new Intent(getActivity(),WebViewsActivity.class);
+                intent.putExtra("url",findBean.getGoto_url());
+                startActivity(intent);
+            }
+        });
         
         
         View headview2= View.inflate(getActivity(), R.layout.new_frg_bottom,null);
@@ -343,29 +353,22 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     }
 
-
-   
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    /**
-     * 获得首页广告位接口
-     */
+    
     public void getAdList() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("ad_type", 0 + "");// 广告类型ID 0 = 首页 其他为应用中心的ID
+        map.put("channel_id", "0");
+        map.put("app_type", "xcloud");
         AjaxParams param = new AjaxParams(map);
-        new FinalHttp().get(Constants.GET_HOME1_BANNERS_URL, param, new AjaxCallBack<Object>() {
+        // showDialog();
+        new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
+                // dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -373,6 +376,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
+                // dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -382,12 +386,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                adList = gson.fromJson(data, new TypeToken<ArrayList<AdData>>() {
+                                findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
-                                showBanner(adList);
-                            } else {
-                                adList = new ArrayList<AdData>();
-                            }
+                                showBanner(findBeanList);
+                            } 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -413,12 +415,13 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             }
         });
     }
+    
 
-    protected void showBanner(List<AdData> adList) {
+    protected void showBanner(List<FindBean> adList) {
         urls.clear();
         for (Iterator iterator = adList.iterator(); iterator.hasNext();) {
-            AdData adData = (AdData) iterator.next();
-            urls.add(adData.getImg_url());
+            FindBean findBean = (FindBean) iterator.next();
+            urls.add(findBean.getImg_url());
         }
         bannerLayout.setViewUrls(urls);
     }

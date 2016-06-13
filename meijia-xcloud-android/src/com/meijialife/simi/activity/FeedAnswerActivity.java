@@ -49,7 +49,7 @@ public class FeedAnswerActivity extends BaseActivity implements OnClickListener{
     private TextView m_tv_tip;//输入字数提示
     
     private FeedData feedData;
-    private int maxNum = 1000;//最多输入512个字
+    private int maxNum = 1024;//最多输入512个字
     
     
     @Override
@@ -171,6 +171,7 @@ public class FeedAnswerActivity extends BaseActivity implements OnClickListener{
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
+                            findViewById(R.id.m__rl_question).setClickable(true);
                             UIUtils.showToast(FeedAnswerActivity.this, "答案提交成功！");
                             finish();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -210,6 +211,7 @@ public class FeedAnswerActivity extends BaseActivity implements OnClickListener{
                 UIUtils.showToast(FeedAnswerActivity.this, "回答不能为空！");
                 return;
             }
+            findViewById(R.id.m__rl_question).setClickable(false);//点击之后不可再点击
             postFeedAnswer(feedData.getFid(),answer);
             break;
         case R.id.title_tv_left:

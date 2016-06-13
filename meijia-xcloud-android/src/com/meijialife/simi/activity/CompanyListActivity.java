@@ -34,6 +34,8 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.CompanyListAdapter;
 import com.meijialife.simi.bean.CompanyData;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.AddPopWindow;
 import com.meijialife.simi.utils.DateUtils;
@@ -72,6 +74,13 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
     
     private void initView(){
         
+        UserInfo userInfo = DBHelper.getUserInfo(CompanyListActivity.this);
+        if (userInfo.getHas_company() == 0) {
+            Intent intent = new Intent(this, WebViewsActivity.class);
+            intent.putExtra("url", Constants.HAS_COMPANY);
+            startActivity(intent);
+            finish();
+        }
         requestBackBtn();
         setTitleName("公司列表");
         initCompanyView();

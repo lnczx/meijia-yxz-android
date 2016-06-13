@@ -3,12 +3,16 @@ package com.meijialife.simi.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -90,7 +94,7 @@ public class WebViewsFindActivity  extends Activity{
         popupMenu = new PopupMenu(this);
        
     }
-    @SuppressLint({ "JavascriptInterface", "NewApi" })
+    @SuppressLint({ "JavascriptInterface", "NewApi", "SetJavaScriptEnabled" })
     private void init() {
         if (StringUtils.isEmpty(url)) {
             Toast.makeText(getApplicationContext(), "数据错误", 0).show();
@@ -132,15 +136,33 @@ public class WebViewsFindActivity  extends Activity{
         webview.getSettings().setLoadWithOverviewMode(true);// 和setUseWideViewPort(true)一起解决网页自适应问题
         webview.getSettings().setAppCacheEnabled(false);// 是否使用缓存
         webview.getSettings().setDomStorageEnabled(true);// DOM Storage
+        webview.setInitialScale(100);
         webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        if (Build.VERSION.SDK_INT >= 21) {
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webview.setWebViewClient(new WebViewClient() {
+            
             @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+          
+            //对于https加密的网址需要默认接受，仅限于2.1以上的版本才能使用
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();//接收证书
+                super.onReceivedSslError(view, handler, error);
+            }
+            
+           /* @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
-                return true;
-            }
+                return super.shouldOverrideUrlLoading(view, url);
+            }*/
+            
         });
-
+        webview.loadUrl(url);
         iv_person_close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

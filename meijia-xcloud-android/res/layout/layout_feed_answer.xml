@@ -63,6 +63,7 @@
             android:textSize="12sp"
             android:layout_below="@id/m_et_question"
             android:layout_alignParentRight="true"
+            android:text="可输入1024个字"
             android:textColor="@color/simi_color_line_gray"
              />
         

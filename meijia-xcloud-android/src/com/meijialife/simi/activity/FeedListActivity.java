@@ -135,7 +135,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedData feedData = totalFeedDataList.get(position);
                 Intent intent = new Intent(FeedListActivity.this, FeedDetailActivity.class);
-                intent.putExtra("feedData", feedData);
+                intent.putExtra("fid", feedData.getFid());
                 startActivity(intent);
 
             }

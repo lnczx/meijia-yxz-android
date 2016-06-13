@@ -11,13 +11,12 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import com.meijialife.simi.bean.FeedData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelper;
+import com.meijialife.simi.utils.AlertWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
@@ -62,6 +62,7 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
     private int page = 1;
     private View headerView;
     private FeedData feedData;
+    private String fid;
     
     private TextView m_tv_money;//金币数
     private TextView m_tv_title;//问题题目
@@ -81,15 +82,15 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
     
     @Override
     protected void onStart() {
-        getFeedCommentList(page,feedData.getFid());   
+        getFeed(fid);   
         super.onStart();
     }
     private void initView(){
         user = DBHelper.getUser(FeedDetailActivity.this);
-        feedData = (FeedData)getIntent().getSerializableExtra("feedData");
-        requestBackBtn();
-        setTitleName(feedData.getName()+"的提问");
+        fid = getIntent().getStringExtra("fid");
         initCompanyView();
+        getFeed(fid);
+        requestBackBtn();
     }
     
     private void initCompanyView(){
@@ -108,30 +109,8 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
         m_tv_count = (TextView)headerView.findViewById(R.id.m_tv_count);
         m_tv_submit = (TextView)findViewById(R.id.m_tv_submit);
         
-        m_tv_money.setText(feedData.getFeed_extra());
-        m_tv_title.setText(feedData.getTitle());
-        m_tv_time.setText(feedData.getAdd_time_str());
-        m_tv_count.setText(feedData.getTotal_comment()+"个答案");
-        
         
         m__rl_question = (RelativeLayout)findViewById(R.id.m__rl_question);
-        Boolean login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-        if(login){
-            if(StringUtils.isEquals(user.getId(),feedData.getUser_id())){
-                m__rl_question.setVisibility(View.VISIBLE);
-                m_tv_submit.setText("关闭问题");
-            }
-            if(feedData.getStatus()==2){//问题关闭则不显示关闭按钮
-                m__rl_question.setVisibility(View.GONE);
-                m_tv_submit.setText("关闭问题"); 
-                findViewById(R.id.m_ll_bottom).setVisibility(View.GONE);
-            }
-        }else {
-            m__rl_question.setVisibility(View.GONE);
-            m_tv_submit.setText("关闭问题"); 
-            findViewById(R.id.m_ll_bottom).setVisibility(View.GONE);
-        }
-       
         feedListAdapter = new FeedCommentAdapter(this,this);
         mPullRefreshListView.setAdapter(feedListAdapter);
         mPullRefreshListView.setMode(Mode.BOTH);
@@ -165,15 +144,6 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
                     Toast.makeText(FeedDetailActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
                     mPullRefreshListView.onRefreshComplete(); 
                 }
-            }
-        });
-        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                      /* FeedCommentData feedData = totalFeedCommentDataList.get(position);
-                       mCompanyId = companyData.getCompany_id();
-                       feedListAdapter.setItemId(companyData.getCompany_id());
-                       feedListAdapter.notifyDataSetChanged();*/
             }
         });
     }
@@ -268,6 +238,99 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
                 }
             }
         });
+    }
+    /**
+     * 获取动态列表接口
+     */
+    private void getFeed(String fid) {
+        User user = DBHelper.getUser(this);
+        
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        if(user!=null){
+            map.put("user_id", user.getId());
+        }
+        map.put("fid",fid);
+        map.put("feed_type", "2");
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_DYNAMIC_DETAIL, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(FeedDetailActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if(StringUtils.isNotEmpty(data)){
+                                Gson gson = new Gson();
+                                feedData = gson.fromJson(data, FeedData.class);
+                                showView(feedData);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mPullRefreshListView.onRefreshComplete();
+                    errorMsg = getString(R.string.servers_error);
+                    
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    mPullRefreshListView.onRefreshComplete();
+                    UIUtils.showToast(FeedDetailActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+    
+    private void showView(FeedData feedData){
+        setTitleName(feedData.getName()+"的提问");
+        m_tv_money.setText(feedData.getFeed_extra());
+        m_tv_title.setText(feedData.getTitle());
+        m_tv_time.setText(feedData.getAdd_time_str());
+        m_tv_count.setText(feedData.getTotal_comment()+"个答案");
+        Boolean login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        if(login){
+            if(StringUtils.isEquals(user.getId(),feedData.getUser_id())){
+                m__rl_question.setVisibility(View.VISIBLE);
+                m_tv_submit.setText("关闭问题");
+            }
+            if(feedData.getStatus()==2){//问题关闭则不显示关闭按钮
+                m__rl_question.setVisibility(View.GONE);
+                m_tv_submit.setText("关闭问题"); 
+//                findViewById(R.id.m_ll_bottom).setVisibility(View.GONE);
+            }
+        }else {
+            m__rl_question.setVisibility(View.GONE);
+            m_tv_submit.setText("关闭问题"); 
+//            findViewById(R.id.m_ll_bottom).setVisibility(View.GONE);
+        }
+        getFeedCommentList(page,fid);
     }
     /**
      * 关闭问题接口
@@ -443,7 +506,8 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
                             String msg = obj.getString("msg");
                             String data = obj.getString("data");
                             if (status == Constants.STATUS_SUCCESS) { // 正确
-                                getFeedCommentList(page, feedData.getFid());
+                                getFeed(feedData.getFid());
+//                                getFeedCommentList(page, feedData.getFid());
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);
                             } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -502,7 +566,20 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.m__rl_question://关闭问题
-            postCloseCommen(feedData.getFid());
+            
+            AlertWindow.dialog(FeedDetailActivity.this, "关闭问题","确定关闭此问题?(问题关闭之后将不会收到新的答案)", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    postCloseCommen(feedData.getFid());
+                }
+            }, new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    return;
+                }
+            });
             break;
         case R.id.m_btn_ask://我来回答
             Intent intent = new Intent(FeedDetailActivity.this, FeedAnswerActivity.class);

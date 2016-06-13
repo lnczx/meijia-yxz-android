@@ -11,8 +11,10 @@ import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.CardListActivity;
+import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.CompanyListsActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
+import com.meijialife.simi.activity.FeedDetailActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
@@ -106,13 +108,17 @@ public class RouteUtil {
                         intent = new Intent(context, CardDetailsActivity.class);
                         intent.putExtra("card_id", params);
                         context.startActivity(intent);
-                    } else if (action.equals("feed")) {// 跳转到动态列表
-                        /*
-                         * intent = new Intent(context,FriendApplyActivity.class); context.startActivity(intent);
-                         */
+                    } else if (action.equals("feed")) {// 问答详情
+                         /* intent = new Intent(context,FeedDetailActivity.class);
+                          intent.putExtra("fid",params);
+                          context.startActivity(intent);*/
                     } else if (action.equals("checkin")) {// 跳转到考勤
                         intent = new Intent(context, MainPlusSignInActivity.class);
                         intent.putExtra("title", params2);
+                        context.startActivity(intent);
+                    }  else if (action.equals("company")) {// 跳转到公司列表
+                        intent = new Intent(context, CompanyListActivity.class);
+                        intent.putExtra("flag", 2);
                         context.startActivity(intent);
                     } else if (action.equals("friends")) {// 跳转到好友审批页面
                         intent = new Intent(context, FriendApplyActivity.class);
@@ -203,13 +209,11 @@ public class RouteUtil {
                     }
                 }
             } else if (category.equals("h5+list")) {
-                if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
                     intent = new Intent(context, WebViewsFindActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", params2);
                     intent.putExtra("service_type_ids", params);
                     context.startActivity(intent);
-                }
             }
         }
     }
@@ -263,11 +267,15 @@ public class RouteUtil {
                     intent = new Intent(context, CardDetailsActivity.class);
                     intent.putExtra("card_id", params);
                     context.startActivity(intent);
-                } else if (action.equals("feed")) {// 跳转到动态列表
-                    /*
-                     * intent = new Intent(context,FriendApplyActivity.class); context.startActivity(intent);
-                     */
-                } else if (action.equals("checkin")) {// 跳转到考勤
+                } else if (action.equals("feed")) {// 跳转到问答详情
+                    intent = new Intent(context,FeedDetailActivity.class);
+                    intent.putExtra("fid",params);
+                    context.startActivity(intent);
+                }  else if (action.equals("company")) {// 跳转到公司列表
+                    intent = new Intent(context, CompanyListActivity.class);
+                    intent.putExtra("flag", 2);
+                    context.startActivity(intent);
+                }else if (action.equals("checkin")) {// 跳转到考勤
                     intent = new Intent(context, MainPlusSignInActivity.class);
                     context.startActivity(intent);
                 } else if (action.equals("friends")) {// 跳转到好友审批页面
@@ -401,7 +409,11 @@ public class RouteUtil {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     context.startActivity(intent);
-                } else if (action.equals("notice")) {// 通知公告
+                }  else if (action.equals("company")) {// 跳转到公司列表
+                    intent = new Intent(context, CompanyListActivity.class);
+                    intent.putExtra("flag", 2);
+                    context.startActivity(intent);
+                }else if (action.equals("notice")) {// 通知公告
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "2");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

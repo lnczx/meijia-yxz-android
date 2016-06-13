@@ -23,6 +23,8 @@ public class Constants {
     public static final String LOGIN_STATUS = "login_status";
 
     public static final String USER_TAGS = "user_tags";//用户所选标签key
+
+    public static boolean IS_JUMP = false;//标志位---判断首页点击是否跳转广告url
     
     //登录图标URL
     public static final String SPLASH_ICON_URL = "http://123.57.173.36/simi-h5/img/load-ad-update.jpg";

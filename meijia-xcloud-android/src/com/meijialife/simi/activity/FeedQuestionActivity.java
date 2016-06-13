@@ -20,8 +20,9 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -68,7 +69,7 @@ public class FeedQuestionActivity extends BaseActivity implements OnClickListene
     private PopupWindow mTimePopup;
     private View view_mask;
 
-    private int maxNum =1000;
+    private int maxNum =512;
     private String tag_ids="";
    
     
@@ -234,6 +235,12 @@ public class FeedQuestionActivity extends BaseActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.m_questoin_item1:
+            //关闭键盘
+            View view = getWindow().peekDecorView();
+            if (view != null) {
+                InputMethodManager inputmanger = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
             showRemindWindow();
             break;
         case R.id.m_questoin_item2:
@@ -246,6 +253,7 @@ public class FeedQuestionActivity extends BaseActivity implements OnClickListene
                 Toast.makeText(this,"问题描述不可以为空，请编辑问题描述",Toast.LENGTH_SHORT).show();
                 return;
             }
+            findViewById(R.id.m__rl_question).setClickable(false);
             postFeed(title,feed_extra);
             break;
         default:
@@ -313,7 +321,8 @@ public class FeedQuestionActivity extends BaseActivity implements OnClickListene
                             String msg = obj.getString("msg");
                             String data = obj.getString("data");
                             if (status == Constants.STATUS_SUCCESS) { // 正确
-                          Toast.makeText(FeedQuestionActivity.this,"问题提交成功！",Toast.LENGTH_SHORT).show();
+                                findViewById(R.id.m__rl_question).setClickable(true);
+                             Toast.makeText(FeedQuestionActivity.this,"问题提交成功！",Toast.LENGTH_SHORT).show();
                                 finish();
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);

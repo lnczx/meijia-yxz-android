@@ -208,8 +208,8 @@ public class BannerLayout extends RelativeLayout {
                 }
             }
         });
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Glide.with(getContext()).load(res).centerCrop().into(imageView);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        Glide.with(getContext()).load(res).fitCenter().into(imageView);
         
         return imageView;
     }
@@ -249,11 +249,11 @@ public class BannerLayout extends RelativeLayout {
                 }
             }
         });
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         if (defaultImage != 0){
             Glide.with(getContext()).load(url).placeholder(defaultImage).centerCrop().into(imageView);
         }else {
-            Glide.with(getContext()).load(url).centerCrop().into(imageView);
+            Glide.with(getContext()).load(url).fitCenter().into(imageView);
         }
         return imageView;
     }

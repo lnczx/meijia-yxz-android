@@ -96,7 +96,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
 		
 		mUnderLineColor = attributes.getColor(
 				R.styleable.IndicatorTabBar_tab_underline_color, getResources()
-						.getColor(R.color.tab_underline_color));
+						.getColor(R.color.simi_color_red));
 		mUnderLineHeight = attributes.getDimensionPixelSize(
 				R.styleable.IndicatorTabBar_tab_underline_height, getResources()
 						.getDimensionPixelSize(R.dimen.tab_underline_height));

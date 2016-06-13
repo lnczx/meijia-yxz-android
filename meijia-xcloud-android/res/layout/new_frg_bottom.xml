@@ -4,52 +4,48 @@
     xmlns:widgets="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:layout_marginTop="8dp"
-    >
+    android:orientation="vertical" >
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.1dp"
+        android:layout_height="8dp"
         android:background="@color/simi_color_line_gray" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" 
+        android:layout_height="42dp"
         android:background="@color/simi_color_white"
-        >
+        android:orientation="horizontal" >
 
-        <com.meijialife.simi.ui.IndicatorTabBar
-            android:id="@+id/tab_indicator3"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="2"
-            android:visibility="visible"
-            widgets:tab_text_color="@color/tab_text_color"
-            widgets:tab_text_selected_color="@color/tab_text_selected_color"
-            widgets:tab_text_size="18sp" />
-
-        <LinearLayout
-            android:id="@+id/ll_more_columns2"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:visibility="visible" 
-            android:background="@color/simi_color_white"
-            >
-
-            <ImageView
-                android:id="@+id/button_more_columns2"
+            <com.meijialife.simi.ui.IndicatorTabBar
+                android:id="@+id/tab_indicator3"
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:visibility="visible"
+                widgets:tab_text_color="@color/tab_text_color"
+                widgets:tab_text_selected_color="@color/simi_color_red"
+                widgets:tab_text_size="18sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_more_columns2"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:src="@drawable/channel_add" />
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_gravity="right"
+                android:background="@color/transparent"
+                android:gravity="center"
+                android:visibility="visible" >
+
+                <ImageView
+                    android:id="@+id/button_more_columns2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/channel_add" />
+            </LinearLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="match_parent"

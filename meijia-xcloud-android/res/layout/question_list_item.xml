@@ -22,14 +22,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|left"
-            android:orientation="horizontal" >
-
+            android:orientation="horizontal" 
+            android:layout_marginBottom="5dp"
+            >
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="top|center"
+                >
             <com.meijialife.simi.ui.RoundImageView
                 android:id="@+id/m_iv_question_gold"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginLeft="@dimen/card_icon_margin_left"
+                android:layout_marginRight="@dimen/card_icon_margin_left"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/icon_gold"
                 imagecontrol:border_inside_color="@color/simi_color_white"
                 imagecontrol:border_outside_color="@color/simi_color_white"
@@ -41,16 +51,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:gravity="center"
+                android:layout_marginTop="6dp"
                 android:text="l0" 
-                android:textColor="@color/simi_color_yellow"
+                android:gravity="center"
+                android:textColor="@color/feed_gold_count"
                 />
+            
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/m_tv_question_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center|left"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/feed_question_title"
+                android:textStyle="bold"
                 android:text="问题内容" />
         </LinearLayout>
 
@@ -67,7 +84,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="10dp"
                 android:text="7分钟前"
-                android:textColor="@color/simi_color_gray" />
+                android:textSize="10sp"
+                android:textColor="@color/feed_question_time" />
         </LinearLayout>
     </LinearLayout>
 
@@ -103,7 +121,7 @@
             android:layout_centerInParent="true"
             android:layout_toRightOf="@id/m_iv_user_icon"
             android:text="姓名"
-            android:textColor="@color/simi_color_gray" />
+            android:textColor="@color/feed_question_owner" />
 
         <TextView
             android:id="@+id/m_tv_question_status"
@@ -130,7 +148,7 @@
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@id/m_line"
             android:text="2个回答"
-            android:textColor="@color/simi_color_gray" />
+            android:textColor="@color/feed_answer_count" />
     </RelativeLayout>
 
 </LinearLayout>

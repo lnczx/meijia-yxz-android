@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,15 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.FeedDetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MainPlusSignActivity;
+import com.meijialife.simi.activity.MainPlusSignInActivity;
 import com.meijialife.simi.bean.FeedCommentData;
 import com.meijialife.simi.bean.FeedData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelper;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.utils.AlertWindow;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 
@@ -107,33 +111,59 @@ public final class FeedCommentAdapter extends BaseAdapter {
         finalBitmap.display(holder.m_rv_header, feedCommentData.getHead_img());
 
         User user = DBHelper.getUser(context);
-        if (user == null) {
-            holder.m_tv_accepte.setVisibility(View.INVISIBLE);
-
-        } else {
-
-            if (StringUtils.isEquals(user.getId(), feedCommentData.getUser_id())) {
+        if (user == null) {//用户未登录
+            if(feedCommentData.getStatus()==1){//此评论已被采纳--显示
+                holder.m_tv_accepte.setText("已采纳");
+                holder.m_tv_accepte.setSelected(true);
+                holder.m_tv_accepte.setEnabled(false);
+                holder.m_tv_accepte.setVisibility(View.VISIBLE);
+            }else {//此评论未被采纳---不显示
                 holder.m_tv_accepte.setVisibility(View.INVISIBLE);
-            } else {
-                if (!StringUtils.isEquals(feedData.getUser_id(), user.getId())) {
+            }
+        } else {
+            if(feedData.getStatus() == 0){//进行中
+                //登录者和回答问题者是同一个人，
+                if(StringUtils.isEquals(user.getId(), feedCommentData.getUser_id())){
                     holder.m_tv_accepte.setVisibility(View.INVISIBLE);
-                } else {
-                    if (feedData.getStatus() == 1) {// 如果问题已采纳则不显示采纳按钮
+                }else{//显示采纳按钮
+                    //提问是当前用户则显示采纳按钮
+                    if(StringUtils.isEquals(feedData.getUser_id(),user.getId())){
+                        holder.m_tv_accepte.setText("采纳");
+                        holder.m_tv_accepte.setSelected(false);
+                        holder.m_tv_accepte.setEnabled(true);
+                        holder.m_tv_accepte.setVisibility(View.VISIBLE);
+                    }else {
                         holder.m_tv_accepte.setVisibility(View.INVISIBLE);
-                    } else {
-                        if (feedCommentData.getStatus() == 0) {
-                            holder.m_tv_accepte.setText("采纳");
-                            holder.m_tv_accepte.setSelected(false);
-                            holder.m_tv_accepte.setEnabled(true);
-                            holder.m_tv_accepte.setVisibility(View.VISIBLE);
-                        } else if (feedCommentData.getStatus() == 1) {
-                            holder.m_tv_accepte.setText("已采纳");
-                            holder.m_tv_accepte.setSelected(true);
-                            holder.m_tv_accepte.setEnabled(false);
-                            holder.m_tv_accepte.setVisibility(View.VISIBLE);
-                        }
                     }
                 }
+            }else if(feedData.getStatus() == 1){//已采纳
+                //登录者和回答问题者是同一个人，
+                if(StringUtils.isEquals(user.getId(), feedCommentData.getUser_id())){
+                   if(feedCommentData.getStatus()==0){
+                       holder.m_tv_accepte.setVisibility(View.INVISIBLE);
+
+                   }else  {
+                       holder.m_tv_accepte.setText("已采纳");
+                       holder.m_tv_accepte.setSelected(true);
+                       holder.m_tv_accepte.setEnabled(false);
+                       holder.m_tv_accepte.setVisibility(View.VISIBLE);
+                   }
+                }else{
+                    
+                    if(feedCommentData.getStatus()==0){
+                        holder.m_tv_accepte.setVisibility(View.INVISIBLE);
+
+                    }else  {
+                        holder.m_tv_accepte.setText("已采纳");
+                        holder.m_tv_accepte.setSelected(true);
+                        holder.m_tv_accepte.setEnabled(false);
+                        holder.m_tv_accepte.setVisibility(View.VISIBLE);
+                    }
+                   
+                }
+                
+            }else if(feedData.getStatus() == 2){//已关闭
+                holder.m_tv_accepte.setVisibility(View.INVISIBLE);
             }
         }
         if (feedCommentData.getIs_zan() > 0) {
@@ -157,7 +187,20 @@ public final class FeedCommentAdapter extends BaseAdapter {
         holder.m_tv_accepte.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                helper.onClick(feedCommentData.getId(), feedCommentData.getFid(), false);
+                
+                AlertWindow.dialog(context, "确认采纳","确认采纳此答案吗？", new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        helper.onClick(feedCommentData.getId(), feedCommentData.getFid(), false);
+                    }
+                }, new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        return;
+                    }
+                });
             }
         });
 

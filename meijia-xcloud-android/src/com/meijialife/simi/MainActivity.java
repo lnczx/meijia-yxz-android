@@ -44,7 +44,9 @@ import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
+import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.activity.WebViewActivity;
+import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
@@ -127,6 +129,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         setContentView(R.layout.main);
         super.onCreate(savedInstanceState);
          
+       
         init();
         initLeft();
         mBt1.performClick();
@@ -167,7 +170,17 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
          */
         ContactDBObserver observer = new ContactDBObserver(new Handler());
         getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, observer);
-        
+       
+        //是否进行广告url跳转
+        /* if(Constants.IS_JUMP){
+            toAdUrl();
+        } */
+    }
+    
+    private void toAdUrl(){
+        Intent intent = new Intent(MainActivity.this,WebViewsActivity.class);
+        intent.putExtra("url","http://51xingzheng.cn/faxian/huodong/hr1334.html");
+        startActivity(intent);
     }
     
     class ContactDBObserver extends ContentObserver{
@@ -625,6 +638,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         super.onPause();
         //友盟统计
         MobclickAgent.onPause(this);
+        Constants.IS_JUMP= false;
     }
     
 
@@ -633,7 +647,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         EMChatManager.getInstance().unregisterEventListener(this);
         EMDemoHelper sdkHelper = EMDemoHelper.getInstance();
         sdkHelper.popActivity(this);
-
+        Constants.IS_JUMP= false;
         super.onStop();
     }
 
@@ -657,6 +671,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Constants.IS_JUMP= false;
 
         if (conflictBuilder != null) {
             conflictBuilder.create().dismiss();

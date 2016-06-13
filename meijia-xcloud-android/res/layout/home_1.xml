@@ -4,8 +4,7 @@
     xmlns:widgets="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/simi_color_white"
-    >
+    android:background="@color/simi_color_white" >
 
     <LinearLayout
         android:id="@+id/new_frg_search"
@@ -13,16 +12,16 @@
         android:layout_height="@dimen/title_bar_height"
         android:orientation="vertical"
         android:visibility="gone" >
+
         <include layout="@layout/new_frg_search" />
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
         android:layout_below="@id/new_frg_search"
-         >
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
 
         <com.handmark.pulltorefresh.library.PullToRefreshListView
             xmlns:ptr="http://schemas.android.com/apk/res-auto"
@@ -45,46 +44,42 @@
             android:id="@+id/m_rl_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible"
             android:background="@color/simi_color_white"
-            >
+            android:orientation="vertical"
+            android:visibility="visible" >
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal" 
-                >
+                android:layout_height="42dp"
+                android:orientation="horizontal" >
 
                 <com.meijialife.simi.ui.IndicatorTabBar
                     android:id="@+id/tab_indicator1"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="2"
+                    android:layout_height="40dp"
+                    android:layout_gravity="left"
                     widgets:tab_text_color="@color/tab_text_color"
-                    widgets:tab_text_selected_color="@color/tab_text_selected_color"
+                    widgets:tab_text_selected_color="@color/simi_color_red"
                     widgets:tab_text_size="18sp" />
 
                 <LinearLayout
                     android:id="@+id/ll_more_columns"
-                    android:layout_width="60dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:visibility="visible"
+                    android:layout_gravity="right"
+                    android:background="@color/transparent"
                     android:gravity="center"
-                    android:layout_gravity="center"
-                    android:background="@color/simi_color_white"
-                     >
+                    android:visibility="visible" >
 
                     <ImageView
                         android:id="@+id/button_more_columns"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
                         android:layout_gravity="center"
+                        android:scaleType="centerInside"
                         android:src="@drawable/channel_add" />
                 </LinearLayout>
-            </LinearLayout>
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"

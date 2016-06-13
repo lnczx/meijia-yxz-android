@@ -89,7 +89,7 @@ public class AlertWindow {
 			OnClickListener onClickListenerCancel) {
 		AlertDialog.Builder builder = getAlertDialog(context, title, message);
 		builder.setPositiveButton("确定", onClickListenerOk);
-		builder.setNegativeButton("取消", onClickListenerCancel);
+		builder.setNegativeButton("返回", onClickListenerCancel);
 		builder.show();
 	}
 
