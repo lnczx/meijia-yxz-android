@@ -33,3 +33,12 @@ captures/
 
 # Mac Temp File
 .DS_Store
+
+# .idea
+.idea/
+
+# .iml
+*.iml
+*.classpath
+*.setting
+
