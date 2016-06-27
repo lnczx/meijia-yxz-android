@@ -15,18 +15,18 @@ import android.view.View.OnClickListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.PopupWindow.OnDismissListener;
 
 import com.meijialife.simi.Constants;
-import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.PopupMenu;
@@ -123,13 +123,15 @@ public class WebViewsFindActivity  extends Activity{
         };
         // 设置WebChromeClinent对象
         webview.setWebChromeClient(wvcc);
-        webview.loadUrl(url);
         WebSettings webSettings = webview.getSettings();
         webview.addJavascriptInterface(this, "Koolearn");
         webview.setBackgroundColor(Color.parseColor("#00000000"));
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
         webview.getSettings().setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
         webview.getSettings().setSupportZoom(true);// 是否可以缩放，默认true
+        webview.getSettings().setPluginState(PluginState.ON); 
+        
+        
         // popwindow显示webview不能设置缩放按钮，否则触屏就会报错。
         // webview.getSettings().setBuiltInZoomControls(true);// 是否显示缩放按钮，默认false
         webview.getSettings().setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式

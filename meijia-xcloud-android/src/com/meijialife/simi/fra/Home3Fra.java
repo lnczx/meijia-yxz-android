@@ -94,7 +94,6 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
     private static View layout_mask;
 
     // 布局控件定义
-    private PullToRefreshListView mPullRefreshFeedListView;// 上拉刷动态的控件
     private PullToRefreshListView mPullRefreshFriendListView;// 上拉刷动态的控件
     private int feedPage = 1;
     private int friendPage = 1;
@@ -338,9 +337,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
     }
 
     /**
-     * 处理数据加载的方法
-     * 
-     * @param list
+     *  处理数据加载的方法
+     * @param myFriendList
      */
     private void showFriendData(List<Friend> myFriendList) {
         if (friendPage == 1) {
@@ -522,7 +520,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
             return;
         }
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 

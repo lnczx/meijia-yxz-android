@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include
         android:id="@+id/view_title_bar"
@@ -14,12 +14,12 @@
         android:layout_height="match_parent"
         android:layout_below="@id/view_title_bar"
         android:fillViewport="true"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/layout1"
@@ -29,7 +29,7 @@
                 android:background="@android:color/white"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
+                android:paddingRight="16dp">
 
                 <RelativeLayout
                     android:id="@+id/layout_select_who"
@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingTop="10dp" >
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/tv_who_title"
@@ -74,7 +74,7 @@
                     android:id="@+id/layout_select_phonenumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" >
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/tv_meetting_title"
@@ -113,7 +113,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:id="@+id/layout_select_time"
@@ -121,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_main_plus_page"
                         android:gravity="center_vertical"
-                        android:padding="8dp" >
+                        android:padding="8dp">
 
                         <TextView
                             android:id="@+id/tv_start_time_icon"
@@ -163,7 +163,8 @@
                 android:background="@android:color/white"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp" >
+                android:paddingRight="16dp"
+                android:visibility="visible">
 
                 <View
                     android:layout_width="match_parent"
@@ -177,7 +178,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:gravity="center_vertical"
-                    android:padding="5dp" >
+                    android:padding="5dp">
 
                     <ImageView
                         android:id="@+id/iv_start_icon"
@@ -218,93 +219,152 @@
                         android:textColor="@color/red_text_color" />
                 </RelativeLayout>
 
-                <View
+                <LinearLayout
+                    android:id="@+id/m_all_info"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#e1e1e1" />
-
-                <RelativeLayout
-                    android:id="@+id/layout_message_tongzhi"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="5dp" >
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    >
 
-                    <ImageView
-                        android:id="@+id/iv_xiaoxi_icon"
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#e1e1e1" />
+
+                    <RelativeLayout
+                        android:id="@+id/layout_message_tongzhi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/icon_plus_tonghzhi" />
+                        android:gravity="center_vertical"
+                        android:padding="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_xiaoxi_title"
+                        <ImageView
+                            android:id="@+id/iv_xiaoxi_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_tonghzhi" />
+
+                        <TextView
+                            android:id="@+id/tv_xiaoxi_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@id/iv_xiaoxi_icon"
+                            android:text="提醒设置"
+                            android:textColor="#676767" />
+
+                        <ImageView
+                            android:id="@+id/iv_xiaoxi_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_arrowright" />
+
+                        <TextView
+                            android:id="@+id/tv_xiaoxi_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/iv_xiaoxi_arrow"
+                            android:text="按时提醒"
+                            android:textColor="@color/red_text_color" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#e1e1e1" />
+
+                    <RelativeLayout
+                        android:id="@+id/layout_repeat_cycle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@id/iv_xiaoxi_icon"
-                        android:text="提醒设置"
-                        android:textColor="#676767" />
+                        android:gravity="center_vertical"
+                        android:padding="5dp">
 
-                    <ImageView
-                        android:id="@+id/iv_xiaoxi_arrow"
+                        <ImageView
+                            android:id="@+id/iv_cycle_icon"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_repeat_cycle" />
+
+                        <TextView
+                            android:id="@+id/tv_cycle_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@id/iv_cycle_icon"
+                            android:text="重复周期"
+                            android:textColor="#676767" />
+
+                        <ImageView
+                            android:id="@+id/iv_cycle_arrow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_arrowright" />
+
+                        <TextView
+                            android:id="@+id/tv_cycle_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/iv_cycle_arrow"
+                            android:text="一次性提醒"
+                            android:textColor="@color/red_text_color" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#e1e1e1" />
+
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/icon_plus_arrowright" />
+                        android:gravity="center_vertical"
+                        android:padding="5dp">
 
-                    <TextView
-                        android:id="@+id/tv_xiaoxi_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@id/iv_xiaoxi_arrow"
-                        android:text="按时提醒"
-                        android:textColor="@color/red_text_color" />
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/iv_tongzhi_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/icon_plus_faxiaoxi" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#e1e1e1" />
+                        <TextView
+                            android:id="@+id/tv_tongzhititle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="8dp"
+                            android:layout_toRightOf="@id/iv_tongzhi_icon"
+                            android:text="立即给相关人员消息"
+                            android:textColor="#676767" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="5dp" >
-
-                    <ImageView
-                        android:id="@+id/iv_tongzhi_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/icon_plus_faxiaoxi" />
-
-                    <TextView
-                        android:id="@+id/tv_tongzhititle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="8dp"
-                        android:layout_toRightOf="@id/iv_tongzhi_icon"
-                        android:text="立即给相关人员消息"
-                        android:textColor="#676767" />
-
-                    <com.meijialife.simi.ui.ToggleButton
-                        android:id="@+id/slipBtn_fatongzhi"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
-                </RelativeLayout>
+                        <com.meijialife.simi.ui.ToggleButton
+                            android:id="@+id/slipBtn_fatongzhi"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -315,12 +375,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:orientation="vertical"
-                android:paddingRight="16dp" >
+                android:paddingRight="16dp"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="47dp"
-                    android:gravity="center_vertical" >
+                    android:gravity="center_vertical">
 
                     <View
                         android:layout_width="2dp"
@@ -371,6 +432,34 @@
                 android:textColor="@color/simi_color_red"
                 android:visibility="gone" />
 
+
+            <LinearLayout
+                android:id="@+id/m_ll_show"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_view3"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/bg_round_btn_normal"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="显示完整设置"
+                    android:textColor="@color/simi_color_gray"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/icon_bottom_arrow" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_view4"
                 android:layout_width="match_parent"
@@ -380,7 +469,7 @@
                 android:paddingBottom="5dp"
                 android:paddingLeft="40dp"
                 android:paddingRight="40dp"
-                android:paddingTop="5dp" >
+                android:paddingTop="5dp">
 
                 <Button
                     android:id="@+id/bt_create_travel"
@@ -390,8 +479,7 @@
                     android:background="@drawable/login_btn_bg_selector"
                     android:gravity="center"
                     android:text="发起事务"
-                    android:textColor="@android:color/white" >
-                </Button>
+                    android:textColor="@android:color/white"></Button>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

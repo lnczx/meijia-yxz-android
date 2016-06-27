@@ -58,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="left"
+                    android:layout_marginRight="10dp"
                     widgets:tab_text_color="@color/tab_text_color"
                     widgets:tab_text_selected_color="@color/simi_color_red"
                     widgets:tab_text_size="18sp" />

@@ -1,20 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -57,6 +42,21 @@ import com.umeng.comm.core.impl.CommunitySDKImpl;
 import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
+
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 账号信息
@@ -406,8 +406,12 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(CalendarMark.class);
         SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
-        
-        
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_USER_TAGS);//删除用户自定义
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
+
+
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {
             @Override
@@ -523,8 +527,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
     /**
      * 保存裁剪之后的图片数据
-     * 
-     * @param picdata
+     * @param data
      */
     private void getImageToView(Intent data) {
         Bundle extras = data.getExtras();

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
-    android:versionCode="40"
-    android:versionName="2.5.9" >
+    android:versionCode="41"
+    android:versionName="2.6.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="14"
         android:targetSdkVersion="22" />
 
     <!-- 在后台服务中弹出dialog用 -->
@@ -96,10 +96,12 @@
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher_logo"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppBaseTheme" >
+        android:theme="@style/AppBaseTheme"
+         >
         <activity
             android:name=".activity.GuideActivity"
             android:label="@string/app_name"
@@ -703,10 +705,27 @@
             <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
             android:process=":newinst" />
-_
+_
+
         -->
         <receiver
             android:name="com.meijialife.simi.alerm.AlermReceiver"
+            android:process=":remote" />
+        <!--事务提醒-周期提醒广播接收器-->
+        <receiver
+            android:name="com.meijialife.simi.broadcastReceiver.DayAlermReceiver"
+            android:process=":remote" />
+        <receiver
+            android:name="com.meijialife.simi.broadcastReceiver.WeekdayAlermReceiver"
+            android:process=":remote" />
+        <receiver
+            android:name="com.meijialife.simi.broadcastReceiver.WeekAlermReceiver"
+            android:process=":remote" />
+        <receiver
+            android:name="com.meijialife.simi.broadcastReceiver.MonthAlermReceiver"
+            android:process=":remote" />
+        <receiver
+            android:name="com.meijialife.simi.broadcastReceiver.YearAlermReceiver"
             android:process=":remote" />
 
         <service android:name="com.meijialife.simi.broadcastReceiver.ServiceManager" >
@@ -884,7 +903,8 @@ _
         </activity>
         <!--
             configChanges
-        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+        	配置该属性之后横竖屏切换的时候直接调用onCreate方法中的onConfigurationChanged()。不会使用onCreate()方法
+
         -->
         <!-- 发现详情页面 -->
         <activity
@@ -896,7 +916,8 @@ _
         <activity
             android:name="com.meijialife.simi.activity.WebViewsFindActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+             >
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.CardAlertActivity"
@@ -1187,9 +1208,11 @@ _
         <!-- 文章详情页面 -->
         <activity
             android:name="com.meijialife.simi.activity.ArticleDetailActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"
+            android:hardwareAccelerated="true"
+             >
         </activity>
         <activity
             android:name="com.meijialife.simi.activity.ShowWebImageActivity"
@@ -1249,6 +1272,13 @@ _
         <!-- 常用工具页面 -->
         <activity
             android:name="com.meijialife.simi.activity.CommonUtilActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+        </activity>
+        <!--文章搜索列表页面 -->
+        <activity
+            android:name="com.meijialife.simi.activity.ArticleSearchActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >

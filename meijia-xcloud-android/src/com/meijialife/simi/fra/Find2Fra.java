@@ -119,7 +119,6 @@ public class Find2Fra extends BaseFragment {
     private int page = 1;
     private View vs;//
     
-    private boolean loginStatus = false;
     private User user;
 
 
@@ -136,9 +135,6 @@ public class Find2Fra extends BaseFragment {
     }
 
     private void findViewById(View v) {
-        
-        loginStatus = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-        
         
         /**
          * 标题滑动
@@ -177,8 +173,6 @@ public class Find2Fra extends BaseFragment {
         user = DBHelper.getUser(getActivity());
         if(user!=null){
             getAppHelp();
-        }else {
-            startActivity(new Intent(getActivity(),LoginActivity.class));
         }
         initFindBeanView(v);
         getChanelList();

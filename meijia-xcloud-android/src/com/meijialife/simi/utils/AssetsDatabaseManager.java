@@ -17,6 +17,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.meijialife.simi.bean.AlertCardData;
 import com.meijialife.simi.bean.ExpressTypeData;
 import com.meijialife.simi.bean.XcompanySetting;
 import com.meijialife.simi.database.bean.AppTools;
@@ -288,6 +289,26 @@ public class AssetsDatabaseManager {
             e.printStackTrace();
         }
     }
+    
+    
+    public static void insertAlertCard(SQLiteDatabase db,AlertCardData alert ){
+        try
+        {   
+                ContentValues values = new ContentValues();
+                values.put("alert_id",alert.getAlert_id());
+                values.put("service_time",alert.getService_time());
+                values.put("cycle_type_id",alert.getCycle_type_id());
+                values.put("interval_time",alert.getInteval_time());
+                db.insert("alert_card", null, values);
+//            db.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    
   /**
    * 服务大厅数据表的插入和更新
    * @param db
@@ -407,6 +428,80 @@ public class AssetsDatabaseManager {
             e.printStackTrace();
         }
         return list;        
+    }
+    /**
+     * 
+     * @param db
+     * @return
+     */
+    public static List<AlertCardData> searchAllAlertCard(SQLiteDatabase db ){
+        List<AlertCardData> list=new ArrayList<AlertCardData>();
+        try
+        {
+            // 对数据库进行操作  
+            String sql = "select * from alert_card";
+            Cursor cur=db.rawQuery(sql, new String[]{});
+            while(cur.moveToNext())
+            {
+                AlertCardData alert = new AlertCardData();
+                alert.setAlert_id(cur.getString(0));
+                alert.setService_time(cur.getString(1));
+                alert.setCycle_type_id(cur.getString(2));
+                alert.setInteval_time(cur.getString(3));
+                list.add(alert);  
+            }
+            cur.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return list;        
+    }
+    /**
+     * 
+     * @param db
+     * @return
+     */
+    public static void  deleteAlertCardByCardId(SQLiteDatabase db ,String card_id){
+        try
+        {
+            db.delete("alert_card","alert_id=?",new String[]{card_id});
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    /**
+     *
+     * @param db
+     * @return
+     */
+    public static List<AlertCardData> searchAlertCardByPeriod(SQLiteDatabase db ,String period){
+        List<AlertCardData> list=new ArrayList<AlertCardData>();
+        try
+        {
+            // 对数据库进行操作
+            String sql = "select * from alert_card where cycle_type_id=?";
+
+            Cursor cur=db.rawQuery(sql, new String[]{period});
+            while(cur.moveToNext())
+            {
+                AlertCardData alert = new AlertCardData();
+                alert.setAlert_id(cur.getString(0));
+                alert.setService_time(cur.getString(1));
+                alert.setCycle_type_id(cur.getString(2));
+                alert.setInteval_time(cur.getString(3));
+                list.add(alert);
+            }
+            cur.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return list;
     }
     /**
      * 查询快递数据
@@ -625,9 +720,6 @@ public class AssetsDatabaseManager {
     }
     /**
      * 更新城市列表
-     * @param db
-     * @param opAd
-     * @return
      */
     public static int updateCityById(SQLiteDatabase db,City city ){
         int is_has = -1;

@@ -249,4 +249,20 @@ public class DateUtils {
         return tempString;
     }
 
+
+    public static Date getLongByPattern(Long time, String pattern) {
+        String tempString = new String();
+        Date tempDate = new Date();
+        try{
+            tempString = new SimpleDateFormat(pattern).format(time);
+            tempDate  = new SimpleDateFormat(pattern).parse(tempString);
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+        return tempDate;
+    }
+
+
+
+
 }

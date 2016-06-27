@@ -21,6 +21,8 @@ public class Constants {
     
     //登录状态key
     public static final String LOGIN_STATUS = "login_status";
+    //闹钟周期提醒
+    public static final String KEY_ALAERM_CYCLE = "alarm_cycle";
 
     public static final String USER_TAGS = "user_tags";//用户所选标签key
 
@@ -198,6 +200,11 @@ public class Constants {
     public static final String URL_POST_HELP = ROOT_URL + "op/post_help.json";
     //加号退出(第一次退到首页)，其他自然退出
     public static int BACK_TYPE = 0;//0=退到首页，1=退到上一级
+    
+    
+    
+    public static final String URL_POST_SET_LOCAL_ALARM = ROOT_URL + "card/set_local_alarm.json";
+
 
     /**服务人员搜索**/
     public static final String URL_GET_PARTNER_LIST_BY_KW =ROOT_URL +"partner/search.json";
@@ -575,6 +582,7 @@ public class Constants {
      //新首页广告位
      public static final String GET_HOME1_BANNERS_URL =ROOT_URL +"dict/get_ads.json";
      public static final String GET_HOME1_MSG_URL ="http://51xingzheng.cn/";
+     public static final String GET_HOME_SEARCH_URL ="http://51xingzheng.cn/api/get_search_results/";
      public static final String GET_HOME3_MSG_URL ="http://51xingzheng.cn/api/tags/get_tag_posts/";
      public static final String ZHI_SHI_XUE_YUAN_URL ="http://51xingzheng.cn";
      public static final String JIAN_LI_JIAO_HUAN_URL ="http://123.57.173.36/simi-h5/show/cv-switch-list.html";

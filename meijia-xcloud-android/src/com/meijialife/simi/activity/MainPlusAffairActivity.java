@@ -1,24 +1,13 @@
 package com.meijialife.simi.activity;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
@@ -49,20 +40,38 @@ import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
+import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 事务提醒
- * @author windows7
  *
+ * @author windows7
  */
-public class MainPlusAffairActivity extends BaseActivity implements OnClickListener , ItemScroListener {
-  
-    
+public class MainPlusAffairActivity extends BaseActivity implements OnClickListener, ItemScroListener {
+
     private PopupWindow mTimePopup;
     private TextView tv_date, tv_chufa_time;
     private String start_city_id;
@@ -78,7 +87,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
     private RelativeLayout select_phonenumber;
     private TextView tv_select_name;
-    private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time;
+    private TextView tv_select_number, tv_xiaoxi_content, tv_meeting_time, tv_cycle_content;
     public static final int GET_CONTACT = 1001;
     public static final int GET_USER = 1002;
     private View view_mask;
@@ -95,7 +104,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private int mHour = 0;
     private int mMinute = 0;
 
-    private Date chooseDate;//用户选择的时间
+    private Date chooseDate;// 用户选择的时间
     private String finalTime;
     private String uploadtime;
     private ContactBean contactBean;
@@ -117,18 +126,18 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
     private View v;
-    
+
     private AppHelpData appHelpData;
-    private int checkedNum=0;//所选的人员个数
-    
+    private int checkedNum = 0;// 所选的人员个数
+    private SQLiteDatabase db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.layout_main_plus_affair);
         super.onCreate(savedInstanceState);
-        v= getLayoutInflater()
-                .inflate(R.layout.layout_main_plus_affair, null);
+        v = getLayoutInflater().inflate(R.layout.layout_main_plus_affair, null);
         userInfo = DBHelper.getUserInfo(this);
-        
+
         card = (Cards) getIntent().getSerializableExtra("cards");
         initView(card);
 
@@ -138,53 +147,62 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         requestBackBtn();
         requestRightBtn();
         setTitleName("事务提醒");
-     
+
         findViewById(R.id.layout_select_time).setOnClickListener(this);
         findViewById(R.id.layout_select_phonenumber).setOnClickListener(this);
         findViewById(R.id.layout_meeting_content).setOnClickListener(this);
         findViewById(R.id.layout_message_tongzhi).setOnClickListener(this);
+        findViewById(R.id.layout_repeat_cycle).setOnClickListener(this);
+        findViewById(R.id.m_ll_show).setOnClickListener(this);
+
+
         layout_select_who = (RelativeLayout) findViewById(R.id.layout_select_who);
         layout_select_who.setOnClickListener(this);
 
         bt_create_travel = (Button) findViewById(R.id.bt_create_travel);
         bt_create_travel.setOnClickListener(this);
 
-        
         tv_select_name = (TextView) findViewById(R.id.tv_select_name);
         tv_select_number = (TextView) findViewById(R.id.tv_select_number);
         tv_xiaoxi_content = (TextView) findViewById(R.id.tv_xiaoxi_content);
+        tv_cycle_content = (TextView) findViewById(R.id.tv_cycle_content);
         tv_meeting_time = (TextView) findViewById(R.id.tv_meeting_time);
         tv_beizu_content = (TextView) findViewById(R.id.tv_beizu_content);
         tv_senser_tip = (TextView) findViewById(R.id.tv_senser_tip);
         tv_select_who_name = (TextView) findViewById(R.id.tv_select_who_name);
 
         view_mask = findViewById(R.id.view_mask);
-        
+
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
-        
+
+        AssetsDatabaseManager.initManager(MainPlusAffairActivity.this); // 初始化，只需要调用一次
+        AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();// 获取管理对象，因为数据库需要通过管理对象才能够获取
+        db = mg.getDatabase("simi01.db"); // 通过管理对象获取数据库
+
+
         /**
          * 初始化勾选本人
          */
         String userName = userInfo.getName();
         String mobile = userInfo.getMobile();
-        if(!StringUtils.isEmpty(mobile)){
-            if(StringUtils.isEmpty(userName)){
+        if (!StringUtils.isEmpty(mobile)) {
+            if (StringUtils.isEmpty(userName)) {
                 userName = mobile;
             }
-            Friend friend = new Friend(userInfo.getUser_id(),userInfo.getName(),userInfo.getHead_img(),userInfo.getMobile(),true);
+            Friend friend = new Friend(userInfo.getUser_id(), userInfo.getName(), userInfo.getHead_img(), userInfo.getMobile(), true);
             Constants.TEMP_FRIENDS.add(friend);
-            tv_select_name.setText("已选择："+userName);
-            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");            
+            tv_select_name.setText("已选择：" + userName);
+            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");
         }
-        
+
         is_senior = userInfo.getIs_senior();
         String user_type = userInfo.getUser_type();
         isUsersenior = StringUtils.isEquals(user_type, "1");
-        
+
         if (isUsersenior) {
             layout_select_who.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             layout_select_who.setVisibility(View.GONE);
         }
 
@@ -199,27 +217,28 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                             UIUtils.showToast(MainPlusAffairActivity.this, "请选择时间");
                             return;
                         }
-                        
-                        //0:00-15:00
-                        if(DateUtils.isTime15Before(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
+
+                        // 0:00-15:00
+                        if (DateUtils.isTime15Before(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)) {
                             slipBtn_mishuchuli.setToggleOn();
                             SET_SEC_DO = NEED_SEC_DO;
                             tv_senser_tip.setVisibility(View.GONE);
-                        } 
-                        //15:01-0:00
-                        else if(DateUtils.isTime15Later(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)){
+                        }
+                        // 15:01-0:00
+                        else if (DateUtils.isTime15Later(chooseDate) && DateUtils.isOperatingTimeIn(chooseDate)) {
                             slipBtn_mishuchuli.setToggleOn();
                             SET_SEC_DO = NEED_SEC_DO;
                             tv_senser_tip.setVisibility(View.GONE);
-                        } 
-                        //选择时间不对的情况走else
-                        else{
+                        }
+                        // 选择时间不对的情况走else
+                        else {
                             slipBtn_mishuchuli.setToggleOff();
                             SET_SEC_DO = NO_SEC_DO;
                             tv_senser_tip.setVisibility(View.VISIBLE);
-                            UIUtils.showActionDialog(MainPlusAffairActivity.this, "提醒", "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。","确定", null, null, null);
+                            UIUtils.showActionDialog(MainPlusAffairActivity.this, "提醒",
+                                    "秘书工作时间为7:00～19:00，请在此时间内设置秘书提醒时间，0:01—15:00可以设置当天11:00之后的提醒；15:01至0:00可以设置次日7:00之后的提醒。", "确定", null, null, null);
                         }
-                        
+
                     } else {
                         slipBtn_mishuchuli.setToggleOff();
                         SET_SEC_DO = NO_SEC_DO;
@@ -227,7 +246,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                         startActivity(new Intent(MainPlusAffairActivity.this, FindSecretaryActivity.class));
                         Toast.makeText(MainPlusAffairActivity.this, "你没有购买秘书卡", Toast.LENGTH_SHORT).show();
                     }
-                }else{
+                } else {
                     tv_senser_tip.setVisibility(View.GONE);
                 }
             }
@@ -289,7 +308,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
                 // 处理秘书处理
                 int sec_do = Integer.valueOf(card.getSet_sec_do());
-                LogOut.debug("是否需要秘书处理:" + sec_do);
 
                 if (sec_do == 1) {// 有秘书
                     slipBtn_mishuchuli.setToggleOn();
@@ -313,38 +331,47 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
             }
         }
-        //请求帮助接口
+        // 请求帮助接口
         getAppHelp();
-     }
+    }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.layout_select_phonenumber:// 选择通讯录
-            Intent intent = new Intent(MainPlusAffairActivity.this, ContactChooseActivity.class);
-            startActivityForResult(intent, GET_CONTACT);
-            break;
-        case R.id.layout_meeting_content:
-            Intent intent2 = new Intent(MainPlusAffairActivity.this, MainPlusContentActivity.class);
-            intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.AFFAIR);
-            startActivity(intent2);
-            break;
-        case R.id.layout_message_tongzhi:
-            showRemindWindow();
-            break;
-        case R.id.layout_select_time:
-            showDateWindow();
-            break;
-        case R.id.bt_create_travel:
-            SpFileUtil.clearFile(MainPlusAffairActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
-            createCard(isUpdate);
-            break;
-        case R.id.layout_select_who:
-            Intent mintent = new Intent(MainPlusAffairActivity.this, CreateForWhoActivity.class);
-            startActivityForResult(mintent, GET_USER);
-            break;
-        default:
-            break;
+            case R.id.layout_select_phonenumber:// 选择通讯录
+                Intent intent = new Intent(MainPlusAffairActivity.this, ContactChooseActivity.class);
+                startActivityForResult(intent, GET_CONTACT);
+                break;
+            case R.id.layout_meeting_content:
+                Intent intent2 = new Intent(MainPlusAffairActivity.this, MainPlusContentActivity.class);
+                intent2.putExtra(Constants.MAIN_PLUS_FLAG, Constants.AFFAIR);
+                startActivity(intent2);
+                break;
+            case R.id.layout_message_tongzhi://提醒设置
+                showRemindWindow();
+                break;
+            case R.id.layout_repeat_cycle://重复周期
+                showCycleWindow();
+                break;
+            case R.id.m_ll_show://显示完整配置
+                Log.d("tag", "显示完整内容");
+                findViewById(R.id.m_all_info).setVisibility(View.VISIBLE);
+                findViewById(R.id.m_ll_show).setVisibility(View.GONE);
+                break;
+            case R.id.layout_select_time:
+                showDateWindow();
+                break;
+            case R.id.bt_create_travel:
+                SpFileUtil.clearFile(MainPlusAffairActivity.this, SpFileUtil.KEY_CHECKED_FRIENDS);
+                createCard(isUpdate);
+                break;
+            case R.id.layout_select_who:
+                Intent mintent = new Intent(MainPlusAffairActivity.this, CreateForWhoActivity.class);
+                startActivityForResult(mintent, GET_USER);
+                break;
+            default:
+                break;
         }
 
     }
@@ -418,7 +445,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         hour.setVisibleItems(7);// 设置显示行数
         minute.setVisibleItems(7);
 
-        hour.setCurrentItem( Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+        hour.setCurrentItem(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         minute.setCurrentItem(Calendar.getInstance().get(Calendar.MINUTE));
         year.setCurrentItem(norYear - 2016);
         month.setCurrentItem(curMonth - 1);
@@ -435,28 +462,29 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 int mhour = hour.getCurrentItem();
                 int mMinu = minute.getCurrentItem();
                 String date = mYear + "-" + mMonth + "-" + mDay;
-                String time = mhour + ":" + mMinu ;
+                String time = mhour + ":" + mMinu;
 
-//              Calendar cal = Calendar.getInstance();
-//              int day = cal.get(Calendar.DATE); // 日
-//              int month = cal.get(Calendar.MONTH) + 1;// 月
-//              int year = cal.get(Calendar.YEAR); // 年
-//              int hour = cal.get(Calendar.HOUR_OF_DAY);
-//              int minute = cal.get(Calendar.MINUTE);
-              
-              Date currentDate = new Date();;
-              try {
-                  chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date + " " + time);
-              } catch (ParseException e) {
-                  // TODO Auto-generated catch block
-                  e.printStackTrace();
-              }
+                // Calendar cal = Calendar.getInstance();
+                // int day = cal.get(Calendar.DATE); // 日
+                // int month = cal.get(Calendar.MONTH) + 1;// 月
+                // int year = cal.get(Calendar.YEAR); // 年
+                // int hour = cal.get(Calendar.HOUR_OF_DAY);
+                // int minute = cal.get(Calendar.MINUTE);
 
-//              if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
-              if(chooseDate.getTime() < currentDate.getTime()){
+                Date currentDate = new Date();
+                ;
+                try {
+                    chooseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date + " " + time);
+                } catch (ParseException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                // if (mYear < year || mMonth < month || mDay < day || mhour < hour || mMinu < minute) {
+                if (chooseDate.getTime() < currentDate.getTime()) {
                     UIUtils.showToast(MainPlusAffairActivity.this, "您只能选择未来时间进行提醒哦！");
-                }else{
-                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu) ;
+                } else {
+                    String cultime = (mhour < 10 ? "0" + mhour : mhour) + ":" + (mMinu < 10 ? "0" + mMinu : mMinu);
                     finalTime = date + " " + cultime;
 
                     tv_meeting_time.setText(finalTime);
@@ -479,7 +507,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     }
 
     /**
-     * 
      * @param year
      * @param month
      * @return
@@ -488,29 +515,29 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         int day = 30;
         boolean flag = false;
         switch (year % 4) {
-        case 0:
-            flag = true;
-            break;
-        default:
-            flag = false;
-            break;
+            case 0:
+                flag = true;
+                break;
+            default:
+                flag = false;
+                break;
         }
         switch (month) {
-        case 1:
-        case 3:
-        case 5:
-        case 7:
-        case 8:
-        case 10:
-        case 12:
-            day = 31;
-            break;
-        case 2:
-            day = flag ? 29 : 28;
-            break;
-        default:
-            day = 30;
-            break;
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                day = 31;
+                break;
+            case 2:
+                day = flag ? 29 : 28;
+                break;
+            default:
+                day = 30;
+                break;
         }
         return day;
     }
@@ -535,7 +562,28 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         mTimePopup.setOutsideTouchable(true);
         mTimePopup.setBackgroundDrawable(new BitmapDrawable());
         mTimePopup.setAnimationStyle(R.style.PostBarShareAnim);
- 
+
+        mTimePopup.showAtLocation(view_mask, Gravity.BOTTOM, 0, 0);
+
+        mTimePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                view_mask.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public void showCycleWindow() {
+        view_mask.setVisibility(View.VISIBLE);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflater.inflate(R.layout.item_popup_remind, null, false);
+        InitTimeCycle(v);
+
+        mTimePopup = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        mTimePopup.setOutsideTouchable(true);
+        mTimePopup.setBackgroundDrawable(new BitmapDrawable());
+        mTimePopup.setAnimationStyle(R.style.PostBarShareAnim);
+
         mTimePopup.showAtLocation(view_mask, Gravity.BOTTOM, 0, 0);
 
         mTimePopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -560,7 +608,6 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         items[7] = "提前6小时";
         items[8] = "提前1天";
         items[9] = "提前2天";
-
 
         arryadapter = new ArrayWheelAdapter<>(this, items);
         remind.setViewAdapter(arryadapter);
@@ -594,46 +641,100 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         return view;
     }
 
+    private int[] cycleId = {0, 1, 2, 3, 4, 5};
+    private int period = 0;
+
+    private View InitTimeCycle(View view) {
+
+        remind = (WheelView) view.findViewById(R.id.remind);
+        String[] items = new String[6];
+        items[0] = "一次性提醒";
+        items[1] = "每天";
+        items[2] = "每个工作日（周一至周五）";
+        items[3] = "每周（周一）";
+        items[4] = "每月";
+        items[5] = "每年";
+
+
+        arryadapter = new ArrayWheelAdapter<>(this, items);
+        remind.setViewAdapter(arryadapter);
+        remind.setCyclic(false);// 是否可循环滑动
+        remind.setVisibleItems(items.length);// 设置显示行数
+        if(card !=null){
+            remind.setCurrentItem(card.getPeriod());
+        }else{
+            remind.setCurrentItem(0);
+        }
+
+        arryadapter.setTextColor(getResources().getColor(R.color.simi_color_black));
+        TextView bt = (TextView) view.findViewById(R.id.tv_get_time);
+        bt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentItem = remind.getCurrentItem();
+                period = cycleId[currentItem];
+//                remindAlerm = currentItem;
+                String itemText = (String) arryadapter.getItemText(currentItem);
+                tv_cycle_content.setText(itemText);
+                if (null != mTimePopup) {
+                    mTimePopup.dismiss();
+                }
+                // Toast.makeText(MainPlusTrevelActivity.this, time, 1).show();
+            }
+        });
+        TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mTimePopup) {
+                    mTimePopup.dismiss();
+                }
+            }
+        });
+        return view;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-            case GET_CONTACT:
-                if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String str =showCheckedName();
-                            tv_select_name.setText("已选择：" + str);
-                            tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");
-                        }
-                    });
-                }else {
-                    tv_select_name.setText("已选择：" + "");
-                    tv_select_number.setText(0+ "位");
-                }
-                break;
-            case GET_USER:
-                for_userid = data.getExtras().getString("for_userid");
-                String for_name = data.getExtras().getString("for_name");
+                case GET_CONTACT:
+                    if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String str = showCheckedName();
+                                tv_select_name.setText("已选择：" + str);
+                                tv_select_number.setText(Constants.TEMP_FRIENDS.size() + "位");
+                            }
+                        });
+                    } else {
+                        tv_select_name.setText("已选择：" + "");
+                        tv_select_number.setText(0 + "位");
+                    }
+                    break;
+                case GET_USER:
+                    for_userid = data.getExtras().getString("for_userid");
+                    String for_name = data.getExtras().getString("for_name");
 
-                tv_select_who_name.setText(for_name);
-                break;
-            default:
-                break;
+                    tv_select_who_name.setText(for_name);
+                    break;
+                default:
+                    break;
             }
         }
     }
-    private String showCheckedName(){
+
+    private String showCheckedName() {
         StringBuilder sb = new StringBuilder();
-        //我的好友
+        // 我的好友
         if (Constants.TEMP_FRIENDS != null && Constants.TEMP_FRIENDS.size() > 0) {
             for (int i = 0; i < Constants.TEMP_FRIENDS.size(); i++) {
                 Friend myFriend = Constants.TEMP_FRIENDS.get(i);
                 if (!StringUtils.isEmpty(myFriend.getName())) {
                     sb.append(myFriend.getName() + ",");
-                }else {
+                } else {
                     sb.append(myFriend.getMobile() + ",");
                 }
             }
@@ -643,8 +744,12 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         return str;
     }
 
-     
-    private void createCard(boolean update) {
+    /**
+     * 创建事务提醒卡片
+     *
+     * @param update
+     */
+    private void createCard(final boolean update) {
         showDialog();
 
         if (!isUpdate) {// 如果不是更新的
@@ -658,7 +763,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
 
         }
 
-        String c_id = DBHelper.getUser(MainPlusAffairActivity.this).getId();
+        final String c_id = DBHelper.getUser(MainPlusAffairActivity.this).getId();
         String mtime = " " + finalTime + "";
 
         String meetingtime = tv_meeting_time.getText().toString();
@@ -687,12 +792,12 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             fdate = mdate;
 
         }
-        
-        if (StringUtils.isEquals( userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
+
+        if (StringUtils.isEquals(userInfo.getUser_type(), "1") && StringUtils.isEmpty(for_userid)) {
             UIUtils.showToast(MainPlusAffairActivity.this, "请选择为谁创建");
         }
 
-        if (StringUtils.isEmpty(mtime)) {
+        if (StringUtils.isEmpty(uploadtime)) {
             UIUtils.showToast(MainPlusAffairActivity.this, "请选择提醒时间");
             dismissDialog();
             return;
@@ -702,12 +807,13 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         map.put("card_id", update ? card.getCard_id() : "0");
         map.put("card_type", "3");
         map.put("create_user_id", c_id + "");
-        map.put("user_id", isUsersenior?for_userid:c_id);
+        map.put("user_id", isUsersenior ? for_userid : c_id);
         map.put("attends", mJson);
+        map.put("period", period + "");
         map.put("service_time", uploadtime);
         map.put("service_content", Constants.CARD_ADD_AFFAIR_CONTENT);
-        map.put("set_remind", remindAlerm+"");
-        map.put("set_now_send", SET_SEND +"");
+        map.put("set_remind", remindAlerm + "");
+        map.put("set_now_send", SET_SEND + "");
         map.put("set_sec_do", SET_SEC_DO + "");
 
         AjaxParams param = new AjaxParams(map);
@@ -721,6 +827,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 Toast.makeText(getApplicationContext(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
+            @SuppressWarnings("deprecation")
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -736,9 +843,27 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                         if (status == Constants.STATUS_SUCCESS) {
                             Toast.makeText(MainPlusAffairActivity.this, "创建成功了", Toast.LENGTH_SHORT).show();
                             MainPlusAffairActivity.this.finish();
-                            
-                          //初始化本地提醒闹钟
-//                            AlermUtils.initAlerm(MainPlusAffairActivity.this, remindAlerm, fdate, "事务提醒", Constants.CARD_ADD_AFFAIR_CONTENT);
+                            Gson gson = new Gson();
+                            card = gson.fromJson(data, Cards.class);
+                            ArrayList<ContactBean> list = gson.fromJson(mJson, new TypeToken<ArrayList<ContactBean>>() {
+                            }.getType());
+                            //提醒人含有自己则给自己设置本地闹钟
+                            if (list != null && list.size() > 0) {
+                                for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
+                                    ContactBean contactBean = (ContactBean) iterator.next();
+                                    if (StringUtils.isEquals(contactBean.getUser_id(), c_id)
+                                            || StringUtils.isEquals(contactBean.getMobile(), userInfo.getMobile())) {
+
+                                        if(isUpdate){//如果是更新，删除数据库数据
+                                            AssetsDatabaseManager.deleteAlertCardByCardId(db, card.getCard_id());
+                                        }
+                                        Date date = new Date(Long.parseLong(card.getService_time()) * 1000);
+                                        AlermUtils.initAlerm(MainPlusAffairActivity.this, period, remindAlerm, date, "差旅规划", card.getService_content(),
+                                                card.getCard_id());
+                                        setLocalAlarm(card.getCard_id());
+                                    }
+                                }
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusAffairActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -757,67 +882,30 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 }
             }
         });
-    };
-
-    @Override
-    protected void onResume() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tv_beizu_content.setText(Constants.CARD_ADD_AFFAIR_CONTENT);
-            }
-        });
-        super.onResume();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Constants.CARD_ADD_AFFAIR_CONTENT="";
-        Constants.finalContactList = new ArrayList<String>();
-
-        Constants.TEMP_FRIENDS.clear();
     }
 
-    @Override
-    public void onFinished() {
-        int mYear = year.getCurrentItem() + 2016;
-        int mMonth = month.getCurrentItem() + 1;
-        
-        int maxIndex = getDay(mYear, mMonth);
-        int index = day.getCurrentItem();
-        if(index > maxIndex-1){
-            index = maxIndex;
-            day.setCurrentItem(index-1);
-        }
-        
-        initDay(mYear, mMonth);
-    }
-    
-    /*
-     * 帮助接口
+    /**
+     * 卡片设置本地闹钟状态接口
      */
-    
-    private void getAppHelp() {
-        String user_id = DBHelper.getUser(this).getId();
+    private void setLocalAlarm(String cardId) {
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), 0).show();
             return;
         }
-        final String action = "alarm";
         User user = DBHelper.getUser(MainPlusAffairActivity.this);
         Map<String, String> map = new HashMap<String, String>();
-        map.put("action",action);
-        map.put("user_id",""+user.getId());
+        map.put("card_id", cardId);
+        map.put("user_id", "" + user.getId());
         AjaxParams param = new AjaxParams(map);
         showDialog();
-        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+        new FinalHttp().post(Constants.URL_POST_SET_LOCAL_ALARM, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
                 Toast.makeText(MainPlusAffairActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -830,11 +918,106 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(MainPlusAffairActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tv_beizu_content.setText(Constants.CARD_ADD_AFFAIR_CONTENT);
+            }
+        });
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Constants.CARD_ADD_AFFAIR_CONTENT = "";
+        Constants.finalContactList = new ArrayList<String>();
+
+        Constants.TEMP_FRIENDS.clear();
+    }
+
+    @Override
+    public void onFinished() {
+        int mYear = year.getCurrentItem() + 2016;
+        int mMonth = month.getCurrentItem() + 1;
+
+        int maxIndex = getDay(mYear, mMonth);
+        int index = day.getCurrentItem();
+        if (index > maxIndex - 1) {
+            index = maxIndex;
+            day.setCurrentItem(index - 1);
+        }
+
+        initDay(mYear, mMonth);
+    }
+
+    /*
+     * 帮助接口
+     */
+
+    private void getAppHelp() {
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String action = "alarm";
+        User user = DBHelper.getUser(MainPlusAffairActivity.this);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("action", action);
+        map.put("user_id", "" + user.getId());
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(MainPlusAffairActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                appHelpData = gson.fromJson(data, AppHelpData.class); 
-                                TipPopWindow addPopWindow = new TipPopWindow(MainPlusAffairActivity.this,appHelpData,action);  
-                                addPopWindow.showPopupWindow(v);  
+                                appHelpData = gson.fromJson(data, AppHelpData.class);
+                                TipPopWindow addPopWindow = new TipPopWindow(MainPlusAffairActivity.this, appHelpData, action);
+                                addPopWindow.showPopupWindow(v);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -853,12 +1036,11 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                     errorMsg = getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息
-                if(!StringUtils.isEmpty(errorMsg.trim())){
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
                     UIUtils.showToast(MainPlusAffairActivity.this, errorMsg);
                 }
             }
         });
     }
-    
 
 }

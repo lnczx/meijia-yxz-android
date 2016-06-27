@@ -351,7 +351,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@android:color/white"
                 android:orientation="vertical"
-                android:paddingRight="16dp" >
+                android:paddingRight="16dp"
+                android:visibility="gone"
+                >
 
                 <RelativeLayout
                     android:layout_width="match_parent"

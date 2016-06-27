@@ -20,10 +20,13 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.GeolocationPermissions.Callback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.PluginState;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -75,7 +78,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_article_detail);
         super.onCreate(savedInstanceState);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         initView();
 
     }
@@ -103,39 +106,44 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         if (is_show) {
             webview_comment.setVisibility(View.VISIBLE);
         }
-       
+
         // 设置WebChromeClinent对象
         webview.setWebChromeClient(new MyWebChromeClient());
-        webview.setBackgroundColor(0);
-        webview.getBackground().setAlpha(0); // 设置填充透明度 范围：0-255
-        webview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);//解决图文混排滑动闪烁
+        webview.setWebViewClient(new MyWebViewClient());
         WebSettings webSettings = webview.getSettings();
-        
-        // 支持内容重新布局
-        webSettings.setDefaultTextEncodingName("utf-8");
-//        webview.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
-//        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
-//        webSettings.setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
+        setSetting(webSettings);
+
+    }
+
+    @SuppressWarnings("deprecation")
+    @SuppressLint("SetJavaScriptEnabled")
+    private void setSetting(WebSettings webSettings) {
+        webSettings.setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
         // popwindow显示webview不能设置缩放按钮，否则触屏就会报错。
-        webSettings.setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式
-        webSettings.setLoadWithOverviewMode(true);// 和setUseWideViewPort(true)一起解决网页自适应问题
-        webSettings.setAppCacheEnabled(false);// 是否使用缓存
-        webSettings.setDomStorageEnabled(true);// DOM Storage
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        
-        //禁止webView缩放
-        webSettings.setBuiltInZoomControls(false);
+        webSettings.setBuiltInZoomControls(false);// 禁止webView缩放
         webSettings.setSupportZoom(false);
         webSettings.setDisplayZoomControls(false);
         webSettings.setDatabaseEnabled(true);// webview设置启用数据库
+        webSettings.setDomStorageEnabled(true); // 开启DomStorage缓存
+
+        // 支持内容重新布局
+        webSettings.setDefaultTextEncodingName("utf-8");
+        // webview.addJavascriptInterface(new JavascriptInterface(this), "imagelistner");
+        
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
+
+        webSettings.setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式
+        webSettings.setLoadWithOverviewMode(true);// 和setUseWideViewPort(true)一起解决网页自适应问题
+        webSettings.setAppCacheEnabled(false);// 是否使用缓存
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setPluginState(PluginState.ON);
+
         String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();// 设置定位的数据库路径
         webSettings.setGeolocationDatabasePath(dir);
-        webSettings.setDomStorageEnabled(true); // 开启DomStorage缓存
-        webSettings.setDefaultFontSize(40);//设置默认字体大小
-        webview.setWebViewClient(new MyWebViewClient());
-
+        webSettings.setDefaultFontSize(40);// 设置默认字体大小
+        webSettings.setTextSize(TextSize.LARGER);
     }
-    
+
     
 
     TextWatcher tw = new TextWatcher() {
@@ -166,29 +174,29 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             }
         }
     };
+
     @SuppressLint("SetJavaScriptEnabled")
-	public class MyWebViewClient extends WebViewClient{
+    public class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
         }
-        
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            view.getSettings().setJavaScriptEnabled(true);  
+            view.getSettings().setJavaScriptEnabled(true);
             super.onPageStarted(view, url, favicon);
         }
-        
+
         @Override
         public void onPageFinished(WebView view, String url) {
-            view.getSettings().setJavaScriptEnabled(true); 
+            view.getSettings().setJavaScriptEnabled(true);
             addImageClickListner();
             super.onPageFinished(view, url);
         }
     }
-    
-    
+
     public class MyWebChromeClient extends WebChromeClient {
         @Override
         public void onReceivedTitle(WebView view, String title) {
@@ -221,7 +229,20 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         }
 
     };
-    //定义JavaScript方法调用接口
+
+    @Override
+    protected void onPause() {
+        webview.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        webview.onResume();
+        super.onResume();
+    }
+
+    // 定义JavaScript方法调用接口
     public class JavascriptInterface {
 
         private Context context;
@@ -237,25 +258,18 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             context.startActivity(intent);
         }
     }
-    //增加图片点击事件
+
+    // 增加图片点击事件
     private void addImageClickListner() {
-     /*   webview.loadUrl("javascript:(function(){" +
-                "document.getElementsByTagName(\"a\").href='#'; " 
-                +"})()");*/
-      /*  webview.loadUrl("javascript:(function(){" +
-                "var objs = document.getElementsByTagName(\"img\"); " + 
-                "for(var i=0;i<objs.length;i++)  " + 
-                "{"
-                + "    objs[i].onclick=function()  " + 
-                "    {  " 
-                + "    window.imagelistner.openImage(this.src);  " + 
-                "    }  " + 
-                "}" + 
-                "})()");*/
+        /*
+         * webview.loadUrl("javascript:(function(){" + "document.getElementsByTagName(\"a\").href='#'; " +"})()");
+         */
+        /*
+         * webview.loadUrl("javascript:(function(){" + "var objs = document.getElementsByTagName(\"img\"); " + "for(var i=0;i<objs.length;i++)  " +
+         * "{" + "    objs[i].onclick=function()  " + "    {  " + "    window.imagelistner.openImage(this.src);  " + "    }  " + "}" + "})()");
+         */
     }
 
-    
-    
     private void setOnClick() {
 
         comment_content = (EditText) findViewById(R.id.comment_content);
@@ -271,7 +285,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         comment_content.addTextChangedListener(tw);
         boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         if (is_login) {
-            getZan();//是否点赞接口      
+            getZan();// 是否点赞接口
         }
     }
 
@@ -569,11 +583,12 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                             if (StringUtils.isNotEmpty(post)) {
                                 Gson gson = new Gson();
                                 homePost = gson.fromJson(post, HomePost.class);
-//                                String a =homePost.getContent() .replaceAll("<a\\s+href\\s*=\\s*\".*?\">(.*?)</a>", "$1");
-                                String a =homePost.getContent();
+                                // String a =homePost.getContent() .replaceAll("<a\\s+href\\s*=\\s*\".*?\">(.*?)</a>", "$1");
+                                String a = homePost.getContent();
 
-                                String temp = "<html><head><meta content='initial-scale=1.0, user-scalable=no'/><style>img{margin:10px;width:95%;height:auto !important;max-width:100%;max-height:auto;vertical-align:middle;}p{text-align:left;margin:10px;}</style><title>" +homePost.getTitle()+ "</title></head><body>" + a + "</body></html>";
-                                String url = "<p>当年剧中的主演的现状又是怎样的呢？</p><p><img src='http://p3.pstatp.com/large/71e00015aeb216de9a6' img_width='640' img_height='506' alt='《情深深雨濛濛》3位主演相继去世，最小才33岁！看完我沉默了'onerror='javascript:errorimg.call(this);' ></p>"; 
+                                String temp = "<html><head><meta content='initial-scale=1.0, user-scalable=no'/><style>img{margin:10px;width:95%;height:auto !important;max-width:100%;max-height:auto;vertical-align:middle;}p{text-align:left;margin:10px;}</style><title>"
+                                        + homePost.getTitle() + "</title></head><body>" + a + "</body></html>";
+                                String url = "<p>当年剧中的主演的现状又是怎样的呢？</p><p><img src='http://p3.pstatp.com/large/71e00015aeb216de9a6' img_width='640' img_height='506' alt='《情深深雨濛濛》3位主演相继去世，最小才33岁！看完我沉默了'onerror='javascript:errorimg.call(this);' ></p>";
                                 webview.loadData(temp, "text/html; charset=UTF-8", null);// 设置中文乱码
 
                             }
@@ -592,4 +607,5 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             }
         });
     }
+   
 }

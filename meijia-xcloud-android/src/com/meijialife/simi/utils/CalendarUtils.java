@@ -175,5 +175,35 @@ public class CalendarUtils {
         }
         return mYear + "-" + mMonth + "-" + mDay;
     }
+    
+    /**
+     * 判断当前日期是否为工作日
+     * @return
+     */
+    public static boolean isWeekdayByToday() {
+        boolean flag = true;
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        int day = c.get(Calendar.DAY_OF_WEEK);
+        if(day==1 || day==7){
+            flag = false;
+        }else {
+            flag = true;
+        }
+        return flag;
+       }
+
+    /**
+     * 根据日期返回周
+     * @param date
+     * @return
+     */
+    public static int dayForWeek(String date) throws Exception{
+        //1==周日，7==周六
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(format.parse(date));
+        return c.get(Calendar.DAY_OF_WEEK);
+       }
 
 }

@@ -3,6 +3,7 @@ package com.meijialife.simi.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -48,8 +49,10 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.bean.UserMsg;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.BasicToolUtil;
+import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
@@ -274,10 +277,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     }
 
     /**
-     * 普通登陆
-     * 
-     * @param name
-     * @param pwd
+     * 普通登录
      */
     private void login_nomal() {
         final String mobile = et_user.getText().toString().trim();
@@ -660,7 +660,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                 loginUmengComm();//登陆友盟社区
                                 loginIm();// 去登陆环信
                                 updateCalendarMark();// 请求日历数据
-                                
+                                getUserMsg();//更新用户未读信息状态
                             } else {
                                 // UIUtils.showToast(LoginActivity.this, "数据错误");
                             }
@@ -690,6 +690,79 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     }
 
+
+    /**
+     * 获得用户消息列表接口
+     */
+    private void getUserMsg() {
+        User user = DBHelper.getUser(this);
+        if (user != null) {
+            if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
+                Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("user_id", user.getId());
+            map.put("service_date", DateUtils.getStringByPattern(System.currentTimeMillis(), "yyyy-MM-dd"));
+            AjaxParams param = new AjaxParams(map);
+
+            new FinalHttp().get(Constants.URL_GET_USER_MSG_LIST, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    List<UserMsg> userMsgs = gson.fromJson(data, new TypeToken<ArrayList<UserMsg>>() {
+                                    }.getType());
+
+                                    if(userMsgs!=null && userMsgs.size()>1){
+                                        SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,true);
+                                    }else{
+                                        SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,false);
+                                    }
+                                } else {
+                                    SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,false);
+                                }
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
+                            } else {
+                                errorMsg = getString(R.string.servers_error);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        errorMsg = getString(R.string.servers_error);
+                    }
+                    // 操作失败，显示错误信息|
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(LoginActivity.this, errorMsg);
+                    }
+                }
+            });
+        }
+    }
+
     private void loginUmengComm(){
         
         
@@ -717,12 +790,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
            }
         });
     }
-    
-    
+
+
     /**
      * 登录环信
-     * 
-     * @param view
      */
     public void loginIm() {
         final String currentUsername = userInfo.getIm_username();

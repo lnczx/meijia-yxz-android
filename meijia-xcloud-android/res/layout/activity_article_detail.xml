@@ -9,6 +9,6 @@
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
 
-   <include layout="@layout/common_webview_center" />
+    <include layout="@layout/common_webview_center" />
 
 </LinearLayout>

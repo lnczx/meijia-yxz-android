@@ -46,7 +46,7 @@ public class CardAlertActivity extends Activity {
     private Button bt_alert_detail;
     private Button bt_alert_done;
     
-    private String mCardId;//卡片Id
+    private String mCardId="1";//卡片Id
     private String mAlertTitle="";
     private String mAlertText ="";
     private String mAlert_date= "";
@@ -54,8 +54,6 @@ public class CardAlertActivity extends Activity {
     private Date mAlertDate = new Date();
     
     private Cards card;
-    private CardExtra cardExtra;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         
@@ -73,31 +71,21 @@ public class CardAlertActivity extends Activity {
     }
     
 	private void findView(){
-        
-        mAlertTitle = getIntent().getStringExtra("title");
-        mAlertText = getIntent().getStringExtra("text");
-        mCardId = getIntent().getStringExtra("card_id");
-        mAlertDate = (Date) getIntent().getSerializableExtra("date");
-        mAlert_time = new SimpleDateFormat("HH:mm").format(mAlertDate);
-        mAlert_date = new SimpleDateFormat("yyyy-MM-dd").format(mAlertDate);
-        
+
+	    mCardId = getIntent().getStringExtra("card_id");
+	   
         tv_alert_title = (TextView)findViewById(R.id.tv_alert_title);
         tv_alert_time = (TextView)findViewById(R.id.tv_alert_time);
         tv_alert_date = (TextView)findViewById(R.id.tv_alert_date);
         tv_alert_text = (TextView)findViewById(R.id.tv_alert_text);
         bt_alert_detail = (Button) findViewById(R.id.bt_alert_detail);
         bt_alert_done = (Button)findViewById(R.id.bt_alert_done);
-        
+       
         initView();
     }
     
     private void initView(){
-        tv_alert_title.setText(mAlertTitle.trim());
-        tv_alert_time.setText(mAlert_time.trim());
-        tv_alert_date.setText(mAlert_date.trim());
-        tv_alert_text.setText(mAlertText.trim());
         getCardData();
-        
         bt_alert_done.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,13 +97,12 @@ public class CardAlertActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(CardAlertActivity.this, CardDetailsActivity.class);
                 intent.putExtra("card_id",mCardId);
-              /*  intent.putExtra("Cards", card);
-                intent.putExtra("card_extra",cardExtra);*/
                 startActivity(intent);
                 CardAlertActivity.this.finish();
             }
         });
     }
+    
     /**
      * 卡片详情列表
      */
@@ -146,7 +133,6 @@ public class CardAlertActivity extends Activity {
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
-                LogOut.i("========", "onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -157,11 +143,12 @@ public class CardAlertActivity extends Activity {
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 card = gson.fromJson(data, Cards.class);
+                                showData(card);
                                 String card_extra = card.getCard_extra();
                                 if(!StringUtils.isEmpty(card_extra)){
-                                    cardExtra = gson.fromJson(card.getCard_extra(),CardExtra.class);
+                                    gson.fromJson(card.getCard_extra(),CardExtra.class);
                                 }else {
-                                    cardExtra = new CardExtra();
+                                    new CardExtra();
                                 }
                             } else {
                                 // UIUtils.showToast(getActivity(), "数据错误");
@@ -191,6 +178,21 @@ public class CardAlertActivity extends Activity {
         });
     }
     
+    private void showData(Cards card){
+        mAlertTitle =card.getCard_type_name();
+        mAlertText = card.getService_content();
+        mAlertDate =new Date(Long.parseLong(card.getService_time()) * 1000);
+
+        if(mAlertDate!=null){
+            mAlert_time = new SimpleDateFormat("HH:mm").format(mAlertDate);
+            mAlert_date = new SimpleDateFormat("yyyy-MM-dd").format(mAlertDate);
+        }
+        tv_alert_title.setText(mAlertTitle.trim());
+        tv_alert_time.setText(mAlert_time.trim());
+        tv_alert_date.setText(mAlert_date.trim());
+        tv_alert_text.setText(mAlertText.trim());
+    }
+    
     private ProgressDialog m_pDialog;
     public void showDialog() {
         if(m_pDialog == null){
@@ -213,7 +215,6 @@ public class CardAlertActivity extends Activity {
     
     @Override
     protected void onStop() {
-        // TODO Auto-generated method stub
         super.onStop();
         dismissDialog();
     

@@ -22,6 +22,9 @@ public class SpFileUtil {
     public static final String KEY_CHECKED_STAFFS = "checked_staffs";//请假选人
  
     public static final String KEY_USER_TAGS = "user_tags";//用户选择的文章标签
+  
+    public static final String KEY_ALAERM_CYCLE = "alarm_cycle";//闹钟周期key
+    public static final String KEY_MSG_UNREAD = "msg_unread";//未读消息key
 
     /**
      * @WARNING Be careful, this maybe overwrite a exist value.<br>

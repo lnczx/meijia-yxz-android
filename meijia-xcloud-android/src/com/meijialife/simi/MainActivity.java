@@ -1,11 +1,18 @@
 package com.meijialife.simi;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
@@ -22,6 +29,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,6 +43,8 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.LoginActivity;
@@ -44,13 +54,13 @@ import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
-import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
+import com.meijialife.simi.bean.UserMsg;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Find2Fra;
 import com.meijialife.simi.fra.Home1Fra;
@@ -61,7 +71,10 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
+import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.ui.ConversationListFragment;
@@ -75,11 +88,12 @@ import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
+import org.json.JSONObject;
+
 /**
  * fragment 的切换类
- * 
+ *
  * @author RUI
- * 
  */
 public class MainActivity extends EMBaseActivity implements OnClickListener, EMEventListener {
 
@@ -100,6 +114,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     // =========================以下环信相关内容==========================
     private TextView unreadLabel;// 未读消息textview
+    private ImageView unreadImageView;//未读消息图片
     public boolean isConflict = false;// 账号在别处登录
     private boolean isCurrentAccountRemoved = false;// 账号被移除
     private android.app.AlertDialog.Builder conflictBuilder;
@@ -112,8 +127,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     GetContactsRunnable getContactsRunnable;
-    
-    private  User user;
+
+    private User user;
 
     /**
      * 检查当前用户是否被删除
@@ -128,8 +143,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.main);
         super.onCreate(savedInstanceState);
-         
-       
+
+
         init();
         initLeft();
         mBt1.performClick();
@@ -158,11 +173,11 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 updateFristFlag();
             }
         });
-        
-      //更新手机联系人数据库
+
+        //更新手机联系人数据库
         getContactsRunnable = new GetContactsRunnable(this, null);
         List<Contact> contactList = DBHelper.getContacts(this);
-        if(contactList==null){
+        if (contactList == null) {
             new Thread(getContactsRunnable).start();
         }
         /**
@@ -170,32 +185,34 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
          */
         ContactDBObserver observer = new ContactDBObserver(new Handler());
         getContentResolver().registerContentObserver(ContactsContract.Contacts.CONTENT_URI, true, observer);
-       
+
         //是否进行广告url跳转
         /* if(Constants.IS_JUMP){
             toAdUrl();
         } */
     }
-    
-    private void toAdUrl(){
-        Intent intent = new Intent(MainActivity.this,WebViewsActivity.class);
-        intent.putExtra("url","http://51xingzheng.cn/faxian/huodong/hr1334.html");
+
+    private void toAdUrl() {
+        Intent intent = new Intent(MainActivity.this, WebViewsActivity.class);
+        intent.putExtra("url", "http://51xingzheng.cn/faxian/huodong/hr1334.html");
         startActivity(intent);
     }
-    
-    class ContactDBObserver extends ContentObserver{
+
+    class ContactDBObserver extends ContentObserver {
         public ContactDBObserver(Handler handler) {
             super(handler);
         }
+
         @Override
         public void onChange(boolean selfChange) {
             super.onChange(selfChange);
             new Thread(getContactsRunnable).start();
         }
     }
+
     /**
      * 检查是否第一次打开应用
-     * 
+     *
      * @return
      */
     private boolean getFristFlag() {
@@ -256,6 +273,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         mBt5 = (FrameLayout) findViewById(R.id.tab_bt_5);
 //        mBt5 = (LinearLayout) findViewById(R.id.tab_bt_5);
         unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
+        unreadImageView = (ImageView) findViewById(R.id.unread_im_number);
 
         mBt1.setOnClickListener(this);
         mBt2.setOnClickListener(this);
@@ -308,36 +326,36 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         Intent intent;
         user = DBHelper.getUser(MainActivity.this);
         switch (arg0.getId()) {
-        case R.id.tab_bt_1: // 首页
-            currentTabIndex = 1;
-            if (!slideMenu.isMainScreenShowing()) {
-                return;
-            }
-            change(new Home1NewFra());
-            setSelected(mBt1);
-            updateTitle(1);
-            SlideMenu.isUse = false;
-            view_title_bar.setVisibility(View.GONE);
-            break;
-        case R.id.tab_bt_2: // 发现
-            changeFind();
-            break;
-        case R.id.tab_bt_3: // 圈子
-            if (user != null) {
-                currentTabIndex = 3;
-                change2Home1();
-            } else {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-            break;
-        case R.id.tab_bt_4: // 我的
-            if (user != null) {
-                changePersonal();
-            } else {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-            break;
-        case R.id.tab_bt_5: // 加号
+            case R.id.tab_bt_1: // 首页
+                currentTabIndex = 1;
+                if (!slideMenu.isMainScreenShowing()) {
+                    return;
+                }
+                change(new Home1NewFra());
+                setSelected(mBt1);
+                updateTitle(1);
+                SlideMenu.isUse = false;
+                view_title_bar.setVisibility(View.GONE);
+                break;
+            case R.id.tab_bt_2: // 发现
+                changeFind();
+                break;
+            case R.id.tab_bt_3: // 圈子
+                if (user != null) {
+                    currentTabIndex = 3;
+                    change2Home1();
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+                break;
+            case R.id.tab_bt_4: // 我的
+                if (user != null) {
+                    changePersonal();
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+                break;
+            case R.id.tab_bt_5: // 加号
          /*   is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
             if(!is_login){
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
@@ -346,65 +364,65 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 this.startActivity(intent2);
                 this.overridePendingTransition(R.anim.activity_open, 0);
             }*/
-            
-            if (user != null) {
-                Intent intent2 = new Intent(this, MainPlusActivity.class);
-                this.startActivity(intent2);
-                this.overridePendingTransition(R.anim.activity_open, 0);
-            } else {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-            
-            
-            break;
-        case R.id.item_0: // 个人信息
+
+                if (user != null) {
+                    Intent intent2 = new Intent(this, MainPlusActivity.class);
+                    this.startActivity(intent2);
+                    this.overridePendingTransition(R.anim.activity_open, 0);
+                } else {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+
+
+                break;
+            case R.id.item_0: // 个人信息
                 intent = new Intent(this, MainActivity.class);
                 intent.putExtra("user", PersonalFragment.user);
                 startActivity(intent);
-            break;
-        case R.id.item_1: // 我的钱包
-            startActivity(new Intent(this, MyWalletActivity.class));
-            break;
-        case R.id.item_2: // 优惠卡券
-            startActivity(new Intent(this, DiscountCardActivity.class));
-            break;
-        case R.id.item_3: // 我的订单
-            startActivity(new Intent(this, MyOrderActivity.class));
-            break;
-        case R.id.item_4: // 常用地址
-            startActivity(new Intent(this, AddressActivity.class));
-            break;
-        case R.id.item_5: // 卡牌集市
-            // Toast.makeText(this, "敬请期待", 0).show();
-            // startActivity(new Intent(this, NullWaitActivity.class));
-            Intent intent5 = new Intent(this, WebViewActivity.class);
-            intent5.putExtra("url", Constants.URL_XUEYUAN);
-            intent5.putExtra("title", "行政人智库");
-            startActivity(intent5);
-            break;
-        case R.id.item_6: // 积分商城
-            Intent intent6 = new Intent();
-            intent6.setClass(MainActivity.this, PointsShopActivity.class);
-            intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
-            intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
-            intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP+"?user_id="+DBHelper.getUserInfo(MainActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
-            startActivity(intent6);
-            break;
-        case R.id.item_7: // 推荐有奖
-            startActivity(new Intent(this, ShareActivity.class));
-            break;
-        case R.id.item_8: // 更多
-            startActivity(new Intent(this, MoreActivity.class));
-            break;
-        default:
-            break;
+                break;
+            case R.id.item_1: // 我的钱包
+                startActivity(new Intent(this, MyWalletActivity.class));
+                break;
+            case R.id.item_2: // 优惠卡券
+                startActivity(new Intent(this, DiscountCardActivity.class));
+                break;
+            case R.id.item_3: // 我的订单
+                startActivity(new Intent(this, MyOrderActivity.class));
+                break;
+            case R.id.item_4: // 常用地址
+                startActivity(new Intent(this, AddressActivity.class));
+                break;
+            case R.id.item_5: // 卡牌集市
+                // Toast.makeText(this, "敬请期待", 0).show();
+                // startActivity(new Intent(this, NullWaitActivity.class));
+                Intent intent5 = new Intent(this, WebViewActivity.class);
+                intent5.putExtra("url", Constants.URL_XUEYUAN);
+                intent5.putExtra("title", "行政人智库");
+                startActivity(intent5);
+                break;
+            case R.id.item_6: // 积分商城
+                Intent intent6 = new Intent();
+                intent6.setClass(MainActivity.this, PointsShopActivity.class);
+                intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
+                intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
+                intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(MainActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
+                startActivity(intent6);
+                break;
+            case R.id.item_7: // 推荐有奖
+                startActivity(new Intent(this, ShareActivity.class));
+                break;
+            case R.id.item_8: // 更多
+                startActivity(new Intent(this, MoreActivity.class));
+                break;
+            default:
+                break;
         }
     }
-    
+
     /**
      * 切换到发现Fragement
      */
-    public void changeFind(){
+    public void changeFind() {
         currentTabIndex = 2;
         if (!slideMenu.isMainScreenShowing()) {
             return;
@@ -415,11 +433,11 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         updateTitle(2);
         SlideMenu.isUse = false;
     }
-    
+
     /**
      * 切换到我的Fragment
      */
-    public void changePersonal(){
+    public void changePersonal() {
         currentTabIndex = 4;
         change(new PersonalFragment());
         setSelected(mBt4);
@@ -427,10 +445,11 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         SlideMenu.isUse = false;
         view_title_bar.setVisibility(View.GONE);
     }
+
     /**
      * 切换到动态
      */
-    public void changeFeeds(){
+    public void changeFeeds() {
         currentTabIndex = 4;
         change(new Home3Fra(this));
         setSelected(mBt4);
@@ -467,6 +486,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //        updateTitle(3);
         SlideMenu.isUse = false;
     }
+
     public void change2Home1() {
         if (!slideMenu.isMainScreenShowing()) {
             return;
@@ -503,21 +523,21 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
      */
     private void updateTitle(int index) {
         switch (index) {
-        case 1:
-            tv_header.setText("首页");
-            break;
-        case 2:
-            tv_header.setText("发现");
-            break;
-        case 3:
-            tv_header.setText("圈子");
-            break;
-        case 4:
-            tv_header.setText("我的");
-            break;
+            case 1:
+                tv_header.setText("首页");
+                break;
+            case 2:
+                tv_header.setText("发现");
+                break;
+            case 3:
+                tv_header.setText("圈子");
+                break;
+            case 4:
+                tv_header.setText("我的");
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -578,29 +598,29 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     @Override
     public void onEvent(EMNotifierEvent event) {
         switch (event.getEvent()) {
-        case EventNewMessage: // 普通消息
-        {
-            EMMessage message = (EMMessage) event.getData();
+            case EventNewMessage: // 普通消息
+            {
+                EMMessage message = (EMMessage) event.getData();
 
-            // 提示新消息
-            EMDemoHelper.getInstance().getNotifier().onNewMsg(message);
+                // 提示新消息
+                EMDemoHelper.getInstance().getNotifier().onNewMsg(message);
 
-            refreshUIWithMessage();
-            break;
-        }
+                refreshUIWithMessage();
+                break;
+            }
 
-        case EventOfflineMessage: {
-            refreshUIWithMessage();
-            break;
-        }
+            case EventOfflineMessage: {
+                refreshUIWithMessage();
+                break;
+            }
 
-        case EventConversationListChanged: {
-            refreshUIWithMessage();
-            break;
-        }
+            case EventConversationListChanged: {
+                refreshUIWithMessage();
+                break;
+            }
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 
@@ -619,8 +639,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         // register the event listener when enter the foreground
         EMChatManager.getInstance().registerEventListener(
                 this,
-                new EMNotifierEvent.Event[] { EMNotifierEvent.Event.EventNewMessage, EMNotifierEvent.Event.EventOfflineMessage,
-                        EMNotifierEvent.Event.EventConversationListChanged });
+                new EMNotifierEvent.Event[]{EMNotifierEvent.Event.EventNewMessage, EMNotifierEvent.Event.EventOfflineMessage,
+                        EMNotifierEvent.Event.EventConversationListChanged});
 
         DBHelper.getInstance(this);
         UserInfo userInfo = DBHelper.getUserInfo(this);
@@ -633,21 +653,39 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         //友盟统计
         MobclickAgent.onResume(this);
     }
+
+
+    @Override
+    protected void onStart() {
+
+        //更新用户未读消息
+        boolean flag = SpFileUtil.getBoolean(MainActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
+        if (flag) {
+            unreadImageView.setVisibility(View.VISIBLE);
+        } else {
+            unreadImageView.setVisibility(View.INVISIBLE);
+        }
+
+
+        super.onStart();
+    }
+
+
     @Override
     protected void onPause() {
         super.onPause();
         //友盟统计
         MobclickAgent.onPause(this);
-        Constants.IS_JUMP= false;
+        Constants.IS_JUMP = false;
     }
-    
+
 
     @Override
     protected void onStop() {
         EMChatManager.getInstance().unregisterEventListener(this);
         EMDemoHelper sdkHelper = EMDemoHelper.getInstance();
         sdkHelper.popActivity(this);
-        Constants.IS_JUMP= false;
+        Constants.IS_JUMP = false;
         super.onStop();
     }
 
@@ -671,7 +709,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Constants.IS_JUMP= false;
+        Constants.IS_JUMP = false;
 
         if (conflictBuilder != null) {
             conflictBuilder.create().dismiss();
@@ -705,17 +743,17 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
      */
     public void updateUnreadLabel() {
         int count = getUnreadMsgCountTotal();
-        if (count > 0) {
+      /*  if (count > 0) {
             unreadLabel.setText(String.valueOf(count));
             unreadLabel.setVisibility(View.VISIBLE);
         } else {
             unreadLabel.setVisibility(View.INVISIBLE);
-        }
+        }*/
     }
 
     /**
      * 获取未读消息数
-     * 
+     *
      * @return
      */
     public int getUnreadMsgCountTotal() {
@@ -772,11 +810,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         DBHelper.getInstance(MainActivity.this).deleteAll(User.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.LOGIN_STATUS);//删除登录状态
 //        SpFileUtil.saveBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS,false);
-        
-        
-        
+
+
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {
             @Override
@@ -793,12 +830,13 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                             MainActivity.activity.finish();
                         }
                         MainActivity.this.finish();
-                        if(CommonUtils.isLogin(MainActivity.this)){
+                        if (CommonUtils.isLogin(MainActivity.this)) {
                             CommunitySDKImpl.getInstance().logout(MainActivity.this, new LoginListener() {
                                 @Override
                                 public void onStart() {
 
                                 }
+
                                 @Override
                                 public void onComplete(int stCode, CommUser userInfo) {
                                     BroadcastUtils.sendUserLogoutBroadcast(getApplication());
@@ -838,9 +876,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         });
     }
 
-    
-    
-    
+
     /**
      * 帐号被移除的dialog
      */
@@ -889,7 +925,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     /**
      * 获取提醒闹钟的卡片列表
-     * 
+     *
      */
   /*  public void getReminds() {
 
@@ -980,11 +1016,9 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     /**
      * 该卡片提醒是否过期
-     * 
-     * @param date
-     *            卡片服务时间
-     * @param remindAlerm
-     *            提醒设置 0 = 不提醒 1 = 按时提醒 2 = 5分钟 3 = 15分钟 4 = 提前30分钟 5 = 提前一个小时 6 = 提前2小时 7 = 提前6小时 8 = 提前一天 9 = 提前两天
+     *
+     * @param date        卡片服务时间
+     * @param remindAlerm 提醒设置 0 = 不提醒 1 = 按时提醒 2 = 5分钟 3 = 15分钟 4 = 提前30分钟 5 = 提前一个小时 6 = 提前2小时 7 = 提前6小时 8 = 提前一天 9 = 提前两天
      * @return
      */
     private boolean isExpired(Date date, int remindAlerm) {
@@ -996,38 +1030,38 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         Date remindDate = null;// 提醒时间
 
         switch (remindAlerm) {
-        case 0:// 不提醒
-            break;
-        case 1:// 按时提醒
-            remindDate = date;
-            break;
-        case 2:// 5分钟
-            remindDate = DateUtils.getDate5(date);
-            break;
-        case 3:// 15分钟
-            remindDate = DateUtils.getDate15(date);
-            break;
-        case 4:// 提前30分钟
-            remindDate = DateUtils.getDate30(date);
-            break;
-        case 5:// 提前一个小时
-            remindDate = DateUtils.getDate1(date);
-            break;
-        case 6:// 提前2小时
-            remindDate = DateUtils.getDate2(date);
-            break;
-        case 7:// 提前6小时
-            remindDate = DateUtils.getDate6(date);
-            break;
-        case 8:// 提前一天
-            remindDate = DateUtils.getDate1d(date);
-            break;
-        case 9:// 提前两天
-            remindDate = DateUtils.getDate2d(date);
-            break;
+            case 0:// 不提醒
+                break;
+            case 1:// 按时提醒
+                remindDate = date;
+                break;
+            case 2:// 5分钟
+                remindDate = DateUtils.getDate5(date);
+                break;
+            case 3:// 15分钟
+                remindDate = DateUtils.getDate15(date);
+                break;
+            case 4:// 提前30分钟
+                remindDate = DateUtils.getDate30(date);
+                break;
+            case 5:// 提前一个小时
+                remindDate = DateUtils.getDate1(date);
+                break;
+            case 6:// 提前2小时
+                remindDate = DateUtils.getDate2(date);
+                break;
+            case 7:// 提前6小时
+                remindDate = DateUtils.getDate6(date);
+                break;
+            case 8:// 提前一天
+                remindDate = DateUtils.getDate1d(date);
+                break;
+            case 9:// 提前两天
+                remindDate = DateUtils.getDate2d(date);
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         if (remindDate == null) {

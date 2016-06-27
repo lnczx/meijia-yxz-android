@@ -144,11 +144,31 @@
         android:gravity="center"
         android:orientation="horizontal" >
 
+
+        <TextView
+            android:id="@+id/tip_tv_group"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="成长等级"
+            android:textColor="@color/common_botton_bar_blue"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/simi_color_line_gray"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            />
         <TextView
             android:id="@+id/tip_tv_done"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="我知道了"
             android:textColor="@color/common_botton_bar_blue"

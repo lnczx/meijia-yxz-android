@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.tsz.afinal.FinalBitmap;
@@ -19,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -43,6 +45,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.CardCommentAdapter;
 import com.meijialife.simi.adapter.CardZanAdapter;
+import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.CardComment;
 import com.meijialife.simi.bean.CardExtra;
@@ -50,6 +53,7 @@ import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
+import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
@@ -108,6 +112,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
     
     private User user;
     private String card_id;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,8 +194,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         btn_cancel_layout.setOnClickListener(this);
         sec_layout = (RelativeLayout)findViewById(R.id.sec_layout);
 
-        
-    
+
+        AssetsDatabaseManager.initManager(CardDetailsActivity.this); // 初始化，只需要调用一次
+        AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();// 获取管理对象，因为数据库需要通过管理对象才能够获取
+        db = mg.getDatabase("simi01.db"); // 通过管理对象获取数据库
     }
 
     private void initView() {
@@ -417,7 +424,6 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 CancelCardData();
             }
         });
@@ -486,11 +492,17 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         Date currentTime = new Date();
         Date serviceTime = new Date(Long.parseLong(card.getService_time()) * 1000);
 
-        if(serviceTime.getTime() < currentTime.getTime()){
-          //已经过期
-            return true;
+        if(card.getPeriod()>0){ //period>0表示周期提醒
+            if(StringUtils.isEquals(card.getStatus(),"0") ||
+                    StringUtils.isEquals(card.getStatus(),"3")){//卡片状态为已取消或者已完成--过期
+                return true;
+            }
+        }else{
+            if(serviceTime.getTime() < currentTime.getTime()){
+                //已经过期
+                return true;
+            }
         }
-        
         return false;
     }
 
@@ -508,8 +520,6 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
     /**
      * 取消卡片
-     * 
-     * @param date
      */
     private void CancelCardData() {
         showDialog();
@@ -518,7 +528,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         if(user!=null){
             
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         
@@ -551,6 +561,10 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             UIUtils.showToast(CardDetailsActivity.this, "取消成功");
                             getCardData(card_id);
+                            if(isContaninUser(card.getAttends())){//含有当前用户，取消闹钟删除本地闹钟
+                                AlermUtils.cancelSigninAlerm(CardDetailsActivity.this, Integer.valueOf(card.getCard_id()));
+                                AssetsDatabaseManager.deleteAlertCardByCardId(db, card.getCard_id());
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -580,6 +594,23 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
     }
 
+    /**
+     * 判断提醒人是否有当前用户
+     * @param attendList
+     * @return
+     */
+    protected  boolean isContaninUser(List<CardAttend> attendList){
+        boolean flag  = false;
+        for (CardAttend cardAttend : attendList) {
+            if(StringUtils.isEquals(cardAttend.getUser_id(),user.getId())){
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -588,8 +619,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
     /**
      * 获取卡片详情
-     * 
-     * @param date
+     * @param card_id
      */
     private void getCardData(String card_id) {
         showDialog();
@@ -597,7 +627,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open),  0).show();
             return;
         }
 
@@ -679,7 +709,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         User user = DBHelper.getUser(this);
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         if(user!=null){
@@ -761,7 +791,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         User user = DBHelper.getUser(this);
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 

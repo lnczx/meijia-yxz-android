@@ -20,6 +20,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,23 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     private void init(){
         setTitleName("详情");
         requestBackBtn();
+        
+      /*  RatingBar ratingBar = (RatingBar)findViewById(R.id.rating);  
+        ratingBar.setOnRatingBarChangeListener(new OnRatingBarChangeListener()  
+        {  
+            //当拖动条的滑块位置发生改变时触发该方法  
+            @Override  
+            public void onRatingChanged(RatingBar rb  
+                , float rating, boolean fromUser)  
+            {  
+                //动态改变图片的透明度，其中255是星级评分条的最大值，  
+                //5个星星就代表最大值255  
+                rb.setAlpha((int)(rating * 255 / 5));  
+            }  
+        });   */
+        
+        
+        
         partner = (Partner) getIntent().getSerializableExtra("Partner");
         partner_user_id = String.valueOf(partner.getUser_id());
         service_type_id = String.valueOf(partner.getService_type_id());

@@ -477,7 +477,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
 	                int deltaY = y - lastY;
 	                int deltaX = x - lastX;
 	                if (Math.abs(deltaX) < Math.abs(deltaY)) {
-	                    //为false表示父控件拦截事件，不继续传递到子控件
+	                    //为false表示父控件拦截事件，不继续传递到子控件,x方向位移小于y 
 	                    this.getParent().requestDisallowInterceptTouchEvent(false);
 	                } else {
 	                    //为true父控件不拦截，即事件传递到子控件

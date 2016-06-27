@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -35,7 +36,7 @@ import com.meijialife.simi.utils.UIUtils;
  * 
  * 
  */
-public class AllPartnerListActivity extends BaseActivity {
+public class AllPartnerListActivity extends BaseActivity implements OnClickListener {
 
   
     private ArrayList<FindBean> myFindBeanList;
@@ -58,7 +59,6 @@ public class AllPartnerListActivity extends BaseActivity {
         setTitleName("找服务商");
         requestBackBtn();
         
-        
         myFindBeanList = new ArrayList<FindBean>();
         appToolsAdapter = new FindAllAdapter(this);
 
@@ -67,10 +67,12 @@ public class AllPartnerListActivity extends BaseActivity {
         find_all_list.setVisibility(View.VISIBLE);
         gv_application1.setAdapter(appToolsAdapter);
         setOnClick();
-        getFind2List();
-        
     }
-    
+    @Override
+    protected void onStart() {
+        getFind2List();
+        super.onStart();
+    }
     private void setOnClick(){
         gv_application1.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -106,6 +108,8 @@ public class AllPartnerListActivity extends BaseActivity {
                 }
             }
         });
+        
+        findViewById(R.id.rl_total_search).setOnClickListener(this);
     }
     /**
      * 展示服务大厅
@@ -171,6 +175,23 @@ public class AllPartnerListActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+        switch (v.getId()) {
+        case R.id.rl_total_search:
+            if (!is_login) {
+                startActivity(new Intent(AllPartnerListActivity.this.getApplication(), LoginActivity.class));
+            } else {
+                startActivity(new Intent(AllPartnerListActivity.this, SearchViewActivity.class));
+            }
+            break;
+
+        default:
+            break;
+        }
     }
 
 }

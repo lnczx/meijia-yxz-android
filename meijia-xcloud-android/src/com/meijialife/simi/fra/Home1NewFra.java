@@ -44,13 +44,13 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
 import com.meijialife.simi.activity.ArticleDetailActivity;
+import com.meijialife.simi.activity.ArticleSearchActivity;
 import com.meijialife.simi.activity.ChannelListActivity;
 import com.meijialife.simi.activity.CommonUtilActivity;
 import com.meijialife.simi.activity.FeedListActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
-import com.meijialife.simi.activity.SearchViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.FindBean;
@@ -110,22 +110,20 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     private LinearLayout m_rl_category;
     private LinearLayout new_frg_search;
-    
-    private LinearLayout ll_more_columns;//更多频道
-    private LinearLayout ll_more_columns2;//更多频道
-    private String userTagString="";
+
+    private LinearLayout ll_more_columns;// 更多频道
+    private LinearLayout ll_more_columns2;// 更多频道
+    private String userTagString = "";
     private List<String> urls;
     private BannerLayout bannerLayout;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.home_1, null);
         v1 = inflater.inflate(R.layout.home_1, null);
-        
+
         initView(v);
-       
-      
+
         return v;
     }
 
@@ -136,7 +134,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         finalBitmap.configDiskCacheSize(1024 * 1024 * 10);
         finalBitmap.configLoadfailImage(R.drawable.ad_loading);
         urls = new ArrayList<String>();
-        
+
         initListView(v);
         m_rl_category = (LinearLayout) v.findViewById(R.id.m_rl_category);
         new_frg_search = (LinearLayout) v.findViewById(R.id.new_frg_search);
@@ -154,20 +152,21 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         tabNames.add("培训");
         tabNames.add("绩效");
         tabNames.add("员工关系");
-        tabNames.add(" 人格规划");
+        tabNames.add(" 人资规划");
         tabNames.add("行业");
 
         mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
         mIndicatorTabBar1.setCallBack(this);
         mIndicatorTabBar1.setMaxColumn(4);
         mIndicatorTabBar1.initView(tabNames);
-        
+
         mIndicatorTabBar3 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator3);
         mIndicatorTabBar3.setCallBack(this);
         mIndicatorTabBar3.setMaxColumn(4);
         mIndicatorTabBar3.initView(tabNames);
-        
+
     }
+
     private void setListener(View v) {
         v.findViewById(R.id.m_home1).setOnClickListener(this);
         v.findViewById(R.id.m_home2).setOnClickListener(this);
@@ -190,26 +189,26 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         allHomePosts = new ArrayList<HomePosts>();
         findBeanList = new ArrayList<FindBean>();
         mListView = (PullToRefreshListView) v.findViewById(R.id.m_lv_home);
-        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+                AbsListView.LayoutParams.WRAP_CONTENT);
         headerView = getActivity().getLayoutInflater().inflate(R.layout.home1_banner, mListView, false);
         headerView.setLayoutParams(layoutParams);
-        ListView listView =mListView.getRefreshableView();
+        ListView listView = mListView.getRefreshableView();
         listView.addHeaderView(headerView);
-        
-        bannerLayout = (BannerLayout)headerView.findViewById(R.id.m_top_banner);
+
+        bannerLayout = (BannerLayout) headerView.findViewById(R.id.m_top_banner);
         bannerLayout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                FindBean findBean =findBeanList.get(position);
-                Intent intent = new Intent(getActivity(),WebViewsActivity.class);
-                intent.putExtra("url",findBean.getGoto_url());
+                FindBean findBean = findBeanList.get(position);
+                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", findBean.getGoto_url());
                 startActivity(intent);
             }
         });
-        
-        
-        View headview2= View.inflate(getActivity(), R.layout.new_frg_bottom,null);
-        listView.addHeaderView(headview2);//ListView条目中的悬浮部分 添加到头部
+
+        View headview2 = View.inflate(getActivity(), R.layout.new_frg_bottom, null);
+        listView.addHeaderView(headview2);// ListView条目中的悬浮部分 添加到头部
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -218,39 +217,38 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 return false;
             }
         });
-        
-//        listView.addFooterView(footView);
+
+        // listView.addFooterView(footView);
         mListView.setMode(Mode.BOTH);
         initIndicator();
         mLlLoadMore = (LinearLayout) v.findViewById(R.id.m_ll_load_more);
-      
+
         homeListAdapter = new HomeListAdapter(getActivity());
         mListView.setAdapter(homeListAdapter);
-        
+
         mListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 下拉刷新任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getMsgList(page, pBean);    
-                homeListAdapter.notifyDataSetChanged(); 
+                getMsgList(page, pBean);
+                homeListAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
+                // 上拉加载任务
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(homePosts!=null && homePosts.size()>=10){
-                    page = page+1;
-                    getMsgList(page, pBean);    
-                    homeListAdapter.notifyDataSetChanged(); 
-                }else {
-                    Toast.makeText(getActivity(),"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mListView.onRefreshComplete(); 
+                if (homePosts != null && homePosts.size() >= 10) {
+                    page = page + 1;
+                    getMsgList(page, pBean);
+                    homeListAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getActivity(), "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+                    mListView.onRefreshComplete();
                 }
             }
         });
@@ -262,12 +260,12 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 // int p = position;
                 HomePosts homePost = allHomePosts.get(p);
                 Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
-//                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                // Intent intent = new Intent(getActivity(), WebViewsActivity.class);
                 intent.putExtra("url", homePost.getUrl());
                 intent.putExtra("p_id", homePost.getId());// 文章Id
                 intent.putExtra("is_show", true);
-                intent.putExtra("home_post",homePost);
-                intent.putExtra("article_content",homePost.getContent());
+                intent.putExtra("home_post", homePost);
+                intent.putExtra("article_content", homePost.getContent());
                 getActivity().startActivity(intent);
             }
         });
@@ -276,75 +274,76 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-       
+
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem >= 1) {
-                   
-                        AnimationSet as = new AnimationSet(true);
-                        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-                        aa.setDuration(500);
-                        as.addAnimation(aa);
-                        LayoutAnimationController ac = new LayoutAnimationController(as);
-                        new_frg_search.setLayoutAnimation(ac);
-                        new_frg_search.setVisibility(View.VISIBLE);
-                        m_rl_category.setVisibility(View.VISIBLE);
+
+                    AnimationSet as = new AnimationSet(true);
+                    AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+                    aa.setDuration(500);
+                    as.addAnimation(aa);
+                    LayoutAnimationController ac = new LayoutAnimationController(as);
+                    new_frg_search.setLayoutAnimation(ac);
+                    new_frg_search.setVisibility(View.VISIBLE);
+                    m_rl_category.setVisibility(View.VISIBLE);
                 } else {
-                        m_rl_category.setVisibility(View.GONE);
-                        new_frg_search.setVisibility(View.GONE);
+                    m_rl_category.setVisibility(View.GONE);
+                    new_frg_search.setVisibility(View.GONE);
                 }
             }
         });
     }
-    
+
     /**
      * 设置下拉刷新提示
      */
-    private void initIndicator()  
-    {  
-        ILoadingLayout startLabels = mListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-  
-        ILoadingLayout endLabels = mListView.getLoadingLayoutProxy(  
-                false, true);  
+    private void initIndicator() {
+        ILoadingLayout startLabels = mListView.getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示
+
+        ILoadingLayout endLabels = mListView.getLoadingLayoutProxy(false, true);
         endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
 
-  
-
- 
-
-  
     @Override
-    public void onResume() {
-        super.onResume();
-        MobclickAgent.onPageStart("MainActivity");
-
+    public void onStart() {
         pBean = new ParamsBean();
         pBean.setCount("10");
         pBean.setOrder("DESC");
         pBean.setJson("get_tag_posts");
-        String userTags = SpFileUtil.getString(getActivity(),SpFileUtil.KEY_USER_TAGS, Constants.USER_TAGS,"");
+        String userTags = SpFileUtil.getString(getActivity(), SpFileUtil.KEY_USER_TAGS, Constants.USER_TAGS, "");
         pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-        //根据用户标签是否为空判断访问不同的精选接口
-        if(StringUtils.isNotEmpty(userTags)){
+        // 根据用户标签是否为空判断访问不同的精选接口
+        if (StringUtils.isNotEmpty(userTags)) {
             pBean.setSlug(userTags);
-            getUserTagMsgList(page,pBean);
-        }else {
+            getUserTagMsgList(page, pBean);
+        } else {
             pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
             getMsgList(page, pBean);
         }
         getAdList();
+        super.onStart();
     }
-    
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("MainActivity");
+        /*
+         * pBean = new ParamsBean(); pBean.setCount("10"); pBean.setOrder("DESC"); pBean.setJson("get_tag_posts"); String userTags =
+         * SpFileUtil.getString(getActivity(),SpFileUtil.KEY_USER_TAGS, Constants.USER_TAGS,"");
+         * pBean.setInclude("id,title,modified,url,thumbnail,custom_fields"); //根据用户标签是否为空判断访问不同的精选接口 if(StringUtils.isNotEmpty(userTags)){
+         * pBean.setSlug(userTags); getUserTagMsgList(page,pBean); }else { pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89"); getMsgList(page,
+         * pBean); } getAdList();
+         */
+    }
 
     @Override
     public void onPause() {
@@ -353,7 +352,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     }
 
-    
     public void getAdList() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
@@ -389,7 +387,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                                 findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
                                 }.getType());
                                 showBanner(findBeanList);
-                            } 
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -415,7 +413,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             }
         });
     }
-    
 
     protected void showBanner(List<FindBean> adList) {
         urls.clear();
@@ -435,11 +432,11 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-      
+
         map.put("json", params.getJson());
         map.put("count", params.getCount());
         map.put("order", params.getOrder());
-        //json分为两种：1、get_tag_posts;2、get_category_posts
+        // json分为两种：1、get_tag_posts;2、get_category_posts
         if (StringUtils.isEquals(params.getJson(), "get_tag_posts")) {
             map.put("slug", params.getSlug());
         } else {
@@ -474,6 +471,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                                 // homeTag = gson.fromJson(tag, HomeTag.class);
                                 homeTag = new HomeTag();
                                 showData(homePosts, homeTag);
+                            } else {
+                                mListView.onRefreshComplete();
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -494,9 +493,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             }
         });
     }
-    
+
     /**
      * 根据用户标签访问精选接口
+     * 
      * @param page
      * @param params
      */
@@ -506,7 +506,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-      
+
         map.put("count", params.getCount());
         map.put("order", params.getOrder());
         map.put("slug", params.getSlug());
@@ -673,7 +673,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             startActivity(new Intent(getActivity(), CommonUtilActivity.class));
             break;
         case R.id.m_rl_sign:// 首页签到
-           if (!is_login) {
+            if (!is_login) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             } else {
                 postSign();
@@ -719,23 +719,19 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
             break;
         case R.id.rl_total_search:// 跳到到搜索页面
-            if (!is_login) {
-                startActivity(new Intent(getActivity().getApplication(), LoginActivity.class));
-            } else {
-                startActivity(new Intent(getActivity(), SearchViewActivity.class));
-            }
+            startActivity(new Intent(getActivity(), ArticleSearchActivity.class));
             break;
         case R.id.ll_more_columns:// 频道列表页面
             if (!is_login) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-            }else {
+            } else {
                 startActivity(new Intent(getActivity(), ChannelListActivity.class));
             }
             break;
         case R.id.ll_more_columns2:// 频道列表页面
             if (!is_login) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
-            }else {
+            } else {
                 startActivity(new Intent(getActivity(), ChannelListActivity.class));
             }
             break;
@@ -802,7 +798,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      * 签到获取积分接口
      */
     private void postSign() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getActivity().getString(R.string.net_not_open), 0).show();
             return;
@@ -866,13 +861,13 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         homePosts.clear();
         allHomePosts.clear();
     }
-    
+
     @Override
-    public void onClick(ParamsBean params,boolean flag) {
+    public void onClick(ParamsBean params, boolean flag) {
         allHomePosts.clear();
-        if(flag){
+        if (flag) {
             getUserTagMsgList(page, params);
-        }else {
+        } else {
             getMsgList(page, params);
         }
     }

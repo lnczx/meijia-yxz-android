@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import net.tsz.afinal.FinalHttp;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -32,9 +34,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.Cards;
@@ -50,6 +54,7 @@ import com.meijialife.simi.ui.wheelview.ArrayWheelAdapter;
 import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
+import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -117,7 +122,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private UserInfo userInfo;
     private RelativeLayout layout_select_who;
     private boolean isUsersenior;
-  
+    private SQLiteDatabase db;
     
 
     @Override
@@ -159,7 +164,12 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
         slipBtn_mishuchuli = (ToggleButton) findViewById(R.id.slipBtn_mishuchuli);
         slipBtn_fatongzhi = (ToggleButton) findViewById(R.id.slipBtn_fatongzhi);
-        
+
+        AssetsDatabaseManager.initManager(MainPlusNotificationActivity.this); // 初始化，只需要调用一次
+        AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();// 获取管理对象，因为数据库需要通过管理对象才能够获取
+        db = mg.getDatabase("simi01.db"); // 通过管理对象获取数据库
+
+
         /**
          * 初始化勾选本人
          */
@@ -638,8 +648,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
     /**
      * 发起会议
-     * 
-     * @param isUpdate2
+     * @param update
      */
     private void createMeetingCard(boolean update) {
         showDialog();
@@ -657,9 +666,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
 
         }
 
-       
-
-        String c_id = userInfo.getId();
+        final String c_id = userInfo.getId();
 
         String mtime = " " + finalTime + "";
 
@@ -740,9 +747,29 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
                             Constants.CARD_ADD_NOTIFICATION_CONTENT="";
                             MainPlusNotificationActivity.this.finish();
 
-                            // 初始化本地提醒闹钟
-//                            AlermUtils.initAlerm(MainPlusNotificationActivity.this, remindAlerm, fdate, "邀约通知",
-//                                    Constants.CARD_ADD_NOTIFICATION_CONTENT);
+                            Gson gson = new Gson();
+                            card = gson.fromJson(data, Cards.class);
+                            ArrayList<ContactBean> list = gson.fromJson(mJson, new TypeToken<ArrayList<ContactBean>>() {
+                            }.getType());
+                            //提醒人含有自己则给自己设置本地闹钟
+                            if (list != null && list.size() > 0) {
+                                for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+                                    ContactBean contactBean = (ContactBean) iterator.next();
+                                    if (StringUtils.isEquals(contactBean.getUser_id(), c_id)
+                                            || StringUtils.isEquals(contactBean.getMobile(), userInfo.getMobile())) {
+
+                                        if(isUpdate){//如果是更新，删除数据库数据
+                                            AssetsDatabaseManager.deleteAlertCardByCardId(db, card.getCard_id());
+                                        }
+                                        // 初始化本地提醒闹钟
+                                        Date date = new Date(Long.parseLong(card.getService_time()) * 1000);
+                                        AlermUtils.initAlerm(MainPlusNotificationActivity.this, remindAlerm, date, "差旅规划", card.getService_content(),
+                                                card.getCard_id());
+                                        setLocalAlarm(card.getCard_id());
+                                    }
+                                }
+                            }
+                        
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(MainPlusNotificationActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -763,6 +790,65 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
         });
     };
 
+    
+
+    /**
+     * 卡片设置本地闹钟状态接口
+     */
+    private void setLocalAlarm(String cardId) {
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        User user = DBHelper.getUser(MainPlusNotificationActivity.this);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("card_id", cardId);
+        map.put("user_id", "" + user.getId());
+        AjaxParams param = new AjaxParams(map);
+        showDialog();
+        new FinalHttp().post(Constants.URL_POST_SET_LOCAL_ALARM, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(MainPlusNotificationActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(MainPlusNotificationActivity.this, errorMsg);
+                }
+            }
+        });
+    }
     @Override
     protected void onResume() {
         runOnUiThread(new Runnable() {
@@ -817,7 +903,7 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
     private void getAppHelp() {
         String user_id = DBHelper.getUser(this).getId();
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         final String action ="interview";

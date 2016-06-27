@@ -32,7 +32,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.umeng.comm.core.beans.CommUser;
 import com.umeng.comm.core.impl.CommunitySDKImpl;
@@ -72,6 +71,7 @@ public class AllFeedsFragment extends PostBtnAnimFragment<FeedListPresenter> {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                    	
                         CommunitySDKImpl.getInstance().login(getActivity(), new LoginListener() {
                             @Override
                             public void onStart() {

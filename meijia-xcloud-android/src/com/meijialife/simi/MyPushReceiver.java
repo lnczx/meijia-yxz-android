@@ -1,6 +1,14 @@
 package com.meijialife.simi;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONObject;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,10 +16,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,10 +36,15 @@ import com.meijialife.simi.activity.NoticeActivity;
 import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.AndroidUtil;
+import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.LogOut;
+import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.UIUtils;
 
 public class MyPushReceiver extends BroadcastReceiver {
 
@@ -42,7 +58,10 @@ public class MyPushReceiver extends BroadcastReceiver {
     private final String ACTION_SETCLOCK="s";
     private final String ACTION_ALARM="a";
     private final String ACTION_MSG="m";
+    private final String ACTION_DEL_COLOCK="d";//收到推送删除本地闹钟
     private final String ACTION_CAR_MSG="car-msg";
+
+    private SQLiteDatabase db;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -63,28 +82,18 @@ public class MyPushReceiver extends BroadcastReceiver {
 
             // smartPush第三方回执调用接口，actionid范围为90000-90999，可根据业务场景执行
             boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
-            System.out.println("第三方回执接口调用" + (result ? "成功" : "失败"));
 
             if (payload != null) {
                 String data = new String(payload);
-
-                Log.d("GetuiSdkDemo", "receiver payload : " + data);
-
                 payloadData.append(data);
                 payloadData.append("\n");
-
-                // if (GetuiSdkDemoActivity.tLogView != null) {
-                // GetuiSdkDemoActivity.tLogView.append(data + "\n");
-                // }
-                LogOut.debug("pushdata:" + data + "\n");
-//                UIUtils.showToastLong(context, "接收到透传消息:" + data);
-
                 try {
                     receiverBean = new Gson().fromJson(data, new TypeToken<ReceiverBean>() {}.getType());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (null != receiverBean) {
+                if (null != receiverBean) {//为了测试接收推送，不做操作
+                    
                     if(!AndroidUtil.isRunningForeground(context)){ 
                         /**
                          * app处于后台 勾选理解提醒 声音+通知
@@ -103,13 +112,13 @@ public class MyPushReceiver extends BroadcastReceiver {
                                 setNotification3(receiverBean);
                                 AlermUtils.playAudio(context);
                             }
+                            Date date = new Date(receiverBean.getRe()*1000);
+                            //接收推送给其他人设置本地闹钟
+                            AlermUtils.initAlerm(mContext, 1, date,receiverBean.getRt(),receiverBean.getRc(),receiverBean.getCi());
+                            setLocalAlarm(receiverBean.getCi());
                         }else if(StringUtils.isEquals(receiverBean.getAc(), ACTION_ALARM)){
                           //push-alarm准点推送弹出大屏
                           //is_show=true表示显示通知栏，=false不显示通知栏
-                           /* if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
-                                setNotification3(receiverBean);
-                                AlermUtils.playAudio(context);
-                            }*/
                             AlermUtils.playAudio(context);
                             intent = new Intent(mContext, CardAlertActivity.class);
                               long remindTime = Long.parseLong((receiverBean.getRe()*1000)+"");
@@ -127,6 +136,12 @@ public class MyPushReceiver extends BroadcastReceiver {
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent1);
                           
+                        }else if( StringUtils.isEquals(receiverBean.getAc(), ACTION_DEL_COLOCK)){//删除其他用户本地闹钟
+                            AssetsDatabaseManager.initManager(context); // 初始化，只需要调用一次
+                            AssetsDatabaseManager mg = AssetsDatabaseManager.getManager();// 获取管理对象，因为数据库需要通过管理对象才能够获取
+                            db = mg.getDatabase("simi01.db"); // 通过管理对象获取数据库
+                            AlermUtils.cancelSigninAlerm(context, Integer.valueOf(receiverBean.getCi()));
+                            AssetsDatabaseManager.deleteAlertCardByCardId(db, receiverBean.getCi());
                         }
                     }else {
                       /**
@@ -151,20 +166,17 @@ public class MyPushReceiver extends BroadcastReceiver {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 context.startActivity(intent);
                             }
-                              //设置本地闹钟
-                            /* long remindTime = Long.parseLong(receiverBean.getRemind_time());
-                            fdate = new Date(remindTime);
-                            if (!receiverBean.getCard_id().equals("0")) {
-                                AlermUtils.initAlerm(context, 1, fdate, receiverBean.getRemind_title(), receiverBean.getRemind_content(),
-                                        receiverBean.getCard_id());
-                            }*/
+                             Date date = new Date(receiverBean.getRe()*1000);
+                            //接收推送给其他人设置本地闹钟
+                            AlermUtils.initAlerm(mContext, 1,date,receiverBean.getRt(),receiverBean.getRc(),receiverBean.getCi());
+                            setLocalAlarm(receiverBean.getCi());
                         }else if(StringUtils.isEquals(receiverBean.getAc(), ACTION_ALARM)){
                           //push-alarm准点推送弹出大屏
                           //is_show=true表示显示通知栏，=false不显示通知栏
-                          /*  if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
-                                setNotification3(receiverBean);
-                                AlermUtils.playAudio(context);
-                            }*/
+//                            if(StringUtils.isEquals(receiverBean.getIs_show(), "true")){
+//                                setNotification3(receiverBean);
+//                                AlermUtils.playAudio(context);
+//                            }
                             AlermUtils.playAudio(context);
                             intent = new Intent(mContext, CardAlertActivity.class);
                             long remindTime = Long.parseLong((receiverBean.getRe()*1000)+"");
@@ -182,10 +194,10 @@ public class MyPushReceiver extends BroadcastReceiver {
                             intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent1);
                           
+                        }else if( StringUtils.isEquals(receiverBean.getAc(), ACTION_DEL_COLOCK)){//删除其他用户本地闹钟
+                            AlermUtils.cancelSigninAlerm(context, Integer.valueOf(receiverBean.getCi()));
                         }
                     }
-                    
-                   
                 }
             }
             break;
@@ -319,5 +331,54 @@ public class MyPushReceiver extends BroadcastReceiver {
         manager.notify(1, builder.build());
 
     }
-    
+    private void setLocalAlarm(String cardId) {
+        if (!NetworkUtils.isNetworkConnected(mContext)) {
+            Toast.makeText(mContext, mContext.getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        User user = DBHelper.getUser(mContext);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("card_id",cardId);
+        map.put("user_id",""+user.getId());
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().post(Constants.URL_POST_SET_LOCAL_ALARM, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(mContext, mContext.getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = mContext.getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = mContext.getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = mContext.getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = mContext.getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = mContext.getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(mContext, errorMsg);
+                }
+            }
+        });
+    }
 }
