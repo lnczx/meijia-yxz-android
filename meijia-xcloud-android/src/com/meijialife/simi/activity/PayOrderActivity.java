@@ -74,7 +74,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
      */
     private static final int PAY_TYPE_ALIPAY = 1; // 支付宝支付
     private static final int PAY_TYPE_WXPAY = 2; // 微信支付
-    private static final int PAY_TYPE_RESTMOENY = 3; // 余额支付
+    private static final int PAY_TYPE_RESTMOENY = 0; // 余额支付
     /**
      * 全局对象变量定义
      */

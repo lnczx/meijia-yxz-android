@@ -269,7 +269,8 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             sec_title.setText(card.getUser_name());
         }
         //取消卡片不能点击
-        if(Integer.valueOf(card.getStatus())==0){
+        if(Integer.valueOf(card.getStatus())==0 ||
+                Integer.valueOf(card.getStatus())==3){//卡片状态为已完成和已取消，按钮变灰，不可点击
             btn_edit_layout.setClickable(false);
             tv_edit.setClickable(false);
             tv_edit.setTextColor(getResources().getColor(R.color.simi_color_gray));
@@ -278,7 +279,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
             tv_cancel.setTextColor(getResources().getColor(R.color.simi_color_gray));
         }
         tv_title.setText(card.getCreate_user_name());
-        tv_time.setText(time);
+        tv_time.setText(card.getPeriod_name());
         tv_remark.setText(remark);
         tv_date_str.setText(timeStr);
         tv_zan.setText(total_zan);
@@ -311,6 +312,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         } else if (status == 3) {
             tv_status.setTextColor(this.getResources().getColor(R.color.simi_color_red));
             tv_status.setText("已完成");
+            tv_status.setClickable(false);
         }
 
         // 卡片类型 0 = 通用(保留) 1 = 会议安排 2 = 秘书叫早 3 = 事务提醒 4 = 邀约通知 5 = 差旅规划
@@ -419,7 +421,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         dialog = new AlertDialog.Builder(this);
         dialog.setTitle("提示");
         // dialog.setIcon(R.drawable.ic_launcher_logo);
-        dialog.setMessage("取消本卡片后，会通知相关人员，请确定是否取消");
+        dialog.setMessage("确定要取消卡片吗？取消后会在日程中删除，并且所有提醒人员将收不到提醒");
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
             @Override
@@ -427,6 +429,15 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
                 CancelCardData();
             }
         });
+
+        dialog.setNegativeButton("返回",new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
     
@@ -627,7 +638,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
 
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open),  0).show();
+            Toast.makeText(this, getString(R.string.net_not_open),  Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -865,7 +876,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         User user = DBHelper.getUser(this);
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         if(user!=null){
@@ -931,7 +942,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         User user = DBHelper.getUser(this);
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -256,13 +256,14 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if(StringUtils.isNotEmpty(data)){
+                           /* if(StringUtils.isNotEmpty(data)){
                                 Gson gson = new Gson();
                                 myCompanyDataList = gson.fromJson(data, new TypeToken<ArrayList<CompanyData>>() {
                                 }.getType());
                                 showData(myCompanyDataList);
-                                CompanyListsActivity.this.finish();
-                            }
+
+                            }*/
+                            CompanyListsActivity.this.finish();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

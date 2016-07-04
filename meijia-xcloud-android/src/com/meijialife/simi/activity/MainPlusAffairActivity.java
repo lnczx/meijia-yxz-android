@@ -41,6 +41,7 @@ import com.meijialife.simi.ui.wheelview.NumericWheelAdapter;
 import com.meijialife.simi.ui.wheelview.WheelView;
 import com.meijialife.simi.ui.wheelview.WheelView.ItemScroListener;
 import com.meijialife.simi.utils.AssetsDatabaseManager;
+import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -114,6 +115,8 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private TextView tv_beizu_content;
 
     private int remindAlerm = 1;// 提醒设置 0 = 不提醒 1 = 按时提醒 2 = 5分钟 3 = 15分钟 4 = 提前30分钟 5 = 提前一个小时 6 = 提前2小时 7 = 提前6小时 8 = 提前一天 9 = 提前两天
+
+    private int remindCycle = 0;// 提醒周期 0 =一次性  1 = 每天 2 =每个工作日 3 = 每周 4 =每月 5 =每年
     private Button bt_create_travel;
 
     private boolean isUpdate = false;
@@ -306,6 +309,30 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 reminItems[9] = "提前2天";
                 tv_xiaoxi_content.setText(reminItems[remindAlerm]);
 
+                //周期提醒类型更新回显
+                String serviceTime = tv_meeting_time.getText().toString();
+                Date date = DateUtils.getDateByPattern(serviceTime, "yyyy-MM-dd HH:mm");
+                CalendarUtils.getWeek();
+                String day = DateUtils.getStringByPattern(date.getTime(), "(dd日)");
+                String month = DateUtils.getStringByPattern(date.getTime(), "(MM月dd日)");
+                String week = "周一";
+                try {
+                    week = CalendarUtils.getWeekStr(serviceTime);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                remindCycle  = card.getPeriod();
+                period = card.getPeriod();
+                String[] items = new String[6];
+                items[0] = "一次性提醒";
+                items[1] = "每天";
+                items[2] = "每个工作日（周一至周五）";
+                items[3] = "每周(" + week + ")";
+                items[4] = "每月" + day;
+                items[5] = "每年" + month;
+                tv_cycle_content.setText(items[remindCycle]);
+
+
                 // 处理秘书处理
                 int sec_do = Integer.valueOf(card.getSet_sec_do());
 
@@ -349,10 +376,20 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                 startActivity(intent2);
                 break;
             case R.id.layout_message_tongzhi://提醒设置
+                String str1 = tv_meeting_time.getText().toString();
+                if (StringUtils.isEmpty(str1) || StringUtils.isEquals(str1, "点击选择时间")) {
+                    Toast.makeText(this, "请选择提醒时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 showRemindWindow();
                 break;
             case R.id.layout_repeat_cycle://重复周期
-                showCycleWindow();
+                String str2 = tv_meeting_time.getText().toString();
+                if (StringUtils.isEmpty(str2) || StringUtils.isEquals(str2, "点击选择时间")) {
+                    Toast.makeText(this, "请选择提醒时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                showCycleWindow(str2);
                 break;
             case R.id.m_ll_show://显示完整配置
                 Log.d("tag", "显示完整内容");
@@ -573,11 +610,11 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         });
     }
 
-    public void showCycleWindow() {
+    public void showCycleWindow(String service_time) {
         view_mask.setVisibility(View.VISIBLE);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.item_popup_remind, null, false);
-        InitTimeCycle(v);
+        InitTimeCycle(v, service_time);
 
         mTimePopup = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         mTimePopup.setOutsideTouchable(true);
@@ -621,10 +658,19 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             public void onClick(View v) {
                 int currentItem = remind.getCurrentItem();
                 remindAlerm = currentItem;
-                String itemText = (String) arryadapter.getItemText(currentItem);
-                tv_xiaoxi_content.setText(itemText);
-                if (null != mTimePopup) {
-                    mTimePopup.dismiss();
+
+                //每天和每个工作日的提醒设置不能为提前一天和提前两天
+                if ((remindCycle == 1 && remindAlerm == 8) || (remindCycle == 1 && remindAlerm == 9) ||
+                        (remindCycle == 2 && remindAlerm == 8) || (remindCycle == 2 && remindAlerm == 9)) {
+                    Toast.makeText(MainPlusAffairActivity.this,
+                            "每天/每工作日的事件暂不能提前1天或2天提醒哦！您可以选择其他重复周期或修改提前时间",
+                            Toast.LENGTH_SHORT).show();
+                }else{
+                    String itemText = (String) arryadapter.getItemText(currentItem);
+                    tv_xiaoxi_content.setText(itemText);
+                    if (null != mTimePopup) {
+                        mTimePopup.dismiss();
+                    }
                 }
                 // Toast.makeText(MainPlusTrevelActivity.this, time, 1).show();
             }
@@ -644,25 +690,39 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
     private int[] cycleId = {0, 1, 2, 3, 4, 5};
     private int period = 0;
 
-    private View InitTimeCycle(View view) {
+    private View InitTimeCycle(View view, String serviceTime) {
+
+
+        Date date = DateUtils.getDateByPattern(serviceTime, "yyyy-MM-dd HH:mm");
+
+        CalendarUtils.getWeek();
+
+        String day = DateUtils.getStringByPattern(date.getTime(), "(dd日)");
+        String month = DateUtils.getStringByPattern(date.getTime(), "(MM月dd日)");
+        String week = "周一";
+        try {
+            week = CalendarUtils.getWeekStr(serviceTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         remind = (WheelView) view.findViewById(R.id.remind);
         String[] items = new String[6];
         items[0] = "一次性提醒";
         items[1] = "每天";
         items[2] = "每个工作日（周一至周五）";
-        items[3] = "每周（周一）";
-        items[4] = "每月";
-        items[5] = "每年";
+        items[3] = "每周(" + week + ")";
+        items[4] = "每月" + day;
+        items[5] = "每年" + month;
 
 
         arryadapter = new ArrayWheelAdapter<>(this, items);
         remind.setViewAdapter(arryadapter);
         remind.setCyclic(false);// 是否可循环滑动
         remind.setVisibleItems(items.length);// 设置显示行数
-        if(card !=null){
+        if (card != null) {
             remind.setCurrentItem(card.getPeriod());
-        }else{
+        } else {
             remind.setCurrentItem(0);
         }
 
@@ -673,11 +733,19 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
             public void onClick(View v) {
                 int currentItem = remind.getCurrentItem();
                 period = cycleId[currentItem];
-//                remindAlerm = currentItem;
-                String itemText = (String) arryadapter.getItemText(currentItem);
-                tv_cycle_content.setText(itemText);
-                if (null != mTimePopup) {
-                    mTimePopup.dismiss();
+                remindCycle = currentItem;
+                //每天和每个工作日的提醒设置不能为提前一天和提前两天
+                if ((remindCycle == 1 && remindAlerm == 8) || (remindCycle == 1 && remindAlerm == 9) ||
+                        (remindCycle == 2 && remindAlerm == 8) || (remindCycle == 2 && remindAlerm == 9)) {
+                    Toast.makeText(MainPlusAffairActivity.this,
+                            "每天/每工作日的事件暂不能提前1天或2天提醒哦！您可以选择其他重复周期或修改提前时间",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    String itemText = (String) arryadapter.getItemText(currentItem);
+                    tv_cycle_content.setText(itemText);
+                    if (null != mTimePopup) {
+                        mTimePopup.dismiss();
+                    }
                 }
                 // Toast.makeText(MainPlusTrevelActivity.this, time, 1).show();
             }
@@ -809,7 +877,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
         map.put("create_user_id", c_id + "");
         map.put("user_id", isUsersenior ? for_userid : c_id);
         map.put("attends", mJson);
-        map.put("period", period + "");
+        map.put("period",  "0");//period
         map.put("service_time", uploadtime);
         map.put("service_content", Constants.CARD_ADD_AFFAIR_CONTENT);
         map.put("set_remind", remindAlerm + "");
@@ -854,7 +922,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
                                     if (StringUtils.isEquals(contactBean.getUser_id(), c_id)
                                             || StringUtils.isEquals(contactBean.getMobile(), userInfo.getMobile())) {
 
-                                        if(isUpdate){//如果是更新，删除数据库数据
+                                        if (isUpdate) {//如果是更新，删除数据库数据
                                             AssetsDatabaseManager.deleteAlertCardByCardId(db, card.getCard_id());
                                         }
                                         Date date = new Date(Long.parseLong(card.getService_time()) * 1000);
@@ -889,7 +957,7 @@ public class MainPlusAffairActivity extends BaseActivity implements OnClickListe
      */
     private void setLocalAlarm(String cardId) {
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(MainPlusAffairActivity.this);

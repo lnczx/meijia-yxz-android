@@ -80,8 +80,8 @@ import com.zbar.lib.CaptureActivity;
  * 首页
  * 
  * @author RUI
- * 
- */
+ *
+*/
 public class Home1NewFra extends BaseFragment implements OnClickListener, ListItemClickHelps {
 
     private View v;

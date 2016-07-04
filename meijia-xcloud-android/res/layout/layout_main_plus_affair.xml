@@ -282,14 +282,18 @@
                         android:layout_height="1dp"
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
-                        android:background="#e1e1e1" />
+                        android:background="#e1e1e1"
+                        android:visibility="gone"
+                        />
 
                     <RelativeLayout
                         android:id="@+id/layout_repeat_cycle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:padding="5dp">
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        >
 
                         <ImageView
                             android:id="@+id/iv_cycle_icon"

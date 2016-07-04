@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class WaterBand implements Serializable {
 
     private String name;//商品名称
-    
-    private String servce_price_id;//商品价格Id
+
+    private String service_price_id;//商品价格Id
     
     private String price;//原价
     
@@ -28,13 +28,12 @@ public class WaterBand implements Serializable {
     }
 
 
-
-    public String getServce_price_id() {
-        return servce_price_id;
+    public String getService_price_id() {
+        return service_price_id;
     }
 
-    public void setServce_price_id(String servce_price_id) {
-        this.servce_price_id = servce_price_id;
+    public void setService_price_id(String service_price_id) {
+        this.service_price_id = service_price_id;
     }
 
     public String getPrice() {

@@ -206,4 +206,35 @@ public class CalendarUtils {
         return c.get(Calendar.DAY_OF_WEEK);
        }
 
+    /**
+     *
+     * @param date
+     * @return
+     * @throws Exception
+     */
+    public static String getWeekStr(String date) throws Exception{
+        //1==周日，7==周六
+        String week ="周一";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(format.parse(date));
+        int mWay = c.get(Calendar.DAY_OF_WEEK);
+        if (1==mWay) {
+            week = "周日";
+        } else if (2==mWay) {
+            week = "周一";
+        } else if (3.==mWay) {
+            week = "周二";
+        } else if (4==mWay) {
+            week = "周三";
+        } else if (5==mWay) {
+            week = "周四";
+        } else if (6==mWay) {
+            week = "周五";
+        } else if (7==mWay) {
+            week = "周六";
+        }
+        return week;
+       }
+
 }

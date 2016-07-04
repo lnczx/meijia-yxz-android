@@ -178,8 +178,7 @@ public class MainPlusAssetListActivity extends Activity{
         mTv1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainPlusAssetListActivity.this,MainPlusAssetOrderActivity.class);
-                intent.putExtra("flag",0);//0==显示领用登记
+                Intent intent = new Intent(MainPlusAssetListActivity.this,AssetConsumeActivity.class);
                 startActivity(intent);
             }
         });
@@ -188,7 +187,6 @@ public class MainPlusAssetListActivity extends Activity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainPlusAssetListActivity.this,MainPlusAssetOrderActivity.class);
-                intent.putExtra("flag",1);//1==显示入库登记
                 startActivity(intent);
             }
         });
@@ -203,7 +201,7 @@ public class MainPlusAssetListActivity extends Activity{
     }
     /**
      * 设置标题颜色
-     * @param cardType
+     *
      */
     private void setCardTitleColor(){
       mCardTitle.setText(titleName);
@@ -224,7 +222,7 @@ public class MainPlusAssetListActivity extends Activity{
                 page = 1;
                 mButtonTool.setSelected(true);
                 mButtonMoney.setSelected(false);
-//                getAssetInList(page);
+                getAssetUseList(page);
                 break;
             case R.id.m_btn_money://入库记录
                 leave_from = 1;
@@ -303,13 +301,15 @@ public class MainPlusAssetListActivity extends Activity{
         endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
 
+
     /**
      * 公司资产登记列表接口--入库列表
+     * @param page
      */
     private void getAssetInList(int page) {
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
@@ -383,7 +383,7 @@ public class MainPlusAssetListActivity extends Activity{
     private void getAssetUseList(int page) {
         
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);
@@ -453,8 +453,7 @@ public class MainPlusAssetListActivity extends Activity{
 
     /**
      * 处理数据加载的方法
-     * 
-     * @param list
+     * @param myAssetList
      */
     private void showDataIn(ArrayList<AssetData> myAssetList) {
         if (page == 1) {

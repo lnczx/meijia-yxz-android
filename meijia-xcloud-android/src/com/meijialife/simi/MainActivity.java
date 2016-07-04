@@ -811,8 +811,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
         SpFileUtil.clearFile(getApplication(), SpFileUtil.LOGIN_STATUS);//删除登录状态
-//        SpFileUtil.saveBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS,false);
-
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_USER_TAGS);//删除用户自定义
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
 
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {

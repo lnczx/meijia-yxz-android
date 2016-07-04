@@ -55,7 +55,9 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
     /** 支付类型 **/
     private static final int PAY_TYPE_ALIPAY = 1; // 支付宝支付
     private static final int PAY_TYPE_WXPAY = 2; // 微信支付
-    
+    private static final int PAY_TYPE_RESTMOENY = 0; // 余额支付
+
+
     private PartnerDetail partnerDetail;//服务详情对象
     private ServicePrices servicePrices;//服务报价
     
@@ -110,7 +112,7 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         switch (v.getId()) {
         case R.id.btn_topay:
             //来自发现页面的支付跳转
-            postSeniorBuy(PAY_TYPE_ALIPAY);
+            postSeniorBuy(PAY_TYPE_RESTMOENY);
             break;
         default:
             break;

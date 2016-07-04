@@ -175,14 +175,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="" 
                              />
                         <TextView
                             android:id="@+id/tv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:text="" 
+                            android:textColor="@color/simi_color_order_line_black"
+                            android:layout_marginTop="6dp"
                              />
                     </LinearLayout>
 
@@ -279,7 +278,9 @@
                         android:gravity="center"
                         android:padding="5dp"
                         android:text="7天前"
-                        android:textColor="#a4a4a4" />
+                        android:textColor="#a4a4a4"
+                        android:visibility="gone"
+                        />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

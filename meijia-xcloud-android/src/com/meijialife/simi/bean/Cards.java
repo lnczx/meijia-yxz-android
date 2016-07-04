@@ -38,6 +38,8 @@ public class Cards implements Serializable {
     private String card_extra;
     private String head_img_create_user;
     private int period;//闹钟提醒标志0=一次性提醒，1=每天，2=每个工作日，3=每周，4=每月，5=每年
+    private String period_name;//周期提醒类型
+
 
 
     public String getHead_img_create_user() {
@@ -46,6 +48,14 @@ public class Cards implements Serializable {
 
     public void setHead_img_create_user(String head_img_create_user) {
         this.head_img_create_user = head_img_create_user;
+    }
+
+    public String getPeriod_name() {
+        return period_name;
+    }
+
+    public void setPeriod_name(String period_name) {
+        this.period_name = period_name;
     }
 
     public String getTitle() {

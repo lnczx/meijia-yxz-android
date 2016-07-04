@@ -73,23 +73,22 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
     private int buyNum = 0;// 购买数量
     private BadgeView buyNumView;// 购物车上的数量标签
     private EditText mEtCount;
-    
-    private String assetTypeId="0";//公司资产类别Id
+
+    private String assetTypeId = "0";//公司资产类别Id
+    private boolean flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.asset_consume_activity);
         super.onCreate(savedInstanceState);
         initView();
-        initListData();
-        addListener();
 
     }
 
     private void initView() {
         requestBackBtn();
-        setTitleName("领用类型");
-        mEtCount = (EditText)findViewById(R.id.et_count);
+        setTitleName("资产领用");
+        mEtCount = (EditText) findViewById(R.id.et_count);
         listView1 = (ListView) findViewById(R.id.listview_1);
         listView2 = (ListView) findViewById(R.id.listview_2);
         ImageView shopCat = (ImageView) findViewById(R.id.iv_add_cart);
@@ -97,10 +96,10 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         buyNumView = (BadgeView) findViewById(R.id.tv_count_price);
         findViewById(R.id.m_btn_use).setOnClickListener(this);
 
-        assetMap = new HashMap<String, List<AssetData>>();
-        list2 = new ArrayList<AssetData>();
-        list = new ArrayList<XcompanySetting>();
-
+        assetMap = new HashMap<>();
+        list2 = new ArrayList<>();
+        list = new ArrayList<>();
+        initListData();
     }
 
     private void initListData() {
@@ -113,32 +112,29 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         goodsAdapter = new GoodsAdapter(this, list2, catograyAdapter);
         listView1.setAdapter(catograyAdapter);
         listView2.setAdapter(goodsAdapter);
-        
-        if(list!=null && list.size()>0){
+
+        if (list != null && list.size() > 0) {
             assetTypeId = list.get(0).getId();
         }
-        getAssetList(assetTypeId);
+        getAssetList(assetTypeId, 0);
+        addListener();
     }
 
     private void addListener() {
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                list2.clear();
-//                list2 = assetMap.get(list.get(position).getId());
-                list2 = list.get(position).getAssetDataList();
-                if (list2 != null && list2.size() > 0) {
-                    goodsAdapter.setData(list2);
-                } 
+                flag = true;
+                getAssetList(list.get(position).getId(), position);
             }
         });
     }
 
     /**
-     * @Description: 创建动画层
      * @param
      * @return void
      * @throws
+     * @Description: 创建动画层
      */
     private ViewGroup createAnimLayout() {
         ViewGroup rootView = (ViewGroup) this.getWindow().getDecorView();
@@ -170,7 +166,7 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         shopCart.getLocationInWindow(endLocation);// shopCart是那个购物车
 
         // 计算位移
-        int endX = 0 - startLocation[0] + 40;// 动画位移的X坐标
+        int endX = 0 - startLocation[0];// 动画位移的X坐标
         int endY = endLocation[1] - startLocation[1];// 动画位移的y坐标
         TranslateAnimation translateAnimationX = new TranslateAnimation(0, endX, 0, 0);
         translateAnimationX.setInterpolator(new LinearInterpolator());
@@ -206,25 +202,33 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
             public void onAnimationEnd(Animation animation) {
                 v.setVisibility(View.GONE);
                 buyNum++;// 让购买数量加1
-               // String num = mEtCount.getText().toString().trim();
-                buyNumView.setText("0");//
+//                String num = mEtCount.getText().toString().trim();
+                buyNumView.setText("共:" + Constants.ASSET_COUNT + "件");//
                 buyNumView.setBadgePosition(BadgeView.POSITION_CENTER);
                 buyNumView.show();
             }
         });
     }
 
+    public void setAnim() {
+
+        buyNum--;// 让购买数量加1
+        buyNumView.setText("共:" + Constants.ASSET_COUNT + "件");//
+        buyNumView.setBadgePosition(BadgeView.POSITION_CENTER);
+        buyNumView.show();
+    }
+
     /**
      * 公司资产列表接口
-     * 
-     * @param barcode
+     *
+     * @param assetTypeId
      */
-    private void getAssetList(String assetTypeId) {
+    private void getAssetList(final String assetTypeId, final int position) {
         UserInfo userInfo = DBHelper.getUserInfo(this);
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", userInfo.getUser_id());
         map.put("company_id", userInfo.getCompany_id());
-        map.put("asset_type_id",assetTypeId);
+        map.put("asset_type_id", assetTypeId);
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.GET_ASSET_LIST_URL, param, new AjaxCallBack<Object>() {
             @Override
@@ -249,7 +253,23 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
                             Gson gson = new Gson();
                             assetMap = gson.fromJson(data, new TypeToken<Map<String, List<AssetData>>>() {
                             }.getType());
-                            showAssetMap(assetMap);
+                            showAssetMap(assetMap,Integer.valueOf(assetTypeId).intValue());
+
+                            //点击左侧列表刷新右侧列表
+                            if (flag) {
+                                if (list2 == null) {
+                                    list2 = new ArrayList<AssetData>();
+                                } else {
+                                    list2.clear();
+                                }
+                                list2 = list.get(position).getAssetDataList();
+                                if (list2 != null && list2.size() > 0) {
+                                    goodsAdapter.setData(list2,Integer.valueOf(assetTypeId).intValue());
+                                } else {
+                                    goodsAdapter.setData(new ArrayList<AssetData>(),Integer.valueOf(assetTypeId).intValue());
+                                }
+                            }
+
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(AssetConsumeActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -270,16 +290,21 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         });
     }
 
-    protected void showAssetMap(Map<String, List<AssetData>> assetMaps) {
+    protected void showAssetMap(Map<String, List<AssetData>> assetMaps,int assetTypeId) {
         for (Map.Entry<String, List<AssetData>> entry : assetMaps.entrySet()) {
-            for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+            for (Iterator iterator = list.iterator(); iterator.hasNext(); ) {
                 XcompanySetting xcompanySetting = (XcompanySetting) iterator.next();
-                if(StringUtils.isEquals(xcompanySetting.getId(),entry.getKey())){
-                   xcompanySetting.setAssetDataList(entry.getValue());
+                if (StringUtils.isEquals(xcompanySetting.getId(), entry.getKey())) {
+                    xcompanySetting.setAssetDataList(entry.getValue());
                 }
             }
         }
-        goodsAdapter.setData(list.get(0).getAssetDataList());
+        if (list.get(0).getAssetDataList() != null && list.get(0).getAssetDataList().size() > 0) {
+            goodsAdapter.setData(list.get(0).getAssetDataList(),assetTypeId);
+        } else {
+            goodsAdapter.setData(new ArrayList<AssetData>(),assetTypeId);
+
+        }
         goodsAdapter.notifyDataSetChanged();
     }
 
@@ -287,18 +312,18 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         assetMap.clear();
+        Constants.ASSET_COUNT = 0;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.m_btn_use:
-            Intent intent = new Intent();
-            setResult(CATEGORY_RESULT_CODES, intent);
-            AssetConsumeActivity.this.finish();
-            break;
-        default:
-            break;
+            case R.id.m_btn_use:
+                Intent intent = new Intent(AssetConsumeActivity.this,MainPlusAssetRegisterOrderActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
         }
     }
 

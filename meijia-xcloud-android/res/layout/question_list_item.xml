@@ -26,7 +26,8 @@
             android:layout_marginBottom="5dp"
             >
             
-            <LinearLayout 
+            <LinearLayout
+                android:id="@+id/m_ll_gold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -50,9 +51,8 @@
                 android:id="@+id/m_tv_question_gold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="6dp"
-                android:text="l0" 
+                android:text="0"
                 android:gravity="center"
                 android:textColor="@color/feed_gold_count"
                 />
@@ -66,6 +66,7 @@
                 android:gravity="center|left"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/feed_question_title"
                 android:textStyle="bold"
                 android:text="问题内容" />

@@ -1,7 +1,5 @@
 package com.meijialife.simi.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +9,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.easemob.easeui.Constant;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AssetConsumeActivity;
 import com.meijialife.simi.bean.AssetData;
+import com.meijialife.simi.bean.AssetJson;
 import com.meijialife.simi.bean.AssetJsons;
+
+import java.util.List;
 
 /**
  * Created by bobge on 15/7/31.
@@ -25,6 +27,7 @@ public class GoodsAdapter extends BaseAdapter {
     private List<AssetData> list;
     private Context context;
     private CatograyAdapter catograyAdapter;
+    private int assetTypeId;
 
     public GoodsAdapter(Context context, List<AssetData> list1) {
         this.context = context;
@@ -37,8 +40,9 @@ public class GoodsAdapter extends BaseAdapter {
         this.catograyAdapter = catograyAdapter;
     }
 
-    public void setData(List<AssetData> list) {
+    public void setData(List<AssetData> list, int assetTypeId) {
         this.list = list;
+        this.assetTypeId = assetTypeId;
         notifyDataSetChanged();
     }
 
@@ -74,6 +78,11 @@ public class GoodsAdapter extends BaseAdapter {
         } else if (list != null && list.size() > 0) {
 
             final AssetData assetData = list.get(position);
+            int total = 0;
+            AssetJsons jsons = Constants.ASSET_MAP_JSON.get(assetData.getAsset_id());
+            if (jsons !=null) {
+                total = jsons.getTotal();
+            }
             viewholder = (Viewholder) view.getTag();
             viewholder.tv_name.setText(list.get(position).getName());
             viewholder.tv_desc.setText(list.get(position).getSeq());
@@ -81,29 +90,23 @@ public class GoodsAdapter extends BaseAdapter {
             viewholder.iv_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    int count = list.get(position).getCount();
-                    int count = 0;
-                    if(Constants.ASSET_JSON !=null && Constants.ASSET_JSON.size()>0){
-                        for (int i = 0; i < Constants.ASSET_JSON.size(); i++) {
-                            AssetJsons assetJson = Constants.ASSET_JSON.get(i);
-                            if(list.get(position).getAsset_id()==assetJson.getAsset_id()){
-                                count = assetJson.getTotal();
-                                count++;
-                                Constants.ASSET_JSON.get(position).setTotal(count);
-                            }else {
-                                AssetJsons assetJsons = new AssetJsons(assetData.getAsset_id(),count++);
-                                Constants.ASSET_JSON.add(assetJsons);
-                                break;
-                            }
-                        }
-                    }else {
-                        count++;
-                        AssetJsons assetJsons = new AssetJsons(assetData.getAsset_id(),count);
-                        Constants.ASSET_JSON.add(assetJsons);
+                    int total = 0;
+                    Constants.ASSET_COUNT++;//每次点击总数+1
+                    AssetJsons jsons = Constants.ASSET_MAP_JSON.get(assetData.getAsset_id());
+                    if (jsons != null) {
+                        total = jsons.getTotal() + 1;
+                        jsons.setTotal(total);
+                        Constants.ASSET_MAP_JSON.put(assetData.getAsset_id(), jsons);
+                    } else {
+                        //添加资产类型
+                        total = total + 1;
+                        AssetJsons json = new AssetJsons(assetData.getAsset_id(), total, assetData.getName());
+                        Constants.ASSET_MAP_JSON.put(assetData.getAsset_id(), json);
                     }
+
                     viewholder.et_acount.setVisibility(View.VISIBLE);
                     viewholder.iv_remove.setVisibility(View.VISIBLE);
-                    viewholder.et_acount.setText(count + "");
+                    viewholder.et_acount.setText(total + "");
                     catograyAdapter.notifyDataSetChanged();
 
                     int[] startLocation = new int[2];// 一个整型数组，用来存储按钮的在屏幕的X、Y坐标
@@ -111,40 +114,52 @@ public class GoodsAdapter extends BaseAdapter {
                     ImageView ball = new ImageView(context);// buyImg是动画的图片，我的是一个小球（R.drawable.sign）
                     ball.setImageResource(R.drawable.ic_launcher);// 设置buyImg的图片
                     ((AssetConsumeActivity) context).setAnim(ball, startLocation);// 开始执行动画
+
                 }
             });
             viewholder.iv_remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int count = 0;
-                    if(Constants.ASSET_JSON !=null && Constants.ASSET_JSON.size()>0){
-                        for (int i = 0; i < Constants.ASSET_JSON.size(); i++) {
-                            AssetJsons assetJson = Constants.ASSET_JSON.get(i);
-                            if(list.get(position).getAsset_id()==assetJson.getAsset_id()){
-                                count = assetJson.getTotal();
-                                count--;
-                                if(count<0){
-                                    count=0;
-                                }
-                                Constants.ASSET_JSON.get(position).setTotal(count);
-                            }
+
+                    if (Constants.ASSET_COUNT <= 0) {
+                        Constants.ASSET_COUNT = 0;
+                    } else {
+                        Constants.ASSET_COUNT--;
+                    }
+                    int total = 0;
+                    AssetJsons jsons = Constants.ASSET_MAP_JSON.get(assetData.getAsset_id());
+                    if (jsons != null) {
+                        total = jsons.getTotal();
+
+                        if (total > 0) {
+                            total = total - 1;
+                            jsons.setTotal(total);
+                            Constants.ASSET_MAP_JSON.put(assetData.getAsset_id(), jsons);
+                        } else {
+                            Constants.ASSET_MAP_JSON.remove(assetData.getAsset_id() + "");
                         }
                     }
-                    if(count==0){
+
+
+                    if (total == 0) {
                         viewholder.et_acount.setVisibility(View.GONE);
                         viewholder.iv_remove.setVisibility(View.GONE);
                     }
-                    viewholder.et_acount.setText(count + "");
+                    //删除资产类型
+                    Constants.ASSET_MAP_JSON.remove(assetData.getAsset_id() + "");
+                    viewholder.et_acount.setText(total + "");
                     catograyAdapter.notifyDataSetChanged();
+                    ((AssetConsumeActivity) context).setAnim();// 更新购物车数量
                 }
             });
-            
-            if (list.get(position).getCount() <= 0) {
+            //显示选择数量
+            if (total <= 0) {
                 viewholder.et_acount.setVisibility(View.INVISIBLE);
                 viewholder.iv_remove.setVisibility(View.INVISIBLE);
             } else {
                 viewholder.et_acount.setVisibility(View.VISIBLE);
                 viewholder.iv_remove.setVisibility(View.VISIBLE);
+                viewholder.et_acount.setText(total + "");
             }
         }
         return view;

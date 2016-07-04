@@ -12,7 +12,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
@@ -494,6 +496,22 @@ public class AlermUtils {
             mp.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    public static void playAudios(Context context) {
+
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Ringtone r = RingtoneManager.getRingtone(context,notification);
+        r.play();
+    }
+
+
+    public static void cancleAudios(Context context) {
+
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Ringtone r = RingtoneManager.getRingtone(context,notification);
+        if(r.isPlaying()){
+            r.stop();
         }
     }
 }

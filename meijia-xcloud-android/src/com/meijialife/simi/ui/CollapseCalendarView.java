@@ -532,6 +532,11 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         }
     }
 
+    /**
+     * 设置显示红点
+     * @param week
+     * @param weekView
+     */
     @SuppressLint("ResourceAsColor")
 	private void populateWeekLayout(@NonNull Week week, @NonNull WeekView weekView) {
 

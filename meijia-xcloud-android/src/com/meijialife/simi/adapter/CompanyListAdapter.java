@@ -72,7 +72,13 @@ public final class CompanyListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.item_tv_id.setText(datas.get(position).getCompany_id());
+		CompanyData companyData = datas.get(position);
+		if(companyData.getIs_default()==1){
+			holder.item_tv_id.setVisibility(View.VISIBLE);
+		}else{
+			holder.item_tv_id.setVisibility(View.GONE);
+		}
+
 		holder.item_tv_name.setText(datas.get(position).getCompany_name());
 		return convertView;
 	}

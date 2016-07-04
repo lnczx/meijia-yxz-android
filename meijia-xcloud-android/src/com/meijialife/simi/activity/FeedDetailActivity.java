@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
     private String fid;
     
     private TextView m_tv_money;//金币数
+    private ImageView m_iv_gold;//金币图标
     private TextView m_tv_title;//问题题目
     private TextView m_tv_time;//发表时间
     private TextView m_tv_count;//答案个数
@@ -104,6 +106,7 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
         listView.addHeaderView(headerView);
         
         m_tv_money = (TextView)headerView.findViewById(R.id.m_tv_money);
+        m_iv_gold = (ImageView) headerView.findViewById(R.id.m_iv_gold);
         m_tv_title = (TextView)headerView.findViewById(R.id.m_tv_title);
         m_tv_time = (TextView)headerView.findViewById(R.id.m_tv_time);
         m_tv_count = (TextView)headerView.findViewById(R.id.m_tv_count);
@@ -310,7 +313,15 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
     
     private void showView(FeedData feedData){
         setTitleName(feedData.getName()+"的提问");
-        m_tv_money.setText(feedData.getFeed_extra());
+        if(StringUtils.isEquals("0",feedData.getFeed_extra())){
+            m_iv_gold.setVisibility(View.GONE);
+            m_tv_money.setVisibility(View.GONE);
+
+        }else{
+            m_iv_gold.setVisibility(View.VISIBLE);
+            m_tv_money.setVisibility(View.VISIBLE);
+            m_tv_money.setText(feedData.getFeed_extra());
+        }
         m_tv_title.setText(feedData.getTitle());
         m_tv_time.setText(feedData.getAdd_time_str());
         m_tv_count.setText(feedData.getTotal_comment()+"个答案");

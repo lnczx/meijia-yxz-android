@@ -3,7 +3,7 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 
 /**
- * @description：公司资产列表实体
+ * @description：公司资产入库列表实体
  * @author： kerryg
  * @date:2016年3月31日 
  */

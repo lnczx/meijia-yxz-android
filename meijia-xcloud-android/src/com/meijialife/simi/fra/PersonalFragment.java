@@ -53,6 +53,7 @@ import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
+import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.User;
@@ -337,7 +338,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
              * intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615")); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
              * startActivity(intent);
              */
-            Intent intent1 = new Intent(getActivity(), WebViewsActivity.class);
+            Intent intent1 = new Intent(getActivity(), WebViewActivity.class);
             intent1.putExtra("url", Constants.KAI_DIAN + user.getId());
             getActivity().startActivity(intent1);
             break;

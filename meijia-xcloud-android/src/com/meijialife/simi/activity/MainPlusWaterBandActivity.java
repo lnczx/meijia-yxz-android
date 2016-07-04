@@ -142,7 +142,7 @@ public class MainPlusWaterBandActivity extends BaseActivity implements OnItemCli
      public void getWaterBandList(final int page){
          //判断是否有网络
          if (!NetworkUtils.isNetworkConnected(MainPlusWaterBandActivity.this)) {
-             Toast.makeText(MainPlusWaterBandActivity.this, getString(R.string.net_not_open), 0).show();
+             Toast.makeText(MainPlusWaterBandActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
              return;
          }
          Map<String,String> map = new HashMap<String,String>();
@@ -207,10 +207,11 @@ public class MainPlusWaterBandActivity extends BaseActivity implements OnItemCli
              }
          });
      }
-     /**
-      * 处理数据加载的方法
-      * @param list
-      */
+
+    /**
+     * 处理数据加载的方法
+     * @param myWaterBandList
+     */
      private void showData(List<WaterBand> myWaterBandList){
          if(myWaterBandList!=null && myWaterBandList.size()>0){
              if(page==1){
@@ -234,7 +235,7 @@ public class MainPlusWaterBandActivity extends BaseActivity implements OnItemCli
                 Intent intent = new Intent();
                 intent.putExtra("waterBandName",waterBand.getName());
                 intent.putExtra("waterMoney","原价"+waterBand.getPrice()+"元/桶"+",折扣价"+waterBand.getDis_price()+"元/桶");
-                intent.putExtra("waterBandId",waterBand.getServce_price_id());
+                intent.putExtra("waterBandId",waterBand.getService_price_id());
                 setResult(RESULT_FIRST_USER, intent);
                 MainPlusWaterBandActivity.this.finish();
             }

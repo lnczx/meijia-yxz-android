@@ -27,6 +27,7 @@
             android:textColor="@color/simi_color_blue" />
 
         <ImageView
+            android:id="@+id/m_iv_gold"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:scaleType="fitXY"
@@ -38,8 +39,9 @@
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="10"
-            android:textColor="@color/feed_gold_count" />
+            android:text="0"
+            android:textColor="@color/feed_gold_count"
+            />
 
         </LinearLayout>
         <TextView

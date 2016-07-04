@@ -87,6 +87,13 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
         flag = getIntent().getIntExtra("flag",0);
          
     }
+
+    @Override
+    protected void onStart() {
+        getCompanyListByUserId(page);
+        super.onStart();
+    }
+
     private void initCompanyView(){
         totalCompanyeList = new ArrayList<CompanyData>();
         myCompanyDataList = new ArrayList<CompanyData>();
@@ -98,7 +105,6 @@ public class CompanyListActivity extends BaseActivity implements OnClickListener
         mPullRefreshListView.setAdapter(companyListAdapter);
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getCompanyListByUserId(page);    
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {

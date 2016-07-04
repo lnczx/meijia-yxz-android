@@ -27,7 +27,7 @@ public class FeedData implements Serializable {
     
     private String total_view;//浏览次数
     
-    private String feed_extra;
+    private String feed_extra;//金币个数
     
     private int status;//2=已关闭，0=我来答
     

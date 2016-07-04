@@ -53,6 +53,7 @@ import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.db.InviteMessgeDao;
@@ -395,7 +396,7 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
 					String st10 = getResources().getString(R.string.have_you_removed);
 					if (ChatActivity.activityInstance != null
 							&& usernameList.contains(ChatActivity.activityInstance.getToChatUsername())) {
-						Toast.makeText(EMMainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, 1).show();
+						Toast.makeText(EMMainActivity.this, ChatActivity.activityInstance.getToChatUsername() + st10, Toast.LENGTH_SHORT).show();
 						ChatActivity.activityInstance.finish();
 					}
 					updateUnreadLabel();
@@ -572,7 +573,9 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
                         }
 						finish();
 						//add by garry
-						startActivity(new Intent(EMMainActivity.this, LoginActivity.class));
+						Intent intent =new Intent(EMMainActivity.this, LoginActivity.class);
+						intent.putExtra("is_show_back", 0);
+						startActivity(intent);
 					}
 				});
 				conflictBuilder.setCancelable(false);
@@ -595,6 +598,11 @@ public class EMMainActivity extends EMBaseActivity implements EMEventListener {
         DBHelper.getInstance(EMMainActivity.this).deleteAll(User.class);
         DBHelper.getInstance(EMMainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(EMMainActivity.this).deleteAll(CalendarMark.class);
+		SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+		SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
+		SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_USER_TAGS);//删除用户自定义
+		SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
+		SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
     }
 
 	/**

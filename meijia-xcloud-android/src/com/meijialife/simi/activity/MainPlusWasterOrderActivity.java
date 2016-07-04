@@ -1,5 +1,6 @@
 package com.meijialife.simi.activity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +19,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.bean.AddressData;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.LogOut;
+import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -79,6 +84,8 @@ public class MainPlusWasterOrderActivity extends BaseActivity implements OnClick
         findViewById(R.id.m_rl_addr).setOnClickListener(this);
         findViewById(R.id.bt_create_water).setOnClickListener(this);
         findViewById(R.id.layout_select_band).setOnClickListener(this);
+
+        getAddList();
         
     }
     
@@ -100,6 +107,7 @@ public class MainPlusWasterOrderActivity extends BaseActivity implements OnClick
             break;
         }
     }
+
 
     /**
      * 送水下单接口
@@ -209,13 +217,93 @@ public class MainPlusWasterOrderActivity extends BaseActivity implements OnClick
         }
     }
 
+
+    private ArrayList<AddressData> addressList;
+
+    /**
+     * 获取地址列表
+     */
+    private void getAddList() {
+        String user_id = DBHelper.getUser(this).getId();
+
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("user_id", user_id+"");
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_ADDRS, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(MainPlusWasterOrderActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if(StringUtils.isNotEmpty(data)){
+                                Gson gson = new Gson();
+                                addressList = gson.fromJson(data, new TypeToken<ArrayList<AddressData>>() {
+                                }.getType());
+                                showDefaultData(addressList);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息
+                if(!StringUtils.isEmpty(errorMsg.trim())){
+                    UIUtils.showToast(MainPlusWasterOrderActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
+    public void showDefaultData(ArrayList<AddressData> addressList){
+        for (AddressData  addressData:  addressList) {
+            if(addressData.getIs_default()==1){
+                mServiceAddrId= addressData.getId();
+                mServiceAddrName = addressData.getName();
+                mWasterAddr.setText(mServiceAddrName);;
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
-        super.onRestart();
+        super.onResume();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mWasterRemark.setText(Constants.WATER_ADD_REMARK);
+                 mWasterRemark.setText(Constants.WATER_ADD_REMARK);
                 mWasterAddr.setText(Constants.WATER_ADD_ADDRESS);
                 mWaterBandName.setText(Constants.WATER_TYPE_NAME);
             }

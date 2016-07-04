@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.meijialife.simi.Constants;
@@ -21,6 +22,7 @@ import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.bean.FeedData;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.StringUtils;
 
 /**
  * 文章、动态、问答列表适配器
@@ -34,12 +36,7 @@ public final class FeedListAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private FinalBitmap finalBitmap;
 
-    /**
-     * @param context上下文
-     * @param 数据列表
-     * @param showDel
-     *            是否显示删除按钮
-     */
+
     public FeedListAdapter(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -83,6 +80,7 @@ public final class FeedListAdapter extends BaseAdapter {
             holder.m_tv_question_count = (TextView) convertView.findViewById(R.id.m_tv_question_count);
             holder.m_iv_question_gold = (RoundImageView) convertView.findViewById(R.id.m_iv_question_gold);
             holder.m_iv_user_icon = (RoundImageView) convertView.findViewById(R.id.m_iv_user_icon);
+            holder.m_ll_gold = (LinearLayout) convertView.findViewById(R.id.m_ll_gold);
 
             convertView.setTag(holder);
 
@@ -91,7 +89,13 @@ public final class FeedListAdapter extends BaseAdapter {
         }
 
         final FeedData feedData = datas.get(position);
-        holder.m_tv_question_gold.setText(feedData.getFeed_extra());
+        //金币==0不显示
+        if(StringUtils.isEquals(feedData.getFeed_extra(),"0")){
+            holder.m_ll_gold.setVisibility(View.GONE);
+        }else{
+            holder.m_ll_gold.setVisibility(View.VISIBLE);
+            holder.m_tv_question_gold.setText(feedData.getFeed_extra());
+        }
         holder.m_tv_question_content.setText(feedData.getTitle());
         holder.m_tv_question_time.setText(feedData.getAdd_time_str());
 
@@ -142,6 +146,7 @@ public final class FeedListAdapter extends BaseAdapter {
         TextView m_tv_question_count; // 问答个数
         RoundImageView m_iv_question_gold;// 赏金图标
         RoundImageView m_iv_user_icon;// 用户头像
+        LinearLayout m_ll_gold;//金币布局
     }
 
 }

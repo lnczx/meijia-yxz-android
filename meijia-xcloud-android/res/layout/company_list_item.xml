@@ -18,20 +18,26 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
-            android:text="" />
-       <TextView
-            android:id="@+id/item_tv_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-           />
+             />
+
         <ImageView
- 		    android:id="@+id/iv_arrow"
+            android:id="@+id/iv_arrow"
             android:layout_width="10dp"
             android:layout_height="13dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_right" />
+       <TextView
+            android:id="@+id/item_tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+           android:layout_centerInParent="true"
+           android:layout_marginRight="10dp"
+           android:text="默认"
+           android:textColor="@color/simi_color_gray"
+           android:layout_toLeftOf="@id/iv_arrow"
+           />
     </RelativeLayout>
 
 </LinearLayout>

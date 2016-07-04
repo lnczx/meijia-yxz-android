@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.database.DBHelper;
@@ -89,7 +90,10 @@ public class CardAlertActivity extends Activity {
         bt_alert_done.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
+                AlermUtils.cancleAudios(CardAlertActivity.this);
+
             }
         });
         bt_alert_detail.setOnClickListener(new OnClickListener() {
@@ -189,7 +193,7 @@ public class CardAlertActivity extends Activity {
         }
         tv_alert_title.setText(mAlertTitle.trim());
         tv_alert_time.setText(mAlert_time.trim());
-        tv_alert_date.setText(mAlert_date.trim());
+        tv_alert_date.setText(card.getPeriod_name());
         tv_alert_text.setText(mAlertText.trim());
     }
     

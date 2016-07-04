@@ -15,6 +15,7 @@ public class FindBean implements Serializable{
     private String goto_url;//跳转url h5=纯跳转，app=app内跳转，h5+list跳转h5后点击咨询
     private String service_type_ids;//服务大类集合
     private String action;//操作表示
+    private int enable;//0==不可用，1==可用
     public FindBean() {
         super();
     }
@@ -47,7 +48,13 @@ public class FindBean implements Serializable{
     }
 
 
+    public int getEnable() {
+        return enable;
+    }
 
+    public void setEnable(int enable) {
+        this.enable = enable;
+    }
     public String getTitle() {
         return title;
     }
