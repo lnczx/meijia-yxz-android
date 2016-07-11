@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CompanyListsActivity;
+import com.meijialife.simi.activity.CompanyRegisterActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 
 
@@ -58,8 +59,10 @@ public class AddPopWindow extends PopupWindow {
   
             @Override  
             public void onClick(View arg0) {  
-                Intent intent = new Intent(contexts, WebViewsActivity.class);
+              /*  Intent intent = new Intent(contexts, WebViewsActivity.class);
                 intent.putExtra("url", Constants.HAS_COMPANY);
+                contexts.startActivity(intent);*/
+                Intent intent = new Intent(contexts, CompanyRegisterActivity.class);
                 contexts.startActivity(intent);
                 AddPopWindow.this.dismiss();  
             }  

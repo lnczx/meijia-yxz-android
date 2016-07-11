@@ -103,7 +103,9 @@ public class SplashActivity extends Activity {
         mWelcome = (ImageView) findViewById(R.id.iv_welcome);
         mWelcome2 = (ImageView) findViewById(R.id.iv_welcome2);
         initSplashAd();
-        timer.schedule(task, 3000);
+        timer.schedule(task, 2000);
+
+
         //2s之后启动页进入首页
         TimerTask MyTask = new TimerTask() {
             @Override
@@ -124,7 +126,7 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        timer.schedule(MyTask, 2000);
+        timer.schedule(MyTask, 5000);
         initRoute();
         getCitys(getCityAddtime());
         getBaseDatas();
@@ -153,6 +155,8 @@ public class SplashActivity extends Activity {
      */
     private void initSplashAd() {
         finalBitmap = FinalBitmap.create(SplashActivity.this);
+        finalBitmap.configDiskCachePath(getCacheDir() + "icon");
+        finalBitmap.configDiskCacheSize(10 * 1024);
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {

@@ -1,16 +1,5 @@
 package com.meijialife.simi.fra;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -41,6 +30,7 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CompanyListActivity;
+import com.meijialife.simi.activity.CompanyRegisterActivity;
 import com.meijialife.simi.activity.ContactAddFriendsActivity;
 import com.meijialife.simi.activity.FindSecretaryActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
@@ -60,6 +50,17 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.zbar.lib.CaptureActivity;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description：好友---消息
@@ -373,8 +374,8 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         case R.id.rl_company_contacts:// 企业通讯录
             // 跳转到企业通讯录
             if (userInfo.getHas_company() == 0) {
-                intent = new Intent(getActivity(), WebViewsActivity.class);
-                intent.putExtra("url", Constants.HAS_COMPANY);
+                intent = new Intent(getActivity(), CompanyRegisterActivity.class);
+//                intent.putExtra("url", Constants.HAS_COMPANY);
                 startActivity(intent);
             } else {
                 intent = new Intent(getActivity(), CompanyListActivity.class);

@@ -64,11 +64,11 @@
 	<string name="function_card">智能贴心服务</string>
 	
 	<!-- 首页小标题 -->
-	<string name="m_new_fra_item1">同行热聊</string>
+	<string name="m_new_fra_item1">视听课程</string>
 	<string name="m_new_fra_item2">精品课程</string>
 	<string name="m_new_fra_item3">知识学院</string>
 	<string name="m_new_fra_item4">签到有礼</string>
-	<string name="m_new_fra_item5">内推悬赏</string>
+	<string name="m_new_fra_item5">互助问答</string>
 	<string name="m_new_fra_item6">简历交换</string>
 	<string name="m_new_fra_item7">找服务商</string>
 	<string name="m_new_fra_item8">福利商城</string>
@@ -82,7 +82,7 @@
 	<string name="m_ps_fra_item5">我的订单</string>
 	<string name="m_ps_fra_item6">优惠券</string>
 	<string name="m_ps_fra_item7">积分商城</string>
-	<string name="m_ps_fra_item8">会员服务</string>
+	<string name="m_ps_fra_item8">企业服务</string>
 	
 	<string name="m_ps_fra_sub1">我的消息</string>
 	<string name="m_ps_fra_sub2">我的钱包</string>
@@ -93,6 +93,13 @@
 		    这样回答者们才能完善，更高质量的的为你解答</string>
 	
 	
-	
+	<!--创建企业通讯录-->
+    <string name="company_register_name">名称</string>
+    <string name="company_register_short_name">简称</string>
+    <string name="company_register_location">地区</string>
+    <string name="company_register_scale">规模</string>
+    <string name="company_register_hint1">请输入企业/团队名称</string>
+    <string name="company_register_hint2">请输入企业/团队简称</string>
+
 
 </resources>

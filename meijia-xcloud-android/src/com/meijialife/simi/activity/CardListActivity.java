@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -67,7 +68,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     
     private ImageView mCardBack;
     private TextView mCardTitle;
-    private LinearLayout mLlCard;
+    private FrameLayout mLlCard;
     private RelativeLayout mRlCard;
     private LinearLayout mAffairCardTitle;
     
@@ -79,8 +80,11 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
     private LinearLayout mLlCreate;
     private HashMap<String,String> mCardTitleColor;
     private String mCardType;
-    
-    
+
+    private static View layout_mask;//分享遮罩
+
+
+
     //下拉刷新
     private ArrayList<Cards> totalCardList;
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
@@ -110,7 +114,7 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         //接收参数
         mCardType = getIntent().getStringExtra("cardType");
 
-        mLlCard = (LinearLayout)findViewById(R.id.m_ll_card);
+        mLlCard = (FrameLayout)findViewById(R.id.m_ll_card);
         mRlCard = (RelativeLayout)findViewById(R.id.view_card_title_bar);
         //新建(控件)
         mTvCreate = (TextView)findViewById(R.id.m_tv_create_card);
@@ -124,7 +128,10 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         mCardBack = (ImageView) findViewById(R.id.m_iv_card_back);
         mCardTitle = (TextView) findViewById(R.id.m_tv_card_title);
         mAffairCardTitle = (LinearLayout)findViewById(R.id.m_affair_card_title);
-       
+
+        layout_mask = findViewById(R.id.layout_mask);
+
+
         setOnClick();//设置点击事件
         setCardTitleColor(mCardType);//设置标题颜色
         setTitleBarColor();//设置沉浸栏样式
@@ -201,7 +208,16 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
         endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
         endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
     }
-    
+
+
+    public static void showMask() {
+        layout_mask.setVisibility(View.VISIBLE);
+    }
+
+    public static void GoneMask() {
+        layout_mask.setVisibility(View.GONE);
+    }
+
     /*
      * 设置点击事件
      */
@@ -444,10 +460,11 @@ public class CardListActivity extends Activity implements onCardUpdateListener{
             finish();
         }
     }
-    
+
     /**
      * 处理数据加载的方法
-     * @param list
+     * @param myCardList
+     * @param gson
      */
     private void showData(List<Cards> myCardList,Gson gson){
         if(page==1){

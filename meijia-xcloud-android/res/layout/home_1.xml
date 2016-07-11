@@ -29,7 +29,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:background="@color/simi_color_white"
-            android:cacheColorHint="#00000000"
+            android:divider="@null"
             android:fadingEdge="none"
             android:fastScrollEnabled="false"
             android:footerDividersEnabled="false"
@@ -58,10 +58,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_gravity="left"
-                    android:layout_marginRight="10dp"
-                    widgets:tab_text_color="@color/tab_text_color"
+                    android:layout_marginRight="20dp"
+                    widgets:tab_text_color="@color/index_first_title_color"
                     widgets:tab_text_selected_color="@color/simi_color_red"
-                    widgets:tab_text_size="18sp" />
+                    widgets:tab_text_size="16sp" />
 
                 <LinearLayout
                     android:id="@+id/ll_more_columns"

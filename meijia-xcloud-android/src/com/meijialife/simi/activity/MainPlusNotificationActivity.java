@@ -175,8 +175,8 @@ public class MainPlusNotificationActivity extends BaseActivity implements OnClic
          */
         String userName = userInfo.getName();
         String mobile = userInfo.getMobile();
-        if(!StringUtils.isEmpty(mobile)){
-            if(StringUtils.isEmpty(userName)){
+        if(!StringUtils.isEmpty(mobile)   || !StringUtils.isEmpty(userName)){
+            if(StringUtils.isEmpty(userName)   || !StringUtils.isEmpty(userName)){
                 userName = mobile;
             }
             Friend friend = new Friend(userInfo.getUser_id(),userInfo.getName(),userInfo.getHead_img(),userInfo.getMobile(),true);

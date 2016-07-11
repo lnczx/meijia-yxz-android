@@ -60,7 +60,7 @@ public class CommonUtilActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CompanySetting setting = companySettings.get(position);
-                Intent intent  = new Intent(CommonUtilActivity.this,WebViewsActivity.class);
+                Intent intent  = new Intent(CommonUtilActivity.this,WebViewActivity.class);
                 intent.putExtra("url",setting.getSetting_json());
                 startActivity(intent);
             }

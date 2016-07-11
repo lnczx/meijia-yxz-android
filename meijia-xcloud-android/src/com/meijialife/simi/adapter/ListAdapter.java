@@ -1,19 +1,5 @@
 package com.meijialife.simi.adapter;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -36,13 +22,13 @@ import android.widget.Toast;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardDetailsActivity;
+import com.meijialife.simi.activity.CardListActivity;
 import com.meijialife.simi.bean.CardAttend;
 import com.meijialife.simi.bean.CardExtra;
 import com.meijialife.simi.bean.Cards;
 import com.meijialife.simi.bean.WeatherDatas;
 import com.meijialife.simi.bean.WeatherIndex;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.fra.Home1Fra;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.DateUtils;
@@ -50,6 +36,20 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.simi.easemob.utils.ShareConfig;
+
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 首页卡片列表适配器
@@ -464,13 +464,14 @@ public class ListAdapter extends BaseAdapter {
     }
     
     private void postShare() {
-        Home1Fra.showMask();
+        CardListActivity.showMask();
         CustomShareBoard shareBoard = new CustomShareBoard((Activity) context);
         shareBoard.setOnDismissListener(new OnDismissListener() {
             
             @Override
             public void onDismiss() {
-                Home1Fra.GoneMask(); 
+
+                CardListActivity.GoneMask();
             }
         });
         shareBoard.showAtLocation(((Activity) context).getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);

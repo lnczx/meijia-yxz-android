@@ -127,7 +127,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         recharge_ll_restMoney = (RelativeLayout)findViewById(R.id.recharge_ll_restMoney);
 
         from = getIntent().getIntExtra("from", 0);
-        flag = getIntent().getIntExtra("flag", 2);// 2=发现界面支付
+        flag = getIntent().getIntExtra("flag", 2);//1=订单列表,2=发现界面支付,3=订单详情,99==送水订单
         if (flag == FROM_FIND) {
             if (from == FROM_MEMBER) {
                 name = getIntent().getStringExtra("name");
@@ -152,13 +152,13 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             myOrderDetail = (MyOrderDetail) getIntent().getSerializableExtra("myOrderDetail");
             orderId = myOrderDetail.getOrder_id() + "";
             orderPay = myOrderDetail.getOrder_pay();
-            order_flag=0;
+            order_flag=1;
         } else if (flag == FROM_MYORDER) {
             Constants.USER_CHARGE_TYPE=1;
             myOrder = (MyOrder) getIntent().getSerializableExtra("myOrder");
             orderId = myOrder.getOrder_id() + "";
             orderPay = myOrder.getOrder_pay();
-            order_flag=1;
+            order_flag=0;
         }else if (flag==FROM_WATER_ORDER) {
             Constants.USER_CHARGE_TYPE=1;
             waterData = (WaterData) getIntent().getSerializableExtra("waterData");
@@ -570,7 +570,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
     private void postOrder(final int payType, int orderFlag) {
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         if (is_addr == 1 && StringUtils.isEmpty(addr_id)) {
@@ -720,7 +720,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             return;
         }
         if (is_addr == 1 && Long.valueOf(addr_id) <= 0) {
-            Toast.makeText(this, "请选择服务方式", 0).show();
+            Toast.makeText(this, "请选择服务方式", Toast.LENGTH_SHORT).show();
             return;
         }
         UserInfo userInfo = DBHelper.getUserInfo(this);

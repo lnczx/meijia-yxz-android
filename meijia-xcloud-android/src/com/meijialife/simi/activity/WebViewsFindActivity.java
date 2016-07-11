@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.ui.CustomShareBoard;
@@ -34,15 +35,16 @@ import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
 
 /**
  * @description：发现页面--应用中心专属webView
  * @author： kerryg
- * @date:2015年12月3日 
+ * @date:2015年12月3日
  */
-public class WebViewsFindActivity  extends Activity{
+public class WebViewsFindActivity extends Activity {
 
     private String url;//跳转url
     private String service_type_ids;//服务大类集合
@@ -74,30 +76,32 @@ public class WebViewsFindActivity  extends Activity{
         findView();
         init();
     }
-    private void findView(){
+
+    private void findView() {
         url = getIntent().getStringExtra("url");
         service_type_ids = getIntent().getStringExtra("service_type_ids");
         title_name = getIntent().getStringExtra("title_name");
 
         iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
-        iv_person_close = (ImageView)findViewById(R.id.iv_person_close);
-        tv_person_title = (TextView)findViewById(R.id.tv_person_title);
-        rl_button = (RelativeLayout)findViewById(R.id.rl_button);
-        bt_button =(Button)findViewById(R.id.bt_button);
-        mProgressBar = (ProgressBar)findViewById(R.id.myProgressBar);
-        if(!StringUtils.isEmpty(service_type_ids)){
+        iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
+        tv_person_title = (TextView) findViewById(R.id.tv_person_title);
+        rl_button = (RelativeLayout) findViewById(R.id.rl_button);
+        bt_button = (Button) findViewById(R.id.bt_button);
+        mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
+        if (!StringUtils.isEmpty(service_type_ids)) {
             rl_button.setVisibility(View.VISIBLE);
         }
-        webview = (WebView)findViewById(R.id.webview);
+        webview = (WebView) findViewById(R.id.webview);
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
         layout_mask = findViewById(R.id.layout_mask);
         popupMenu = new PopupMenu(this);
-       
+
     }
-    @SuppressLint({ "JavascriptInterface", "NewApi", "SetJavaScriptEnabled" })
+
+    @SuppressLint({"JavascriptInterface", "NewApi", "SetJavaScriptEnabled"})
     private void init() {
         if (StringUtils.isEmpty(url)) {
-            Toast.makeText(getApplicationContext(), "数据错误", 0).show();
+            Toast.makeText(getApplicationContext(), "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
         WebChromeClient wvcc = new WebChromeClient() {
@@ -107,14 +111,14 @@ public class WebViewsFindActivity  extends Activity{
                 titles = title;
                 tv_person_title.setText(title);
             }
-            
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if(newProgress==100){
+                if (newProgress == 100) {
                     mProgressBar.setVisibility(View.INVISIBLE);
-                }else {
-                    if(View.INVISIBLE==mProgressBar.getVisibility()){
+                } else {
+                    if (View.INVISIBLE == mProgressBar.getVisibility()) {
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
                     mProgressBar.setProgress(newProgress);
@@ -129,9 +133,9 @@ public class WebViewsFindActivity  extends Activity{
         webview.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
         webview.getSettings().setJavaScriptEnabled(true);// 是否允许执行js，默认为false。设置true时，会提醒可能造成XSS漏洞
         webview.getSettings().setSupportZoom(true);// 是否可以缩放，默认true
-        webview.getSettings().setPluginState(PluginState.ON); 
-        
-        
+        webview.getSettings().setPluginState(PluginState.ON);
+
+
         // popwindow显示webview不能设置缩放按钮，否则触屏就会报错。
         // webview.getSettings().setBuiltInZoomControls(true);// 是否显示缩放按钮，默认false
         webview.getSettings().setUseWideViewPort(true);// 设置此属性，可任意比例缩放。大视图模式
@@ -144,12 +148,12 @@ public class WebViewsFindActivity  extends Activity{
             webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webview.setWebViewClient(new WebViewClient() {
-            
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
             }
-          
+
             //对于https加密的网址需要默认接受，仅限于2.1以上的版本才能使用
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -162,7 +166,7 @@ public class WebViewsFindActivity  extends Activity{
                 view.loadUrl(url);
                 return super.shouldOverrideUrlLoading(view, url);
             }*/
-            
+
         });
         webview.loadUrl(url);
         iv_person_close.setOnClickListener(new OnClickListener() {
@@ -185,19 +189,19 @@ public class WebViewsFindActivity  extends Activity{
             @Override
             public void onClick(View v) {
                 boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-                if(!is_login){
-                    startActivity(new Intent(WebViewsFindActivity.this,LoginActivity.class));
-                }else{
-                    Intent intent = new Intent(WebViewsFindActivity.this,Find2DetailActivity.class);
+                if (!is_login) {
+                    startActivity(new Intent(WebViewsFindActivity.this, LoginActivity.class));
+                } else {
+                    Intent intent = new Intent(WebViewsFindActivity.this, Find2DetailActivity.class);
                     intent.putExtra("service_type_ids", service_type_ids);
-                    intent.putExtra("title_name",title_name);
+                    intent.putExtra("title_name", title_name);
                     startActivity(intent);
                 }
-               
+
             }
         });
-        
-        
+
+
         iv_menu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,21 +211,28 @@ public class WebViewsFindActivity  extends Activity{
                     public void onClick(MENUITEM item, String str) {
 
                         switch (item) {
-                        case ITEM1:// 刷新
-                            webview.reload();
-                            break;
-                        case ITEM2:// 分享
-                            ShareConfig.getInstance().inits(WebViewsFindActivity.this,url,titles);
-                            postShare();
-                            break;
-                        default:
-                            break;
+                            case ITEM1:// 刷新
+                                webview.reload();
+                                break;
+                            case ITEM2:// 分享
+                                ShareConfig.getInstance().inits(WebViewsFindActivity.this, url, titles);
+                                postShare();
+                                break;
+                            case ITEM3:// 吐槽
+                                Intent intent = new Intent(WebViewsFindActivity.this, ChatActivity.class);
+                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
             }
         });
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (webview != null && (keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
@@ -232,7 +243,7 @@ public class WebViewsFindActivity  extends Activity{
         }
         return true;
     }
-    
+
     private void postShare() {
 //        layout_mask.setVisibility(View.VISIBLE);
         CustomShareBoard shareBoard = new CustomShareBoard(this);

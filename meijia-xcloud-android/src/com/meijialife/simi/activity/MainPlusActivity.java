@@ -65,8 +65,6 @@ public class MainPlusActivity extends Activity implements OnClickListener {
 
     private void initView() {
 
-      
-
         mPlusView = findViewById(R.id.m_plus_view);
         findViewById(R.id.tv_call_mishu).setOnClickListener(this);
 
@@ -113,14 +111,18 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.tv_call_mishu:
-            UserInfo userInfo = DBHelper.getUserInfo(this);
+        case R.id.tv_call_mishu://跳转到聊天界面
+            Intent intent = new Intent(MainPlusActivity.this,ChatActivity.class);
+            intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+            intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+            startActivity(intent);
+          /*  UserInfo userInfo = DBHelper.getUserInfo(this);
             String is_senior = userInfo.getIs_senior();
             if (StringUtils.isEquals(is_senior, "1")) {
                 toChit(userInfo);
             } else if (StringUtils.isEquals(is_senior, "0")) {
                 startActivity(new Intent(MainPlusActivity.this, FindSecretaryActivity.class));
-            }
+            }*/
             break;
         case R.id.iv_plus_close:
             if (Constants.BACK_TYPE == 1) {//
@@ -154,7 +156,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     private void getFindPlusIcon() {
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(this);
@@ -293,7 +295,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     private void getAppHelp() {
         if (user != null) {
             if (!NetworkUtils.isNetworkConnected(this)) {
-                Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+                Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
                 return;
             }
             User user = DBHelper.getUser(MainPlusActivity.this);
@@ -360,7 +362,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     private void postHelp(String action) {
         String user_id = DBHelper.getUser(this).getId();
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(MainPlusActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(MainPlusActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(this);
@@ -411,8 +413,8 @@ public class MainPlusActivity extends Activity implements OnClickListener {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         if (user != null) {
             getFindPlusIcon();
         } else {

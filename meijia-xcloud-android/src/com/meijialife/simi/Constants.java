@@ -345,6 +345,10 @@ public class Constants {
      * 配置信息接口
      **/
     public static final String URL_GET_USER_SETTING = ROOT_URL + "user/get_setting.json";
+    /**
+     * 用户-公司配置信息接口
+     **/
+    public static final String URL_POST_REG_COMPANY = ROOT_URL + "company/reg_app.json";
 
     /**
      * 卡片闹钟响铃后通知后台接口
@@ -394,9 +398,11 @@ public class Constants {
     public static final String URL_GET_SEC_USER = ROOT_URL + "sec/get_users.json";
 
     // 用户协议
-    public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
+    public final static String URL_WEB_AGREE = "http://bolohr.com/agreement.html";
+//  public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
     public final static String URL_USER_HELP = HOST + "/html/simi-inapp/help.htm";
-    public final static String URL_ABOUT_US = HOST + "/html/simi-inapp/about-us.htm";
+    public final static String URL_ABOUT_US = "http://bolohr.com/aboutus.html";
+//    public final static String URL_ABOUT_US = HOST + "/html/simi-inapp/about-us.htm";
     public final static String URL_MORE_INFO = HOST + "/html/simi-inapp/app-faxian-list.htm";
     //行政人学院
     public final static String URL_XUEYUAN = "http://mishuzhuli.com";

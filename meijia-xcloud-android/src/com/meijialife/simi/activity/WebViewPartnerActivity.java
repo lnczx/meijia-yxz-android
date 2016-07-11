@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.DefaultServiceData;
 import com.meijialife.simi.bean.PartnerDetail;
@@ -31,16 +32,16 @@ import com.meijialife.simi.ui.PopupMenu;
 import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
 /**
  * 秘书详情专用Activity
- * 
  */
 public class WebViewPartnerActivity extends Activity implements OnClickListener {
 
     private WebView webview;
-    
+
     private ImageView iv_person_left;
     private TextView tv_person_title;
     private ImageView iv_person_close;
@@ -52,16 +53,16 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
     private PartnerDetail partnerDetail;
     private ServicePrices servicePrices;//服务报价
     private TextView m_tv_money;
-   
+
     private RelativeLayout m_ll_bottom;//底部购买按钮
     private ProgressBar mProgressBar; //webView进度条
-    
+
     //右边菜单
     private ImageView iv_menu;
     private PopupMenu popupMenu;
     private View layout_mask;
     private String titles;//页面title
-    private int flag=0;//0=发现服务详情，1=默认服务详情
+    private int flag = 0;//0=发现服务详情，1=默认服务详情
     private DefaultServiceData def;//
 
 
@@ -73,95 +74,95 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         init();
     }
 
-    @SuppressLint({ "JavascriptInterface", "NewApi", "SetJavaScriptEnabled" })
+    @SuppressLint({"JavascriptInterface", "NewApi", "SetJavaScriptEnabled"})
     private void init() {
         url = getIntent().getStringExtra("url");
         titleStr = getIntent().getStringExtra("title");
-        disPrice = getIntent().getDoubleExtra("dis_price",0);
-        flag = getIntent().getIntExtra("flag",0);
-     
+        disPrice = getIntent().getDoubleExtra("dis_price", 0);
+        flag = getIntent().getIntExtra("flag", 0);
+
         findViewBy();
         UserInfo userInfo = DBHelper.getUserInfo(WebViewPartnerActivity.this);
         final String mobile = userInfo.getMobile();
         final String name = userInfo.getName();
-        if(flag==0){
-            partnerDetail =(PartnerDetail) getIntent().getSerializableExtra("partnerDetail");
-            servicePrices =(ServicePrices) getIntent().getSerializableExtra("servicePrices");
+        if (flag == 0) {
+            partnerDetail = (PartnerDetail) getIntent().getSerializableExtra("partnerDetail");
+            servicePrices = (ServicePrices) getIntent().getSerializableExtra("servicePrices");
             m_tv_buy.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
-                        Intent intent = new Intent(WebViewPartnerActivity.this,BindMobileActivity.class);
+                    if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)) {//手机号为空，跳转绑定手机号
+                        Intent intent = new Intent(WebViewPartnerActivity.this, BindMobileActivity.class);
                         WebViewPartnerActivity.this.startActivity(intent);
-                    }else {
-                        if(disPrice>0){//普通金额支付界面
+                    } else {
+                        if (disPrice > 0) {//普通金额支付界面
                             Intent intent = new Intent(WebViewPartnerActivity.this, PayOrderActivity.class);
-                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("PartnerDetail", partnerDetail);
                             intent.putExtra("flag", PayOrderActivity.FROM_FIND);
                             intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-                            intent.putExtra("servicePrices",servicePrices);
+                            intent.putExtra("servicePrices", servicePrices);
                             WebViewPartnerActivity.this.startActivity(intent);
-                        }else {//免费咨询跳转到0元支付界面
+                        } else {//免费咨询跳转到0元支付界面
                             Intent intent = new Intent(WebViewPartnerActivity.this, PayZeroOrderActivity.class);
-                            intent.putExtra("PartnerDetail",partnerDetail);
+                            intent.putExtra("PartnerDetail", partnerDetail);
                             intent.putExtra("from", PayOrderActivity.FROM_MISHU);
                             intent.putExtra("flag", PayOrderActivity.FROM_FIND);
-                            intent.putExtra("servicePrices",servicePrices);
+                            intent.putExtra("servicePrices", servicePrices);
                             WebViewPartnerActivity.this.startActivity(intent);
                         }
-                      
-                    }                
+
+                    }
                 }
             });
-        }else if (flag==1) {//默认服务跳转到支付页面
-            def = (DefaultServiceData)getIntent().getSerializableExtra("defService");
+        } else if (flag == 1) {//默认服务跳转到支付页面
+            def = (DefaultServiceData) getIntent().getSerializableExtra("defService");
             m_tv_buy.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)){//手机号为空，跳转绑定手机号
-                        Intent intent = new Intent(WebViewPartnerActivity.this,BindMobileActivity.class);
+                    if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(name)) {//手机号为空，跳转绑定手机号
+                        Intent intent = new Intent(WebViewPartnerActivity.this, BindMobileActivity.class);
                         WebViewPartnerActivity.this.startActivity(intent);
-                    }else {
-                        if(disPrice>0){//普通金额支付界面
+                    } else {
+                        if (disPrice > 0) {//普通金额支付界面
                             Intent intent = new Intent(WebViewPartnerActivity.this, PayOrderActivity.class);
                             intent.putExtra("flag", PayOrderActivity.FROM_FIND);
                             intent.putExtra("from", PayOrderActivity.FROM_DEF_SERVICE);
-                            intent.putExtra("def",def);
+                            intent.putExtra("def", def);
                             WebViewPartnerActivity.this.startActivity(intent);
-                        }else {//免费咨询跳转到0元支付界面
+                        } else {//免费咨询跳转到0元支付界面
                             Intent intent = new Intent(WebViewPartnerActivity.this, PayZeroOrderActivity.class);
                             intent.putExtra("flag", PayOrderActivity.FROM_DEF_SERVICE);
-                            intent.putExtra("def",def);
+                            intent.putExtra("def", def);
                             WebViewPartnerActivity.this.startActivity(intent);
                         }
-                      
-                    }                
+
+                    }
                 }
             });
         }
-      
+
         if (StringUtils.isEmpty(url)) {
             Toast.makeText(getApplicationContext(), "数据错误", 0).show();
             return;
         }
-   
+
         //获取页面中的title
         WebChromeClient wvcc = new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-               titles  =title;
-               tv_person_title.setText(title);
+                titles = title;
+                tv_person_title.setText(title);
             }
-            
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-               
-                if(newProgress==100){
+
+                if (newProgress == 100) {
                     mProgressBar.setVisibility(View.INVISIBLE);
-                }else {
-                    if(View.INVISIBLE==mProgressBar.getVisibility()){
+                } else {
+                    if (View.INVISIBLE == mProgressBar.getVisibility()) {
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
                     mProgressBar.setProgress(newProgress);
@@ -189,7 +190,7 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
                 return true;
             }
         });
-        
+
         iv_menu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,15 +200,21 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
                     public void onClick(MENUITEM item, String str) {
 
                         switch (item) {
-                        case ITEM1:// 刷新
-                            webview.reload();
-                            break;
-                        case ITEM2:// 分享
-                            ShareConfig.getInstance().inits(WebViewPartnerActivity.this,url,titles);
-                            postShare();
-                            break;
-                        default:
-                            break;
+                            case ITEM1:// 刷新
+                                webview.reload();
+                                break;
+                            case ITEM2:// 分享
+                                ShareConfig.getInstance().inits(WebViewPartnerActivity.this, url, titles);
+                                postShare();
+                                break;
+                            case ITEM3:// 吐槽
+                                Intent intent = new Intent(WebViewPartnerActivity.this, ChatActivity.class);
+                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -215,24 +222,24 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         });
     }
 
-    private void findViewBy(){
+    private void findViewBy() {
         iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
         iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
         tv_person_title = (TextView) findViewById(R.id.tv_person_title);
-        m_ll_bottom = (RelativeLayout)findViewById(R.id.m_ll_bottom);
-        m_tv_buy = (TextView)findViewById(R.id.m_tv_buy);
-        m_tv_money = (TextView)findViewById(R.id.m_tv_money);
-        mProgressBar = (ProgressBar)findViewById(R.id.myProgressBar);
+        m_ll_bottom = (RelativeLayout) findViewById(R.id.m_ll_bottom);
+        m_tv_buy = (TextView) findViewById(R.id.m_tv_buy);
+        m_tv_money = (TextView) findViewById(R.id.m_tv_money);
+        mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
         layout_mask = findViewById(R.id.layout_mask);
         popupMenu = new PopupMenu(this);
-      
+
         iv_person_left.setOnClickListener(this);
         iv_person_close.setOnClickListener(this);
         m_ll_bottom.setVisibility(View.VISIBLE);
-        m_tv_money.setText("￥"+disPrice);
+        m_tv_money.setText("￥" + disPrice);
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (webview != null && (keyCode == KeyEvent.KEYCODE_BACK) && webview.canGoBack()) {
@@ -248,21 +255,21 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.iv_person_close: // 返回
-            finish();
-            break;
-        case R.id.iv_person_left: // 返回
-            if (webview != null && webview.canGoBack()) {
-                webview.goBack();
-            } else {
+            case R.id.iv_person_close: // 返回
                 finish();
-            }
-            break;
-        default:
-            break;
+                break;
+            case R.id.iv_person_left: // 返回
+                if (webview != null && webview.canGoBack()) {
+                    webview.goBack();
+                } else {
+                    finish();
+                }
+                break;
+            default:
+                break;
         }
     }
-    
+
     private void postShare() {
 //        layout_mask.setVisibility(View.VISIBLE);
         CustomShareBoard shareBoard = new CustomShareBoard(this);

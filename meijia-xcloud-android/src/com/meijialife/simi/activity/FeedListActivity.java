@@ -77,7 +77,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     private void initView() {
 
         requestBackBtn();
-        setTitleName("职场问答");
+        setTitleName("问答互助");
         initCompanyView();
     }
 
@@ -163,7 +163,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     private void getFeedList(int page, String feed_from) {
         User user = DBHelper.getUser(this);
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -200,6 +200,9 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
                                 myFeedDataList = gson.fromJson(data, new TypeToken<ArrayList<FeedData>>() {
                                 }.getType());
                                 showData(myFeedDataList);
+                            }else{
+                                feedListAdapter.setData(new ArrayList<FeedData>());
+                                mPullRefreshListView.onRefreshComplete();
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);

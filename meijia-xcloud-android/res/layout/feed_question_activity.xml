@@ -29,12 +29,13 @@
         <EditText
             android:id="@+id/m_et_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:background="@null"
+            android:gravity="top|left"
             android:maxLength="1000" 
             android:hint="@string/m_question_hint"
-            android:textSize="13sp"
+            android:textSize="16sp"
           	android:padding="10dp"
             />
 

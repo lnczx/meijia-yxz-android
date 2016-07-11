@@ -178,7 +178,7 @@ public class CommunityMainFragment extends BaseFragment<Void, NullPresenter> imp
         indicator = (MainIndicator) rootView.findViewById(ResFinder
                 .getId("umeng_comm_segment_view"));
         // 设置tabs
-        String[] titles = new String[]{"热门", "推荐", "关注", "话题"};
+        String[] titles = new String[]{"最新","热门",  "关注", "话题"};
         indicator.setTabItemTitles(titles);
         indicator.setVisibleTabCount(4);
 
@@ -318,7 +318,7 @@ public class CommunityMainFragment extends BaseFragment<Void, NullPresenter> imp
         hotFeedFragment = new HotFeedFragment();
         mRecommendFragment = new RecommendFeedFragment();
         mTopicFragment = new TopicFragment();
-        mCurrentFragment = hotFeedFragment;// 默认是MainFeedFragment
+        mCurrentFragment = mRecommendFragment;// 默认是推荐
     }
 
     /**
@@ -339,9 +339,9 @@ public class CommunityMainFragment extends BaseFragment<Void, NullPresenter> imp
     private Fragment getFragment(int pos) {
         Fragment fragment = null;
         if (pos == 0) {
-            fragment = hotFeedFragment;
-        } else if (pos == 1) {
             fragment = mRecommendFragment;
+        } else if (pos == 1) {
+            fragment = hotFeedFragment;
         } else if (pos == 2) {
             fragment = mMainFeedFragment;
         }else if (pos == 3) {

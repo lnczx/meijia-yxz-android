@@ -43,6 +43,7 @@ import com.meijialife.simi.activity.AlarmListActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MainPlusAffairActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.ListAdapter;
@@ -150,6 +151,7 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         v.findViewById(R.id.btn_rili).setOnClickListener(this);
         v.findViewById(R.id.btn_saoma).setOnClickListener(this);
         v.findViewById(R.id.btn_alarm).setOnClickListener(this);
+        v.findViewById(R.id.user_plus).setOnClickListener(this);
 
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
@@ -751,6 +753,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         case R.id.btn_alarm://常用提醒
             intent = new Intent();
             intent.setClass(getActivity(), AlarmListActivity.class);
+            startActivity(intent);
+            break;
+        case R.id.user_plus://快速事务提醒
+            intent = new Intent();
+            intent.setClass(getActivity(), MainPlusAffairActivity.class);
             startActivity(intent);
             break;
         default:

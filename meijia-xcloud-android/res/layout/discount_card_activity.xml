@@ -34,7 +34,7 @@
                     android:layout_centerVertical="true"
                     android:background="@android:color/transparent"
                     android:text="兑换"
-                    android:textColor="#F4B515" />
+                    android:textColor="#e8374a" />
 
                 <View
                     android:layout_width="1dp"

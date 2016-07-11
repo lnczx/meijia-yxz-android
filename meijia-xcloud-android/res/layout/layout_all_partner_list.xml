@@ -46,7 +46,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_search"
                 android:focusable="false"
-                android:text="搜索"
+                android:text="搜索企业服务供应商"
                 android:textColor="@color/simi_color_dark_gray"
                 android:textSize="12sp" />
         </RelativeLayout>

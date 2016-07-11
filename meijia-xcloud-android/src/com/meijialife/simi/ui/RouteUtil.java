@@ -13,6 +13,7 @@ import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.CardListActivity;
 import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.CompanyListsActivity;
+import com.meijialife.simi.activity.CompanyRegisterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.FeedDetailActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
@@ -37,6 +38,7 @@ import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
@@ -100,6 +102,16 @@ public class RouteUtil {
                         intent = new Intent(context, CardListActivity.class);
                         intent.putExtra("cardType", "4");
                         context.startActivity(intent);
+                    } else if (action.equals("company")) {// 企业通讯录
+                        UserInfo userInfo = DBHelper.getUserInfo(context);
+                        if (userInfo.getHas_company() == 0) {
+                            intent = new Intent(context, CompanyRegisterActivity.class);
+                            context.startActivity(intent);
+                        } else {
+                            intent = new Intent(context, CompanyListActivity.class);
+                            intent.putExtra("flag", 2);
+                            context.startActivity(intent);
+                        }
                     } else if (action.equals("trip")) {// 差旅规划
                         intent = new Intent(context, CardListActivity.class);
                         intent.putExtra("cardType", "5");
@@ -251,7 +263,17 @@ public class RouteUtil {
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "1");
                     context.startActivity(intent);
-                } else if (action.equals("notice")) {// 通知公告
+                }else if (action.equals("company")) {// 企业通讯录
+                    UserInfo userInfo = DBHelper.getUserInfo(context);
+                    if (userInfo.getHas_company() == 0) {
+                        intent = new Intent(context, CompanyRegisterActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        intent = new Intent(context, CompanyListActivity.class);
+                        intent.putExtra("flag", 2);
+                        context.startActivity(intent);
+                    }
+                }  else if (action.equals("notice")) {// 通知公告
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "2");
                     context.startActivity(intent);
@@ -407,8 +429,17 @@ public class RouteUtil {
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "1");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
                     context.startActivity(intent);
+                } else if (action.equals("company")) {// 企业通讯录
+                    UserInfo userInfo = DBHelper.getUserInfo(context);
+                    if (userInfo.getHas_company() == 0) {
+                        intent = new Intent(context, CompanyRegisterActivity.class);
+                        context.startActivity(intent);
+                    } else {
+                        intent = new Intent(context, CompanyListActivity.class);
+                        intent.putExtra("flag", 2);
+                        context.startActivity(intent);
+                    }
                 }  else if (action.equals("company")) {// 跳转到公司列表
                     intent = new Intent(context, CompanyListActivity.class);
                     intent.putExtra("flag", 2);

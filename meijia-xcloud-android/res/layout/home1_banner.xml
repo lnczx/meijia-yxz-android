@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:widgets="http://schemas.android.com/apk/res-auto"
     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:id="@+id/m_banner_homes"
     android:layout_width="match_parent"
@@ -29,8 +27,9 @@
             <LinearLayout
                 android:id="@+id/m_item1"
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
-                android:orientation="horizontal" >
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                >
 
                 <LinearLayout
                     android:id="@+id/m_homes1"
@@ -39,25 +38,25 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp"
+                    android:paddingBottom="5dp"
+                    >
 
-                    <com.meijialife.simi.ui.RoundImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_shangjinlieren"
-                        imagecontrol:border_inside_color="@color/simi_color_white"
-                        imagecontrol:border_outside_color="@color/simi_color_white"
-                        imagecontrol:border_thickness_in="1dp"
-                        imagecontrol:border_thickness_out="1dp" />
+                        android:src="@drawable/index_huzhuwenda"
+                      />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/index_second_title_color"
                         android:text="@string/m_new_fra_item5" />
                 </LinearLayout>
 
@@ -68,26 +67,27 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp"
+                    android:paddingBottom="5dp"
 
-                    <com.meijialife.simi.ui.RoundImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/index_tonghangreliao"
-                        imagecontrol:border_inside_color="@color/simi_color_white"
-                        imagecontrol:border_outside_color="@color/simi_color_white"
-                        imagecontrol:border_thickness_in="1dp"
-                        imagecontrol:border_thickness_out="1dp" />
+                       />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/index_second_title_color"
                         android:text="@string/m_new_fra_item1" />
                 </LinearLayout>
 
@@ -98,26 +98,26 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp"
+                    android:paddingBottom="5dp"
+                    >
 
-                    <com.meijialife.simi.ui.RoundImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_jingpinkecheng"
-                        imagecontrol:border_inside_color="@color/simi_color_white"
-                        imagecontrol:border_outside_color="@color/simi_color_white"
-                        imagecontrol:border_thickness_in="1dp"
-                        imagecontrol:border_thickness_out="1dp" />
+                        android:src="@drawable/index_common_tools"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/index_second_title_color"
                         android:text="@string/m_new_fra_item9" />
                 </LinearLayout>
 
@@ -128,27 +128,28 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp"
+                    android:paddingBottom="5dp"
 
-                    <com.meijialife.simi.ui.RoundImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    >
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/index_fuwudating"
-                        imagecontrol:border_inside_color="@color/simi_color_white"
-                        imagecontrol:border_outside_color="@color/simi_color_white"
-                        imagecontrol:border_thickness_in="1dp"
-                        imagecontrol:border_thickness_out="1dp" />
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="2dp"
+                        android:textColor="@color/index_second_title_color"
                         android:text="@string/m_new_fra_item7" />
                 </LinearLayout>
             </LinearLayout>
@@ -222,8 +223,8 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/m_home2"
                     android:layout_width="wrap_content"
+                    android:id="@+id/m_home2"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -236,7 +237,7 @@
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_jingpinkecheng"
+                        android:src="@drawable/index_common_tools"
                         imagecontrol:border_inside_color="@color/simi_color_white"
                         imagecontrol:border_outside_color="@color/simi_color_white"
                         imagecontrol:border_thickness_in="1dp"

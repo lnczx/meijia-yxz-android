@@ -14,28 +14,48 @@ public class AssetUseData implements Serializable {
     private String id;
     
     private String company_id;//公司Id
-    
+
+    private String asset_json;
+
     private String user_id;//经办人Id
-    
-    private String from_head_img;//经办人头像
-    
-    private String from_name;//经办人姓名
-    
-    private String from_mobile;//经办人手机号
-    
+
     private String to_user_id;//领用Id
-    
-    private String to_head_img;//领用头像
-    
+
     private String name;//领用人姓名
-    
+
     private String mobile;//领用人手机号
-    
-    private ArrayList<AssetJson> asset_json;
-    
+
     private String purpose;//用户用途
-    
-    private String imgs;//
+
+    private int status;
+
+    private String from_head_img;//经办人头像
+
+    private String from_name;//经办人姓名
+
+    private String from_mobile;//经办人手机号
+
+    private String to_head_img;//领用头像
+
+    private String add_time;//添加时间
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    //    private String imgs;//
 
     public String getId() {
         return id;
@@ -117,11 +137,11 @@ public class AssetUseData implements Serializable {
         this.mobile = mobile;
     }
 
-    public ArrayList<AssetJson> getAsset_json() {
+    public String getAsset_json() {
         return asset_json;
     }
 
-    public void setAsset_json(ArrayList<AssetJson> asset_json) {
+    public void setAsset_json(String asset_json) {
         this.asset_json = asset_json;
     }
 
@@ -133,14 +153,5 @@ public class AssetUseData implements Serializable {
         this.purpose = purpose;
     }
 
-    public String getImgs() {
-        return imgs;
-    }
 
-    public void setImgs(String imgs) {
-        this.imgs = imgs;
-    }
-    
-    
-    
 }

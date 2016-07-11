@@ -133,8 +133,12 @@ public class GoodsAdapter extends BaseAdapter {
 
                         if (total > 0) {
                             total = total - 1;
-                            jsons.setTotal(total);
-                            Constants.ASSET_MAP_JSON.put(assetData.getAsset_id(), jsons);
+                            if(total<=0){
+                                Constants.ASSET_MAP_JSON.remove(assetData.getAsset_id() + "");
+                            }else{
+                                jsons.setTotal(total);
+                                Constants.ASSET_MAP_JSON.put(assetData.getAsset_id(), jsons);
+                            }
                         } else {
                             Constants.ASSET_MAP_JSON.remove(assetData.getAsset_id() + "");
                         }

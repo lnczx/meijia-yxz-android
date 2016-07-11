@@ -61,7 +61,7 @@ public class RecommendFeedPresenter extends FeedListPresenter {
                         mTopFeeds.get(i).isTop = 1;
                     }
                 }
-                mCommunitySDK.fetchRecommendedFeeds(mRefreshListener);
+                mCommunitySDK.fetchRealTimeFeed(mRefreshListener);
             }
         });
     }

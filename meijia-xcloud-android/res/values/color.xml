@@ -26,6 +26,8 @@
     <color name="simi_color_green">#64B229</color>
     <!-- 统一黄色 -->
     <color name="simi_color_yellow">#fc993f</color>
+    <!-- 统一黄色 -->
+    <color name="simi_color_purple">#B483FF</color>
 
     <!-- 标题背景颜色 -->
     <color name="title_background_color">#ffffff</color>
@@ -118,7 +120,8 @@
   <!--首页文章标签字体颜色-->
   <color name="tag_selected">#E8374A</color>
   <color name="tag_not_selected">#505050</color>
-  
+  <color name="question_not_selected">#4690ff</color>
+
    <!-- 自定义ViewGroup:IndicatorTabBar's 属性默认值 -->
     <dimen name="tab_text_size">15sp</dimen>
     <color name="tab_text_color1">#AFAFAF</color>
@@ -133,7 +136,11 @@
     <color name="feed_question_time">#9d9d9d</color>
     <color name="feed_question_owner">#9d9d9d</color>
     <color name="feed_answer_count">#9d9d9d</color>
-    <color name="feed_answer">#4690ff</color>
-    
-  
+
+    <!--首页标题颜色-->
+    <color name="index_second_title_color">#333333</color>
+    <color name="index_third_title_color">#e6e6e6</color>
+    <color name="index_first_title_color">#666666</color>
+
+
 </resources>

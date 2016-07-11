@@ -34,6 +34,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.TextView;
 
 import com.umeng.comm.core.beans.CommUser;
+import com.umeng.comm.core.constants.ErrorCode;
 import com.umeng.comm.core.impl.CommunitySDKImpl;
 import com.umeng.comm.core.listeners.Listeners.LoginOnViewClickListener;
 import com.umeng.comm.core.listeners.Listeners.OnResultListener;
@@ -75,12 +76,24 @@ public class AllFeedsFragment extends PostBtnAnimFragment<FeedListPresenter> {
                         CommunitySDKImpl.getInstance().login(getActivity(), new LoginListener() {
                             @Override
                             public void onStart() {
-//                            	startActivity(new Intent(getActivity(),LoginActivity.class));
+                                try {
+                                    Intent myIntent = new Intent(getActivity(),Class.forName("com.meijialife.simi.activity.LoginActivity"));
+                                    startActivity(myIntent );
+                                } catch (ClassNotFoundException e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override
                             public void onComplete(int stCode, CommUser userInfo) {
-
+                                if (ErrorCode.NO_ERROR==stCode) {
+                                    try {
+                                        Intent myIntent = new Intent(getActivity(),Class.forName("com.meijialife.simi.activity.LoginActivity"));
+                                        startActivity(myIntent );
+                                    } catch (ClassNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                         });
                         

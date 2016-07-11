@@ -246,10 +246,11 @@ public class ContactChooseActivity extends Activity implements OnClickListener {
         switch (v.getId()) {
         case R.id.rl_company_contacts:// 企业通讯录
             if (userInfo.getHas_company() == 0) {
-                Intent intent1 = new Intent(this, WebViewActivity.class);
+               /* Intent intent1 = new Intent(this, WebViewActivity.class);
                 intent1.putExtra("title", "企业通讯录");
-                intent1.putExtra("url", Constants.HAS_COMPANY);
-                startActivity(intent1);
+                intent1.putExtra("url", Constants.HAS_COMPANY);*/
+                intent = new Intent(ContactChooseActivity.this, CompanyRegisterActivity.class);
+                startActivity(intent);
             } else {
                 intent = new Intent(ContactChooseActivity.this, CompanyListActivity.class);
                 intent.putExtra("flag", 0);

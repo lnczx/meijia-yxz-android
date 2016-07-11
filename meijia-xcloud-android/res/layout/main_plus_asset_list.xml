@@ -105,11 +105,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/m_ll_bottom"
-            android:background="@color/simi_color_white" >
+            android:background="@color/simi_color_white"
+            android:visibility="gone"
+            >
 
             <com.handmark.pulltorefresh.library.PullToRefreshListView
                 xmlns:ptr="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/pull_refresh_discount_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:cacheColorHint="#00000000"
+                android:divider="#19000000"
+                android:dividerHeight="1dp"
+                android:fadingEdge="none"
+                android:fastScrollEnabled="false"
+                android:footerDividersEnabled="false"
+                android:headerDividersEnabled="false"
+                android:smoothScrollbar="true"
+                ptr:ptrAnimationStyle="flip"
+                ptr:ptrListViewExtrasEnabled="false"
+                ptr:ptrScrollingWhileRefreshingEnabled="true" >
+            </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/m_ll_asset_use"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/m_ll_bottom"
+            android:background="@color/simi_color_white" >
+
+            <com.handmark.pulltorefresh.library.PullToRefreshListView
+                xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/m_asset_use_listview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:cacheColorHint="#00000000"

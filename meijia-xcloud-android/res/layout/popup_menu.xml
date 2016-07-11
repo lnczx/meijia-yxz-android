@@ -52,17 +52,10 @@
         android:id="@+id/ly_item3"
         android:layout_width="match_parent"
         android:layout_height="45dip"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
        >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip"
-            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +63,7 @@
             android:textSize="15sp"
             android:paddingLeft="20dip"
             android:textColor="#595d5f"
-            android:text="选项卡三" />
+            android:text="吐槽" />
     </LinearLayout>
 
 </LinearLayout>

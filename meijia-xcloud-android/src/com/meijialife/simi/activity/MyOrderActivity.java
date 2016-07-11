@@ -55,6 +55,7 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
     //布局控件定义
     private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
     private int page = 1;
+    private View m_person_line_red;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,8 @@ public class MyOrderActivity extends BaseActivity implements OnItemClickListener
     	totalOrderList = new ArrayList<MyOrder>();
     	myOrderList = new ArrayList<MyOrder>();
     	mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_list);
+        m_person_line_red = (View)findViewById(R.id.m_person_line_red);
+        m_person_line_red.setVisibility(View.GONE);
     	mPullRefreshListView.setOnItemClickListener(this);
         adapter = new MyOrderAdapter(this);
         mPullRefreshListView.setAdapter(adapter);

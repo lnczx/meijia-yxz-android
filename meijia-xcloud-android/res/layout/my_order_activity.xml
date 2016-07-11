@@ -47,6 +47,7 @@
             android:background="@color/simi_color_line_gray" />
 
         <View
+            android:id="@+id/m_person_line_red"
             android:layout_width="30dp"
             android:layout_height="0.3dp"
             android:background="@color/simi_color_red" />
@@ -64,6 +65,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:cacheColorHint="#00000000"
+            android:divider="@null"
             android:fadingEdge="none"
             android:fastScrollEnabled="false"
             android:footerDividersEnabled="false"

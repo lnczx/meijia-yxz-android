@@ -313,6 +313,7 @@ public class AssetConsumeActivity extends BaseActivity implements OnClickListene
         super.onDestroy();
         assetMap.clear();
         Constants.ASSET_COUNT = 0;
+        Constants.ASSET_MAP_JSON.clear();
     }
 
     @Override

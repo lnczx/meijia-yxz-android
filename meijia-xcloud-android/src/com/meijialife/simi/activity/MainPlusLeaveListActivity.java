@@ -118,7 +118,7 @@ public class MainPlusLeaveListActivity extends Activity{
         //新建(控件)
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
-      
+        mTv2.setVisibility(View.GONE);
         mTv1.setText("我要请假");
         mTv2.setText("假单统计");
         //标题+返回(控件)
@@ -271,7 +271,7 @@ public class MainPlusLeaveListActivity extends Activity{
                 LeaveData leaveData = totalLeaveList.get(position);
                 Intent intent = new Intent(MainPlusLeaveListActivity.this,MainPlusLeaveDetailActivity.class);
                 intent.putExtra("leave_id",leaveData.getLeave_id());
-                intent.putExtra("flag",leave_from);
+//                intent.putExtra("flag",leave_from);
                 startActivity(intent);
             }
         });

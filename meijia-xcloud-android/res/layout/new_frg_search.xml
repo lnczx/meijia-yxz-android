@@ -45,7 +45,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_search"
                 android:focusable="false"
-                android:text="找人秘籍、升职技巧一搜就有"
+                android:text="招人秘籍、升职技巧一搜就有"
                 android:textColor="@color/simi_color_dark_gray"
                 android:textSize="12sp" />
         </RelativeLayout>

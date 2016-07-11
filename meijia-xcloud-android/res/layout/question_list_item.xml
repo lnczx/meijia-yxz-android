@@ -68,7 +68,6 @@
                 android:layout_marginBottom="2dp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/feed_question_title"
-                android:textStyle="bold"
                 android:text="问题内容" />
         </LinearLayout>
 

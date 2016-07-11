@@ -2,7 +2,9 @@ package com.meijialife.simi.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -18,12 +20,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.R;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.PopupMenu;
 import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
 /**
@@ -113,7 +117,10 @@ public class WebViewActivity extends Activity implements OnClickListener {
         webview.getSettings().setAppCacheEnabled(false);// 是否使用缓存
         webview.getSettings().setDomStorageEnabled(true);// DOM Storage
         webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        
+        webview.setInitialScale(100);
+        if (Build.VERSION.SDK_INT >= 21) {
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -136,6 +143,12 @@ public class WebViewActivity extends Activity implements OnClickListener {
                         case ITEM2:// 分享
                             ShareConfig.getInstance().inits(WebViewActivity.this,url,titles);
                             postShare();
+                            break;
+                        case ITEM3:// 吐槽
+                            Intent intent = new Intent(WebViewActivity.this,ChatActivity.class);
+                            intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                            intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                            startActivity(intent);
                             break;
                         default:
                             break;

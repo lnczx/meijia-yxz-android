@@ -82,7 +82,7 @@ public class PopupMenu extends PopupWindow implements OnClickListener {
 			str = "分享";
 		} else if (v == v_item3) {
 			menuitem = MENUITEM.ITEM3;
-			str = "选项卡三";
+			str = "吐槽";
 		}
 		if (onItemClickListener != null) {
 			onItemClickListener.onClick(menuitem, str);

@@ -175,7 +175,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
          */
         String userName = userInfo.getName();
         String mobile = userInfo.getMobile();
-        if(!StringUtils.isEmpty(mobile)){
+        if(!StringUtils.isEmpty(mobile)  || !StringUtils.isEmpty(userName)){
             if(StringUtils.isEmpty(userName)){
                 userName = mobile;
             }

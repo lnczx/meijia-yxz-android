@@ -50,7 +50,6 @@
             android:layout_height="wrap_content"
             android:text="题目"
             android:textColor="@color/feed_question_title"
-            android:textStyle="bold"
              />
     </LinearLayout>
 
@@ -84,6 +83,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/simi_color_line_gray" />
+        android:background="@color/index_third_title_color" />
 
 </LinearLayout>

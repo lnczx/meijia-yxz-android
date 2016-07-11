@@ -1,15 +1,5 @@
 package com.meijialife.simi.fra;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -80,6 +70,16 @@ import com.umeng.comm.ui.activities.UserInfoActivity;
 import com.umeng.community.share.UMShareServiceFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @description：我的页面
  * @author： kerryg
@@ -115,6 +115,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     private RelativeLayout rl_top;
     private FrameLayout vs;
     private Boolean is_log = false;
+    private TextView tv_top_level;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -158,6 +159,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         tv_money_num = (TextView) view.findViewById(R.id.tv_card_num);
         tv_coupon_num = (TextView) view.findViewById(R.id.tv_coupon_num);
         tv_score_num = (TextView) view.findViewById(R.id.tv_friend_num);
+        tv_top_level = (TextView) view.findViewById(R.id.tv_top_level);
         view.findViewById(R.id.item_qianbao).setOnClickListener(this);
         view.findViewById(R.id.item_youhui).setOnClickListener(this);
         view.findViewById(R.id.item_jifen).setOnClickListener(this);
@@ -433,7 +435,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             popupWindow.setFocusable(false);
         }
         if (StringUtils.isEmpty(url)) {
-            Toast.makeText(getActivity(), "数据错误", 0).show();
+            Toast.makeText(getActivity(), "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
         iv_person_left = (ImageView) popupWindow_view.findViewById(R.id.iv_person_left);
@@ -603,11 +605,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         tv_money_num.setText(user.getExp() + "");
         tv_coupon_num.setText(user.getTotal_friends() + "");
         tv_score_num.setText(user.getScore() + "");
+        tv_top_level.setText(user.getLevel());
         userInfo.setScore(user.getScore());
         DBHelper.updateUserInfo(getActivity(), userInfo);
         finalBitmap.display(iv_top_head, user.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
     }
-
     /**
      * 获取我的二维码名片
      */

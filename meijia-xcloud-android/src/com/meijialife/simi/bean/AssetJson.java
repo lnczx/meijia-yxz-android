@@ -9,22 +9,43 @@ import java.io.Serializable;
  */
 public class AssetJson implements Serializable {
 
-    private String asseet_id;// 资产Id
 
-    private String asset_type_id;// 资产类别Id
-
-    private int total;// 数量
+    private String name;//资产名称
 
     private String price;// 单价
 
+    private int total;// 数量
+
+    private String asset_id;// 资产Id
+
+    private String asset_name;
+
     private String total_price;// 总价
 
-    public String getAsseet_id() {
-        return asseet_id;
+    private String asset_type_id;// 资产类别Id
+
+    public String getName() {
+        return name;
     }
 
-    public void setAsseet_id(String asseet_id) {
-        this.asseet_id = asseet_id;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAsset_id() {
+        return asset_id;
+    }
+
+    public void setAsset_id(String asset_id) {
+        this.asset_id = asset_id;
+    }
+
+    public String getAsset_name() {
+        return asset_name;
+    }
+
+    public void setAsset_name(String asset_name) {
+        this.asset_name = asset_name;
     }
 
     public String getAsset_type_id() {

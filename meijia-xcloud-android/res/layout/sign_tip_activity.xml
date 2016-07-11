@@ -157,7 +157,7 @@
             android:textSize="18sp" />
 
         <View
-            android:layout_width="2dp"
+            android:layout_width="0.1dp"
             android:layout_height="match_parent"
             android:background="@color/simi_color_line_gray"
             android:layout_marginTop="15dp"

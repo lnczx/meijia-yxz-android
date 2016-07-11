@@ -2,14 +2,17 @@ package com.simi.easemob.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.ui.EaseChatFragment;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
 
 /**
- * 聊天页面，需要fragment的使用{@link #EaseChatFragment}
- *
+ * 聊天页面，需要fragment的使用
  */
 public class ChatActivity extends EMBaseActivity{
     public static ChatActivity activityInstance;
@@ -21,6 +24,14 @@ public class ChatActivity extends EMBaseActivity{
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.em_activity_chat);
+
+
+        User user = DBHelper.getUser(this);
+        if (user == null) {//如果未登录，则跳转到登录页面
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
         activityInstance = this;
         //聊天人或群id
         toChatUsername = getIntent().getExtras().getString(EaseConstant.EXTRA_USER_ID);

@@ -51,6 +51,8 @@ import com.meijialife.simi.activity.FeedListActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
+import com.meijialife.simi.activity.TrialCourseListActivity;
+import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.FindBean;
@@ -90,7 +92,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private final static int SCANNIN_GREQUEST_CODES = 5;
 
     private ArrayList<FindBean> findBeanList;
-    boolean canscoll = false;
     // 列表
     private PullToRefreshListView mListView;
     private HomeTag homeTag;
@@ -144,25 +145,25 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
         tabNames = new ArrayList<String>();
         tabNames.add("精选");
-        tabNames.add("职场");
-        tabNames.add("案例");
         tabNames.add("招聘");
-        tabNames.add("薪资");
-        tabNames.add("行政");
-        tabNames.add("培训");
         tabNames.add("绩效");
+        tabNames.add("薪资");
+        tabNames.add("案例");
+        tabNames.add("行政");
+        tabNames.add("职场");
+        tabNames.add("培训");
         tabNames.add("员工关系");
         tabNames.add(" 人资规划");
         tabNames.add("行业");
 
         mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
         mIndicatorTabBar1.setCallBack(this);
-        mIndicatorTabBar1.setMaxColumn(4);
+        mIndicatorTabBar1.setMaxColumn(5);
         mIndicatorTabBar1.initView(tabNames);
 
         mIndicatorTabBar3 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator3);
         mIndicatorTabBar3.setCallBack(this);
-        mIndicatorTabBar3.setMaxColumn(4);
+        mIndicatorTabBar3.setMaxColumn(5);
         mIndicatorTabBar3.initView(tabNames);
 
     }
@@ -201,7 +202,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onItemClick(int position) {
                 FindBean findBean = findBeanList.get(position);
-                Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                Intent intent = new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("url", findBean.getGoto_url());
                 startActivity(intent);
             }
@@ -354,7 +355,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     public void getAdList() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -428,7 +429,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      */
     public void getMsgList(int page, ParamsBean params) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -502,7 +503,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      */
     public void getUserTagMsgList(int page, ParamsBean params) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -649,21 +650,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         Intent intent;
         boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()) {
-        case R.id.m_home1:// 同行热聊
-            // 打开微社区的接口, 参数1为Context类型(关注页面-------AllFeedsFragment,主页面-------CommunityMainFragment)
-            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
-            mCommSDK.openCommunity(getActivity());
-            UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-            UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+        case R.id.m_home1://试听课程
+            startActivity(new Intent(getActivity(), TrialCourseListActivity.class));
             break;
-        case R.id.m_home2:// 精品课程
-            intent = new Intent(getActivity(), WebViewsActivity.class);
+        case R.id.m_home2:
+          /*  intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.JIN_PIN_KE_CHENG_URL);
-            getActivity().startActivity(intent);
+            getActivity().startActivity(intent);*/
             break;
-
         case R.id.m_home3:// 知识学院
             intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
@@ -679,13 +673,18 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 postSign();
             }
             break;
-        case R.id.m_rl_question:// 职场问答
-            startActivity(new Intent(getActivity(), FeedListActivity.class));
+        case R.id.m_rl_question: // 同行热聊
+            // 打开微社区的接口, 参数1为Context类型(关注页面-------AllFeedsFragment,主页面-------CommunityMainFragment)
+            //关注Fragment：AllFeedsFragment;关注布局：umeng_comm_feeds_frgm_layout,登录布局：umeng_comm_login_dialog
+            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
+            mCommSDK.openCommunity(getActivity());
+            UMShareServiceFactory.getSocialService().getConfig()
+                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+            UMShareServiceFactory.getSocialService().getConfig()
+                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
             break;
-        case R.id.m_homes1:// 内推悬赏
-            intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", Constants.SHANG_JIN_LIE_REN_URL);
-            getActivity().startActivity(intent);
+        case R.id.m_homes1://互助问答
+            startActivity(new Intent(getActivity(), FeedListActivity.class));
             break;
 
         case R.id.m_homes2:// 简历交换

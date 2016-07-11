@@ -25,6 +25,15 @@ public class UserIndexData implements Serializable {
     private int total_feed;// 动态数量
     private int score;// 积分
     private String exp;// 经验
+    private String level;//用户等级
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public UserIndexData() {
     }

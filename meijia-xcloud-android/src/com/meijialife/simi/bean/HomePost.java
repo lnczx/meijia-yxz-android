@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class HomePost extends ArticleResultData implements Serializable {
 
     
-    private String modified;
+    private String modified;//修改时间
     
     
     private String content;//文章详情

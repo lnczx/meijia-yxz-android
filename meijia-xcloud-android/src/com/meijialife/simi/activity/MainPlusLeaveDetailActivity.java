@@ -59,7 +59,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
     //接口请求参数
     private String mLeaveId;
     private LeaveDetailData mLeaveDetail;
-    private int leave_from;//0=我发起的 1=我审批的
+    private int leave_from = 1;//0=我发起的 1=我审批的
     
     
     private FinalBitmap finalBitmap;//
@@ -90,7 +90,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
         
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.ad_loading);
-        leave_from = getIntent().getIntExtra("flag",0);
+//        leave_from = getIntent().getIntExtra("flag",0);
         mLeaveId = getIntent().getStringExtra("leave_id");
         findView();
         
@@ -125,7 +125,7 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
     private void getLeaveDetial(String leave_id) {
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(this);
@@ -198,6 +198,16 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
         finalBitmap.display(mHeadImg,leaveDetailData.getHead_img() ,defDrawable.getBitmap(), defDrawable.getBitmap());
         int status = leaveDetailData.getStatus();
         //status=1(审批通过),2(审批不通过),3(撤销)不显示按钮
+        User  user = DBHelper.getUser(this);
+        ArrayList<PassUsersData> passUsersDatas  = leaveDetailData.getPass_users();
+        for (PassUsersData  passUser: passUsersDatas ) {
+            //passUser中含有当前用户表明是待我审批
+            if(StringUtils.isEquals(passUser.getUser_id(), user.getId())){
+                leave_from = 1;
+            }else{
+                leave_from = 0;
+            }
+        }
         if(status==1 || status==2 || status==3){
             mPassLl.setVisibility(View.GONE);
             mPassLl2.setVisibility(View.GONE);
@@ -232,13 +242,15 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
             break;
         }
     }
+
     /**
-     * 请假审批接口
-     * @param passUsersData
+     *
+     * @param leaveId
+     * @param status
      */
      private void postLeavePass(String leaveId,String status) {
             if (!NetworkUtils.isNetworkConnected(this)) {
-                Toast.makeText(MainPlusLeaveDetailActivity.this, getString(R.string.net_not_open), 0).show();
+                Toast.makeText(MainPlusLeaveDetailActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
                 return;
             }
             User user = DBHelper.getUser(this);
@@ -294,14 +306,13 @@ public class MainPlusLeaveDetailActivity extends BaseActivity implements OnClick
                 finish();
             }
         }
-     /**
-      * 请假撤销接口
-      * @param passUsersData
-      */
+    /**
+     * 请假撤销接口
+     */
      private void postLeaveCancle(String leave_id) {
          
          if (!NetworkUtils.isNetworkConnected(this)) {
-             Toast.makeText(MainPlusLeaveDetailActivity.this, getString(R.string.net_not_open), 0).show();
+             Toast.makeText(MainPlusLeaveDetailActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
              return;
          }
          User user = DBHelper.getUser(this);

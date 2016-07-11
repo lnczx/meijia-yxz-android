@@ -15,13 +15,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="9dp"
-            android:paddingTop="9dp" >
+           >
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/cut_off_rule" />
+                android:background="@color/cut_off_rule"
+                />
 
             <RelativeLayout
                 android:id="@+id/index_4_rl_help"
@@ -48,38 +48,6 @@
                     android:background="@drawable/arrow_right" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/index_4_rl_agree"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/list_item_height"
-                android:background="@drawable/btn_list_item_bg" >
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/cut_off_rule" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="用户协议"
-                    android:textColor="@color/simi_color_gray" />
-
-                <ImageView
-                    android:layout_width="8dp"
-                    android:layout_height="16dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="18dp"
-                    android:background="@drawable/arrow_right" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/cut_off_rule" />
 
 
             <RelativeLayout
@@ -110,6 +78,43 @@
                     android:layout_marginRight="18dp"
                     android:background="@drawable/arrow_right" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/cut_off_rule" />
+
+
+            <RelativeLayout
+                android:id="@+id/index_4_rl_agree"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_item_height"
+                android:background="@drawable/btn_list_item_bg" >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/cut_off_rule" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:text="用户协议"
+                    android:textColor="@color/simi_color_gray" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="16dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:background="@drawable/arrow_right" />
+            </RelativeLayout>
+
+
+
 
             <View
                 android:layout_width="match_parent"

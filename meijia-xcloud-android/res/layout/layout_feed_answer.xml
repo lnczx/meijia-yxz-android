@@ -55,7 +55,7 @@
             android:gravity="top"
             android:maxLength="512"
             android:padding="10dp"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
          <TextView
             android:id="@+id/m_tv_tip"
             android:layout_width="wrap_content"

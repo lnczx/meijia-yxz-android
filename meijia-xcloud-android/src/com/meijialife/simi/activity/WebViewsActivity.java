@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.database.DBHelper;
@@ -49,6 +51,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
 /**
@@ -80,8 +83,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
 
     private ImageView m_iv_zan;// 点赞
     private int m_p_id;// 文章Id
-    
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +93,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
     }
 
     @SuppressWarnings("deprecation")
-    @SuppressLint({ "JavascriptInterface", "NewApi", "SetJavaScriptEnabled" })
+    @SuppressLint({"JavascriptInterface", "NewApi", "SetJavaScriptEnabled"})
     private void init() {
         url = getIntent().getStringExtra("url");
         m_p_id = getIntent().getIntExtra("p_id", 0);
@@ -111,15 +113,15 @@ public class WebViewsActivity extends Activity implements OnClickListener {
         popupMenu = new PopupMenu(this);
 
         setOnClick();
-       
+
         if (StringUtils.isEmpty(url)) {
-            Toast.makeText(getApplicationContext(), "数据错误", 0).show();
+            Toast.makeText(getApplicationContext(), "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
 
         WebChromeClient wvcc = new WebChromeClient() {
             @Override
-            public void onReceivedTitle(WebView view, String title) {
+            public void onReceivedTitle(WebView view, String title)  {
                 super.onReceivedTitle(view, title);
                 titles = title;
                 tv_person_title.setText(title);
@@ -153,7 +155,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
 
         webview.setWebChromeClient(wvcc);
         WebSettings webSettings = webview.getSettings();
-        webSettings.setDefaultTextEncodingName("utf-8");  
+        webSettings.setDefaultTextEncodingName("utf-8");
         webview.addJavascriptInterface(this, "Koolearn");
         webview.setBackgroundColor(Color.parseColor("#00000000"));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 设置js可以直接打开窗口，如window.open()，默认为false
@@ -166,7 +168,10 @@ public class WebViewsActivity extends Activity implements OnClickListener {
         webSettings.setAppCacheEnabled(false);// 是否使用缓存
         webSettings.setDomStorageEnabled(true);// DOM Storage
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-
+        webview.setInitialScale(100);
+        if (Build.VERSION.SDK_INT >= 21) {
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         // webSettings.setUseWideViewPort(true);
         // webSettings.setLoadWithOverviewMode(true);
         // webSettings.setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
@@ -216,15 +221,21 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                     public void onClick(MENUITEM item, String str) {
 
                         switch (item) {
-                        case ITEM1:// 刷新
-                            webview.reload();
-                            break;
-                        case ITEM2:// 分享
-                            ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
-                            postShare();
-                            break;
-                        default:
-                            break;
+                            case ITEM1:// 刷新
+                                webview.reload();
+                                break;
+                            case ITEM2:// 分享
+                                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
+                                postShare();
+                                break;
+                            case ITEM3:// 吐槽
+                                Intent intent = new Intent(WebViewsActivity.this, ChatActivity.class);
+                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -319,72 +330,73 @@ public class WebViewsActivity extends Activity implements OnClickListener {
     public void onClick(View v) {
         boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()) {
-        case R.id.layout_mask:// 遮罩
-            findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
-            layout_mask.setVisibility(View.GONE);
-            findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
-            // 关闭软件盘
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            case R.id.layout_mask:// 遮罩
+                findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
+                layout_mask.setVisibility(View.GONE);
+                findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
+                // 关闭软件盘
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 
-            break;
-        case R.id.m_btn_confirms:// 发表按钮
-            findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
-            layout_mask.setVisibility(View.GONE);
-            findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
-            // 关闭软件盘
-            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            im.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            if (!is_login) {
-                startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
-            } else {
-                postComment(); // 发表评论
-            }
-            break;
-        case R.id.m_btn_send_comment:// 写评论按钮
-            findViewById(R.id.m_webview_comment).setVisibility(View.VISIBLE);
-            findViewById(R.id.webview_comment).setVisibility(View.GONE);
-            layout_mask.setVisibility(View.VISIBLE);
-
-            // 弹出软键盘
-            comment_content.setFocusable(true);
-            comment_content.requestFocus();
-            InputMethodManager inputManager = (InputMethodManager) comment_content.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-            break;
-        case R.id.m_iv_comment:// 评论
-            if (!is_login) {
-                startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
-            } else {
-                Intent intent = new Intent(WebViewsActivity.this, CommentForNewFrgActivity.class);
-                intent.putExtra("p_id", m_p_id);
-                startActivity(intent);
-            }
-            break;
-        case R.id.m_iv_zan:// 点赞
-            if (!is_login) {
-                startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
-            } else {
-                if(m_iv_zan.isSelected()){
-                    postZan("del");//取消点赞
-                }else {
-                    postZan("add");//点赞
+                break;
+            case R.id.m_btn_confirms:// 发表按钮
+                findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
+                layout_mask.setVisibility(View.GONE);
+                findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
+                // 关闭软件盘
+                InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                if (!is_login) {
+                    startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
+                } else {
+                    postComment(); // 发表评论
                 }
-            }
-            break;
-        case R.id.m_iv_share:// 分享
-            findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
-            findViewById(R.id.layout_mask).setVisibility(View.GONE);
-            findViewById(R.id.webview_comment).setVisibility(View.GONE);
-            ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
-            postShare();
-            break;
-        default:
-            break;
+                break;
+            case R.id.m_btn_send_comment:// 写评论按钮
+                findViewById(R.id.m_webview_comment).setVisibility(View.VISIBLE);
+                findViewById(R.id.webview_comment).setVisibility(View.GONE);
+                layout_mask.setVisibility(View.VISIBLE);
+
+                // 弹出软键盘
+                comment_content.setFocusable(true);
+                comment_content.requestFocus();
+                InputMethodManager inputManager = (InputMethodManager) comment_content.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                break;
+            case R.id.m_iv_comment:// 评论
+                if (!is_login) {
+                    startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
+                } else {
+                    Intent intent = new Intent(WebViewsActivity.this, CommentForNewFrgActivity.class);
+                    intent.putExtra("p_id", m_p_id);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.m_iv_zan:// 点赞
+                if (!is_login) {
+                    startActivity(new Intent(WebViewsActivity.this, LoginActivity.class));
+                } else {
+                    if (m_iv_zan.isSelected()) {
+                        postZan("del");//取消点赞
+                    } else {
+                        postZan("add");//点赞
+                    }
+                }
+                break;
+            case R.id.m_iv_share:// 分享
+                findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
+                findViewById(R.id.layout_mask).setVisibility(View.GONE);
+                findViewById(R.id.webview_comment).setVisibility(View.GONE);
+                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
+                postShare();
+                break;
+            default:
+                break;
         }
     }
+
     /**
-     **发表评论接口
+     * *发表评论接口
      */
     private void postComment() {
 
@@ -397,7 +409,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
         String user_id = DBHelper.getUser(this).getId();
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -445,6 +457,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
             }
         });
     }
+
     /**
      * 点赞接口
      */
@@ -469,6 +482,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                 LogOut.debug("错误码：" + errorNo);
                 Toast.makeText(WebViewsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -500,6 +514,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
             }
         });
     }
+
     /**
      * 获取是否点赞
      */
@@ -508,7 +523,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
         String user_id = DBHelper.getUser(this).getId();
 
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -524,6 +539,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                 LogOut.debug("错误码：" + errorNo);
                 Toast.makeText(WebViewsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -534,13 +550,13 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
-                           if(StringUtils.isEmpty(data)){//表示未点赞
-                               m_iv_zan.setSelected(false);
+                            if (StringUtils.isEmpty(data)) {//表示未点赞
+                                m_iv_zan.setSelected(false);
 //                               m_iv_zan.setEnabled(true);//可点击
-                           }else {
-                               m_iv_zan.setSelected(true);
+                            } else {
+                                m_iv_zan.setSelected(true);
 //                               m_iv_zan.setEnabled(false);//不可点击
-                           }
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(WebViewsActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
