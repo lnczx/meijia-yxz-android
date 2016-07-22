@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,7 +47,6 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.XMLReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,8 +83,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private View view;
-    private Html.ImageGetter imgGetter;
-    private Html.TagHandler tagHandler;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,15 +116,15 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         view = findViewById(R.id.m_top_line);
         view.setVisibility(View.GONE);
         finalBitmap = FinalBitmap.create(this);
+        webView = (WebView) findViewById(R.id.m_article_webView);
         //默认图标赋值
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
         webview_comment = (LinearLayout) findViewById(R.id.webview_comment);
         if (is_show) {
             webview_comment.setVisibility(View.VISIBLE);
         }
+
     }
-
-
 
 
     TextWatcher tw = new TextWatcher() {
@@ -178,18 +178,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             getZan();// 是否点赞接口
         }
 
-
-
-        imgGetter = new Html.ImageGetter() {
-            @Override
-            public Drawable getDrawable(String source) {
-                Drawable drawable = null;
-                drawable = Drawable.createFromPath(source); // Or fetch it from the URL
-                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable
-                        .getIntrinsicHeight());
-                return drawable;
-            }
-        };
 
     }
 
@@ -457,6 +445,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         shareBoard.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
+
     public void getMsgList(String pId) {
         if (!NetworkUtils.isNetworkConnected(ArticleDetailActivity.this)) {
             Toast.makeText(ArticleDetailActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
@@ -494,9 +483,13 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                                /* CustomField customField = gson.fromJson(homePostes.getCustom_fields(),CustomField.class);
                                 m_tv_from_name.setText(customField.getFromname_value().get(0));*/
                                 m_tv_update_time.setText(homePostes.getModified());
-                                String str = Html.fromHtml(a).toString();
-                                m_article_content.setText(Html.fromHtml(str));
 
+
+                                webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
+                                String str = Html.fromHtml(a).toString();
+//                                str.replaceAll("\n","</br>");
+//                                m_article_content.setText(str);
+                                webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -513,7 +506,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             }
         });
     }
-
 
 
 }
