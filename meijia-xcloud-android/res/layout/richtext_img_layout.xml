@@ -40,6 +40,7 @@
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:textColor="#999999"
+        android:visibility="gone"
         android:textSize="14sp" />
 
 </LinearLayout>

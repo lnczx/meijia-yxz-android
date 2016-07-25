@@ -10,7 +10,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
@@ -653,12 +652,12 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private void addImage(String imageUri, String imgName, int width, int height) {
         View view = View.inflate(this, R.layout.richtext_img_layout, null);
         SimpleDraweeView img = (SimpleDraweeView) view.findViewById(R.id.img);
-        TextView textview = (TextView) view.findViewById(R.id.img_name);
-        if (!TextUtils.isEmpty(imgName)) {
-            textview.setText(imgName);
-        } else {
-            textview.setVisibility(View.GONE);
-        }
+//        TextView textview = (TextView) view.findViewById(R.id.img_name);
+//        if (!TextUtils.isEmpty(imgName)) {
+//            textview.setText(imgName);
+//        } else {
+//            textview.setVisibility(View.GONE);
+//        }
         //设置imageview的长宽
         int showWidth;
         int showHeight;
@@ -689,11 +688,11 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         TextView textView = (TextView) view.findViewById(R.id.img_name);
         SimpleDraweeView imageView = (SimpleDraweeView) view.findViewById(R.id.img);
 
-        if (!TextUtils.isEmpty(imgName)) {
-            textView.setText(imgName);
-        } else {
-            textView.setVisibility(View.GONE);
-        }
+//        if (!TextUtils.isEmpty(imgName)) {
+//            textView.setText(imgName);
+//        } else {
+//            textView.setVisibility(View.GONE);
+//        }
 
         int showWidth;
         int showHeight;
