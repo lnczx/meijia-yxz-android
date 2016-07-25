@@ -9,10 +9,19 @@ dependencies {
         exclude module: 'support-v4'
     }
     compile 'com.android.support:multidex:1.0.1'
+    compile  'org.jsoup:jsoup:1.8.3'
+    compile  'com.facebook.fresco:fresco:0.11.0'
+
+
 }
 
 
 android {
+
+    repositories {
+        jcenter()
+    }
+
     compileSdkVersion 21
     buildToolsVersion "23.0.3"
 

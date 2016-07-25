@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/activity_bg_color"
+    android:background="@android:color/white"
     android:orientation="vertical"
 
     >
@@ -16,13 +17,12 @@
             android:id="@+id/m_ll_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentTop="true"
-            >
-        <include
-            android:id="@+id/view_title_bar"
-            layout="@layout/layout_title_bar"
-            />
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/view_title_bar"
+                layout="@layout/layout_title_bar" />
         </LinearLayout>
 
         <View
@@ -32,20 +32,106 @@
             android:layout_below="@id/m_ll_top"
             android:background="@color/simi_color_line_gray" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/article_webview_center" />
+        </LinearLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/m_view_line"
-           >
-            <include layout="@layout/article_webview_center" />
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical">
+
+                <!--标题-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp">
+
+                    <TextView
+                        android:id="@+id/txt_content_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="21dp"
+                        android:textColor="#333333"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/txt_publish_from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#999999"
+                            android:textIsSelectable="true"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_publish_source"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:textColor="#999999"
+                            android:textIsSelectable="true"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:background="#d6d6d6" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/thumbnail_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="14dp"
+                    android:scaleType="centerCrop"
+                    fresco:placeholderImage="@drawable/ic_launcher_logo" />
+
+                <!--富文本正文 activity内动态添加相应布局-->
+                <LinearLayout
+                    android:id="@+id/layout_news_richtext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="35dp"
+                    android:paddingTop="5dp" />
+            </LinearLayout>
         </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_alignParentBottom="true"
-            >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/webview_comment"

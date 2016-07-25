@@ -1,24 +1,87 @@
 package com.meijialife.simi.utils;
 
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.os.Environment;
+import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+import android.widget.Toast;
+
+import org.apache.http.util.EncodingUtils;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.util.EncodingUtils;
-
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-import android.os.Environment;
-import android.view.WindowManager;
-import android.widget.Toast;
-
 public class Utils {
 
-	/**
+    private static int height = -1;
+    private static int width = -1;
+    private static float densityDpi = -1;
+    private static float density = -1;
+    private static String deviceId = "";
+
+
+    /**
+     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+     */
+    public static int dip2px(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
+    public static int getHeight(Context context) {
+        if (height < 0) {
+            getValues(context);
+        }
+        return height;
+    }
+
+    public static int getWidth(Context context) {
+        if (width < 0) {
+            getValues(context);
+        }
+        return width;
+    }
+
+    public static float getDensityDpi(Context context) {
+        if (densityDpi < 0) {
+            getValues(context);
+        }
+        return densityDpi;
+    }
+
+    public static float getDensity(Context context) {
+        if (density < 0) {
+            getValues(context);
+        }
+        return density;
+    }
+
+    private static void getValues(Context context) {
+
+        DisplayMetrics display = new DisplayMetrics();
+        display = context.getResources().getDisplayMetrics();
+        width = display.widthPixels;
+        height = display.heightPixels;
+        densityDpi = display.densityDpi;
+        density = display.density;
+        try {
+            TelephonyManager tm = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);//
+            deviceId = tm.getDeviceId();
+        } catch (Exception e) {
+        }
+    }
+
+
+    /**
 	 * @Description: 验证手机号是否合法
 	 * @param mobile
 	 * @return

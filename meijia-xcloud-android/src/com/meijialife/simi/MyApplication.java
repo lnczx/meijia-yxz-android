@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.igexin.sdk.PushManager;
 import com.meijialife.simi.exception.CrashHandler;
 import com.simi.easemob.EMDemoHelper;
@@ -46,7 +48,13 @@ public class MyApplication extends Application {
     
         ///初始化异常报告
         CrashHandler crashHandler = CrashHandler.getInstance();  
-        crashHandler.init(getApplicationContext());  
+        crashHandler.init(getApplicationContext());
+
+
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setDownsampleEnabled(true).build();
+        Fresco.initialize(this, config);
+
     }
 
     public static MyApplication getInstance() {

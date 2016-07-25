@@ -1,12 +1,5 @@
 package com.meijialife.simi.ui;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
-import org.joda.time.DateTimeConstants;
-import org.joda.time.LocalDate;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -36,6 +29,13 @@ import com.meijialife.simi.ui.calendar.ResizeManager;
 import com.meijialife.simi.ui.calendar.Week;
 import com.meijialife.simi.ui.calendar.WeekView;
 import com.meijialife.simi.utils.CalendarUtils;
+
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Blaz Solar on 28/02/14.
