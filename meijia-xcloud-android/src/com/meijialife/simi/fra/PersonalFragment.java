@@ -37,6 +37,7 @@ import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
+import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;

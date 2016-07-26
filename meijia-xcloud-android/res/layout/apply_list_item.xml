@@ -63,7 +63,7 @@
             android:layout_marginRight="10dp"
             android:textSize="12sp"
             android:textColor="@color/simi_color_gray"
-            android:text="已添加"
+            android:text="已同意"
             android:visibility="gone"
            />
     </RelativeLayout>

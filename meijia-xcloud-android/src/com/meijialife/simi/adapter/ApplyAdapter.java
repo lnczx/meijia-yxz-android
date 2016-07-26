@@ -27,6 +27,7 @@ import com.meijialife.simi.bean.FriendApplyData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelp;
+import com.meijialife.simi.inter.ListItemClickHelpes;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -43,9 +44,9 @@ public class ApplyAdapter extends BaseAdapter {
 	private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private Context contexts;
-    private ListItemClickHelp callback;//回调方法
+    private ListItemClickHelpes callback;//回调方法
     
-	public ApplyAdapter(Context context,ListItemClickHelp callback) {
+	public ApplyAdapter(Context context,ListItemClickHelpes callback) {
 	    this.contexts = context;
 	    this.callback = callback;
 		inflater = LayoutInflater.from(context);
@@ -92,16 +93,16 @@ public class ApplyAdapter extends BaseAdapter {
 		holder.m_apply_name.setText(applyData.getName());
         finalBitmap.display(holder.m_apply_icon,applyData.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
 		
-        if(applyData.getReq_type()==1 && applyData.getStatus()==0){
-            holder.m_apply_status.setVisibility(View.VISIBLE);
-        }else {
-            holder.m_apply_status.setVisibility(View.GONE);
-        }
-        if(applyData.getStatus()==1){//状态=同意，显示已添加
-            holder.m_apply_status_name.setVisibility(View.VISIBLE);
-        }else {
-            holder.m_apply_status_name.setVisibility(View.GONE);
-        }
+		if (applyData.getStatus()==0) {//申请中，出现同意按钮
+
+			holder.m_apply_status.setVisibility(View.VISIBLE);
+			holder.m_apply_status_name.setVisibility(View.GONE);
+
+		}else if(applyData.getStatus()==1){//状态是已同意，出现已同意
+			holder.m_apply_status.setVisibility(View.GONE);
+			holder.m_apply_status_name.setVisibility(View.VISIBLE);
+		}
+
         holder.m_apply_status.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,7 +151,7 @@ public class ApplyAdapter extends BaseAdapter {
 	                        String msg = obj.getString("msg");
 	                        String data = obj.getString("data");
 	                        if (status == Constants.STATUS_SUCCESS) { // 正确
-	                            callback.onClick();
+	                            callback.onClick("99");
 	                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
 	                            errorMsg = contexts.getString(R.string.servers_error);
 	                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

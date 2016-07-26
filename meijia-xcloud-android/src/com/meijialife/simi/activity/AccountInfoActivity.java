@@ -68,6 +68,8 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
     private RoundImageView iv_header;// 头像
     private EditText et_name; // 昵称
+    private EditText et_position; // 职位
+    private EditText et_company; // 公司
     private EditText et_mobile; // 手机
     private TextView et_gender; // 性别
     private EditText et_card; // 私密卡
@@ -121,6 +123,8 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         title_btn_edit = (TextView) findViewById(R.id.title_btn_edit);
         iv_header = (RoundImageView) findViewById(R.id.iv_header);
         et_name = (EditText) findViewById(R.id.et_name);
+        et_position = (EditText) findViewById(R.id.et_position);
+        et_company = (EditText) findViewById(R.id.et_company);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
         et_gender = (TextView) findViewById(R.id.et_gender);
         //et_card = (EditText) findViewById(R.id.et_card);

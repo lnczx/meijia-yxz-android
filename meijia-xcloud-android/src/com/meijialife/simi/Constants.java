@@ -155,7 +155,15 @@ public class Constants {
     /**
      * 好友申请列表接口
      **/
-    public static final String URL_GET_FRIEND_REQS = ROOT_URL + "/user/get_friend_reqs.json";
+    public static final String URL_GET_FRIEND_REQS = ROOT_URL + "user/get_friend_reqs.json";
+    /**
+     * 获取企业申请加入列表
+     **/
+    public static final String URL_GET_COMPANY_PASS = ROOT_URL + "company/get_pass.json";
+    /**
+     * 获取企业申请通过接口
+     **/
+    public static final String URL_GET_PASS = ROOT_URL + "company/pass.json";
     /**
      * 获取好友动态列表接口
      **/

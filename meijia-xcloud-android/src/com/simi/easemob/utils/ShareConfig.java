@@ -65,6 +65,14 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContents(webUrl,title);
     }
+    public void init(Activity context,String uid,String invitation_code) {
+        this.mContext = context;
+
+        // 配置需要分享的相关平台
+        configPlatforms();
+        // 设置分享的内容
+        setShareContent(uid,invitation_code);
+    }
     public void setShareContents(String webUrl,String title) {
         
         // 配置SSO
@@ -115,6 +123,58 @@ public class ShareConfig {
         sinaContent.setShareMedia(localImage);
         mController.setShareMedia(sinaContent);
         
+    }
+    public void setShareContent(String uid,String invitation_code) {
+        String targetUrl = "http://123.57.173.36/simi-h5/show/company-join.html?uid="+uid+"&invitation_code="+invitation_code;
+        String title = "好友邀请你加入团队";
+        String content = "好友邀请你加入团队";
+          // 配置SSO
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        qZoneSsoHandler.addToSocialSDK();
+        mController.setShareContent(content);
+
+        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+
+        WeiXinShareContent weixinContent = new WeiXinShareContent();
+        weixinContent.setShareContent(content);
+        weixinContent.setTitle(title);
+        weixinContent.setTargetUrl(targetUrl);
+        weixinContent.setShareMedia(localImage);
+        mController.setShareMedia(weixinContent);
+
+        // 设置朋友圈分享的内容
+        CircleShareContent circleMedia = new CircleShareContent();
+        circleMedia.setShareContent(content);
+        circleMedia.setTitle(title);
+        circleMedia.setShareMedia(localImage);
+        circleMedia.setTargetUrl(targetUrl);
+        mController.setShareMedia(circleMedia);
+
+        // 设置QQ空间分享内容
+        QZoneShareContent qzone = new QZoneShareContent();
+        qzone.setShareContent(content);
+
+        qzone.setTargetUrl(targetUrl);
+        qzone.setTitle(title);
+        qzone.setShareMedia(localImage);
+        mController.setShareMedia(qzone);
+
+        QQShareContent qqShareContent = new QQShareContent();
+        qqShareContent.setShareContent(content);
+        qqShareContent.setTitle(title);
+        qqShareContent.setShareMedia(localImage);
+        qqShareContent.setTargetUrl(targetUrl);
+        mController.setShareMedia(qqShareContent);
+
+        SinaShareContent sinaContent = new SinaShareContent();
+        sinaContent.setTitle(title);
+        sinaContent.setShareContent(content);
+        sinaContent.setTargetUrl(targetUrl);
+        sinaContent.setShareMedia(localImage);
+        mController.setShareMedia(sinaContent);
+
     }
     public void setShareContent(String card_id) {
 

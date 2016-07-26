@@ -155,6 +155,7 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
         getStaffList(Constants.finalContactList, page);
+        getCompanyDetail();
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -228,7 +229,6 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
     /**
      * 处理数据加载的方法
      * 
-     * @param list
      */
     private void showData(ArrayList<Friend> myFriendLis, int flag) {
         if (myFriendList != null && myFriendList.size() > 0) {
@@ -244,18 +244,12 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
         mPullRefreshListView.onRefreshComplete();
     }
 
-    private void popRqCode() {
-        if (null == mPopupWindow || !mPopupWindow.isShowing()) {
-            mPopupWindow = new PopupWindow(music_popunwindwow, android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
-            mPopupWindow.showAtLocation(this.findViewById(R.id.ll_staff_list), Gravity.RIGHT | Gravity.BOTTOM, 0, 0);
-            getMyRqCode();
-        }
-    }
 
-    private void getMyRqCode() {
+    private CompanyDetail companyDetail;
+    private void getCompanyDetail() {
         String user_id = DBHelper.getUser(this).getId();
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -286,11 +280,7 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                Log.d("data", data);
-                                CompanyDetail companyDetail = gson.fromJson(data, CompanyDetail.class);
-                                String rq_url = companyDetail.getQrCode();
-                                finalBitmap.display(music_popunwindwow.findViewById(R.id.iv_rq_code), rq_url, defDrawable.getBitmap(),
-                                        defDrawable.getBitmap());
+                                companyDetail = gson.fromJson(data, CompanyDetail.class);
                             } else {
                                 Toast.makeText(StaffLeaveActivity.this, "二维码还没有生成", Toast.LENGTH_SHORT).show();
                             }
@@ -333,7 +323,7 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
         String user_id = DBHelper.getUser(StaffLeaveActivity.this).getId();
 
         if (!NetworkUtils.isNetworkConnected(StaffLeaveActivity.this)) {
-            Toast.makeText(StaffLeaveActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(StaffLeaveActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -414,7 +404,11 @@ public class StaffLeaveActivity extends Activity implements OnClickListener {
             StaffLeaveActivity.this.finish();
             break;
         case R.id.ibtn_rq:
-            popRqCode();// 弹出企业二维码
+//            popRqCode();// 弹出企业二维码
+            intent = new Intent(StaffLeaveActivity.this,InviteFriendActivity.class);
+            intent.putExtra("company_id",company_id);
+            intent.putExtra("invitation_code",companyDetail.getInvitationCode());
+            startActivity(intent);
             break;
         case R.id.iv_rq_left:
             closePopWindow();// 返回关闭二维码

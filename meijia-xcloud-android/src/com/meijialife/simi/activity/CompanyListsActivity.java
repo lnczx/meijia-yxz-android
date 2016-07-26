@@ -160,7 +160,7 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
         User user = DBHelper.getUser(this);
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -229,7 +229,7 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
         User user = DBHelper.getUser(this);
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -302,7 +302,6 @@ public class CompanyListsActivity extends BaseActivity implements OnClickListene
     }
     /**
      * 处理数据加载的方法
-     * @param list
      */
     private void showData(List<CompanyData> myCompanyDataList){
         if(myCompanyDataList!=null && myCompanyDataList.size()>0){

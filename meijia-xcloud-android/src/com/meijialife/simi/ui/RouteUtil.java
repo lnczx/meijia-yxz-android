@@ -183,6 +183,11 @@ public class RouteUtil {
                         context.startActivity(intent);
                     } else if (action.equals("friend_req")) {// 跳转到好友申请
                         intent = new Intent(context, FriendApplyActivity.class);
+                        intent.putExtra("flag",true);
+                        context.startActivity(intent);
+                    } else if (action.equals("company_pass")) {// 跳转到团队申请
+                        intent = new Intent(context, FriendApplyActivity.class);
+                        intent.putExtra("flag",false);
                         context.startActivity(intent);
                     }  else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                         intent = new Intent(context, Find2DetailActivity.class);
@@ -347,6 +352,11 @@ public class RouteUtil {
                     context.startActivity(intent);
                 } else if (action.equals("friend_req")) {// 跳转到好友申请
                     intent = new Intent(context, FriendApplyActivity.class);
+                    intent.putExtra("flag",true);
+                    context.startActivity(intent);
+                } else if (action.equals("company_pass")) {// 跳转到团队申请
+                    intent = new Intent(context, FriendApplyActivity.class);
+                    intent.putExtra("flag",false);
                     context.startActivity(intent);
                 }  else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                     intent = new Intent(context, Find2DetailActivity.class);
@@ -544,6 +554,12 @@ public class RouteUtil {
                 } else if (action.equals("friend_req")) {// 跳转到好友申请
                     intent = new Intent(context, FriendApplyActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("flag",true);
+                    context.startActivity(intent);
+                }else if (action.equals("company_pass")) {// 跳转到团队申请
+                    intent = new Intent(context, FriendApplyActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("flag",false);
                     context.startActivity(intent);
                 } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                     intent = new Intent(context, Find2DetailActivity.class);

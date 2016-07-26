@@ -77,11 +77,11 @@
                 android:textSize="@dimen/title_bar_text_size" />
         </LinearLayout>
     </LinearLayout>
-
     <View
         android:id="@+id/layout_mask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#a2000000"
         android:visibility="gone" />
+
 </FrameLayout>
