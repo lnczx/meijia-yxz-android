@@ -65,7 +65,7 @@ public class WebViewActivity extends Activity implements OnClickListener {
     private void init() {
         url = getIntent().getStringExtra("url");
         titleStr = getIntent().getStringExtra("title");
-        
+
         iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
         iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
         tv_person_title = (TextView) findViewById(R.id.tv_person_title);

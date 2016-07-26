@@ -4,20 +4,24 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow.OnDismissListener;
@@ -25,6 +29,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
@@ -38,6 +45,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.utils.ShareConfig;
 
 import net.tsz.afinal.FinalBitmap;
@@ -47,9 +55,18 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 首页文章详情
@@ -85,6 +102,12 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private View view;
     private WebView webView;
 
+    LinearLayout   layout_richtext;
+    TextView txt_content_title;
+    TextView txt_publish_from;
+    TextView txt_publish_source;
+    SimpleDraweeView   thumbnail_images;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_article_detail);
@@ -95,6 +118,8 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     }
 
     private void initView() {
+        setTitleName("详情");
+
         url = getIntent().getStringExtra("url");
         pId = getIntent().getStringExtra("p_id");
         is_show = getIntent().getBooleanExtra("is_show", false);
@@ -105,6 +130,14 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         initWebView();
         getMsgList(pId);
         setOnClick();
+
+
+
+        layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
+        txt_content_title = (TextView) findViewById(R.id.txt_content_title);
+        txt_publish_from = (TextView) findViewById(R.id.txt_publish_from);
+        txt_publish_source = (TextView) findViewById(R.id.txt_publish_source);
+        thumbnail_images = (SimpleDraweeView) findViewById(R.id.thumbnail_images);
 
     }
 
@@ -447,6 +480,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
 
     public void getMsgList(String pId) {
+        showDialog();
         if (!NetworkUtils.isNetworkConnected(ArticleDetailActivity.this)) {
             Toast.makeText(ArticleDetailActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
@@ -460,12 +494,15 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
                 Toast.makeText(ArticleDetailActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
+                dismissDialog();
+                System.out.println("webview:" + t.toString());
                 String errorMsg = "";
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
@@ -477,19 +514,22 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                                 Gson gson = new Gson();
 //                                homePost = gson.fromJson(post, HomePost.class);
                                 homePostes = gson.fromJson(post, HomePostes.class);
-                                String a = homePostes.getContent();
-                                finalBitmap.display(m_iv_article, homePostes.getThumbnail());
-                                m_tv_article_title.setText(homePostes.getTitle());
-                               /* CustomField customField = gson.fromJson(homePostes.getCustom_fields(),CustomField.class);
-                                m_tv_from_name.setText(customField.getFromname_value().get(0));*/
-                                m_tv_update_time.setText(homePostes.getModified());
+//                                String content = homePostes.getContent();
 
+                                fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
 
-                                webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
-                                String str = Html.fromHtml(a).toString();
-//                                str.replaceAll("\n","</br>");
-//                                m_article_content.setText(str);
-                                webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
+//                                finalBitmap.display(m_iv_article, homePostes.getThumbnail());
+//                                m_tv_article_title.setText(homePostes.getTitle());
+//                               /* CustomField customField = gson.fromJson(homePostes.getCustom_fields(),CustomField.class);
+//                                m_tv_from_name.setText(customField.getFromname_value().get(0));*/
+//                                m_tv_update_time.setText(homePostes.getModified());
+//
+//
+//                                webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
+//                                String str = Html.fromHtml(a).toString();
+////                                str.replaceAll("\n","</br>");
+////                                m_article_content.setText(str);
+//                                webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -507,5 +547,196 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         });
     }
 
+    /**
+     * 填充数据
+     * @param homePostes
+     */
+    private  void fillContent(HomePostes homePostes){
+        txt_content_title.setText(homePostes.getTitle());
+        txt_publish_from.setText(homePostes.getCustomFields().getFromnameValue().get(0));
+        txt_publish_source.setText(homePostes.getModified());
+
+        try {
+            thumbnail_images.setImageURI(Uri.parse(homePostes.getThumbnailImages().getFull().getUrl()));
+        }catch (Exception e){
+        }
+        String content = homePostes.getContent();
+        if(StringUtils.isNotEmpty(content)){
+            gennerateContent(content);
+        }
+    }
+
+    //解析html数据
+    private void gennerateContent(String richtext) {
+        Document doc = Jsoup.parse(richtext);
+        Elements elements = doc.getElementsByTag("p");
+        for (Element element : elements) {
+            Elements childElements = element.getElementsByTag("img");
+            if (childElements != null && childElements.size() > 0) {
+                //图片标签
+                for (Element ele : childElements) {
+                    Attributes attributes = ele.attributes();
+                    String imgName = attributes.get("title");
+                    String imgUri = attributes.get("src");
+//                    String width = attributes.get("data-width");
+//                    String height = attributes.get("data-height");
+                      String height = "190";
+                      String width = "330";
+                      String style = attributes.get("style");
+
+                    String widthRegex = "width: (.*)px; height:";
+                    Pattern pattern = Pattern.compile(widthRegex);
+                    Matcher matcher = pattern.matcher(style);
+                    while (matcher.find()) {
+                        width = matcher.group(1) +"";
+                    }
+                    String highRegex = "height: (.*)px";
+                    Pattern pattern2 = Pattern.compile(highRegex);
+                    Matcher matcher2 = pattern2.matcher(style);
+                    while (matcher2.find()) {
+                        height = matcher2.group(1) + "";
+                    }
+
+                    //判断是否为Gif
+                    if (imgUri.endsWith("gif")) {
+                        addGif(imgUri, imgName, Integer.valueOf(width), Integer.valueOf(height));
+                    } else {
+                        addImage(imgUri, imgName, Integer.valueOf(width), Integer.valueOf(height));
+
+                    }
+                }
+                continue;
+            }
+            //文字部分 手工解析a标签 其余交给Html类处理
+
+            List<Node> list = element.childNodes();
+            SpannableStringBuilder ssBuilder = new SpannableStringBuilder();
+            for (Node childNode : list) {
+                if (childNode instanceof Element && "a".equals(((Element) childNode).tagName())) {
+                    String url = childNode.attr("href");
+                    if (url != null) {
+                        int a = ssBuilder.length();
+                        ssBuilder.append(((Element) childNode).text());
+                        ssBuilder.setSpan(new MyURLSpan(url), a, ssBuilder.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    }
+
+                } else {
+                    ssBuilder.append(Html.fromHtml(childNode.outerHtml()));
+                }
+            }
+
+            addText(ssBuilder);
+
+        }
+
+
+    }
+
+    private void addText(CharSequence text) {
+        TextView textview = (TextView) View.inflate(this, R.layout.richtext_txt_layout, null);
+        textview.setText(text);
+        if (text instanceof Spanned) {
+            textview.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        layout_richtext.addView(textview);
+
+    }
+    //普通文本
+    private void addNormalText(String text) {
+        TextView textview = (TextView) View.inflate(this, R.layout.richtext_txt_layout, null);
+        textview.setText(text);
+        layout_richtext.addView(textview);
+
+    }
+
+    private void addImage(String imageUri, String imgName, int width, int height) {
+        View view = View.inflate(this, R.layout.richtext_img_layout, null);
+        SimpleDraweeView img = (SimpleDraweeView) view.findViewById(R.id.img);
+//        TextView textview = (TextView) view.findViewById(R.id.img_name);
+//        if (!TextUtils.isEmpty(imgName)) {
+//            textview.setText(imgName);
+//        } else {
+//            textview.setVisibility(View.GONE);
+//        }
+        //设置imageview的长宽
+        int showWidth;
+        int showHeight;
+
+        int deviceWidth = Utils.getWidth(this) - Utils.dip2px(this, 28);
+        int imageWidth = Utils.dip2px(this, width);
+        if (deviceWidth > imageWidth) {
+            //原尺寸显示
+            showWidth = imageWidth;
+            showHeight = Utils.dip2px(this, height);
+        } else {
+            showWidth = deviceWidth;
+            showHeight = (int) (height * 1.0 * deviceWidth / width);
+        }
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) img.getLayoutParams();
+        params.width = showWidth;
+        params.height = showHeight;
+        img.setLayoutParams(params);
+        img.setImageURI(Uri.parse(imageUri));
+
+        layout_richtext.addView(view);
+
+    }
+
+    private void addGif(String imageUri, String imgName, int width, int height) {
+        View view = View.inflate(this, R.layout.richtext_gif_layout, null);
+        TextView textView = (TextView) view.findViewById(R.id.img_name);
+        SimpleDraweeView imageView = (SimpleDraweeView) view.findViewById(R.id.img);
+
+//        if (!TextUtils.isEmpty(imgName)) {
+//            textView.setText(imgName);
+//        } else {
+//            textView.setVisibility(View.GONE);
+//        }
+
+        int showWidth;
+        int showHeight;
+
+        int deviceWidth = Utils.getWidth(this) - Utils.dip2px(this, 28);
+        int imageWidth = Utils.dip2px(this, width);
+        if (deviceWidth > imageWidth) {
+            //原尺寸显示
+            showWidth = imageWidth;
+            showHeight = Utils.dip2px(this, height);
+        } else {
+            showWidth = deviceWidth;
+            showHeight = (int) (height * 1.0 * deviceWidth / width);
+        }
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        params.width = showWidth;
+        params.height = showHeight;
+        imageView.setLayoutParams(params);
+        imageView.setAspectRatio(showWidth / showHeight);
+
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setUri(Uri.parse(imageUri))
+                .setAutoPlayAnimations(true)
+                .build();
+        imageView.setController(controller);
+
+        layout_richtext.addView(view);
+    }
+
+    private class MyURLSpan extends ClickableSpan {
+        private String mUrl;
+
+        MyURLSpan(String url) {
+            mUrl = url;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Intent i = new Intent(ArticleDetailActivity.this, WebViewActivity.class);
+            i.putExtra("url", mUrl);
+            i.putExtra("title", "文章详情");
+            startActivity(i);
+        }
+    }
 
 }
