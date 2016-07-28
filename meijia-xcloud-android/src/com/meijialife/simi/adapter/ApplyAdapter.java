@@ -85,6 +85,7 @@ public class ApplyAdapter extends BaseAdapter {
 			holder.m_apply_icon = (RoundImageView) convertView.findViewById(R.id.m_apply_icon);
 			holder.m_apply_status = (TextView) convertView.findViewById(R.id.m_apply_status);
 			holder.m_apply_status_name = (TextView) convertView.findViewById(R.id.m_apply_status_name);
+			holder.m_applying_status_name = (TextView) convertView.findViewById(R.id.m_applying_status_name);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -93,14 +94,21 @@ public class ApplyAdapter extends BaseAdapter {
 		holder.m_apply_name.setText(applyData.getName());
         finalBitmap.display(holder.m_apply_icon,applyData.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
 		
-		if (applyData.getStatus()==0) {//申请中，出现同意按钮
+		if (applyData.getStatus()==0 && applyData.getReq_type() == 1) {//申请中并且为别人申请的，出现同意按钮
 
 			holder.m_apply_status.setVisibility(View.VISIBLE);
 			holder.m_apply_status_name.setVisibility(View.GONE);
+			holder.m_applying_status_name.setVisibility(View.GONE);
 
 		}else if(applyData.getStatus()==1){//状态是已同意，出现已同意
 			holder.m_apply_status.setVisibility(View.GONE);
 			holder.m_apply_status_name.setVisibility(View.VISIBLE);
+			holder.m_applying_status_name.setVisibility(View.GONE);
+
+		}else if (applyData.getStatus()==0 && applyData.getReq_type() == 0) {
+			holder.m_apply_status.setVisibility(View.GONE);
+			holder.m_apply_status_name.setVisibility(View.GONE);
+			holder.m_applying_status_name.setVisibility(View.VISIBLE);
 		}
 
         holder.m_apply_status.setOnClickListener(new OnClickListener() {
@@ -118,15 +126,16 @@ public class ApplyAdapter extends BaseAdapter {
 		TextView m_apply_name;
 		TextView m_apply_status;
 		TextView m_apply_status_name;
+		TextView m_applying_status_name;
 	}
 
-	
 	 private void postFriendReq(String friendId,String status) {
 
-	        if (!NetworkUtils.isNetworkConnected(contexts)) {
-	            Toast.makeText(contexts, contexts.getString(R.string.net_not_open), 0).show();
-	            return;
-	        }
+
+		 if (!NetworkUtils.isNetworkConnected(contexts)) {
+			 Toast.makeText(contexts, contexts.getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+			 return;
+		 }
 	        User user = DBHelper.getUser(contexts);
 	        Map<String, String> map = new HashMap<String, String>();
 	        map.put("friend_id", friendId);

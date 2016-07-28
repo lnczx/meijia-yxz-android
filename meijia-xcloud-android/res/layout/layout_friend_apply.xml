@@ -48,7 +48,7 @@
             android:background="@drawable/bg_personpage_tab_indicator"
             android:focusable="true"
             android:gravity="center"
-            android:text="团队申请"
+            android:text="成员申请"
             android:textColor="@drawable/personpage_tab_selector"
             android:textSize="15sp" />
     </LinearLayout>

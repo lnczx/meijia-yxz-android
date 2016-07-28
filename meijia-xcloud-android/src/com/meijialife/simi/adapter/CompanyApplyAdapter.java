@@ -84,7 +84,7 @@ public class CompanyApplyAdapter extends BaseAdapter {
 
 		
         holder.m_tv_company_name.setText(companyApply.getCompany_name());
-        holder.m_tv_apply_name.setText("提供者:"+companyApply.getName());
+        holder.m_tv_apply_name.setText("申请人："+companyApply.getName());
         final short status = companyApply.getStatus();
 
         if(status==0){//0==申请，1==同意，2==拒绝

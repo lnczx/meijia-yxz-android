@@ -86,7 +86,7 @@ public class FriendApplyActivity extends BaseActivity implements ListItemClickHe
     private void initView() {
 
         requestBackBtn();
-        setTitleName("成员申请");
+        setTitleName("申请列表");
         flag = getIntent().getBooleanExtra("flag",true);
 
         totalApplyList = new ArrayList<FriendApplyData>();
