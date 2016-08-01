@@ -1,19 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -77,6 +63,20 @@ import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
 
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
     // 整个平台的Controller, 负责管理整个SDK的配置、操作等处理
@@ -116,6 +116,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      */
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
+
+    public static LoginListener sLoginListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,11 +286,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         String sms_token = et_pwd.getText().toString().trim();
 
         if (StringUtils.isEmpty(mobile)) {
-            Toast.makeText(this, "手机号不能为空", 0).show();
+            Toast.makeText(this, "手机号不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         if (StringUtils.isEmpty(sms_token)) {
-            Toast.makeText(this, "验证码不能为空", 0).show();
+            Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -538,7 +540,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                             login_getcode.setFocusable(false);
                             login_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_login_getcode_over));
 
-                            Toast.makeText(getApplicationContext(), "验证码获取成功", 0).show();
+                            Toast.makeText(getApplicationContext(), "验证码获取成功", Toast.LENGTH_SHORT).show();
 
                             new Thread() {
                                 int a = 60;
@@ -623,7 +625,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         }
 
         if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -776,19 +778,25 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         CommUser user = new CommUser();
         user.name = userInfo.getName();
         user.id = userInfo.getUser_id();
-        sdk.loginToUmengServer(this, user, new LoginListener() {
-            @Override
-            public void onStart() {
 
-            }
-            @Override
-            public void onComplete(int stCode, CommUser commUser) {
-                if (ErrorCode.NO_ERROR==stCode) {
-                    //在此处可以跳转到任何一个你想要的activity
-                }
+        if (sLoginListener != null) {
+            sLoginListener.onComplete(ErrorCode.SUCCESS, user);
+        }
 
-           }
-        });
+
+//        sdk.loginToUmengServer(this, user, new LoginListener() {
+//            @Override
+//            public void onStart() {
+//
+//            }
+//            @Override
+//            public void onComplete(int stCode, CommUser commUser) {
+//                if (ErrorCode.NO_ERROR==stCode) {
+//                    //在此处可以跳转到任何一个你想要的activity
+//                }
+//
+//           }
+//        });
     }
 
 
@@ -941,7 +949,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         String user_id = DBHelper.getUser(LoginActivity.this).getId();
 
         if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -1011,7 +1019,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     /**
      * 绑定接口
      * 
-     * @param date
      */
     private void bind_user(String user_id, String client_id) {
         Map<String, String> map = new HashMap<String, String>();
@@ -1067,8 +1074,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     
     /**
      * 获取当前地理位置
-     * @param useid
-     * @param clientid
      */
     private void post_trail(BDLocation location) {
         String user_id = DBHelper.getUser(LoginActivity.this).getId();

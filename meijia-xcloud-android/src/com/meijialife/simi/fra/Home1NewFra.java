@@ -1,18 +1,5 @@
 package com.meijialife.simi.fra;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -68,15 +55,30 @@ import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.SignPopWindow;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SimpleLoginImpl;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.comm.core.CommunitySDK;
 import com.umeng.comm.core.impl.CommunityFactory;
+import com.umeng.comm.core.sdkmanager.LoginSDKManager;
 import com.umeng.community.share.UMShareServiceFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.zbar.lib.CaptureActivity;
+
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 首页
@@ -645,6 +647,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         });
     }
 
+    protected void useCustomLogin() {
+        LoginSDKManager.getInstance().addAndUse(new SimpleLoginImpl());
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -682,6 +688,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                     .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
             UMShareServiceFactory.getSocialService().getConfig()
                     .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+            useCustomLogin();
             break;
         case R.id.m_homes1://互助问答
             startActivity(new Intent(getActivity(), FeedListActivity.class));
@@ -798,7 +805,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      */
     private void postSign() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.net_not_open),Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(getActivity());

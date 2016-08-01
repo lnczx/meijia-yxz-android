@@ -364,7 +364,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         mCalendarMonth.setText(CalendarUtils.getCurrentMonth()+"月");
         mCalendarWeek.setText(CalendarUtils.getWeeks());
 
-        
+
         mHeader = (LinearLayout) findViewById(R.id.header);
         mSelectionText = (TextView) findViewById(R.id.selection_title);
 
@@ -482,12 +482,12 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
             
             mPrev.setEnabled(mManager.hasPrev());
             mNext.setEnabled(mManager.hasNext());
-            
+
             try {//add by andye ,2015.12.26
            /*     String titleDay=mManager.getHeaderText();
                 String monthString=titleDay.replaceAll("年", ".").replaceAll("月", "");
                 mTitleView.setText(monthString);*/
-                mCalendarWeek.setText(mManager.getWeekOfMonth());            
+                mCalendarWeek.setText(mManager.getWeekOfMonth());
             } catch (Exception e) {
                 mTitleView.setText("");
                 e.printStackTrace();
