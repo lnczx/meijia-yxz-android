@@ -1,18 +1,5 @@
 package com.meijialife.simi.fra;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.joda.time.LocalDate;
-import org.json.JSONObject;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -73,13 +60,30 @@ import com.meijialife.simi.utils.UIUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.zbar.lib.CaptureActivity;
 
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.joda.time.LocalDate;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import cn.aigestudio.datepicker.cons.DPMode;
+import cn.aigestudio.datepicker.views.DatePicker;
+
 /**
- * 首页
+ * 日程
  * 
  * @author RUI
  * 
  */
-public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpdateListener {
+public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
     public String today_date;
     private CollapseCalendarView calendarView;// 日历View
@@ -146,17 +150,17 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         } else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
-        v.findViewById(R.id.btn_chakan).setOnClickListener(this);
-        v.findViewById(R.id.ibtn_person).setOnClickListener(this);
-        v.findViewById(R.id.btn_rili).setOnClickListener(this);
-        v.findViewById(R.id.btn_saoma).setOnClickListener(this);
-        v.findViewById(R.id.btn_alarm).setOnClickListener(this);
-        v.findViewById(R.id.user_plus).setOnClickListener(this);
+        //@// TODO: 2016/8/8 andye
+//        v.findViewById(R.id.btn_chakan).setOnClickListener(this);
+//        v.findViewById(R.id.ibtn_person).setOnClickListener(this);
+//        v.findViewById(R.id.btn_rili).setOnClickListener(this);
+//        v.findViewById(R.id.btn_saoma).setOnClickListener(this);
+//        v.findViewById(R.id.btn_alarm).setOnClickListener(this);
+//        v.findViewById(R.id.user_plus).setOnClickListener(this);
+//        tv_service_type_ids = (TextView) v.findViewById(R.id.tv_service_type_ids);
 
-        finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
 
-        tv_service_type_ids = (TextView) v.findViewById(R.id.tv_service_type_ids);
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
         is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
@@ -172,27 +176,42 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
      * @param v
      */
     private void initCalendar(View v) {
-        today_date = LocalDate.now().toString();
-        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
-                .plusYears(1));
-        calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
-        calendarView.init(calendarManager, getActivity(), this);
+//        today_date = LocalDate.now().toString();
+//        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
+//                .plusYears(1));
+//        calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
+//        calendarView.init(calendarManager, getActivity(), this);
+//
+//        calendarView.setListener(new OnDateSelect() {
+//            @Override
+//            public void onDateSelected(LocalDate date) {
+//                today_date = date.toString();
+//                // getAdListByChannelId("0");
+//                if (findBeanList != null && findBeanList.size() > 0) {
+//                    ad_flag = true;
+//                }
+//                userMsgs.clear();
+//                totalUserMsgList.clear();
+//                // getCardListData(today_date, card_from);
+//                getUserMsgListData(today_date, page);
+//                // 如果广告和卡片有一个有值，则不显示
+//            }
+//
+//        });
 
-        calendarView.setListener(new OnDateSelect() {
+
+        DatePicker picker = (DatePicker) v.findViewById(R.id.main_dp);
+        picker.setDate(2016, 8);
+        picker.setFestivalDisplay(true);
+        picker.setTodayDisplay(true);
+        picker.setHolidayDisplay(true);
+        picker.setDeferredDisplay(true);
+        picker.setMode(DPMode.SINGLE);
+        picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
-            public void onDateSelected(LocalDate date) {
-                today_date = date.toString();
-                // getAdListByChannelId("0");
-                if (findBeanList != null && findBeanList.size() > 0) {
-                    ad_flag = true;
-                }
-                userMsgs.clear();
-                totalUserMsgList.clear();
-                // getCardListData(today_date, card_from);
-                getUserMsgListData(today_date, page);
-                // 如果广告和卡片有一个有值，则不显示
+            public void onDatePicked(String date) {
+                Toast.makeText(getActivity(), date, Toast.LENGTH_LONG).show();
             }
-
         });
 
     }
@@ -338,7 +357,8 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
 
         user = DBHelper.getUser(getActivity());
         if (user != null) {
-            getUserMsgListData(today_date, page);
+            //// TODO: 2016/8/8  andye 注释掉了
+//            getUserMsgListData(today_date, page);
         } /*else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }*/
@@ -474,7 +494,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
      * 获得用户消息列表接口
      * 
      * @param date
-     * @param card_from
      */
     public void getUserMsgListData(String date, int page) {
 
@@ -550,10 +569,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     /**
      * 按月份查看卡片日期分布接口（更新日历圆点标签）
      * 
-     * @param year
-     *            年份，格式为 YYYY
-     * @param month
-     *            月份，格式为 MM
      */
     public void getTotalByMonth() {
 
@@ -889,11 +904,11 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
         });
     }
 
-    @Override
-    public void onCardUpdate() {
-        // getCardListData(today_date, card_from);
-        // 如果广告和卡片有一个有值，则不显示
-    }
+//    @Override
+//    public void onCardUpdate() {
+//        // getCardListData(today_date, card_from);
+//        // 如果广告和卡片有一个有值，则不显示
+//    }
 
     /**
      * 获取用户详情
@@ -973,7 +988,6 @@ public class Home1Fra extends BaseFragment implements OnClickListener, onCardUpd
     /**
      * 处理数据加载的方法
      * 
-     * @param list
      */
     private void showData(List<UserMsg> userMsgs) {
         if (userMsgs != null && userMsgs.size() > 0) {

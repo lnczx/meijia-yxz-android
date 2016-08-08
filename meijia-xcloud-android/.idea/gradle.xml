@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/.." />
+            <option value="$PROJECT_DIR$/../DatePicker" />
             <option value="$PROJECT_DIR$/../base_library_pullToRefresh_chenyoca" />
             <option value="$PROJECT_DIR$/../meijia-lib-easeui" />
             <option value="$PROJECT_DIR$" />

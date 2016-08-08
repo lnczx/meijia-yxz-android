@@ -6,17 +6,28 @@
     android:gravity="center" 
     >
 
-    <com.meijialife.simi.ui.CollapseCalendarView
+
+    <cn.aigestudio.datepicker.views.DatePicker
+        android:id="@+id/main_dp"
+        android:layout_width="match_parent"
+        android:focusable="false"
+        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content" />
+
+ <!--   <com.meijialife.simi.ui.CollapseCalendarView
         android:id="@+id/layout_calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </com.meijialife.simi.ui.CollapseCalendarView>
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+    </com.meijialife.simi.ui.CollapseCalendarView>-->
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/layout_calendar"
+        android:layout_below="@id/main_dp"
         android:background="@color/activity_bg_color"
+        android:visibility="gone"
         android:orientation="vertical" >
         
         <ImageView

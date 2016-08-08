@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.meijialife.simi.R;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.fra.Home1Fra;
+import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.ui.calendar.Day;
 import com.meijialife.simi.ui.calendar.DayView;
@@ -59,7 +59,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     @Nullable
     private CalendarManager mManager;
     private Context mContext;
-    private Home1Fra mHome;
+    private ScheduleFra mHome;
 
     @NonNull
     private TextView mTitleView;
@@ -118,7 +118,7 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
         setOrientation(VERTICAL);
     }
 
-    public void init(@NonNull CalendarManager manager ,Context context, Home1Fra home) {
+    public void init(@NonNull CalendarManager manager ,Context context, ScheduleFra home) {
         if (manager != null) {
 
             mManager = manager;

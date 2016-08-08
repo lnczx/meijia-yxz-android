@@ -1,18 +1,5 @@
 package com.meijialife.simi;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
@@ -43,8 +30,6 @@ import com.easemob.chat.EMConversation;
 import com.easemob.chat.EMConversation.EMConversationType;
 import com.easemob.chat.EMMessage;
 import com.easemob.util.EMLog;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.activity.AddressActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.LoginActivity;
@@ -60,10 +45,9 @@ import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
-import com.meijialife.simi.bean.UserMsg;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Find2Fra;
-import com.meijialife.simi.fra.Home1Fra;
+import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.fra.Home1NewFra;
 import com.meijialife.simi.fra.Home3Fra;
 import com.meijialife.simi.fra.PersonalFragment;
@@ -71,10 +55,7 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
-import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
-import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.ui.ConversationListFragment;
@@ -88,7 +69,12 @@ import com.umeng.comm.core.login.LoginListener;
 import com.umeng.comm.core.utils.CommonUtils;
 import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
-import org.json.JSONObject;
+import net.tsz.afinal.FinalBitmap;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * fragment 的切换类
@@ -340,10 +326,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             case R.id.tab_bt_2: // 发现
                 changeFind();
                 break;
-            case R.id.tab_bt_3: // 圈子
+            case R.id.tab_bt_3: // 日程
                 if (user != null) {
                     currentTabIndex = 3;
-                    change2Home1();
+                    change2ScheduleFra();
                 } else {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
@@ -487,12 +473,12 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         SlideMenu.isUse = false;
     }
 
-    public void change2Home1() {
+    public void change2ScheduleFra() {
         if (!slideMenu.isMainScreenShowing()) {
             return;
         }
         view_title_bar.setVisibility(View.GONE);
-        change(new Home1Fra());
+        change(new ScheduleFra());
         setSelected(mBt3);
         updateTitle(3);
         SlideMenu.isUse = false;
