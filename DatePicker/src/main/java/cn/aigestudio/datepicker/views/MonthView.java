@@ -125,6 +125,7 @@ public class MonthView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        getParent().requestDisallowInterceptTouchEvent(true);
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mScroller.forceFinished(true);

@@ -34,7 +34,6 @@ import com.meijialife.simi.activity.MainPlusAffairActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.adapter.ListAdapter;
-import com.meijialife.simi.adapter.ListAdapter.onCardUpdateListener;
 import com.meijialife.simi.adapter.UserMsgListAdapter;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.CalendarMark;
@@ -46,7 +45,6 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.UserMsg;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CollapseCalendarView;
-import com.meijialife.simi.ui.CollapseCalendarView.OnDateSelect;
 import com.meijialife.simi.ui.ImageCycleView;
 import com.meijialife.simi.ui.ImageCycleView.ImageCycleViewListener;
 import com.meijialife.simi.ui.RouteUtil;
@@ -70,7 +68,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -133,7 +130,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.index_1, null);
+        v = inflater.inflate(R.layout.fra_schedule_layout, null);
         init(v);
         initCalendar(v);
         initUserMsgView(v);
@@ -176,7 +173,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * @param v
      */
     private void initCalendar(View v) {
-//        today_date = LocalDate.now().toString();
+        today_date = LocalDate.now().toString();
+
 //        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
 //                .plusYears(1));
 //        calendarView = (CollapseCalendarView) v.findViewById(R.id.layout_calendar);
@@ -210,7 +208,17 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
-                Toast.makeText(getActivity(), date, Toast.LENGTH_LONG).show();
+
+                today_date = date.toString();
+                // getAdListByChannelId("0");
+                if (findBeanList != null && findBeanList.size() > 0) {
+                    ad_flag = true;
+                }
+                userMsgs.clear();
+                totalUserMsgList.clear();
+                // getCardListData(today_date, card_from);
+                getUserMsgListData(today_date, page);
+                // 如果广告和卡片有一个有值，则不显示
             }
         });
 
@@ -259,33 +267,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
     };
 
-    @SuppressWarnings("static-access")
-    private void initListView(View v) {
 
-        // listview = (ListView) v.findViewById(R.id.listview);
-        tv_tips = (TextView) v.findViewById(R.id.tv_tips);
-        iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
-        // 广告位轮播的另一种方式
-        /*
-         * RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null); listview.addHeaderView(ll); mAdView =
-         * (ImageCycleView)ll.findViewById(R.id.ad_view);
-         */
-
-        // getAdListByChannelId("0");//首页广告位显示
-
-        /*
-         * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
-         */
-
-        /*
-         * adapter = new ListAdapter(getActivity(), this); listview.setAdapter(adapter); listview.setOnItemClickListener(new OnItemClickListener() {
-         * 
-         * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) { int p = position-1;
-         * if(!cardlist.get(p).getCard_type().equals("99")){ Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-         * intent.putExtra("card_id", cardlist.get(p).getCard_id()); intent.putExtra("Cards", cardlist.get(p));
-         * intent.putExtra("card_extra",cardExtrasList.get(p)); startActivity(intent); } } });
-         */
-    }
 
     private void initUserMsgView(View v) {
         totalUserMsgList = new ArrayList<UserMsg>();
@@ -357,9 +339,10 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
         user = DBHelper.getUser(getActivity());
         if (user != null) {
-            //// TODO: 2016/8/8  andye 注释掉了
-//            getUserMsgListData(today_date, page);
-        } /*else {
+            getUserMsgListData(today_date, page);
+        }
+
+         /*else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }*/
         // mAdView.startImageCycle();//广告轮播
@@ -395,104 +378,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     }
 
     /**
-     * 暂时不用 获取卡片数据
-     * 
-     * @param date
-     * @param card_from
-     *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
-     */
-    public void getCardListData(String date, int card_from) {
-
-        String user_id = DBHelper.getUser(getActivity()).getId();
-
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-            return;
-        }
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("service_date", date);
-        map.put("user_id", user_id + "");
-        map.put("card_from", "" + card_from);
-        // map.put("lat", latitude);
-        // map.put("lng", longitude);
-        map.put("page", "1");
-        AjaxParams param = new AjaxParams(map);
-
-        // showDialog();
-        new FinalHttp().get(Constants.URL_GET_CARD_LIST, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                // dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                // dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data").trim();
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data.trim())) {
-                                Gson gson = new Gson();
-                                cardlist = new ArrayList<Cards>();
-                                cardExtrasList = new ArrayList<CardExtra>();
-                                cardlist = gson.fromJson(data, new TypeToken<ArrayList<Cards>>() {
-                                }.getType());
-                                for (int i = 0; i < cardlist.size(); i++) {
-                                    Cards cards2 = cardlist.get(i);
-                                    CardExtra cardExtra = new CardExtra();
-                                    cardExtra = gson.fromJson(cards2.getCard_extra(), CardExtra.class);
-                                    cardExtrasList.add(cardExtra);
-                                }
-                                /*
-                                 * JsonArray array = new JsonParser().parse(data).getAsJsonArray(); for (final JsonElement elem : array) {
-                                 * cardlist.add(new Gson().fromJson(elem, Cards.class)); }
-                                 */
-                                adapter.setData(cardlist, cardExtrasList);
-                                isShowDefaultCard(true, ad_flag);
-                            } else {
-                                adapter.setData(new ArrayList<Cards>(), new ArrayList<CardExtra>());
-                                isShowDefaultCard(false, ad_flag);
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (isAdded()) {
-                        errorMsg = getString(R.string.servers_error);
-                    }
-
-                }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
-
-    }
-
-    /**
      * 获得用户消息列表接口
-     * 
+     *
      * @param date
      */
     public void getUserMsgListData(String date, int page) {
@@ -565,10 +452,150 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         });
 
     }
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch (v.getId()) {
+            case R.id.btn_chakan: // 查看
+                if (card_from == 0) {
+                    card_from = 1;
+                } else {
+                    card_from = 0;
+                }
+                // getCardListData(today_date, card_from);
+                getUserMsgListData(today_date, page);
+                break;
+            case R.id.ibtn_person: // 侧边栏
+                MainActivity.slideMenu();
+                break;
+            case R.id.btn_rili: // 日历展开/收起
+                LocalDate selectedDay = calendarManager.getSelectedDay();
+                if (calendarManager.getState() == CalendarManager.State.MONTH) {
+                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
+                            .plusYears(1));
+                } else {
+                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
+                            .plusYears(1));
+                }
+                calendarView.init(calendarManager, getActivity(), this);
+                break;
+            case R.id.btn_saoma:
+                intent = new Intent();
+                intent.setClass(getActivity(), CaptureActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
+                break;
+            case R.id.btn_alarm://常用提醒
+                intent = new Intent();
+                intent.setClass(getActivity(), AlarmListActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.user_plus://快速事务提醒
+                intent = new Intent();
+                intent.setClass(getActivity(), MainPlusAffairActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 处理数据加载的方法
+     *
+     */
+    private void showData(List<UserMsg> userMsgs) {
+        if (userMsgs != null && userMsgs.size() > 0) {
+            if (page == 1) {
+                totalUserMsgList.clear();
+            }
+            for (UserMsg userMsg : userMsgs) {
+                totalUserMsgList.add(userMsg);
+            }
+            // 给适配器赋值
+            // userMsgAdapter.setData(totalUserMsgList);
+        }
+        userMsgAdapter.setData(totalUserMsgList);
+        mPullRefreshListView.onRefreshComplete();
+    }
+
+    private AppHelpData appHelpData;
+
+    /*
+     * 帮助接口
+     */
+
+    private void getAppHelp() {
+
+        if (user != null) {
+
+            if (!NetworkUtils.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                return;
+            }
+            final String action = "index";
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("action", "index");
+            map.put("user_id", user.getId());
+            AjaxParams param = new AjaxParams(map);
+            showDialog();
+            new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    dismissDialog();
+                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    dismissDialog();
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    appHelpData = gson.fromJson(data, AppHelpData.class);
+                                    TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
+                                    addPopWindow.showPopupWindow(v);
+                                }
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
+                            } else {
+                                errorMsg = getString(R.string.servers_error);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        errorMsg = getString(R.string.servers_error);
+                    }
+                    // 操作失败，显示错误信息
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(getActivity(), errorMsg);
+                    }
+                }
+            });
+        } else {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+    }
+
 
     /**
      * 按月份查看卡片日期分布接口（更新日历圆点标签）
-     * 
+     *
      */
     public void getTotalByMonth() {
 
@@ -663,11 +690,140 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
     }
 
+
+    /**
+     * 暂时不用 获取卡片数据
+     * 
+     * @param date
+     * @param card_from
+     *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
+     */
+    @Deprecated
+    public void getCardListData(String date, int card_from) {
+
+        String user_id = DBHelper.getUser(getActivity()).getId();
+
+        if (!NetworkUtils.isNetworkConnected(getActivity())) {
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("service_date", date);
+        map.put("user_id", user_id + "");
+        map.put("card_from", "" + card_from);
+        // map.put("lat", latitude);
+        // map.put("lng", longitude);
+        map.put("page", "1");
+        AjaxParams param = new AjaxParams(map);
+
+        // showDialog();
+        new FinalHttp().get(Constants.URL_GET_CARD_LIST, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                // dismissDialog();
+                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                // dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data").trim();
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data.trim())) {
+                                Gson gson = new Gson();
+                                cardlist = new ArrayList<Cards>();
+                                cardExtrasList = new ArrayList<CardExtra>();
+                                cardlist = gson.fromJson(data, new TypeToken<ArrayList<Cards>>() {
+                                }.getType());
+                                for (int i = 0; i < cardlist.size(); i++) {
+                                    Cards cards2 = cardlist.get(i);
+                                    CardExtra cardExtra = new CardExtra();
+                                    cardExtra = gson.fromJson(cards2.getCard_extra(), CardExtra.class);
+                                    cardExtrasList.add(cardExtra);
+                                }
+                                /*
+                                 * JsonArray array = new JsonParser().parse(data).getAsJsonArray(); for (final JsonElement elem : array) {
+                                 * cardlist.add(new Gson().fromJson(elem, Cards.class)); }
+                                 */
+                                adapter.setData(cardlist, cardExtrasList);
+                                isShowDefaultCard(true, ad_flag);
+                            } else {
+                                adapter.setData(new ArrayList<Cards>(), new ArrayList<CardExtra>());
+                                isShowDefaultCard(false, ad_flag);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (isAdded()) {
+                        errorMsg = getString(R.string.servers_error);
+                    }
+
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(getActivity(), errorMsg);
+                }
+            }
+        });
+
+    }
+
+    @SuppressWarnings("static-access")
+    @Deprecated
+    private void initListView(View v) {
+
+        // listview = (ListView) v.findViewById(R.id.listview);
+        tv_tips = (TextView) v.findViewById(R.id.tv_tips);
+        iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
+        // 广告位轮播的另一种方式
+        /*
+         * RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null); listview.addHeaderView(ll); mAdView =
+         * (ImageCycleView)ll.findViewById(R.id.ad_view);
+         */
+
+        // getAdListByChannelId("0");//首页广告位显示
+
+        /*
+         * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
+         */
+
+        /*
+         * adapter = new ListAdapter(getActivity(), this); listview.setAdapter(adapter); listview.setOnItemClickListener(new OnItemClickListener() {
+         *
+         * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) { int p = position-1;
+         * if(!cardlist.get(p).getCard_type().equals("99")){ Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
+         * intent.putExtra("card_id", cardlist.get(p).getCard_id()); intent.putExtra("Cards", cardlist.get(p));
+         * intent.putExtra("card_extra",cardExtrasList.get(p)); startActivity(intent); } } });
+         */
+    }
+
+
     /**
      * 根据渠道获取广告位
      * 
      * @param channel_id
      */
+    @Deprecated
     public void getAdListByChannelId(String channel_id) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
@@ -732,53 +888,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        Intent intent;
-        switch (v.getId()) {
-        case R.id.btn_chakan: // 查看
-            if (card_from == 0) {
-                card_from = 1;
-            } else {
-                card_from = 0;
-            }
-            // getCardListData(today_date, card_from);
-            getUserMsgListData(today_date, page);
-            break;
-        case R.id.ibtn_person: // 侧边栏
-            MainActivity.slideMenu();
-            break;
-        case R.id.btn_rili: // 日历展开/收起
-            LocalDate selectedDay = calendarManager.getSelectedDay();
-            if (calendarManager.getState() == CalendarManager.State.MONTH) {
-                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
-                        .plusYears(1));
-            } else {
-                calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
-                        .plusYears(1));
-            }
-            calendarView.init(calendarManager, getActivity(), this);
-            break;
-        case R.id.btn_saoma:
-            intent = new Intent();
-            intent.setClass(getActivity(), CaptureActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
-            break;
-        case R.id.btn_alarm://常用提醒
-            intent = new Intent();
-            intent.setClass(getActivity(), AlarmListActivity.class);
-            startActivity(intent);
-            break;
-        case R.id.user_plus://快速事务提醒
-            intent = new Intent();
-            intent.setClass(getActivity(), MainPlusAffairActivity.class);
-            startActivity(intent);
-            break;
-        default:
-            break;
-        }
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -913,6 +1023,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     /**
      * 获取用户详情
      */
+    @Deprecated
     private void getUserInfo() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
@@ -984,97 +1095,4 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         totalUserMsgList = null;
         // mAdView.pushImageCycle();
     }
-
-    /**
-     * 处理数据加载的方法
-     * 
-     */
-    private void showData(List<UserMsg> userMsgs) {
-        if (userMsgs != null && userMsgs.size() > 0) {
-            if (page == 1) {
-                totalUserMsgList.clear();
-            }
-            for (UserMsg userMsg : userMsgs) {
-                totalUserMsgList.add(userMsg);
-            }
-            // 给适配器赋值
-            // userMsgAdapter.setData(totalUserMsgList);
-        }
-        userMsgAdapter.setData(totalUserMsgList);
-        mPullRefreshListView.onRefreshComplete();
-    }
-
-    private AppHelpData appHelpData;
-
-    /*
-     * 帮助接口
-     */
-
-    private void getAppHelp() {
-
-        if (user != null) {
-
-            if (!NetworkUtils.isNetworkConnected(getActivity())) {
-                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-                return;
-            }
-            final String action = "index";
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("action", "index");
-            map.put("user_id", user.getId());
-            AjaxParams param = new AjaxParams(map);
-            showDialog();
-            new FinalHttp().get(Constants.URL_GET_APP_HELP_DATA, param, new AjaxCallBack<Object>() {
-                @Override
-                public void onFailure(Throwable t, int errorNo, String strMsg) {
-                    super.onFailure(t, errorNo, strMsg);
-                    dismissDialog();
-                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onSuccess(Object t) {
-                    super.onSuccess(t);
-                    String errorMsg = "";
-                    dismissDialog();
-                    try {
-                        if (StringUtils.isNotEmpty(t.toString())) {
-                            JSONObject obj = new JSONObject(t.toString());
-                            int status = obj.getInt("status");
-                            String msg = obj.getString("msg");
-                            String data = obj.getString("data");
-                            if (status == Constants.STATUS_SUCCESS) { // 正确
-                                if (StringUtils.isNotEmpty(data)) {
-                                    Gson gson = new Gson();
-                                    appHelpData = gson.fromJson(data, AppHelpData.class);
-                                    TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
-                                    addPopWindow.showPopupWindow(v);
-                                }
-                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                                errorMsg = getString(R.string.servers_error);
-                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                                errorMsg = getString(R.string.param_missing);
-                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                                errorMsg = getString(R.string.param_illegal);
-                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                                errorMsg = msg;
-                            } else {
-                                errorMsg = getString(R.string.servers_error);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        errorMsg = getString(R.string.servers_error);
-                    }
-                    // 操作失败，显示错误信息
-                    if (!StringUtils.isEmpty(errorMsg.trim())) {
-                        UIUtils.showToast(getActivity(), errorMsg);
-                    }
-                }
-            });
-        } else {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-        }
-    }
-
 }
