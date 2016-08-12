@@ -6,8 +6,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="denug" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5fc1778-f421-41a8-a1f5-a9829f96771e" name="Default" comment="" />
@@ -38,148 +38,71 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ScheduleFra.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ScheduleFra.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.7027028">
-              <caret line="148" column="9" selection-start-line="148" selection-start-column="9" selection-end-line="148" selection-end-column="9" />
+            <state vertical-scroll-proportion="5.7972975">
+              <caret line="1127" column="32" selection-start-line="1127" selection-start-column="32" selection-end-line="1127" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7499#8080#0" expanded="true" />
-                <element signature="e#8079#8080#0" expanded="true" />
-                <element signature="e#8125#8126#0" expanded="true" />
-                <element signature="e#8180#8181#0" expanded="true" />
+                <element signature="e#7687#8172#0" expanded="true" />
+                <element signature="e#8171#8172#0" expanded="true" />
                 <element signature="e#8217#8218#0" expanded="true" />
-                <element signature="e#8269#8270#0" expanded="true" />
-                <element signature="e#14315#14347#0" expanded="true" />
-                <element signature="e#14978#15013#0" expanded="true" />
-                <element signature="e#16392#16425#0" expanded="true" />
-                <element signature="e#16552#16585#0" expanded="true" />
-                <element signature="e#16713#16746#0" expanded="true" />
-                <element signature="e#16952#16985#0" expanded="true" />
-                <element signature="e#17188#17221#0" expanded="true" />
-                <element signature="e#20296#20328#0" expanded="true" />
-                <element signature="e#21007#21042#0" expanded="true" />
-                <element signature="e#22295#22328#0" expanded="true" />
-                <element signature="e#22463#22496#0" expanded="true" />
-                <element signature="e#22632#22665#0" expanded="true" />
-                <element signature="e#22887#22920#0" expanded="true" />
-                <element signature="e#23102#23135#0" expanded="true" />
-                <element signature="e#24107#24139#0" expanded="true" />
-                <element signature="e#24787#24822#0" expanded="true" />
-                <element signature="e#26485#26518#0" expanded="true" />
-                <element signature="e#26653#26686#0" expanded="true" />
-                <element signature="e#26822#26855#0" expanded="true" />
-                <element signature="e#27077#27110#0" expanded="true" />
-                <element signature="e#27337#27370#0" expanded="true" />
-                <element signature="e#28143#28175#0" expanded="true" />
-                <element signature="e#28917#28952#0" expanded="true" />
-                <element signature="e#31233#31266#0" expanded="true" />
-                <element signature="e#31393#31426#0" expanded="true" />
-                <element signature="e#31554#31587#0" expanded="true" />
-                <element signature="e#31793#31826#0" expanded="true" />
-                <element signature="e#32029#32062#0" expanded="true" />
-                <element signature="e#33935#33967#0" expanded="true" />
-                <element signature="e#34517#34552#0" expanded="true" />
-                <element signature="e#35883#35916#0" expanded="true" />
-                <element signature="e#36043#36076#0" expanded="true" />
-                <element signature="e#36204#36237#0" expanded="true" />
-                <element signature="e#36443#36476#0" expanded="true" />
-                <element signature="e#36679#36712#0" expanded="true" />
-                <element signature="e#40701#40733#0" expanded="true" />
-                <element signature="e#41327#41362#0" expanded="true" />
-                <element signature="e#42380#42413#0" expanded="true" />
-                <element signature="e#42540#42573#0" expanded="true" />
-                <element signature="e#42701#42734#0" expanded="true" />
-                <element signature="e#42940#42973#0" expanded="true" />
-                <element signature="e#43135#43168#0" expanded="true" />
-                <element signature="e#43724#43756#0" expanded="true" />
-                <element signature="e#44310#44345#0" expanded="true" />
-                <element signature="e#45533#45566#0" expanded="true" />
-                <element signature="e#45693#45726#0" expanded="true" />
-                <element signature="e#45854#45887#0" expanded="true" />
-                <element signature="e#46093#46126#0" expanded="true" />
-                <element signature="e#46350#46383#0" expanded="true" />
+                <element signature="e#8272#8273#0" expanded="true" />
+                <element signature="e#8309#8310#0" expanded="true" />
+                <element signature="e#8361#8362#0" expanded="true" />
+                <element signature="e#14502#14534#0" expanded="true" />
+                <element signature="e#15155#15190#0" expanded="true" />
+                <element signature="e#16569#16602#0" expanded="true" />
+                <element signature="e#16729#16762#0" expanded="true" />
+                <element signature="e#16890#16923#0" expanded="true" />
+                <element signature="e#17129#17162#0" expanded="true" />
+                <element signature="e#17365#17398#0" expanded="true" />
+                <element signature="e#20421#20453#0" expanded="true" />
+                <element signature="e#20586#20602#0" expanded="true" />
+                <element signature="e#21122#21157#0" expanded="true" />
+                <element signature="e#22410#22443#0" expanded="true" />
+                <element signature="e#22578#22611#0" expanded="true" />
+                <element signature="e#22747#22780#0" expanded="true" />
+                <element signature="e#23002#23035#0" expanded="true" />
+                <element signature="e#23217#23250#0" expanded="true" />
+                <element signature="e#24212#24244#0" expanded="true" />
+                <element signature="e#24335#24351#0" expanded="true" />
+                <element signature="e#24888#24923#0" expanded="true" />
+                <element signature="e#26777#26810#0" expanded="true" />
+                <element signature="e#26945#26978#0" expanded="true" />
+                <element signature="e#27114#27147#0" expanded="true" />
+                <element signature="e#27369#27402#0" expanded="true" />
+                <element signature="e#27629#27662#0" expanded="true" />
+                <element signature="e#28438#28470#0" expanded="true" />
+                <element signature="e#29202#29237#0" expanded="true" />
+                <element signature="e#31518#31551#0" expanded="true" />
+                <element signature="e#31678#31711#0" expanded="true" />
+                <element signature="e#31839#31872#0" expanded="true" />
+                <element signature="e#32078#32111#0" expanded="true" />
+                <element signature="e#32314#32347#0" expanded="true" />
+                <element signature="e#32847#32879#0" expanded="true" />
+                <element signature="e#33419#33454#0" expanded="true" />
+                <element signature="e#34785#34818#0" expanded="true" />
+                <element signature="e#34945#34978#0" expanded="true" />
+                <element signature="e#35106#35139#0" expanded="true" />
+                <element signature="e#35345#35378#0" expanded="true" />
+                <element signature="e#35581#35614#0" expanded="true" />
+                <element signature="e#39606#39638#0" expanded="true" />
+                <element signature="e#40222#40257#0" expanded="true" />
+                <element signature="e#41275#41308#0" expanded="true" />
+                <element signature="e#41435#41468#0" expanded="true" />
+                <element signature="e#41596#41629#0" expanded="true" />
+                <element signature="e#41835#41868#0" expanded="true" />
+                <element signature="e#42030#42063#0" expanded="true" />
+                <element signature="e#42622#42654#0" expanded="true" />
+                <element signature="e#43198#43233#0" expanded="true" />
+                <element signature="e#44421#44454#0" expanded="true" />
+                <element signature="e#44581#44614#0" expanded="true" />
+                <element signature="e#44742#44775#0" expanded="true" />
+                <element signature="e#44981#45014#0" expanded="true" />
+                <element signature="e#45238#45271#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="calendar_layout.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/calendar_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.142858">
-              <caret line="140" column="9" selection-start-line="140" selection-start-column="9" selection-end-line="162" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TipPopWindow.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/TipPopWindow.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="52" column="11" selection-start-line="52" selection-start-column="11" selection-end-line="52" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fra_schedule_layout.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/res/layout/fra_schedule_layout.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.27480915">
-              <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index_2.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/layout/index_2.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="6.9428573">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DatePicker.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/DatePicker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MonthView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/MonthView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="814" column="0" selection-start-line="814" selection-start-column="0" selection-end-line="814" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollapseCalendarView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="406" column="38" selection-start-line="406" selection-start-column="38" selection-end-line="406" selection-end-column="38" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -5177,7 +5100,6 @@
         <option value="$PROJECT_DIR$/res/layout/richtext_img_layout.xml" />
         <option value="$PROJECT_DIR$/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/res/layout/day_layout.xml" />
-        <option value="$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java" />
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/utils/SimpleLoginImpl.java" />
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/Home1NewFra.java" />
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/activity/LoginActivity.java" />
@@ -5189,9 +5111,13 @@
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/Home1Fra.java" />
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/MainActivity.java" />
         <option value="$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/MonthView.java" />
-        <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" />
         <option value="$PROJECT_DIR$/res/layout/index_1.xml" />
         <option value="$PROJECT_DIR$/res/layout/fra_schedule_layout.xml" />
+        <option value="$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/CalendarManager.java" />
+        <option value="$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/DatePicker.java" />
+        <option value="$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java" />
+        <option value="$PROJECT_DIR$/src/com/meijialife/simi/utils/LogOut.java" />
+        <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" />
       </list>
     </option>
   </component>
@@ -5275,13 +5201,13 @@
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="E:/../software/sdk" />
     <property name="recentsLimit" value="5" />
-    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="YPPFONJNFMBMAQBA" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="d19b1c72" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="5" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="android.project.structure.last.selected" value="meijia-xcloud-android" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="DEBUGGABLE_DEVICE" value="letv-x600-YPPFONJNFMBMAQBA" />
+    <property name="DEBUGGABLE_DEVICE" value="xiaomi-mi_5-d19b1c72" />
     <property name="DEBUGGABLE_PROCESS" value="com.meijialife.simi" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/res/layout" />
@@ -5477,8 +5403,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="0" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -5487,23 +5413,23 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975295" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.060818713" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2643275" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47017545" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.61403507" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37777779" sideWeight="0.50321543" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34163702" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34152046" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30292398" sideWeight="0.49571276" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3859649" sideWeight="0.49571276" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973205" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20632368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24199288" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17148982" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29590642" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -5515,17 +5441,17 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32975295" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2643275" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.61403507" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37777779" sideWeight="0.50321543" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34163702" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34152046" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21811362" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17148982" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24199288" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29590642" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -5533,13 +5459,13 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977462" sideWeight="0.49785638" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.060818713" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47017545" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30292398" sideWeight="0.49571276" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3859649" sideWeight="0.49571276" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973205" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
@@ -5585,113 +5511,38 @@
           <properties />
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java</url>
+          <line>621</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java</url>
+          <line>637</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java</url>
+          <line>645</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="5" />
+      <option name="time" value="8" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="Remote">
+        <watch expression="user.getId()" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/Month.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/Formatter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/DefaultFormatter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/DayView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/Day.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/ChinaDate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/CalendarUnit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/AbstractViewHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.868421">
-          <caret line="57" column="17" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/week_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.6285715">
-          <caret line="6" column="35" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="39" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/day_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.8">
-          <caret line="41" column="69" selection-start-line="41" selection-start-column="69" selection-end-line="41" selection-end-column="69" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/PersonalFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="13" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/RangeUnit.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="68" column="18" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/CalendarManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.7837838">
-          <caret line="172" column="15" selection-start-line="172" selection-start-column="15" selection-end-line="172" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -5792,13 +5643,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3022388">
-          <caret line="87" column="57" selection-start-line="87" selection-start-column="57" selection-end-line="87" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/index_3.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.4651163">
@@ -5808,13 +5652,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/libs/joda-time-2.1.jar!/org/joda/time/LocalDate.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.473684">
-          <caret line="484" column="21" selection-start-line="484" selection-start-column="21" selection-end-line="484" selection-end-column="21" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/exception/CrashHandler.java">
@@ -5873,14 +5710,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="331" column="38" selection-start-line="331" selection-start-column="38" selection-end-line="331" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/find_list_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -5896,21 +5725,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79293543">
-          <caret line="296" column="91" selection-start-line="296" selection-start-column="91" selection-end-line="296" selection-end-column="91" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="406" column="38" selection-start-line="406" selection-start-column="38" selection-end-line="406" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -5934,21 +5748,157 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/index_2.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.1714287">
+          <caret line="14" column="43" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/fra_schedule_layout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.285715">
+          <caret line="93" column="36" selection-start-line="93" selection-start-column="36" selection-end-line="93" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/calendar/CalendarManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="41" column="59" selection-start-line="41" selection-start-column="39" selection-end-line="41" selection-end-column="59" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/bizs/languages/DPLManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3648648">
+          <caret line="47" column="39" selection-start-line="47" selection-start-column="29" selection-end-line="47" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/libs/joda-time-2.1.jar!/org/joda/time/LocalDate.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.868421">
+          <caret line="554" column="15" selection-start-line="554" selection-start-column="15" selection-end-line="554" selection-end-column="15" />
+          <folding>
+            <element signature="e#1920#1921#0" expanded="true" />
+            <element signature="e#1958#1959#0" expanded="true" />
+            <element signature="e#22751#22752#0" expanded="true" />
+            <element signature="e#22810#22811#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="445" column="31" selection-start-line="445" selection-start-column="31" selection-end-line="445" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/database/DBHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33289987">
+        <state vertical-scroll-proportion="0.0">
           <caret line="446" column="23" selection-start-line="446" selection-start-column="23" selection-end-line="446" selection-end-column="23" />
-          <folding>
-            <element signature="e#2024#2025#0" expanded="true" />
-            <element signature="e#2076#2077#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/utils/LogOut.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="48" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/cons/DPMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/bizs/decors/DPDecor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/entities/DPInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/utils/DataUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="19" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/utils/MeasureUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/DatePicker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
+          <caret line="26" column="13" selection-start-line="26" selection-start-column="13" selection-end-line="26" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/bizs/calendars/DPCNCalendar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="213" column="31" selection-start-line="213" selection-start-column="19" selection-end-line="213" selection-end-column="31" />
           <folding />
         </state>
       </provider>
@@ -5956,96 +5906,114 @@
     <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/views/MonthView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="814" column="0" selection-start-line="814" selection-start-column="0" selection-end-line="814" selection-end-column="0" />
+          <caret line="280" column="0" selection-start-line="280" selection-start-column="0" selection-end-line="280" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/index_2.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/ui/SlideMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="6.9428573">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="293" column="0" selection-start-line="293" selection-start-column="0" selection-end-line="293" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java">
+    <entry file="file://E:/AndroidSdk/sources/android-21/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7027028">
-          <caret line="148" column="9" selection-start-line="148" selection-start-column="9" selection-end-line="148" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.33252132">
+          <caret line="11636" column="16" selection-start-line="11636" selection-start-column="16" selection-end-line="11636" selection-end-column="16" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7499#8080#0" expanded="true" />
-            <element signature="e#8079#8080#0" expanded="true" />
-            <element signature="e#8125#8126#0" expanded="true" />
-            <element signature="e#8180#8181#0" expanded="true" />
-            <element signature="e#8217#8218#0" expanded="true" />
-            <element signature="e#8269#8270#0" expanded="true" />
-            <element signature="e#14315#14347#0" expanded="true" />
-            <element signature="e#14978#15013#0" expanded="true" />
-            <element signature="e#16392#16425#0" expanded="true" />
-            <element signature="e#16552#16585#0" expanded="true" />
-            <element signature="e#16713#16746#0" expanded="true" />
-            <element signature="e#16952#16985#0" expanded="true" />
-            <element signature="e#17188#17221#0" expanded="true" />
-            <element signature="e#20296#20328#0" expanded="true" />
-            <element signature="e#21007#21042#0" expanded="true" />
-            <element signature="e#22295#22328#0" expanded="true" />
-            <element signature="e#22463#22496#0" expanded="true" />
-            <element signature="e#22632#22665#0" expanded="true" />
-            <element signature="e#22887#22920#0" expanded="true" />
-            <element signature="e#23102#23135#0" expanded="true" />
-            <element signature="e#24107#24139#0" expanded="true" />
-            <element signature="e#24787#24822#0" expanded="true" />
-            <element signature="e#26485#26518#0" expanded="true" />
-            <element signature="e#26653#26686#0" expanded="true" />
-            <element signature="e#26822#26855#0" expanded="true" />
-            <element signature="e#27077#27110#0" expanded="true" />
-            <element signature="e#27337#27370#0" expanded="true" />
-            <element signature="e#28143#28175#0" expanded="true" />
-            <element signature="e#28917#28952#0" expanded="true" />
-            <element signature="e#31233#31266#0" expanded="true" />
-            <element signature="e#31393#31426#0" expanded="true" />
-            <element signature="e#31554#31587#0" expanded="true" />
-            <element signature="e#31793#31826#0" expanded="true" />
-            <element signature="e#32029#32062#0" expanded="true" />
-            <element signature="e#33935#33967#0" expanded="true" />
-            <element signature="e#34517#34552#0" expanded="true" />
-            <element signature="e#35883#35916#0" expanded="true" />
-            <element signature="e#36043#36076#0" expanded="true" />
-            <element signature="e#36204#36237#0" expanded="true" />
-            <element signature="e#36443#36476#0" expanded="true" />
-            <element signature="e#36679#36712#0" expanded="true" />
-            <element signature="e#40701#40733#0" expanded="true" />
-            <element signature="e#41327#41362#0" expanded="true" />
-            <element signature="e#42380#42413#0" expanded="true" />
-            <element signature="e#42540#42573#0" expanded="true" />
-            <element signature="e#42701#42734#0" expanded="true" />
-            <element signature="e#42940#42973#0" expanded="true" />
-            <element signature="e#43135#43168#0" expanded="true" />
-            <element signature="e#43724#43756#0" expanded="true" />
-            <element signature="e#44310#44345#0" expanded="true" />
-            <element signature="e#45533#45566#0" expanded="true" />
-            <element signature="e#45693#45726#0" expanded="true" />
-            <element signature="e#45854#45887#0" expanded="true" />
-            <element signature="e#46093#46126#0" expanded="true" />
-            <element signature="e#46350#46383#0" expanded="true" />
+            <element signature="e#453573#453574#0" expanded="true" />
+            <element signature="e#453605#453606#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/fra_schedule_layout.xml">
+    <entry file="file://$PROJECT_DIR$/../DatePicker/src/main/java/cn/aigestudio/datepicker/bizs/calendars/DPCManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.27480915">
-          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.33252132">
+          <caret line="108" column="16" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
+          <folding>
+            <element signature="e#2735#2736#0" expanded="true" />
+            <element signature="e#2781#2782#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33252132">
+          <caret line="532" column="23" selection-start-line="532" selection-start-column="23" selection-end-line="532" selection-end-column="23" />
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="5.7972975">
+          <caret line="1127" column="32" selection-start-line="1127" selection-start-column="32" selection-end-line="1127" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7687#8172#0" expanded="true" />
+            <element signature="e#8171#8172#0" expanded="true" />
+            <element signature="e#8217#8218#0" expanded="true" />
+            <element signature="e#8272#8273#0" expanded="true" />
+            <element signature="e#8309#8310#0" expanded="true" />
+            <element signature="e#8361#8362#0" expanded="true" />
+            <element signature="e#14502#14534#0" expanded="true" />
+            <element signature="e#15155#15190#0" expanded="true" />
+            <element signature="e#16569#16602#0" expanded="true" />
+            <element signature="e#16729#16762#0" expanded="true" />
+            <element signature="e#16890#16923#0" expanded="true" />
+            <element signature="e#17129#17162#0" expanded="true" />
+            <element signature="e#17365#17398#0" expanded="true" />
+            <element signature="e#20421#20453#0" expanded="true" />
+            <element signature="e#20586#20602#0" expanded="true" />
+            <element signature="e#21122#21157#0" expanded="true" />
+            <element signature="e#22410#22443#0" expanded="true" />
+            <element signature="e#22578#22611#0" expanded="true" />
+            <element signature="e#22747#22780#0" expanded="true" />
+            <element signature="e#23002#23035#0" expanded="true" />
+            <element signature="e#23217#23250#0" expanded="true" />
+            <element signature="e#24212#24244#0" expanded="true" />
+            <element signature="e#24335#24351#0" expanded="true" />
+            <element signature="e#24888#24923#0" expanded="true" />
+            <element signature="e#26777#26810#0" expanded="true" />
+            <element signature="e#26945#26978#0" expanded="true" />
+            <element signature="e#27114#27147#0" expanded="true" />
+            <element signature="e#27369#27402#0" expanded="true" />
+            <element signature="e#27629#27662#0" expanded="true" />
+            <element signature="e#28438#28470#0" expanded="true" />
+            <element signature="e#29202#29237#0" expanded="true" />
+            <element signature="e#31518#31551#0" expanded="true" />
+            <element signature="e#31678#31711#0" expanded="true" />
+            <element signature="e#31839#31872#0" expanded="true" />
+            <element signature="e#32078#32111#0" expanded="true" />
+            <element signature="e#32314#32347#0" expanded="true" />
+            <element signature="e#32847#32879#0" expanded="true" />
+            <element signature="e#33419#33454#0" expanded="true" />
+            <element signature="e#34785#34818#0" expanded="true" />
+            <element signature="e#34945#34978#0" expanded="true" />
+            <element signature="e#35106#35139#0" expanded="true" />
+            <element signature="e#35345#35378#0" expanded="true" />
+            <element signature="e#35581#35614#0" expanded="true" />
+            <element signature="e#39606#39638#0" expanded="true" />
+            <element signature="e#40222#40257#0" expanded="true" />
+            <element signature="e#41275#41308#0" expanded="true" />
+            <element signature="e#41435#41468#0" expanded="true" />
+            <element signature="e#41596#41629#0" expanded="true" />
+            <element signature="e#41835#41868#0" expanded="true" />
+            <element signature="e#42030#42063#0" expanded="true" />
+            <element signature="e#42622#42654#0" expanded="true" />
+            <element signature="e#43198#43233#0" expanded="true" />
+            <element signature="e#44421#44454#0" expanded="true" />
+            <element signature="e#44581#44614#0" expanded="true" />
+            <element signature="e#44742#44775#0" expanded="true" />
+            <element signature="e#44981#45014#0" expanded="true" />
+            <element signature="e#45238#45271#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

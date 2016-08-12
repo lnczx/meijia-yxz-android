@@ -8,6 +8,8 @@ import org.joda.time.LocalDate;
 /**
  * Created by Blaz Solar on 27/02/14.
  */
+
+@Deprecated
 public class CalendarManager {
 
     @NonNull private State mState;

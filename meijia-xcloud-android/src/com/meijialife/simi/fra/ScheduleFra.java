@@ -2,6 +2,10 @@ package com.meijialife.simi.fra;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,7 +28,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
-import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AlarmListActivity;
 import com.meijialife.simi.activity.Find2DetailActivity;
@@ -51,12 +54,12 @@ import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.ui.calendar.CalendarManager;
 import com.meijialife.simi.utils.DateUtils;
+import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.umeng.analytics.MobclickAgent;
-import com.zbar.lib.CaptureActivity;
 
 import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
@@ -71,6 +74,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.aigestudio.datepicker.bizs.calendars.DPCManager;
+import cn.aigestudio.datepicker.bizs.decors.DPDecor;
 import cn.aigestudio.datepicker.cons.DPMode;
 import cn.aigestudio.datepicker.views.DatePicker;
 
@@ -127,12 +132,13 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
     private int page = 1;
     private UserMsgListAdapter userMsgAdapter;
+    DatePicker picker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fra_schedule_layout, null);
         init(v);
-        initCalendar(v);
+        initCalendar();
         initUserMsgView(v);
         // initListView(v);
 
@@ -156,6 +162,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //        v.findViewById(R.id.user_plus).setOnClickListener(this);
 //        tv_service_type_ids = (TextView) v.findViewById(R.id.tv_service_type_ids);
 
+        picker = (DatePicker) v.findViewById(R.id.main_dp);
+
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
 
         layout_mask = v.findViewById(R.id.layout_mask);
@@ -170,9 +178,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     /**
      * 初始化日历
      * 
-     * @param v
      */
-    private void initCalendar(View v) {
+    private void initCalendar() {
         today_date = LocalDate.now().toString();
 
 //        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
@@ -197,8 +204,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //
 //        });
 
-
-        DatePicker picker = (DatePicker) v.findViewById(R.id.main_dp);
         picker.setDate(2016, 8);
         picker.setFestivalDisplay(true);
         picker.setTodayDisplay(true);
@@ -208,7 +213,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
-
                 today_date = date.toString();
                 // getAdListByChannelId("0");
                 if (findBeanList != null && findBeanList.size() > 0) {
@@ -216,9 +220,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                 }
                 userMsgs.clear();
                 totalUserMsgList.clear();
-                // getCardListData(today_date, card_from);
                 getUserMsgListData(today_date, page);
-                // 如果广告和卡片有一个有值，则不显示
+
             }
         });
 
@@ -337,9 +340,13 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public void onResume() {
         super.onResume();
 
+
+
         user = DBHelper.getUser(getActivity());
         if (user != null) {
             getUserMsgListData(today_date, page);
+
+            getTotalByMonth(LocalDate.now().getYear(),LocalDate.now().getMonthOfYear());
         }
 
          /*else {
@@ -385,7 +392,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public void getUserMsgListData(String date, int page) {
 
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
             return;
         }
 
@@ -456,35 +463,32 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-            case R.id.btn_chakan: // 查看
-                if (card_from == 0) {
-                    card_from = 1;
-                } else {
-                    card_from = 0;
-                }
-                // getCardListData(today_date, card_from);
-                getUserMsgListData(today_date, page);
-                break;
-            case R.id.ibtn_person: // 侧边栏
-                MainActivity.slideMenu();
-                break;
-            case R.id.btn_rili: // 日历展开/收起
-                LocalDate selectedDay = calendarManager.getSelectedDay();
-                if (calendarManager.getState() == CalendarManager.State.MONTH) {
-                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
-                            .plusYears(1));
-                } else {
-                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
-                            .plusYears(1));
-                }
-                calendarView.init(calendarManager, getActivity(), this);
-                break;
-            case R.id.btn_saoma:
-                intent = new Intent();
-                intent.setClass(getActivity(), CaptureActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
-                break;
+//            case R.id.btn_chakan: // 查看
+//                if (card_from == 0) {
+//                    card_from = 1;
+//                } else {
+//                    card_from = 0;
+//                }
+//                // getCardListData(today_date, card_from);
+//                getUserMsgListData(today_date, page);
+//                break;
+//            case R.id.btn_rili: // 日历展开/收起
+//                LocalDate selectedDay = calendarManager.getSelectedDay();
+//                if (calendarManager.getState() == CalendarManager.State.MONTH) {
+//                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.WEEK, LocalDate.now().minusYears(1), LocalDate.now()
+//                            .plusYears(1));
+//                } else {
+//                    calendarManager = new CalendarManager(selectedDay, CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
+//                            .plusYears(1));
+//                }
+//                calendarView.init(calendarManager, getActivity(), this);
+//                break;
+//            case R.id.btn_saoma:
+//                intent = new Intent();
+//                intent.setClass(getActivity(), CaptureActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
+//                break;
             case R.id.btn_alarm://常用提醒
                 intent = new Intent();
                 intent.setClass(getActivity(), AlarmListActivity.class);
@@ -530,7 +534,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         if (user != null) {
 
             if (!NetworkUtils.isNetworkConnected(getActivity())) {
-                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
                 return;
             }
             final String action = "index";
@@ -597,28 +601,27 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * 按月份查看卡片日期分布接口（更新日历圆点标签）
      *
      */
-    public void getTotalByMonth() {
+    public void getTotalByMonth(final  int year, final int month) {
 
         user = DBHelper.getUser(getActivity());
         if (user != null) {
-            String date = calendarManager.getHeaderText();
-            if (!date.contains("年")) {
-                return;
-            }
-
-            date = date.replace("年", "").replace("月", "");
-            final String year = date.substring(0, 4);
-            final String month = date.substring(date.length() - 3, date.length());
+//            if (!date.contains("年")) {
+//                return;
+//            }
+//
+//            date = date.replace("年", "").replace("月", "");
+//            final String year = date.substring(0, 4);
+//            final String month = date.substring(date.length() - 3, date.length());
 
             if (!NetworkUtils.isNetworkConnected(getActivity())) {
-                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
                 return;
             }
 
             Map<String, String> map = new HashMap<String, String>();
             map.put("user_id", user.getId());
-            map.put("year", year);
-            map.put("month", month);
+            map.put("year", year+"");
+            map.put("month", month+"");
             AjaxParams param = new AjaxParams(map);
 
             new FinalHttp().get(Constants.URL_GET_TOTAL_BY_MONTH, param, new AjaxCallBack<Object>() {
@@ -640,9 +643,9 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                             String msg = obj.getString("msg");
                             String data = obj.getString("data");
                             if (status == Constants.STATUS_SUCCESS) { // 正确
-
+                                LogOut.debug("===="+t.toString());
                                 // 先清除这个月的旧数据
-                                DBHelper.clearCalendarMark(getActivity(), year, month);
+                                DBHelper.clearCalendarMark(getActivity(), year + "", month + "");
 
                                 if (StringUtils.isNotEmpty(data)) {
                                     Gson gson = new Gson();
@@ -654,10 +657,12 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                                         db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
                                     }
 
+                                    //刷新日历
+                                    DrawCalendarPoint(calendarMarks);
                                 }
 
                                 // 刷新日历UI
-                                calendarView.updateUI();
+//                                calendarView.updateUI();
 
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);
@@ -704,7 +709,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         String user_id = DBHelper.getUser(getActivity()).getId();
 
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
             return;
         }
 
@@ -788,35 +793,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
     }
 
-    @SuppressWarnings("static-access")
-    @Deprecated
-    private void initListView(View v) {
-
-        // listview = (ListView) v.findViewById(R.id.listview);
-        tv_tips = (TextView) v.findViewById(R.id.tv_tips);
-        iv_no_card = (ImageView) v.findViewById(R.id.iv_no_card);
-        // 广告位轮播的另一种方式
-        /*
-         * RelativeLayout ll = (RelativeLayout) v.inflate(getActivity(), R.layout.activity_ad_cycle, null); listview.addHeaderView(ll); mAdView =
-         * (ImageCycleView)ll.findViewById(R.id.ad_view);
-         */
-
-        // getAdListByChannelId("0");//首页广告位显示
-
-        /*
-         * ArrayList<String> list = new ArrayList<String>(); for (int i = 0; i < 4; i++) { list.add("今日无安排" + i); }
-         */
-
-        /*
-         * adapter = new ListAdapter(getActivity(), this); listview.setAdapter(adapter); listview.setOnItemClickListener(new OnItemClickListener() {
-         *
-         * @Override public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) { int p = position-1;
-         * if(!cardlist.get(p).getCard_type().equals("99")){ Intent intent = new Intent(getActivity(), CardDetailsActivity.class);
-         * intent.putExtra("card_id", cardlist.get(p).getCard_id()); intent.putExtra("Cards", cardlist.get(p));
-         * intent.putExtra("card_extra",cardExtrasList.get(p)); startActivity(intent); } } });
-         */
-    }
-
 
     /**
      * 根据渠道获取广告位
@@ -826,7 +802,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     @Deprecated
     public void getAdListByChannelId(String channel_id) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -955,7 +931,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         String user_id = DBHelper.getUser(getActivity()).getId();
 
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
             return;
         }
 
@@ -1026,7 +1002,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     @Deprecated
     private void getUserInfo() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -1095,4 +1071,67 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         totalUserMsgList = null;
         // mAdView.pushImageCycle();
     }
+
+    /**
+     * 画点
+     * @param calendarMarks
+     */
+    public void DrawCalendarPoint(ArrayList<CalendarMark> calendarMarks){
+        List<String> tmpTR = new ArrayList<>();
+        for (CalendarMark mark:calendarMarks) {
+            tmpTR.add(mark.getService_date());
+        }
+
+        DPCManager.getInstance().setDecorTR(tmpTR);
+
+        picker.setDPDecor(new DPDecor() {
+
+            @Override
+            public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
+                super.drawDecorTL(canvas, rect, paint, data);
+                paint.setColor(Color.RED);
+                canvas.drawCircle(rect.centerX(), -rect.centerY(), rect.width() / 4, paint);
+
+            }
+
+            @Override
+            public void drawDecorTL(Canvas canvas, Rect rect, Paint paint, String data) {
+                super.drawDecorTL(canvas, rect, paint, data);
+//                switch (data) {
+//                    case "2015-10-5":
+//                    case "2015-10-7":
+//                    case "2015-10-9":
+//                    case "2015-10-11":
+//                        paint.setColor(Color.GREEN);
+//                        canvas.drawRect(rect, paint);
+//                        break;
+//                    default:
+//                        paint.setColor(Color.RED);
+//                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
+//                        break;
+//                }
+            }
+
+            @Override
+            public void drawDecorTR(Canvas canvas, Rect rect, Paint paint, String data) {
+                super.drawDecorTR(canvas, rect, paint, data);
+//                switch (data) {
+//                    case "2015-10-10":
+//                    case "2015-10-11":
+//                    case "2015-10-12":
+//                        paint.setColor(Color.BLUE);
+//                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
+//                        break;
+//                    default:
+//                        paint.setColor(Color.YELLOW);
+//                        canvas.drawRect(rect, paint);
+//                        break;
+//                }
+            }
+        });
+
+        picker.notifyAll();
+
+    }
+
 }

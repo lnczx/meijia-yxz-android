@@ -439,7 +439,8 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     public void populateLayout() {
         
         if(mHome != null){
-            mHome.getTotalByMonth();
+            //@// TODO: 2016/8/12  andye
+//            mHome.getTotalByMonth();
         }
 
         if (mManager != null) {
