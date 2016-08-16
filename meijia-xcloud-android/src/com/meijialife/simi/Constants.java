@@ -30,16 +30,16 @@ public class Constants {
     public static boolean IS_JUMP = false;//标志位---判断首页点击是否跳转广告url
 
     //登录图标URL
-    public static final String SPLASH_ICON_URL = "http://123.57.173.36/simi-h5/img/load-ad-update.jpg";
-    public static final String LOGO_ICON_URL = "http://123.57.173.36/simi-h5/img/login_logo_update.jpg";
-    public static final String PERSON_ICON_URL = "http://123.57.173.36/simi-h5/img/my_bg_update.jpg";
-    public static final String FRIEND_ICON_URL = "http://123.57.173.36/simi-h5/img/friend_bg_update.jpg";
+    public static final String SPLASH_ICON_URL = "http://app.bolohr.com/simi-h5/img/load-ad-update.jpg";
+    public static final String LOGO_ICON_URL = "http://app.bolohr.com/simi-h5/img/login_logo_update.jpg";
+    public static final String PERSON_ICON_URL = "http://app.bolohr.com/simi-h5/img/my_bg_update.jpg";
+    public static final String FRIEND_ICON_URL = "http://app.bolohr.com/simi-h5/img/friend_bg_update.jpg";
 
 
     public final static String AlipayHOST = "http://182.92.160.194";
 
     // 主机地址
-    public static final String HOST = "http://123.57.173.36";
+    public static final String HOST = "http://app.bolohr.com";
     // 基础接口
     public static final String ROOT_URL = HOST + "/simi/app/";
 
@@ -120,7 +120,7 @@ public class Constants {
     /**
      * 我的积分帮助H5
      **/
-    public static final String SCORE_HELP_URL = "http://123.57.173.36/simi-h5/show/score-intro.html";
+    public static final String SCORE_HELP_URL = "http://app.bolohr.com/simi-h5/show/score-intro.html";
 
     //卡片列表接口
     public final static String URL_GET_CARD_LIST = ROOT_URL + "card/get_list.json";
@@ -311,7 +311,7 @@ public class Constants {
     public static final int WATER_ORDER_HAS_PAY = 2; // 已支付
     public static final int WATER_ORDER_PAYING = 3; // 处理中
     //智能配置h5链接
-    public static final String WATER_ORDER_H5 = "http://123.57.173.36/simi-h5/show/water-set.html"; // 处理中
+    public static final String WATER_ORDER_H5 = "http://app.bolohr.com/simi-h5/show/water-set.html"; // 处理中
 
 
     //加号中应用接口
@@ -486,12 +486,12 @@ public class Constants {
     public static String SCAN_RQ_TAG = "xcloud";
     public static String RQ_TAG_FRIEND = "xcloud://";//标识加好友扫描
     public static String RQ_TAG_OTHER = "xcloud-h5://";//标识其他类型扫描
-    public static String RQ_IN_APP = "http://www.51xingzheng.cn/d/open.html?";//app内部扫描标识
+    public static String RQ_IN_APP = "http://www.bolohr.com/d/open.html?";//app内部扫描标识
 
     /**
      * 企业注册H5页面
      **/
-    public final static String HAS_COMPANY = "http://123.57.173.36/simi-h5/show/company-reg.html";
+    public final static String HAS_COMPANY = "http://app.bolohr.com/simi-h5/show/company-reg.html";
     /**
      * 二维码扫描类型识别
      **/
@@ -585,27 +585,27 @@ public class Constants {
     //认证考试
     public static final String ATTEST_URL = "http://mishuzhuli.com/category/renzhengkaoshi";
     //培训
-    public static final String MONEY_URL = "http://123.57.173.36/simi-h5/sec/#!/register.html";
+    public static final String MONEY_URL = "http://app.bolohr.com/simi-h5/sec/#!/register.html";
     //积分赚钱
     public static final String TRAIN_URL = "http://mishuzhuli.com/category/wendangfanwen";
     //云考勤
-    public static final String YUN_KAO_QIN = "http://123.57.173.36/simi-h5/show/order-checkin.html";
+    public static final String YUN_KAO_QIN = "http://app.bolohr.com/simi-h5/show/order-checkin.html";
     //会议室
-    public static final String HUI_YI_SHI = "http://123.57.173.36/simi-h5/show/order-meeting.html";
+    public static final String HUI_YI_SHI = "http://app.bolohr.com/simi-h5/show/order-meeting.html";
     //送水
-    public static final String SONG_SHUI = "http://123.57.173.36/simi-h5/show/order-water.html";
+    public static final String SONG_SHUI = "http://app.bolohr.com/simi-h5/show/order-water.html";
     //保洁
     public static final String BAO_JIE = "http://light.yunjiazheng.com/oncecleaning/";
     //快递
     public static final String KUAI_DI = "http://m.kuaidi100.com/";
     //绿植
-    public static final String LV_ZHI = "http://123.57.173.36/simi-h5/show/order-green.html";
+    public static final String LV_ZHI = "http://app.bolohr.com/simi-h5/show/order-green.html";
     //开店
-    public static final String KAI_DIAN = "http://123.57.173.36/simi-h5/show/store-my-index.html?user_id=";
+    public static final String KAI_DIAN = "http://app.bolohr.com/simi-h5/show/store-my-index.html?user_id=";
     //会员服务
     public static final String HUI_YUAN_FU_WU = "http://h5.eqxiu.com/s/kdhQZ0t4";
     //经验
-    public static final String JING_YAN = "http://123.57.173.36/simi-h5/show/level-my-index.html?user_id=";
+    public static final String JING_YAN = "http://app.bolohr.com/simi-h5/show/level-my-index.html?user_id=";
 
 
     /**
@@ -618,17 +618,17 @@ public class Constants {
     /**
      * 分享跳转链接
      **/
-    public static String SHARE_TARGET_URL = "http://123.57.173.36//simi-h5/show/card-share.html?card_id=";
+    public static String SHARE_TARGET_URL = "http://app.bolohr.com//simi-h5/show/card-share.html?card_id=";
 
-    public static String SHARE_CUSTOMER_TARGET_URL = "http://51xingzheng.cn/web/h5-app-download.html";
+    public static String SHARE_CUSTOMER_TARGET_URL = "http://bolohr.com/web/h5-app-download.html";
     /**
      * 分享标题
      **/
-    public static String SHARE_TITLE = "云行政，企业行政人力服务平台";
+    public static String SHARE_TITLE = "菠萝HR，人事行政必备神器！我们专注“人事行政”的成长与服务！快来体验吧：http://bolohr.com/web";
     /**
      * 分享内容
      **/
-    public static String SHARE_CONTENT = "有来自好友的分享，点击查看详情。云行政，极大降低企业运行成本，极速提升企业工作效率，快来试试吧！";
+    public static String SHARE_CONTENT = "菠萝HR，人事行政必备神器！我们专注“人事行政”的成长与服务！快来体验吧：http://bolohr.com/web";
 
     //checkdIndex标记用于切换=动态，好友，消息，申请
     public static int checkedIndex = 0;
@@ -637,13 +637,13 @@ public class Constants {
     /**
      * 加号签到h5链接
      **/
-    public static String PLUS_SIGN_URL = "http://123.57.173.36/simi-h5/show/checkin-index.html?user_id=";
+    public static String PLUS_SIGN_URL = "http://app.bolohr.com/simi-h5/show/checkin-index.html?user_id=";
 
     //废品回收
     /**
      * 废品回收图片链接
      **/
-    public static final String WASTER_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-caolv.png";
+    public static final String WASTER_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-caolv.png";
     /**
      * 废品回收订单列表接口
      **/
@@ -651,7 +651,7 @@ public class Constants {
     /**
      * 废品回收H5链接
      **/
-    public static final String H5_WASTER_URL = "http://123.57.173.36/simi-h5/show/recycle-price.html";
+    public static final String H5_WASTER_URL = "http://app.bolohr.com/simi-h5/show/recycle-price.html";
     /**
      * 废品回收下单接口
      **/
@@ -665,11 +665,11 @@ public class Constants {
     /**
      * 保洁图片链接
      **/
-    public static final String CLEAN_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-qianlan.png";
+    public static final String CLEAN_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-qianlan.png";
     /**
      * 保洁H5链接
      **/
-    public static final String H5_CLEAN_URL = "http://123.57.173.36/simi-h5/show/clean-set.html";
+    public static final String H5_CLEAN_URL = "http://app.bolohr.com/simi-h5/show/clean-set.html";
     /**
      * 保洁下单接口
      **/
@@ -684,7 +684,7 @@ public class Constants {
     /**
      * 团建图片链接
      **/
-    public static final String TEAM_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-chenghuang.png";
+    public static final String TEAM_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-chenghuang.png";
     /**
      * 团建订单列表
      **/
@@ -697,7 +697,7 @@ public class Constants {
      * 团建H5链接
      **/
     public static final String H5_TEAM_URL = "http://m.tuanjianbao.com/lines/search?activeType=3";
-//     public static final String H5_TEAM_URL = "http://123.57.173.36/simi-h5/show/teamwork-set.html";
+//     public static final String H5_TEAM_URL = "http://app.bolohr.com/simi-h5/show/teamwork-set.html";
     /**
      * 团队建设下单接口
      **/
@@ -749,7 +749,7 @@ public class Constants {
     /**
      * 快递图片链接
      **/
-    public static final String EXPRESS_ICON_URL = "http://123.57.173.36/simi-h5/icon/icon-dingdan-molv.png";
+    public static final String EXPRESS_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-molv.png";
     /**
      * 调用外部快递服务商接口
      **/
@@ -774,51 +774,51 @@ public class Constants {
     /**
      * 事务提醒
      **/
-    public static final String CARD_ALARM_HELP_URL = "http://123.57.173.36/simi-h5/show/help-alarm.html";
+    public static final String CARD_ALARM_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-alarm.html";
     /**
      * 通知公告
      **/
-    public static final String CARD_NOTICE_HELP_URL = "http://123.57.173.36/simi-h5/show/help-notice.html";
+    public static final String CARD_NOTICE_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-notice.html";
     /**
      * 会议安排
      **/
-    public static final String CARD_MEETING_HELP_URL = "http://123.57.173.36/simi-h5/show/help-meeting.html";
+    public static final String CARD_MEETING_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-meeting.html";
     /**
      * 面试邀约
      **/
-    public static final String CARD_INTERVIEW_HELP_URL = "http://123.57.173.36/simi-h5/show/help-interview.html";
+    public static final String CARD_INTERVIEW_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-interview.html";
     /**
      * 差旅规划
      **/
-    public static final String CARD_TRIP_HELP_URL = "http://123.57.173.36/simi-h5/show/help-trip.html";
+    public static final String CARD_TRIP_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-trip.html";
     /**
      * 请假申请
      **/
-    public static final String CARD_LAEVE_PASS_HELP_URL = "http://123.57.173.36/simi-h5/show/help-leave-pass.html";
+    public static final String CARD_LAEVE_PASS_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-leave-pass.html";
     /**
      * 云考勤
      **/
-    public static final String CARD_PUNCH_SIGN_HELP_URL = "http://123.57.173.36/simi-h5/show/help-punch-sign.html";
+    public static final String CARD_PUNCH_SIGN_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-punch-sign.html";
     /**
      * 快递
      **/
-    public static final String CARD_EXPRESS_HELP_URL = "http://123.57.173.36/simi-h5/show/help-express.html";
+    public static final String CARD_EXPRESS_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-express.html";
     /**
      * 送水
      **/
-    public static final String CARD_WATER_HELP_URL = "http://123.57.173.36/simi-h5/show/help-water.html";
+    public static final String CARD_WATER_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-water.html";
     /**
      * 保洁
      **/
-    public static final String CARD_CLEAN_HELP_URL = "http://123.57.173.36/simi-h5/show/help-clean.html";
+    public static final String CARD_CLEAN_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-clean.html";
     /**
      * 废品收购
      **/
-    public static final String CARD_RECYCLE_HELP_URL = "http://123.57.173.36/simi-h5/show/help-recycle.html";
+    public static final String CARD_RECYCLE_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-recycle.html";
     /**
      * 团建
      **/
-    public static final String CARD_TEAMWORK_HELP_URL = "http://123.57.173.36/simi-h5/show/help-teamwork.html";
+    public static final String CARD_TEAMWORK_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-teamwork.html";
 
     //资产管理
     /**
@@ -903,13 +903,13 @@ public class Constants {
 
     //新首页广告位
     public static final String GET_HOME1_BANNERS_URL = ROOT_URL + "dict/get_ads.json";
-    public static final String GET_HOME1_MSG_URL = "http://51xingzheng.cn/";
-    public static final String GET_HOME_SEARCH_URL = "http://51xingzheng.cn/api/get_search_results/";
-    public static final String GET_HOME3_MSG_URL = "http://51xingzheng.cn/api/tags/get_tag_posts/";
-    public static final String ZHI_SHI_XUE_YUAN_URL = "http://51xingzheng.cn";
-    public static final String JIAN_LI_JIAO_HUAN_URL = "http://123.57.173.36/simi-h5/show/cv-switch-list.html";
-    public static final String SHANG_JIN_LIE_REN_URL = "http://123.57.173.36/simi-h5/show/job-reward-list.html";
-    public static final String JIN_PIN_KE_CHENG_URL = "http://edu.51xingzheng.cn";
+    public static final String GET_HOME1_MSG_URL = "http://bolohr.com/";
+    public static final String GET_HOME_SEARCH_URL = "http://bolohr.com/api/get_search_results/";
+    public static final String GET_HOME3_MSG_URL = "http://bolohr.com/api/tags/get_tag_posts/";
+    public static final String ZHI_SHI_XUE_YUAN_URL = "http://bolohr.com";
+    public static final String JIAN_LI_JIAO_HUAN_URL = "http://app.bolohr.com/simi-h5/show/cv-switch-list.html";
+    public static final String SHANG_JIN_LIE_REN_URL = "http://app.bolohr.com/simi-h5/show/job-reward-list.html";
+    public static final String JIN_PIN_KE_CHENG_URL = "http://edu.bolohr.com";
 
     /**
      * 选中的问题互答标签

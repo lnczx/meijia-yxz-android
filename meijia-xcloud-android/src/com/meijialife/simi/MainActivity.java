@@ -194,7 +194,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     private void toAdUrl() {
         Intent intent = new Intent(MainActivity.this, WebViewsActivity.class);
-        intent.putExtra("url", "http://51xingzheng.cn/faxian/huodong/hr1334.html");
+        intent.putExtra("url", "http://bolohr.com/faxian/huodong/hr1334.html");
         startActivity(intent);
     }
 

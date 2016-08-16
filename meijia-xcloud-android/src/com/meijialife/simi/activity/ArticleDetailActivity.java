@@ -552,6 +552,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
      * @param homePostes
      */
     private  void fillContent(HomePostes homePostes){
+        pTitle = homePostes.getTitle();
         txt_content_title.setText(homePostes.getTitle());
         txt_publish_from.setText(homePostes.getCustomFields().getFromnameValue().get(0));
         txt_publish_source.setText(homePostes.getModified());
