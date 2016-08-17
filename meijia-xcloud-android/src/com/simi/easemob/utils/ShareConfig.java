@@ -57,13 +57,13 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent(card_id);
     }
-    public void inits(Activity context,String webUrl,String title) {
+    public void inits(Activity context,String webUrl,String title, String imgUrl) {
         this.mContext = context;
         
         // 配置需要分享的相关平台
         configPlatforms();
         // 设置分享的内容
-        setShareContents(webUrl,title);
+        setShareContents(webUrl,title, imgUrl);
     }
     public void init(Activity context,String uid,String invitation_code) {
         this.mContext = context;
@@ -73,7 +73,7 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent(uid,invitation_code);
     }
-    public void setShareContents(String webUrl,String title) {
+    public void setShareContents(String webUrl,String title, String imgUrl) {
         
         // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
@@ -84,43 +84,79 @@ public class ShareConfig {
         
         UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
 
+        UMImage pImage = null;
+
+        if (imgUrl != "") {
+            pImage = new UMImage(mContext, imgUrl);
+        }
+
         WeiXinShareContent weixinContent = new WeiXinShareContent();
-        weixinContent.setShareContent(Constants.SHARE_CONTENT);
+        weixinContent.setShareContent(title + " " + Constants.SHARE_CONTENT);
         weixinContent.setTitle(title);
         weixinContent.setTargetUrl(webUrl);
-        weixinContent.setShareMedia(localImage);
+        if (pImage != null) {
+            weixinContent.setShareMedia(pImage);
+        } else {
+            weixinContent.setShareMedia(localImage);
+        }
         mController.setShareMedia(weixinContent);
         
         // 设置朋友圈分享的内容
         CircleShareContent circleMedia = new CircleShareContent();
         circleMedia.setShareContent(Constants.SHARE_CONTENT);
         circleMedia.setTitle(title);
-        circleMedia.setShareMedia(localImage);
+        if (pImage != null) {
+            circleMedia.setShareMedia(pImage);
+        } else {
+            circleMedia.setShareMedia(localImage);
+        }
+
         circleMedia.setTargetUrl(webUrl);
         mController.setShareMedia(circleMedia);
         
         
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
-        qzone.setShareContent(Constants.SHARE_CONTENT);
+        qzone.setShareContent("【" + title + "】（分享自#菠萝HR#）");
         
         qzone.setTargetUrl(webUrl);
-        qzone.setTitle(Constants.SHARE_TITLE);
+        qzone.setTitle("菠萝HR");
         qzone.setShareMedia(localImage);
+
+        if (pImage != null) {
+            qzone.setShareMedia(pImage);
+        } else {
+            qzone.setShareMedia(localImage);
+        }
+
         mController.setShareMedia(qzone);
-        
+
+
+
+        //QQ好友
         QQShareContent qqShareContent = new QQShareContent();
         qqShareContent.setShareContent(Constants.SHARE_CONTENT);
         qqShareContent.setTitle(title);
-        qqShareContent.setShareMedia(localImage);
+        if (pImage != null) {
+            qqShareContent.setShareMedia(pImage);
+        } else {
+            qqShareContent.setShareMedia(localImage);
+        }
         qqShareContent.setTargetUrl(webUrl);
         mController.setShareMedia(qqShareContent);
-        
+
+
+
         SinaShareContent sinaContent = new SinaShareContent();
         sinaContent.setTitle(title);
-        sinaContent.setShareContent(Constants.SHARE_CONTENT);
+        sinaContent.setShareContent("【" + title + "】 " + webUrl + " (分享自@菠萝HR_人事行政神器)");
         sinaContent.setTargetUrl(webUrl);
-        sinaContent.setShareMedia(localImage);
+
+        if (pImage != null) {
+            sinaContent.setShareMedia(pImage);
+        } else {
+            sinaContent.setShareMedia(localImage);
+        }
         mController.setShareMedia(sinaContent);
         
     }

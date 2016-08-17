@@ -225,7 +225,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                                 webview.reload();
                                 break;
                             case ITEM2:// 分享
-                                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
+                                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles, "");
                                 postShare();
                                 break;
                             case ITEM3:// 吐槽
@@ -387,7 +387,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
                 findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
                 findViewById(R.id.layout_mask).setVisibility(View.GONE);
                 findViewById(R.id.webview_comment).setVisibility(View.GONE);
-                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles);
+                ShareConfig.getInstance().inits(WebViewsActivity.this, url, titles, "");
                 postShare();
                 break;
             default:

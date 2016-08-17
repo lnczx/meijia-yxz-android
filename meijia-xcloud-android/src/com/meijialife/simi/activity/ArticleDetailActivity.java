@@ -90,6 +90,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private HomePost homePost;
     private HomePostes homePostes;
     private String pTitle = "";// 文章标题
+    private String pImgUrl = ""; //文章题图
 
     private TextView m_tv_article_title;//文章标题
     private TextView m_article_content;//文章内容
@@ -275,7 +276,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                 findViewById(R.id.m_webview_comment).setVisibility(View.GONE);
                 layout_mask.setVisibility(View.VISIBLE);
                 findViewById(R.id.webview_comment).setVisibility(View.GONE);
-                ShareConfig.getInstance().inits(ArticleDetailActivity.this, url, pTitle);
+                ShareConfig.getInstance().inits(ArticleDetailActivity.this, url, pTitle, pImgUrl);
                 postShare();
                 break;
             default:
@@ -558,7 +559,8 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         txt_publish_source.setText(homePostes.getModified());
 
         try {
-            thumbnail_images.setImageURI(Uri.parse(homePostes.getThumbnailImages().getFull().getUrl()));
+            pImgUrl = homePostes.getThumbnailImages().getFull().getUrl();
+            thumbnail_images.setImageURI(Uri.parse(pImgUrl));
         }catch (Exception e){
         }
         String content = homePostes.getContent();
