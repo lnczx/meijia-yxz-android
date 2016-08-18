@@ -2,7 +2,6 @@ package cn.aigestudio.datepicker.bizs.calendars;
 
 import android.text.TextUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -110,9 +109,9 @@ public class DPCNCalendar extends DPCalendar {
     @Override
     public Set<String> buildMonthHoliday(int year, int month) {
         Set<String> tmp = new HashSet<>();
-        if (year == 2015) {
-            Collections.addAll(tmp, HOLIDAY[month - 1]);
-        }
+//        if (year == 2015) {
+//            Collections.addAll(tmp, HOLIDAY[month - 1]);
+//        }
         return tmp;
     }
 
@@ -176,12 +175,12 @@ public class DPCNCalendar extends DPCalendar {
      * @return ...
      */
     public boolean isDeferred(int year, int month, int day) {
-        if (year == 2015) {
-            String[] deferredOfMonth = DEFERRED[month - 1];
-            for (String s : deferredOfMonth) {
-                if (!TextUtils.isEmpty(s) && Integer.valueOf(s) == day) return true;
-            }
-        }
+//        if (year == 2015) {
+//            String[] deferredOfMonth = DEFERRED[month - 1];
+//            for (String s : deferredOfMonth) {
+//                if (!TextUtils.isEmpty(s) && Integer.valueOf(s) == day) return true;
+//            }
+//        }
         return false;
     }
 

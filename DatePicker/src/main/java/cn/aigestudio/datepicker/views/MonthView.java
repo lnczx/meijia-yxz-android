@@ -140,40 +140,43 @@ public class MonthView extends View {
                         mSlideMode = SlideMode.HOR;
                         isNewEvent = false;
                     } else if (Math.abs(lastPointY - event.getY()) > 50) {
-                        mSlideMode = SlideMode.VER;
+//                        mSlideMode = SlideMode.VER;
                         isNewEvent = false;
                     }
                 }
                 if (mSlideMode == SlideMode.HOR) {
                     int totalMoveX = (int) (lastPointX - event.getX()) + lastMoveX;
                     smoothScrollTo(totalMoveX, indexYear * height);
-                } else if (mSlideMode == SlideMode.VER) {
-                    int totalMoveY = (int) (lastPointY - event.getY()) + lastMoveY;
-                    smoothScrollTo(width * indexMonth, totalMoveY);
                 }
+//                else if (mSlideMode == SlideMode.VER) {
+//                    int totalMoveY = (int) (lastPointY - event.getY()) + lastMoveY;
+//                    smoothScrollTo(width * indexMonth, totalMoveY);
+//                }
                 break;
             case MotionEvent.ACTION_UP:
-                if (mSlideMode == SlideMode.VER) {
-                    if (Math.abs(lastPointY - event.getY()) > 25) {
-                        if (lastPointY < event.getY()) {
-                            if (Math.abs(lastPointY - event.getY()) >= criticalHeight) {
-                                indexYear--;
-                                centerYear = centerYear - 1;
-                            }
-                        } else if (lastPointY > event.getY()) {
-                            if (Math.abs(lastPointY - event.getY()) >= criticalHeight) {
-                                indexYear++;
-                                centerYear = centerYear + 1;
-                            }
-                        }
-                        buildRegion();
-                        computeDate();
-                        smoothScrollTo(width * indexMonth, height * indexYear);
-                        lastMoveY = height * indexYear;
-                    } else {
-                        defineRegion((int) event.getX(), (int) event.getY());
-                    }
-                } else if (mSlideMode == SlideMode.HOR) {
+//                if (mSlideMode == SlideMode.VER) {
+//                    if (Math.abs(lastPointY - event.getY()) > 25) {
+//                        if (lastPointY < event.getY()) {
+//                            if (Math.abs(lastPointY - event.getY()) >= criticalHeight) {
+//                                indexYear--;
+//                                centerYear = centerYear - 1;
+//                            }
+//                        } else if (lastPointY > event.getY()) {
+//                            if (Math.abs(lastPointY - event.getY()) >= criticalHeight) {
+//                                indexYear++;
+//                                centerYear = centerYear + 1;
+//                            }
+//                        }
+//                        buildRegion();
+//                        computeDate();
+//                        smoothScrollTo(width * indexMonth, height * indexYear);
+//                        lastMoveY = height * indexYear;
+//                    } else {
+//                        defineRegion((int) event.getX(), (int) event.getY());
+//                    }
+//                } else
+
+                if (mSlideMode == SlideMode.HOR) {
                     if (Math.abs(lastPointX - event.getX()) > 25) {
                         if (lastPointX > event.getX() &&
                                 Math.abs(lastPointX - event.getX()) >= criticalWidth) {
@@ -278,11 +281,11 @@ public class MonthView extends View {
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(mTManager.colorBG());
 
-        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
+//        draw(canvas, width * indexMonth, (indexYear - 1) * height, topYear, topMonth);
         draw(canvas, width * (indexMonth - 1), height * indexYear, leftYear, leftMonth);
         draw(canvas, width * indexMonth, indexYear * height, centerYear, centerMonth);
         draw(canvas, width * (indexMonth + 1), height * indexYear, rightYear, rightMonth);
-        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
+//        draw(canvas, width * indexMonth, (indexYear + 1) * height, bottomYear, bottomMonth);
 
         drawBGCircle(canvas);
     }
@@ -757,7 +760,7 @@ public class MonthView extends View {
     }
 
     private enum SlideMode {
-        VER,
+//        VER,
         HOR
     }
 
