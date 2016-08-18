@@ -138,15 +138,17 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fra_schedule_layout, null);
         init(v);
-        initCalendar();
-        initUserMsgView(v);
-        // initListView(v);
+        getTotalByMonth(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
 
+        initUserMsgView(v);
+
+        initCalendar();
         return v;
     }
 
     @SuppressLint("ResourceAsColor")
     private void init(View v) {
+        today_date = LocalDate.now().toString();
         user = DBHelper.getUser(getActivity());
         if (user != null) {
             getAppHelp();
@@ -180,7 +182,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * 
      */
     private void initCalendar() {
-        today_date = LocalDate.now().toString();
+
 
 //        calendarManager = new CalendarManager(LocalDate.now(), CalendarManager.State.MONTH, LocalDate.now().minusYears(1), LocalDate.now()
 //                .plusYears(1));
@@ -204,14 +206,10 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //
 //        });
 
-//        DBHelper instance = DBHelper.getInstance(getActivity());
-//        List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
-//        DrawCalendarPoint(calendarMarks);
-
-        List<String> tmpT = new ArrayList<>();
-        tmpT.add("2016-8-30");
-        tmpT.add("2016-8-31");
-        DPCManager.getInstance().setDecorT(tmpT);
+        DBHelper instance = DBHelper.getInstance(getActivity());
+        List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
+        //刷新日历
+        DrawCalendarPoint(calendarMarks);
 
         picker.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
         picker.setFestivalDisplay(true);
@@ -219,20 +217,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         picker.setHolidayDisplay(true);
         picker.setDeferredDisplay(true);
         picker.setMode(DPMode.SINGLE);
-        picker.setDPDecor(new DPDecor() {
-            @Override
-            public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorT(canvas, rect, paint, data);
-                switch (data) {
-                    default:
-                        paint.setColor(Color.RED);
-                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 6, paint);
-                        break;
-                }
 
-            }
-
-        });
         picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
@@ -363,13 +348,9 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public void onResume() {
         super.onResume();
 
-
-
         user = DBHelper.getUser(getActivity());
         if (user != null) {
             getUserMsgListData(today_date, page);
-
-//            getTotalByMonth(LocalDate.now().getYear(),LocalDate.now().getMonthOfYear());
         }
 
          /*else {
@@ -628,14 +609,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
         user = DBHelper.getUser(getActivity());
         if (user != null) {
-//            if (!date.contains("年")) {
-//                return;
-//            }
-//
-//            date = date.replace("年", "").replace("月", "");
-//            final String year = date.substring(0, 4);
-//            final String month = date.substring(date.length() - 3, date.length());
-
             if (!NetworkUtils.isNetworkConnected(getActivity())) {
                 UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
                 return;
@@ -679,9 +652,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                                     for (int i = 0; i < calendarMarks.size(); i++) {
                                         db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
                                     }
-
-                                    //刷新日历
-                                    DrawCalendarPoint(calendarMarks);
                                 }
 
                                 // 刷新日历UI
@@ -717,177 +687,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         }
 
     }
-
-
-    /**
-     * 暂时不用 获取卡片数据
-     * 
-     * @param date
-     * @param card_from
-     *            0 = 所有卡片 1 = 我发布的 2 = 我参与的,默认为0
-     */
-    @Deprecated
-    public void getCardListData(String date, int card_from) {
-
-        String user_id = DBHelper.getUser(getActivity()).getId();
-
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
-            return;
-        }
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("service_date", date);
-        map.put("user_id", user_id + "");
-        map.put("card_from", "" + card_from);
-        // map.put("lat", latitude);
-        // map.put("lng", longitude);
-        map.put("page", "1");
-        AjaxParams param = new AjaxParams(map);
-
-        // showDialog();
-        new FinalHttp().get(Constants.URL_GET_CARD_LIST, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                // dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                // dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data").trim();
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data.trim())) {
-                                Gson gson = new Gson();
-                                cardlist = new ArrayList<Cards>();
-                                cardExtrasList = new ArrayList<CardExtra>();
-                                cardlist = gson.fromJson(data, new TypeToken<ArrayList<Cards>>() {
-                                }.getType());
-                                for (int i = 0; i < cardlist.size(); i++) {
-                                    Cards cards2 = cardlist.get(i);
-                                    CardExtra cardExtra = new CardExtra();
-                                    cardExtra = gson.fromJson(cards2.getCard_extra(), CardExtra.class);
-                                    cardExtrasList.add(cardExtra);
-                                }
-                                /*
-                                 * JsonArray array = new JsonParser().parse(data).getAsJsonArray(); for (final JsonElement elem : array) {
-                                 * cardlist.add(new Gson().fromJson(elem, Cards.class)); }
-                                 */
-                                adapter.setData(cardlist, cardExtrasList);
-                                isShowDefaultCard(true, ad_flag);
-                            } else {
-                                adapter.setData(new ArrayList<Cards>(), new ArrayList<CardExtra>());
-                                isShowDefaultCard(false, ad_flag);
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (isAdded()) {
-                        errorMsg = getString(R.string.servers_error);
-                    }
-
-                }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
-
-    }
-
-
-    /**
-     * 根据渠道获取广告位
-     * 
-     * @param channel_id
-     */
-    @Deprecated
-    public void getAdListByChannelId(String channel_id) {
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            UIUtils.showToast(getActivity(), getString(R.string.net_not_open));
-            return;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("channel_id", channel_id);
-        AjaxParams param = new AjaxParams(map);
-        // showDialog();
-        new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                // dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                // dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
-                                }.getType());
-                                // mAdView.setImageResources(findBeanList, mAdCycleViewListener);
-                                isShowDefaultCard(card_flag, true);
-                            } else {
-                                isShowDefaultCard(card_flag, false);
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (isAdded()) {
-                        errorMsg = getString(R.string.servers_error);
-                    }
-                }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
-    }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1103,57 +902,28 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         List<String> tmpTR = new ArrayList<>();
         for (CalendarMark mark:calendarMarks) {
             tmpTR.add(mark.getService_date());
+            System.out.print("日期："+mark.getService_date());
         }
 
-        DPCManager.getInstance().setDecorTR(tmpTR);
-
+        List<String> tmpT = new ArrayList<>();
+        tmpT.add("2016-8-30");
+        tmpT.add("2016-8-31");
+        tmpT.add("2016-8-08");
+        DPCManager.getInstance().setDecorT(tmpTR);
         picker.setDPDecor(new DPDecor() {
-
             @Override
             public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorTL(canvas, rect, paint, data);
-                paint.setColor(Color.RED);
-                canvas.drawCircle(rect.centerX(), -rect.centerY(), rect.width() / 4, paint);
+                super.drawDecorT(canvas, rect, paint, data);
+                switch (data) {
+                    default:
+                        paint.setColor(Color.RED);
+                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 6, paint);
+                        break;
+                }
 
             }
 
-            @Override
-            public void drawDecorTL(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorTL(canvas, rect, paint, data);
-//                switch (data) {
-//                    case "2015-10-5":
-//                    case "2015-10-7":
-//                    case "2015-10-9":
-//                    case "2015-10-11":
-//                        paint.setColor(Color.GREEN);
-//                        canvas.drawRect(rect, paint);
-//                        break;
-//                    default:
-//                        paint.setColor(Color.RED);
-//                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
-//                        break;
-//                }
-            }
-
-            @Override
-            public void drawDecorTR(Canvas canvas, Rect rect, Paint paint, String data) {
-                super.drawDecorTR(canvas, rect, paint, data);
-//                switch (data) {
-//                    case "2015-10-10":
-//                    case "2015-10-11":
-//                    case "2015-10-12":
-//                        paint.setColor(Color.BLUE);
-//                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
-//                        break;
-//                    default:
-//                        paint.setColor(Color.YELLOW);
-//                        canvas.drawRect(rect, paint);
-//                        break;
-//                }
-            }
         });
-
-
+//        picker.invalidate();
     }
-
 }
