@@ -14,5 +14,5 @@ public class DPInfo {
     public boolean isToday, isWeekend;
     public boolean isSolarTerms, isFestival, isDeferred;
     public boolean isDecorBG;
-    public boolean isDecorTL, isDecorT, isDecorTR, isDecorL, isDecorR;
+    public boolean isDecorTL, isDecorT, isDecorB,isDecorTR, isDecorL, isDecorR;
 }

@@ -55,6 +55,26 @@ public class DPDecor {
     }
 
     /**
+     * 绘制当前日期区域底部的装饰物
+     * Draw decor on top of current date area
+     *
+     * @param canvas 绘制图形的画布 Canvas of image drew
+     * @param rect   可以绘制的区域范围 Area you can draw
+     * @param paint  画笔对象 Paint
+     * @param data   日期
+     */
+    public void drawDecorB(Canvas canvas, Rect rect, Paint paint, String data) { //by andye
+        drawDecorB(canvas, rect, paint);
+    }
+
+    /**
+     * @see #drawDecorT(Canvas, Rect, Paint, String)
+     */
+    public void drawDecorB(Canvas canvas, Rect rect, Paint paint) {
+
+    }
+
+    /**
      * 绘制当前日期区域右上角的装饰物
      * Draw decor on Top right of current date area
      *

@@ -451,6 +451,13 @@ public class MonthView extends View {
                 mDPDecor.drawDecorT(canvas, canvas.getClipBounds(), mPaint, data);
                 canvas.restore();
             }
+            if (null != mDPDecor && info.isDecorB) {//底部 add by  andye
+                canvas.save();
+                canvas.clipRect(rect.left + sizeDecor, rect.top + sizeDecor, rect.left + sizeDecor2x,
+                        rect.top );
+                mDPDecor.drawDecorT(canvas, canvas.getClipBounds(), mPaint, data);
+                canvas.restore();
+            }
             if (null != mDPDecor && info.isDecorTR) {
                 canvas.save();
                 canvas.clipRect(rect.left + sizeDecor2x, rect.top, rect.left + sizeDecor3x,

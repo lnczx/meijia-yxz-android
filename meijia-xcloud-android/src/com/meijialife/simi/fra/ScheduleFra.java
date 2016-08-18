@@ -204,12 +204,35 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //
 //        });
 
-        picker.setDate(2016, 8);
+//        DBHelper instance = DBHelper.getInstance(getActivity());
+//        List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
+//        DrawCalendarPoint(calendarMarks);
+
+        List<String> tmpT = new ArrayList<>();
+        tmpT.add("2016-8-30");
+        tmpT.add("2016-8-31");
+        DPCManager.getInstance().setDecorT(tmpT);
+
+        picker.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
         picker.setFestivalDisplay(true);
         picker.setTodayDisplay(true);
         picker.setHolidayDisplay(true);
         picker.setDeferredDisplay(true);
         picker.setMode(DPMode.SINGLE);
+        picker.setDPDecor(new DPDecor() {
+            @Override
+            public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
+                super.drawDecorT(canvas, rect, paint, data);
+                switch (data) {
+                    default:
+                        paint.setColor(Color.RED);
+                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 6, paint);
+                        break;
+                }
+
+            }
+
+        });
         picker.setOnDatePickedListener(new DatePicker.OnDatePickedListener() {
             @Override
             public void onDatePicked(String date) {
@@ -346,7 +369,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         if (user != null) {
             getUserMsgListData(today_date, page);
 
-            getTotalByMonth(LocalDate.now().getYear(),LocalDate.now().getMonthOfYear());
+//            getTotalByMonth(LocalDate.now().getYear(),LocalDate.now().getMonthOfYear());
         }
 
          /*else {
@@ -1076,7 +1099,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * 画点
      * @param calendarMarks
      */
-    public void DrawCalendarPoint(ArrayList<CalendarMark> calendarMarks){
+    public void DrawCalendarPoint(List<CalendarMark> calendarMarks){
         List<String> tmpTR = new ArrayList<>();
         for (CalendarMark mark:calendarMarks) {
             tmpTR.add(mark.getService_date());
@@ -1130,7 +1153,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
             }
         });
 
-        picker.notifyAll();
 
     }
 
