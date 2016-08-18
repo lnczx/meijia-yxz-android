@@ -215,7 +215,7 @@ public class WebViewsFindActivity extends Activity {
                                 webview.reload();
                                 break;
                             case ITEM2:// 分享
-                                ShareConfig.getInstance().inits(WebViewsFindActivity.this, url, titles);
+                                ShareConfig.getInstance().inits(WebViewsFindActivity.this, url, titles, "");
                                 postShare();
                                 break;
                             case ITEM3:// 吐槽

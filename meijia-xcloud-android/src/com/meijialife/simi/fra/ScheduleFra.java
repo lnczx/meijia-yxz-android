@@ -874,7 +874,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                 Bundle bundle = data.getExtras();
                 String result = bundle.getString("result").trim();
                 if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
-                    // http://www.51xingzheng.cn/d/open.html?category=app&action=feed&params=&goto_url=
+                    // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
 
                     if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
                         String category = "", action = "", params = "", goto_url = "";

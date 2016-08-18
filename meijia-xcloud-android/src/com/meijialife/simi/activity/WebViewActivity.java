@@ -141,7 +141,7 @@ public class WebViewActivity extends Activity implements OnClickListener {
                             webview.reload();
                             break;
                         case ITEM2:// 分享
-                            ShareConfig.getInstance().inits(WebViewActivity.this,url,titles);
+                            ShareConfig.getInstance().inits(WebViewActivity.this,url,titles, "");
                             postShare();
                             break;
                         case ITEM3:// 吐槽

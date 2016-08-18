@@ -155,7 +155,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1104763123" />
+                <data android:scheme="tencent1104934408" />
             </intent-filter>
         </activity>
         <activity
@@ -208,7 +208,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="51xingzheng.cn"
+                    android:host="bolohr.com"
                     android:scheme="xcloud" />
             </intent-filter>
         </activity>

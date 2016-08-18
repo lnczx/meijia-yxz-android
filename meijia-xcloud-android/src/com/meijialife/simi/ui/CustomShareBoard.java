@@ -87,9 +87,9 @@ public class CustomShareBoard extends PopupWindow implements OnClickListener {
             public void onComplete(SHARE_MEDIA platform, int eCode, SocializeEntity entity) {
                 String showText = platform.toString();
                 if (eCode == StatusCode.ST_CODE_SUCCESSED) {
-                    showText += "平台分享成功";
+                    showText = "分享成功";
                 } else {
-                    showText += "平台分享失败";
+                    showText = "分享失败";
                 }
                 Toast.makeText(mActivity, showText, Toast.LENGTH_SHORT).show();
                 dismiss();

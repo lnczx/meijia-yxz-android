@@ -57,13 +57,13 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent(card_id);
     }
-    public void inits(Activity context,String webUrl,String title) {
+    public void inits(Activity context,String webUrl,String title, String imgUrl) {
         this.mContext = context;
         
         // 配置需要分享的相关平台
         configPlatforms();
         // 设置分享的内容
-        setShareContents(webUrl,title);
+        setShareContents(webUrl,title, imgUrl);
     }
     public void init(Activity context,String uid,String invitation_code) {
         this.mContext = context;
@@ -73,65 +73,101 @@ public class ShareConfig {
         // 设置分享的内容
         setShareContent(uid,invitation_code);
     }
-    public void setShareContents(String webUrl,String title) {
+    public void setShareContents(String webUrl,String title, String imgUrl) {
         
         // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
         
-        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104934408", "bRW2glhUCR6aJYIZ");
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
         
         UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
 
+        UMImage pImage = null;
+
+        if (imgUrl != "") {
+            pImage = new UMImage(mContext, imgUrl);
+        }
+
         WeiXinShareContent weixinContent = new WeiXinShareContent();
-        weixinContent.setShareContent(Constants.SHARE_CONTENT);
+        weixinContent.setShareContent(title + " " + Constants.SHARE_CONTENT);
         weixinContent.setTitle(title);
         weixinContent.setTargetUrl(webUrl);
-        weixinContent.setShareMedia(localImage);
+        if (pImage != null) {
+            weixinContent.setShareMedia(pImage);
+        } else {
+            weixinContent.setShareMedia(localImage);
+        }
         mController.setShareMedia(weixinContent);
         
         // 设置朋友圈分享的内容
         CircleShareContent circleMedia = new CircleShareContent();
         circleMedia.setShareContent(Constants.SHARE_CONTENT);
         circleMedia.setTitle(title);
-        circleMedia.setShareMedia(localImage);
+        if (pImage != null) {
+            circleMedia.setShareMedia(pImage);
+        } else {
+            circleMedia.setShareMedia(localImage);
+        }
+
         circleMedia.setTargetUrl(webUrl);
         mController.setShareMedia(circleMedia);
         
         
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
-        qzone.setShareContent(Constants.SHARE_CONTENT);
+        qzone.setShareContent("【" + title + "】（分享自#菠萝HR#）");
         
         qzone.setTargetUrl(webUrl);
-        qzone.setTitle(Constants.SHARE_TITLE);
+        qzone.setTitle("菠萝HR");
         qzone.setShareMedia(localImage);
+
+        if (pImage != null) {
+            qzone.setShareMedia(pImage);
+        } else {
+            qzone.setShareMedia(localImage);
+        }
+
         mController.setShareMedia(qzone);
-        
+
+
+
+        //QQ好友
         QQShareContent qqShareContent = new QQShareContent();
         qqShareContent.setShareContent(Constants.SHARE_CONTENT);
         qqShareContent.setTitle(title);
-        qqShareContent.setShareMedia(localImage);
+        if (pImage != null) {
+            qqShareContent.setShareMedia(pImage);
+        } else {
+            qqShareContent.setShareMedia(localImage);
+        }
         qqShareContent.setTargetUrl(webUrl);
         mController.setShareMedia(qqShareContent);
-        
+
+
+
         SinaShareContent sinaContent = new SinaShareContent();
         sinaContent.setTitle(title);
-        sinaContent.setShareContent(Constants.SHARE_CONTENT);
+        sinaContent.setShareContent("【" + title + "】 " + webUrl + " (分享自@菠萝HR_人事行政神器)");
         sinaContent.setTargetUrl(webUrl);
-        sinaContent.setShareMedia(localImage);
+
+        if (pImage != null) {
+            sinaContent.setShareMedia(pImage);
+        } else {
+            sinaContent.setShareMedia(localImage);
+        }
         mController.setShareMedia(sinaContent);
         
     }
     public void setShareContent(String uid,String invitation_code) {
-        String targetUrl = "http://123.57.173.36/simi-h5/show/company-join.html?uid="+uid+"&invitation_code="+invitation_code;
+        String targetUrl = "http://app.bolohr.com/simi-h5/show/company-join.html?uid="+uid+"&invitation_code="+invitation_code;
         String title = "好友邀请你加入团队";
         String content = "好友邀请你加入团队";
           // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
 
-        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104934408", "bRW2glhUCR6aJYIZ");
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(content);
 
@@ -181,7 +217,7 @@ public class ShareConfig {
         // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
 
-        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104934408", "bRW2glhUCR6aJYIZ");
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
 
@@ -191,7 +227,7 @@ public class ShareConfig {
         weixinContent.setShareContent(Constants.SHARE_CONTENT);
         weixinContent.setTitle(Constants.SHARE_TITLE);
         weixinContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        weixinContent.setTargetUrl("http://bolohr.com/h5-app-download.html");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
@@ -203,7 +239,7 @@ public class ShareConfig {
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
             circleMedia.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        circleMedia.setTargetUrl("http://bolohr.com/h5-app-download.html");
         mController.setShareMedia(circleMedia);
 
 
@@ -212,7 +248,7 @@ public class ShareConfig {
         qzone.setShareContent(Constants.SHARE_CONTENT);
       
             qzone.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        qzone.setTargetUrl("http://bolohr.com/h5-app-download.html");
         qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
@@ -241,7 +277,7 @@ public class ShareConfig {
         // 配置SSO
         mController.getConfig().setSsoHandler(new SinaSsoHandler());
 
-        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104763123", "LcMjbx1agQRGMzAs");
+        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(mContext, "1104934408", "bRW2glhUCR6aJYIZ");
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
 
@@ -259,7 +295,7 @@ public class ShareConfig {
         weixinContent.setTitle(Constants.SHARE_TITLE);
         weixinContent.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
         
-//        weixinContent.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        weixinContent.setTargetUrl("http://bolohr.com/h5-app-download.html");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
@@ -271,7 +307,7 @@ public class ShareConfig {
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
             circleMedia.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
-//        circleMedia.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        circleMedia.setTargetUrl("http://bolohr.com/h5-app-download.html");
         mController.setShareMedia(circleMedia);
 
 
@@ -279,7 +315,7 @@ public class ShareConfig {
         QZoneShareContent qzone = new QZoneShareContent();
         qzone.setShareContent(Constants.SHARE_CONTENT);
             qzone.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
-//        qzone.setTargetUrl("http://51xingzheng.cn/h5-app-download.html");
+//        qzone.setTargetUrl("http://bolohr.com/h5-app-download.html");
         qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
@@ -340,11 +376,11 @@ public class ShareConfig {
      * @return
      */
     private void addQQQZonePlatform() {
-        String appId = "1104763123";
-        String appKey = "LcMjbx1agQRGMzAs";
+        String appId = "1104934408";
+        String appKey = "bRW2glhUCR6aJYIZ";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(mContext, appId, appKey);
-        qqSsoHandler.setTargetUrl("http://51xingzheng.cn/web/h5-app-download.html");
+        qqSsoHandler.setTargetUrl("http://bolohr.com/web/h5-app-download.html");
         qqSsoHandler.addToSocialSDK();
 
         // 添加QZone平台

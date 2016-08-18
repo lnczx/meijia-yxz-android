@@ -357,7 +357,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      * @param info
      * 
      *            qq用户信息:{is_yellow_year_vip=0, vip=0, level=0, province=北京, yellow_vip_level=0, is_yellow_vip=0, gender=男, screen_name=清风飘叶, msg=,
-     *            profile_image_url=http://q.qlogo.cn/qqapp/1104763123/06183F86F7AA0ABE4314055856835450/100, city=海淀} time: 1441082419979
+     *            profile_image_url=http://q.qlogo.cn/qqapp/1104934408/06183F86F7AA0ABE4314055856835450/100, city=海淀} time: 1441082419979
      */
     private void login_3rd(final String uid, SHARE_MEDIA platform, final Map<String, Object> info) {
         showDialog();
