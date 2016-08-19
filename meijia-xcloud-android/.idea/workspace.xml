@@ -10,60 +10,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5fc1778-f421-41a8-a1f5-a9829f96771e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/languages/CN.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/themes/DPBaseTheme.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/calendars/DPCManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/calendars/DPCNCalendar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/themes/DPCNTheme.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/calendars/DPCalendar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/decors/DPDecor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/entities/DPInfo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/languages/DPLManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/cons/DPMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/themes/DPTManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/themes/DPTheme.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/calendars/DPUSCalendar.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/utils/DataUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/views/DatePicker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/languages/EN.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/utils/MeasureUtil.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/views/MonthView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/bizs/calendars/SolarTerm.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/calendar_title_layout.xml" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\proguard-rules.pro" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\calendars\DPCManager.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\calendars\DPCNCalendar.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\calendars\DPCalendar.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\calendars\DPUSCalendar.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\calendars\SolarTerm.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\decors\DPDecor.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\languages\CN.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\languages\DPLManager.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\languages\EN.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\themes\DPBaseTheme.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\themes\DPCNTheme.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\themes\DPTManager.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\bizs\themes\DPTheme.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\cons\DPMode.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\entities\DPInfo.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\utils\DataUtils.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\utils\MeasureUtil.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\views\DatePicker.java" afterPath="" />
-      <change type="DELETED" beforePath="E:\git_yunxingzheng\meijia-yxz-android\DatePicker\src\main\java\cn\aigestudio\datepicker\views\MonthView.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/ui/CollapseCalendarView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" afterPath="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/fra_schedule_layout.xml" afterPath="$PROJECT_DIR$/res/layout/fra_schedule_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meijia-xcloud-android.iml" afterPath="$PROJECT_DIR$/meijia-xcloud-android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../settings.gradle" afterPath="$PROJECT_DIR$/../settings.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a5fc1778-f421-41a8-a1f5-a9829f96771e" name="Default" comment="" />
     <ignored path="meijia-xcloud-android.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -127,13 +74,20 @@
       <file leaf-file-name="ScheduleFra.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2469352">
-              <caret line="500" column="32" selection-start-line="500" selection-start-column="32" selection-end-line="500" selection-end-column="32" />
+            <state vertical-scroll-proportion="24.421686">
+              <caret line="743" column="0" selection-start-line="743" selection-start-column="0" selection-end-line="743" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#8041#8526#0" expanded="true" />
-                <element signature="e#8525#8526#0" expanded="true" />
-                <element signature="e#14875#14891#0" expanded="true" />
+                <element signature="e#7985#8470#0" expanded="true" />
+                <element signature="e#8469#8470#0" expanded="true" />
+                <element signature="e#14819#14835#0" expanded="true" />
+                <element signature="e#24129#24161#0" expanded="true" />
+                <element signature="e#24252#24268#0" expanded="true" />
+                <element signature="e#24805#24840#0" expanded="true" />
+                <element signature="e#26580#26613#0" expanded="true" />
+                <element signature="e#26748#26781#0" expanded="true" />
+                <element signature="e#26917#26950#0" expanded="true" />
+                <element signature="e#27172#27205#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -5096,8 +5050,8 @@
         <option value="$PROJECT_DIR$/res/layout/fra_schedule_layout.xml" />
         <option value="$PROJECT_DIR$/../settings.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" />
         <option value="$PROJECT_DIR$/src/com/meijialife/simi/ui/datepicker/views/DatePicker.java" />
+        <option value="$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java" />
       </list>
     </option>
   </component>
@@ -5457,7 +5411,7 @@
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20584795" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20584795" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37777779" sideWeight="0.50321543" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
@@ -5465,7 +5419,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16773848" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16773848" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24210526" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -5492,7 +5446,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Fabric" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20584795" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20584795" sideWeight="0.49678457" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37777779" sideWeight="0.50321543" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5497076" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
@@ -5500,7 +5454,7 @@
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17738478" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16773848" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24210526" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -5510,7 +5464,7 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.49785638" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5239766" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5239766" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32748538" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -5927,13 +5881,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/meijialife/simi/fra/ScheduleFra.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2469352">
-          <caret line="500" column="32" selection-start-line="500" selection-start-column="32" selection-end-line="500" selection-end-column="32" />
+        <state vertical-scroll-proportion="24.421686">
+          <caret line="743" column="0" selection-start-line="743" selection-start-column="0" selection-end-line="743" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#8041#8526#0" expanded="true" />
-            <element signature="e#8525#8526#0" expanded="true" />
-            <element signature="e#14875#14891#0" expanded="true" />
+            <element signature="e#7985#8470#0" expanded="true" />
+            <element signature="e#8469#8470#0" expanded="true" />
+            <element signature="e#14819#14835#0" expanded="true" />
+            <element signature="e#24129#24161#0" expanded="true" />
+            <element signature="e#24252#24268#0" expanded="true" />
+            <element signature="e#24805#24840#0" expanded="true" />
+            <element signature="e#26580#26613#0" expanded="true" />
+            <element signature="e#26748#26781#0" expanded="true" />
+            <element signature="e#26917#26950#0" expanded="true" />
+            <element signature="e#27172#27205#0" expanded="true" />
           </folding>
         </state>
       </provider>
