@@ -126,7 +126,7 @@ public class SplashActivity extends Activity {
                 }
             }
         };
-        timer.schedule(MyTask, 5000);
+        timer.schedule(MyTask, 3000);
         initRoute();
         getCitys(getCityAddtime());
         getBaseDatas();
@@ -733,7 +733,7 @@ public class SplashActivity extends Activity {
         int month = CalendarUtils.getCurrentMonth();
 //        getTotalByMonth(year + "", month + "");
         
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < 3; i++){
             if(month == 12){
                 month = 1;
                 year += 1;

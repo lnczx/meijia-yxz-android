@@ -56,6 +56,7 @@ import com.meijialife.simi.ui.datepicker.bizs.calendars.DPCManager;
 import com.meijialife.simi.ui.datepicker.bizs.decors.DPDecor;
 import com.meijialife.simi.ui.datepicker.cons.DPMode;
 import com.meijialife.simi.ui.datepicker.views.DatePicker;
+import com.meijialife.simi.utils.CalendarUtils;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -138,10 +139,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fra_schedule_layout, null);
         init(v);
-
-        initUserMsgView(v);
-
         initCalendar();
+        initUserMsgView(v);
         return v;
     }
 
@@ -163,10 +162,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //        v.findViewById(R.id.user_plus).setOnClickListener(this);
 //        tv_service_type_ids = (TextView) v.findViewById(R.id.tv_service_type_ids);
 
-        picker = (DatePicker) v.findViewById(R.id.main_dp);
 
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-
         layout_mask = v.findViewById(R.id.layout_mask);
         userInfo = DBHelper.getUserInfo(getActivity());
         is_log = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
@@ -204,10 +201,11 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //            }
 //
 //        });
+        picker = (DatePicker) v.findViewById(R.id.main_dp);
 
         DBHelper instance = DBHelper.getInstance(getActivity());
         List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
-        //刷新日历
+        //日历加點
         DrawCalendarPoint(calendarMarks);
 
         picker.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
@@ -351,7 +349,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         if (user != null) {
             getUserMsgListData(today_date, page);
 
-            getTotalByMonth(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
+            updateCalendarMark();
         }
 
          /*else {
@@ -364,6 +362,23 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         // getUserInfo();
 
         MobclickAgent.onPageStart("MainActivity");
+    }
+
+    /**
+     * 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点
+     */
+    private void updateCalendarMark() {
+        int year = CalendarUtils.getCurrentYear();
+        int month = CalendarUtils.getCurrentMonth() - 1 ;//獲取過去一月數據
+        for(int i = 0; i < 3; i++){
+            if(month == 12){
+                month = 1;
+                year += 1;
+            }else{
+                month += 1;
+            }
+            getTotalByMonth(year, month);
+        }
     }
 
     
@@ -821,5 +836,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
             }
 
         });
+        picker.postInvalidate();
     }
 }
