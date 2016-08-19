@@ -5,7 +5,6 @@ dependencies {
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
     compile project(':umeng_libs')
-    compile project(':DatePicker')
     compile('com.android.support:support-v4:23.3.0') {
         exclude module: 'support-v4'
     }

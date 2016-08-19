@@ -122,7 +122,6 @@
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="module" module-name="meijia-lib-easeui" exported="" />
     <orderEntry type="module" module-name="umeng_libs" exported="" />
-    <orderEntry type="module" module-name="DatePicker" exported="" />
     <orderEntry type="module" module-name="base_library_pullToRefresh_chenyoca" exported="" />
   </component>
 </module>

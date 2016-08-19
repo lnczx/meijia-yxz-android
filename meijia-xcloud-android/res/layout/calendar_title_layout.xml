@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/simi_color_red">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/m_calendar_month"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                tools:text="8yue "
+                android:textColor="@color/simi_color_white"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="3dp"
+            android:gravity="left"
+            android:orientation="vertical"
+            android:paddingBottom="1dp"
+            android:paddingTop="3dp">
+
+            <TextView
+                android:id="@+id/m_calendar_week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:layout_marginTop="10dp"
+                android:gravity="left|bottom"
+                tools:text="5week"
+                android:textColor="@color/simi_color_white"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/m_calendar_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|top"
+                android:layout_marginBottom="10dp"
+                android:gravity="left|top"
+                tools:text="2016"
+                android:textColor="@color/simi_color_white"
+                android:textSize="9sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/m_calendar_alarm"
+        android:layout_width="@dimen/bottom_bar_icon_width_size"
+        android:layout_height="@dimen/bottom_bar_icon_height_size"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/user_alarm"
+        android:padding="20dp"
+        android:visibility="visible" />
+
+
+    <ImageButton
+        android:id="@+id/m_calendar_plus"
+        android:layout_width="@dimen/bottom_bar_icon_width_size"
+        android:layout_height="@dimen/bottom_bar_icon_height_size"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_toLeftOf="@id/m_calendar_alarm"
+        android:background="@drawable/user_plus"
+        android:padding="20dp"
+
+        />
+
+</RelativeLayout>

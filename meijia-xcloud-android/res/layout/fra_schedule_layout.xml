@@ -7,7 +7,7 @@
     android:gravity="center">
 
 
-    <cn.aigestudio.datepicker.views.DatePicker
+    <com.meijialife.simi.ui.datepicker.views.DatePicker
         android:id="@+id/main_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

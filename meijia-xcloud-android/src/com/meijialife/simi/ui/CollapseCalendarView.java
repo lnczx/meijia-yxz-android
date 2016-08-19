@@ -40,6 +40,7 @@ import java.util.Queue;
 /**
  * Created by Blaz Solar on 28/02/14.
  */
+@Deprecated
 public class CollapseCalendarView extends LinearLayout implements View.OnClickListener {
 
     private static final String TAG = "CalendarView";
