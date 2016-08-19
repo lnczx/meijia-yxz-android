@@ -447,8 +447,11 @@ public class MonthView extends View {
             }
             if (null != mDPDecor && info.isDecorT) {
                 canvas.save();
-                canvas.clipRect(rect.left + sizeDecor, rect.top, rect.left + sizeDecor2x,
-                        rect.top + sizeDecor);
+//                canvas.clipRect(rect.left + sizeDecor, rect.top, rect.left + sizeDecor2x,
+//                        rect.top + sizeDecor);
+                //在下面画点，中庸解决方案
+                canvas.clipRect(rect.left + sizeDecor, rect.bottom-sizeDecor, rect.left + sizeDecor2x, rect.bottom);
+
                 mDPDecor.drawDecorT(canvas, canvas.getClipBounds(), mPaint, data);
                 canvas.restore();
             }
