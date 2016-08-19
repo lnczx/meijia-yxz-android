@@ -213,7 +213,8 @@ public class MonthView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
-        setMeasuredDimension(measureWidth, (int) (measureWidth * 6F / 7F));
+        setMeasuredDimension(measureWidth, (int) (measureWidth * 5F / 7F));//modify by andye
+//        setMeasuredDimension(measureWidth, (int) (measureWidth * 6F / 7F));//调节日历区域的高度
     }
 
     @Override
@@ -767,7 +768,7 @@ public class MonthView extends View {
     }
 
     private enum SlideMode {
-//        VER,
+//        VER, //删除掉上下滑动，by andye
         HOR
     }
 

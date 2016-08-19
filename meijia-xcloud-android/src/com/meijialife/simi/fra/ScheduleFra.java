@@ -72,6 +72,8 @@ import net.tsz.afinal.http.AjaxParams;
 import org.joda.time.LocalDate;
 import org.json.JSONObject;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,7 +138,6 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fra_schedule_layout, null);
         init(v);
-        getTotalByMonth(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
 
         initUserMsgView(v);
 
@@ -349,6 +350,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         user = DBHelper.getUser(getActivity());
         if (user != null) {
             getUserMsgListData(today_date, page);
+
+            getTotalByMonth(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
         }
 
          /*else {
@@ -637,7 +640,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                             String msg = obj.getString("msg");
                             String data = obj.getString("data");
                             if (status == Constants.STATUS_SUCCESS) { // 正确
-                                LogOut.debug("===="+t.toString());
+                                LogOut.debug("====fra:"+t.toString());
                                 // 先清除这个月的旧数据
                                 DBHelper.clearCalendarMark(getActivity(), year + "", month + "");
 
@@ -649,6 +652,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                                     DBHelper db = DBHelper.getInstance(getActivity());
                                     for (int i = 0; i < calendarMarks.size(); i++) {
                                         db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
+                                        LogOut.debug("fra date:" + calendarMarks.get(i).getService_date());
                                     }
                                 }
 
@@ -756,26 +760,36 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * @param calendarMarks
      */
     public void DrawCalendarPoint(List<CalendarMark> calendarMarks){
-        List<String> tmpTR = new ArrayList<>();
+        SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat monthFormat  = new SimpleDateFormat("yyyy-M-d");
+
+
+        List<String> tmpMarkDate = new ArrayList<>();
         for (CalendarMark mark:calendarMarks) {
+            ParsePosition pos = new ParsePosition(0);
             String data=mark.getService_date().trim();
-            tmpTR.add(data);
-            System.out.println("日期："+ data);
+            String formatDate=monthFormat.format(fullFormat.parse(data, pos));
+            tmpMarkDate.add(formatDate);
+
+            LogOut.debug("sql date:" + data);
         }
+
+        DPCManager.getInstance().setDecorT(tmpMarkDate);
+
+        //大坑，解析不了日期前面的0
 //        String data=calendarMarks.get(0).getService_date().trim();
 //        tmpTR.add(data);
 //        System.out.println("日期：" + data);
 //        DPCManager.getInstance().setDecorT(tmpTR);
+//        List<String> tmpT = new ArrayList<>();
+//        tmpT.add("2016-8-04");
+//        tmpT.add("2016-8-08");
+//        tmpT.add("2016-8-09");
+//        tmpT.add("2016-8-10");
+//        tmpT.add("2016-8-11");
+//        tmpT.add("2016-8-30");
+//        tmpT.add("2016-8-31");
 
-        List<String> tmpT = new ArrayList<>();
-        tmpT.add("2016-8-04");
-        tmpT.add("2016-8-08");
-        tmpT.add("2016-8-09");
-        tmpT.add("2016-8-10");
-        tmpT.add("2016-8-11");
-        tmpT.add("2016-8-30");
-        tmpT.add("2016-8-31");
-        DPCManager.getInstance().setDecorT(tmpT);
         picker.setDPDecor(new DPDecor() {
             @Override
             public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
@@ -807,6 +821,5 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
             }
 
         });
-//        picker.invalidate();
     }
 }

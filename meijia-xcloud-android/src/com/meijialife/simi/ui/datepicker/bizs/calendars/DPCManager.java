@@ -175,14 +175,15 @@ public final class DPCManager {
                 days = new HashSet<>();
             }
 
-            //add by andye 2016/08/19  day not 0 bug
-            String tempday=str.substring(index+1 , index+2);
-            if(tempday !=null && tempday.equals("0")){
-                days.add(str.substring(index + 2, str.length()));
-            }else{
-                days.add(str.substring(index + 1, str.length()));
-            }
+            //add by andye 2016/08/19  日期不能为0 的bug ，通过格式化日期解决
+//            String tempday=str.substring(index+1 , index+2);
+//            if(tempday !=null && tempday.equals("0")){
+//                days.add(str.substring(index + 2, str.length()));
+//            }else{
+//                days.add(str.substring(index + 1, str.length()));
+//            }
 
+            days.add(str.substring(index + 1, str.length()));
             cache.put(key, days);
         }
     }

@@ -1,22 +1,5 @@
 package com.meijialife.simi.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import net.tsz.afinal.FinalBitmap;
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -66,6 +49,23 @@ import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
+
+import net.tsz.afinal.FinalBitmap;
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SplashActivity extends Activity {
 
@@ -731,9 +731,9 @@ public class SplashActivity extends Activity {
     private void updateCalendarMark() {
         int year = CalendarUtils.getCurrentYear();
         int month = CalendarUtils.getCurrentMonth();
-        getTotalByMonth(year + "", month + "");
+//        getTotalByMonth(year + "", month + "");
         
-       /* for(int i = 0; i < 8; i++){
+        for(int i = 0; i < 8; i++){
             if(month == 12){
                 month = 1;
                 year += 1;
@@ -741,7 +741,7 @@ public class SplashActivity extends Activity {
                 month += 1;
             }
             getTotalByMonth(year+"", month+"");
-        }*/
+        }
     }
 
     /**
@@ -776,7 +776,7 @@ public class SplashActivity extends Activity {
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                LogOut.i("========", "onSuccess：" + t);
+                LogOut.i("========", "splash onSuccess：" + t);
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -792,7 +792,9 @@ public class SplashActivity extends Activity {
                                 DBHelper db = DBHelper.getInstance(SplashActivity.this);
                                 for (int i = 0; i < calendarMarks.size(); i++) {
                                     db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
+                                    LogOut.debug("splash date:"+calendarMarks.get(i).getService_date());
                                 }
+
                             } else {
 
                             }
