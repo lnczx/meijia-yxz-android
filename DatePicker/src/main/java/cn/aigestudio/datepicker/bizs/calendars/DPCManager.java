@@ -174,7 +174,15 @@ public final class DPCManager {
             if (null == days) {
                 days = new HashSet<>();
             }
-            days.add(str.substring(index + 1, str.length()));
+
+            //add by andye 2016/08/19  day not 0 bug
+            String tempday=str.substring(index+1 , index+2);
+            if(tempday !=null && tempday.equals("0")){
+                days.add(str.substring(index + 2, str.length()));
+            }else{
+                days.add(str.substring(index + 1, str.length()));
+            }
+
             cache.put(key, days);
         }
     }

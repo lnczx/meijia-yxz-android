@@ -901,15 +901,24 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     public void DrawCalendarPoint(List<CalendarMark> calendarMarks){
         List<String> tmpTR = new ArrayList<>();
         for (CalendarMark mark:calendarMarks) {
-            tmpTR.add(mark.getService_date());
-            System.out.print("日期："+mark.getService_date());
+            String data=mark.getService_date().trim();
+            tmpTR.add(data);
+            System.out.println("日期："+ data);
         }
+//        String data=calendarMarks.get(0).getService_date().trim();
+//        tmpTR.add(data);
+//        System.out.println("日期：" + data);
+//        DPCManager.getInstance().setDecorT(tmpTR);
 
         List<String> tmpT = new ArrayList<>();
+        tmpT.add("2016-8-04");
+        tmpT.add("2016-8-08");
+        tmpT.add("2016-8-09");
+        tmpT.add("2016-8-10");
+        tmpT.add("2016-8-11");
         tmpT.add("2016-8-30");
         tmpT.add("2016-8-31");
-        tmpT.add("2016-8-08");
-        DPCManager.getInstance().setDecorT(tmpTR);
+        DPCManager.getInstance().setDecorT(tmpT);
         picker.setDPDecor(new DPDecor() {
             @Override
             public void drawDecorT(Canvas canvas, Rect rect, Paint paint, String data) {
@@ -921,6 +930,23 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                         break;
                 }
 
+            }
+
+            @Override
+            public void drawDecorTR(Canvas canvas, Rect rect, Paint paint, String data) {
+                super.drawDecorTR(canvas, rect, paint, data);
+                switch (data) {
+                    case "2015-10-10":
+                    case "2015-10-11":
+                    case "2015-10-12":
+                        paint.setColor(Color.BLUE);
+                        canvas.drawCircle(rect.centerX(), rect.centerY(), rect.width() / 2, paint);
+                        break;
+                    default:
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawRect(rect, paint);
+                        break;
+                }
             }
 
         });

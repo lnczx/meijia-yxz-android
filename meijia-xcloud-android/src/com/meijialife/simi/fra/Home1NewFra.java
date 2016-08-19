@@ -370,6 +370,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 // dismissDialog();
+
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
