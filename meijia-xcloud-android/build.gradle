@@ -62,8 +62,14 @@ android {
         release {
             keyAlias 'meijialife'   
             keyPassword 'a123456'   
-            storeFile file('D:/workspace/meijia-wsp/meijia-kestore/form/meijialife.keystore')   
+            storeFile file('meijialife.keystore')
             storePassword 'a123456'   
+        }
+        debug {
+            keyAlias 'meijialife'
+            keyPassword 'a123456'
+            storeFile file('meijialife.keystore')
+            storePassword 'a123456'
         }
     }
     
