@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,21 +16,16 @@ import com.google.gson.reflect.TypeToken;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.adapter.HomeListAdapter;
-import com.meijialife.simi.bean.FindBean;
 import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.bean.HomeTag;
 import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.inter.ListItemClickHelps;
-import com.meijialife.simi.ui.IndicatorTabBar;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
-import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
@@ -143,6 +136,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 intent.putExtra("is_show", true);
                 intent.putExtra("home_post", homePost);
                 intent.putExtra("article_content", homePost.getContent());
+                intent.putExtra("from", ArticleDetailActivity.fromTrial);
                 startActivity(intent);
             }
         });

@@ -33,15 +33,28 @@
             android:background="@color/simi_color_line_gray" />
 
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/layout_new_webview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <include layout="@layout/article_webview_center" />
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/view_webview_title_bar"
+                    layout="@layout/layout_webview_title_bar" />
+
+                <include layout="@layout/article_webview_center" />
+            </LinearLayout>
+
+        </ScrollView>
 
         <ScrollView
+            android:id="@+id/layout_new_show_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/m_view_line"

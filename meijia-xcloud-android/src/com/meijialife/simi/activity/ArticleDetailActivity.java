@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +88,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private ImageView m_iv_zan;// 点赞
     private String pId;// 文章Id
     private String url;
+    private String from;
 
     private HomePost homePost;
     private HomePostes homePostes;
@@ -103,11 +106,13 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private View view;
     private WebView webView;
 
-    LinearLayout   layout_richtext;
+    LinearLayout layout_richtext;
     TextView txt_content_title;
     TextView txt_publish_from;
-    TextView txt_publish_source;
-    SimpleDraweeView   thumbnail_images;
+    TextView txt_publish_source ,tv_person_title;
+    SimpleDraweeView thumbnail_images;
+    ScrollView  layout_new_show_data ,layout_new_webview;
+    public static final String fromTrial = "fromTrial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +128,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
         url = getIntent().getStringExtra("url");
         pId = getIntent().getStringExtra("p_id");
+        from = getIntent().getStringExtra("from");
         is_show = getIntent().getBooleanExtra("is_show", false);
 
         // setTitleName(homePost.getTitle());
@@ -134,10 +140,13 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
 
 
+        layout_new_show_data = (ScrollView) findViewById(R.id.layout_new_show_data);
+        layout_new_webview = (ScrollView) findViewById(R.id.layout_new_webview);
         layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
         txt_content_title = (TextView) findViewById(R.id.txt_content_title);
         txt_publish_from = (TextView) findViewById(R.id.txt_publish_from);
         txt_publish_source = (TextView) findViewById(R.id.txt_publish_source);
+        tv_person_title = (TextView) findViewById(R.id.tv_person_title);
         thumbnail_images = (SimpleDraweeView) findViewById(R.id.thumbnail_images);
 
     }
@@ -515,22 +524,33 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                                 Gson gson = new Gson();
 //                                homePost = gson.fromJson(post, HomePost.class);
                                 homePostes = gson.fromJson(post, HomePostes.class);
-//                                String content = homePostes.getContent();
+                                String content = homePostes.getContent();
 
-                                fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
+                                if (StringUtils.isNotEmpty(from) && StringUtils.isEquals(from, fromTrial)) {
+                                    layout_new_webview.setVisibility(View.VISIBLE);
+                                    layout_new_show_data.setVisibility(View.GONE);
 
-//                                finalBitmap.display(m_iv_article, homePostes.getThumbnail());
-//                                m_tv_article_title.setText(homePostes.getTitle());
+                                    finalBitmap.display(m_iv_article, homePostes.getThumbnail());
+                                    m_tv_article_title.setText(homePostes.getTitle());
+
+
 //                               /* CustomField customField = gson.fromJson(homePostes.getCustom_fields(),CustomField.class);
 //                                m_tv_from_name.setText(customField.getFromname_value().get(0));*/
-//                                m_tv_update_time.setText(homePostes.getModified());
-//
-//
-//                                webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
-//                                String str = Html.fromHtml(a).toString();
-////                                str.replaceAll("\n","</br>");
-////                                m_article_content.setText(str);
-//                                webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
+                                    m_tv_update_time.setText(homePostes.getModified());
+
+
+                                    webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
+                                    String str = Html.fromHtml(content).toString();
+//                                str.replaceAll("\n","</br>");
+//                                m_article_content.setText(str);
+//                                    webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
+                                    tv_person_title.setText(homePostes.getTitle());
+                                    webView.loadUrl(homePostes.getUrl());
+                                } else {
+                                    layout_new_webview.setVisibility(View.GONE);
+                                    layout_new_show_data.setVisibility(View.VISIBLE);
+                                    fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
+                                }
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -550,9 +570,10 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
     /**
      * 填充数据
+     *
      * @param homePostes
      */
-    private  void fillContent(HomePostes homePostes){
+    private void fillContent(HomePostes homePostes) {
         pTitle = homePostes.getTitle();
         txt_content_title.setText(homePostes.getTitle());
         txt_publish_from.setText(homePostes.getCustomFields().getFromnameValue().get(0));
@@ -561,10 +582,10 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         try {
             pImgUrl = homePostes.getThumbnailImages().getFull().getUrl();
             thumbnail_images.setImageURI(Uri.parse(pImgUrl));
-        }catch (Exception e){
+        } catch (Exception e) {
         }
         String content = homePostes.getContent();
-        if(StringUtils.isNotEmpty(content)){
+        if (StringUtils.isNotEmpty(content)) {
             gennerateContent(content);
         }
     }
@@ -583,15 +604,15 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                     String imgUri = attributes.get("src");
 //                    String width = attributes.get("data-width");
 //                    String height = attributes.get("data-height");
-                      String height = "190";
-                      String width = "330";
-                      String style = attributes.get("style");
+                    String height = "190";
+                    String width = "330";
+                    String style = attributes.get("style");
 
                     String widthRegex = "width: (.*)px; height:";
                     Pattern pattern = Pattern.compile(widthRegex);
                     Matcher matcher = pattern.matcher(style);
                     while (matcher.find()) {
-                        width = matcher.group(1) +"";
+                        width = matcher.group(1) + "";
                     }
                     String highRegex = "height: (.*)px";
                     Pattern pattern2 = Pattern.compile(highRegex);
@@ -644,6 +665,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         layout_richtext.addView(textview);
 
     }
+
     //普通文本
     private void addNormalText(String text) {
         TextView textview = (TextView) View.inflate(this, R.layout.richtext_txt_layout, null);
