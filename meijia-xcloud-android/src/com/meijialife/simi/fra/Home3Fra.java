@@ -196,9 +196,9 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         mPullRefreshFriendListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), FriendPageActivity.class);
-                intent.putExtra("friend_id", myFriendList.get(position).getFriend_id());
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), FriendPageActivity.class);
+//                intent.putExtra("friend_id", myFriendList.get(position).getFriend_id());
+//                startActivity(intent);
             }
         });
     }
