@@ -166,6 +166,20 @@ public final class DPCManager {
         return dataOfMonth;
     }
 
+    //add by andye 2016.08.21 解决点不能够重新画的问题
+    public void clearCacheT(){
+        if(DECOR_CACHE_T != null){
+            DECOR_CACHE_T.clear();
+        }
+    }
+
+    public void clearCache(){
+        if(DATE_CACHE != null){
+            DATE_CACHE.clear();
+        }
+    }
+
+
     private void setDecor(List<String> date, HashMap<String, Set<String>> cache) {
         for (String str : date) {
             int index = str.lastIndexOf("-");

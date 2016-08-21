@@ -203,10 +203,10 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //        });
         picker = (DatePicker) v.findViewById(R.id.main_dp);
 
-        DBHelper instance = DBHelper.getInstance(getActivity());
-        List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
-        //日历加點
-        DrawCalendarPoint(calendarMarks);
+//        DBHelper instance = DBHelper.getInstance(getActivity());
+//        List<CalendarMark> calendarMarks = instance.searchAll(CalendarMark.class);
+//        //日历加點
+//        DrawCalendarPoint(calendarMarks);
 
         picker.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthOfYear());
         picker.setFestivalDisplay(true);
@@ -349,7 +349,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         if (user != null) {
             getUserMsgListData(today_date, page);
 
-            updateCalendarMark();
+            getTotalByMonth(CalendarUtils.getCurrentYear(), CalendarUtils.getCurrentMonth());
         }
 
          /*else {
@@ -367,19 +367,19 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     /**
      * 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点
      */
-    private void updateCalendarMark() {
-        int year = CalendarUtils.getCurrentYear();
-        int month = CalendarUtils.getCurrentMonth() - 1 ;//獲取過去一月數據
-        for(int i = 0; i < 3; i++){
-            if(month == 12){
-                month = 1;
-                year += 1;
-            }else{
-                month += 1;
-            }
-            getTotalByMonth(year, month);
-        }
-    }
+//    private void updateCalendarMark() {
+//        int year = CalendarUtils.getCurrentYear();
+//        int month = CalendarUtils.getCurrentMonth() - 1 ;//获取过去一月的数据
+//        for(int i = 0; i < 3; i++){
+//            if(month == 12){
+//                month = 1;
+//                year += 1;
+//            }else{
+//                month += 1;
+//            }
+//            getTotalByMonth(year, month);
+//        }
+//    }
 
     
     @Override
@@ -394,15 +394,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         // mAdView.pushImageCycle();
     }
 
-    public void isShowDefaultCard(boolean card_flag, boolean ad_flag) {
-        if (card_flag || ad_flag) {
-            tv_tips.setVisibility(View.GONE);
-            iv_no_card.setVisibility(View.GONE);
-        } else {
-            tv_tips.setVisibility(View.VISIBLE);
-            iv_no_card.setVisibility(View.VISIBLE);
-        }
-    }
+
 
     /**
      * 获得用户消息列表接口
@@ -664,16 +656,14 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
                                     calendarMarks = gson.fromJson(data, new TypeToken<ArrayList<CalendarMark>>() {
                                     }.getType());
 
-                                    DBHelper db = DBHelper.getInstance(getActivity());
-                                    for (int i = 0; i < calendarMarks.size(); i++) {
-                                        db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
-                                        LogOut.debug("fra date:" + calendarMarks.get(i).getService_date());
-                                    }
+//                                    DBHelper db = DBHelper.getInstance(getActivity());
+//                                    for (int i = 0; i < calendarMarks.size(); i++) {
+//                                        db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
+//                                        LogOut.debug("fra date:" + calendarMarks.get(i).getService_date());
+//                                    }
+
+                                    DrawCalendarPoint(calendarMarks);
                                 }
-
-                                // 刷新日历UI
-//                                calendarView.updateUI();
-
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);
                             } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -788,7 +778,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 
             LogOut.debug("sql date:" + data);
         }
-
+        DPCManager.getInstance().clearCacheT();
         DPCManager.getInstance().setDecorT(tmpMarkDate);
 
         //大坑，解析不了日期前面的0
@@ -836,6 +826,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
             }
 
         });
-        picker.postInvalidate();
+        DPCManager.getInstance().clearCache();
+        picker.invalidate();
     }
 }

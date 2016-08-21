@@ -589,7 +589,7 @@ public class Find2Fra extends BaseFragment {
      */
     private void showData(List<FindBean> myFindBeanList){
         if(myFindBeanList!=null && myFindBeanList.size()>0){
-            if(page==1){
+            if(page == 1 && totalFindBeanList != null){
                 totalFindBeanList.clear();
             }
             for (FindBean findBean : myFindBeanList) {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AlarmListActivity;
 import com.meijialife.simi.activity.MainPlusAffairActivity;
+import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.datepicker.bizs.decors.DPDecor;
 import com.meijialife.simi.ui.datepicker.bizs.languages.DPLManager;
 import com.meijialife.simi.ui.datepicker.bizs.themes.DPTManager;
@@ -192,6 +193,7 @@ public class DatePicker extends LinearLayout {
             @Override
             public void onMonthChange(int month) {
                 tvMonth.setText(mLManager.titleMonth()[month - 1]);
+
             }
 
             @Override
