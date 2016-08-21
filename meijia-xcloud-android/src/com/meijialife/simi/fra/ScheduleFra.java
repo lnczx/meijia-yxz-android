@@ -134,6 +134,20 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     private int page = 1;
     private UserMsgListAdapter userMsgAdapter;
     DatePicker picker;
+    List<String>   totalCalendarMarks;
+//    pickStateChanageReceiver pickStateChanageReceiver;
+
+//    class pickStateChanageReceiver extends BroadcastReceiver {
+//        public void onReceive(Context context, Intent intent) {
+//            if(null != intent && null != intent.getExtras()){
+//                String year =   intent.getExtras().getString(DatePicker.mYear);
+//                String month =   intent.getExtras().getString(DatePicker.mMonth);
+//
+//                getTotalByMonth(i, Integer.valueOf(year),Integer.valueOf(month));
+//            }
+//        }
+//    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -170,6 +184,14 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         // 请求帮助接口
         finalBitmap = FinalBitmap.create(getActivity());
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
+
+
+
+        //add by andye
+//        pickStateChanageReceiver = new pickStateChanageReceiver();
+//        IntentFilter filter = new IntentFilter();
+//        filter.addAction(DatePicker.CHAGE_DATE_MSG);
+//        getActivity().registerReceiver(pickStateChanageReceiver, filter);
 
     }
 
@@ -349,7 +371,8 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         if (user != null) {
             getUserMsgListData(today_date, page);
 
-            getTotalByMonth(CalendarUtils.getCurrentYear(), CalendarUtils.getCurrentMonth());
+            updateCalendarMark();
+//            getTotalByMonth(i, CalendarUtils.getCurrentYear(), CalendarUtils.getCurrentMonth());
         }
 
          /*else {
@@ -367,19 +390,20 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
     /**
      * 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点
      */
-//    private void updateCalendarMark() {
-//        int year = CalendarUtils.getCurrentYear();
-//        int month = CalendarUtils.getCurrentMonth() - 1 ;//获取过去一月的数据
-//        for(int i = 0; i < 3; i++){
-//            if(month == 12){
-//                month = 1;
-//                year += 1;
-//            }else{
-//                month += 1;
-//            }
-//            getTotalByMonth(year, month);
-//        }
-//    }
+    private void updateCalendarMark() {
+        totalCalendarMarks = new ArrayList<>();
+        int year = CalendarUtils.getCurrentYear();
+        int month = CalendarUtils.getCurrentMonth() - 2;
+        for(int i = 0; i < 4; i++){
+            if(month == 12){
+                month = 1;
+                year += 1;
+            }else{
+                month += 1;
+            }
+            getTotalByMonth(i,year, month);
+        }
+    }
 
     
     @Override
@@ -613,7 +637,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
      * 按月份查看卡片日期分布接口（更新日历圆点标签）
      *
      */
-    public void getTotalByMonth(final  int year, final int month) {
+    public void getTotalByMonth(final int num, final int year, final int month) {
 
         user = DBHelper.getUser(getActivity());
         if (user != null) {
@@ -662,7 +686,15 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
 //                                        LogOut.debug("fra date:" + calendarMarks.get(i).getService_date());
 //                                    }
 
-                                    DrawCalendarPoint(calendarMarks);
+                                    if(calendarMarks == null){
+                                        return;
+                                    }
+                                    for (int i = 0; i < calendarMarks.size(); i++) {
+                                        totalCalendarMarks.add(calendarMarks.get(i).getService_date());
+                                    }
+                                    if(num == 3){
+                                        DrawCalendarPoint(totalCalendarMarks);
+                                    }
                                 }
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);
@@ -758,21 +790,25 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         userMsgs = null;
         totalUserMsgList = null;
         // mAdView.pushImageCycle();
+
+
+//        if(pickStateChanageReceiver !=null ){
+//            getActivity().unregisterReceiver(pickStateChanageReceiver);
+//        }
     }
 
     /**
      * 画点
      * @param calendarMarks
      */
-    public void DrawCalendarPoint(List<CalendarMark> calendarMarks){
+    public void DrawCalendarPoint(List<String> calendarMarks){
         SimpleDateFormat fullFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat monthFormat  = new SimpleDateFormat("yyyy-M-d");
 
 
         List<String> tmpMarkDate = new ArrayList<>();
-        for (CalendarMark mark:calendarMarks) {
+        for (String  data:calendarMarks) {
             ParsePosition pos = new ParsePosition(0);
-            String data=mark.getService_date().trim();
             String formatDate=monthFormat.format(fullFormat.parse(data, pos));
             tmpMarkDate.add(formatDate);
 

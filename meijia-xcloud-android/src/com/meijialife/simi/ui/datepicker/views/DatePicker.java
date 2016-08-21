@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AlarmListActivity;
 import com.meijialife.simi.activity.MainPlusAffairActivity;
-import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.datepicker.bizs.decors.DPDecor;
 import com.meijialife.simi.ui.datepicker.bizs.languages.DPLManager;
 import com.meijialife.simi.ui.datepicker.bizs.themes.DPTManager;
@@ -41,7 +40,15 @@ public class DatePicker extends LinearLayout {
     private TextView tvEnsure;// 确定按钮显示
 
 
+    public static final String CHAGE_DATE_MSG="CHAGE_DATE_MSG";
+    public static final String YEAR="year";
+    public static final String MONTH="month";
+
+
     private OnDateSelectedListener onDateSelectedListener;// 日期多选后监听
+    public static String mYear = "2016";
+    public static String mMonth = "8";
+
 
     /**
      * 日期单选监听器
@@ -192,18 +199,32 @@ public class DatePicker extends LinearLayout {
         monthView.setOnDateChangeListener(new MonthView.OnDateChangeListener() {
             @Override
             public void onMonthChange(int month) {
-                tvMonth.setText(mLManager.titleMonth()[month - 1]);
+                mMonth = mLManager.titleMonth()[month - 1];
+                tvMonth.setText(mMonth);
 
+                //add by andye
+//                Intent intent = new Intent(CHAGE_DATE_MSG);
+//                intent.putExtra(YEAR, mYear);
+//                intent.putExtra(MONTH, mMonth);
+//                context.sendBroadcast(intent);
             }
-
             @Override
             public void onYearChange(int year) {
                 String tmp = String.valueOf(year);
                 if (tmp.startsWith("-")) {
                     tmp = tmp.replace("-", mLManager.titleBC());
                 }
-                tvYear.setText(tmp);
+                mYear = tmp;
+                tvYear.setText(mYear);
+
+                //add by andye
+//                Intent intent = new Intent(CHAGE_DATE_MSG);
+//                intent.putExtra(YEAR, mYear);
+//                intent.putExtra(MONTH, mMonth);
+//                context.sendBroadcast(intent);
+
             }
+
         });
         addView(monthView, llParams);
     }
