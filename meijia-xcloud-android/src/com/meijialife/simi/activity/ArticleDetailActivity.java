@@ -124,6 +124,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private TextView tv_person_title;
     private ImageView iv_person_close;
     private ImageView iv_menu;
+    String title;
 
     String newsUrl;
 
@@ -185,7 +186,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                                 }
                                 break;
                             case ITEM2:// 分享
-                                ShareConfig.getInstance().inits(ArticleDetailActivity.this,newsUrl,homePost.getTitle(), "");
+                                ShareConfig.getInstance().inits(ArticleDetailActivity.this,newsUrl,title, "");
                                 postShare();
                                 break;
                             case ITEM3:// 吐槽
@@ -589,6 +590,8 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                                 homePostes = gson.fromJson(post, HomePostes.class);
                                 String content = homePostes.getContent();
 
+                                title = homePostes.getTitle();
+
                                 if (StringUtils.isNotEmpty(from) && StringUtils.isEquals(from, fromTrial)) {
                                     layout_new_webview.setVisibility(View.VISIBLE);
                                     layout_new_show_data.setVisibility(View.GONE);
@@ -607,7 +610,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 //                                str.replaceAll("\n","</br>");
 //                                m_article_content.setText(str);
 //                                    webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
-                                    tv_person_title.setText(homePostes.getTitle());
+                                    tv_person_title.setText(title);
                                     newsUrl = homePostes.getUrl();
                                     webView.loadUrl(newsUrl);
                                 } else {
