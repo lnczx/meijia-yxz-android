@@ -31,6 +31,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easemob.easeui.EaseConstant;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,12 +43,14 @@ import com.meijialife.simi.bean.HomePost;
 import com.meijialife.simi.bean.HomePostes;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
+import com.meijialife.simi.ui.PopupMenu;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.meijialife.simi.utils.Utils;
+import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
 import net.tsz.afinal.FinalBitmap;
@@ -106,13 +109,23 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private View view;
     private WebView webView;
 
+    LinearLayout layout_new_webview;
     LinearLayout layout_richtext;
     TextView txt_content_title;
     TextView txt_publish_from;
-    TextView txt_publish_source ,tv_person_title;
+    TextView txt_publish_source;
     SimpleDraweeView thumbnail_images;
-    ScrollView  layout_new_show_data ,layout_new_webview;
+    ScrollView  layout_new_show_data;
     public static final String fromTrial = "fromTrial";
+    PopupMenu  popupMenu;
+
+    private WebView webview;
+    private ImageView iv_person_left;
+    private TextView tv_person_title;
+    private ImageView iv_person_close;
+    private ImageView iv_menu;
+
+    String newsUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,13 +154,53 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
 
         layout_new_show_data = (ScrollView) findViewById(R.id.layout_new_show_data);
-        layout_new_webview = (ScrollView) findViewById(R.id.layout_new_webview);
+        layout_new_webview = (LinearLayout) findViewById(R.id.layout_new_webview);
         layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
         txt_content_title = (TextView) findViewById(R.id.txt_content_title);
         txt_publish_from = (TextView) findViewById(R.id.txt_publish_from);
         txt_publish_source = (TextView) findViewById(R.id.txt_publish_source);
         tv_person_title = (TextView) findViewById(R.id.tv_person_title);
         thumbnail_images = (SimpleDraweeView) findViewById(R.id.thumbnail_images);
+
+
+        iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
+        iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
+        iv_person_left.setOnClickListener(this);
+        iv_person_close.setOnClickListener(this);
+        iv_menu = (ImageView) findViewById(R.id.iv_person_more);
+
+        popupMenu = new PopupMenu(this);
+
+        iv_menu.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupMenu.showLocation(R.id.iv_person_more);
+                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
+                    @Override
+                    public void onClick(PopupMenu.MENUITEM item, String str) {
+                        switch (item) {
+                            case ITEM1:// 刷新
+                                if (webview != null  ) {
+                                  webview.reload();
+                                }
+                                break;
+                            case ITEM2:// 分享
+                                ShareConfig.getInstance().inits(ArticleDetailActivity.this,newsUrl,homePost.getTitle(), "");
+                                postShare();
+                                break;
+                            case ITEM3:// 吐槽
+                                Intent intent = new Intent(ArticleDetailActivity.this,ChatActivity.class);
+                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+            }
+        });
 
     }
 
@@ -287,6 +340,16 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                 findViewById(R.id.webview_comment).setVisibility(View.GONE);
                 ShareConfig.getInstance().inits(ArticleDetailActivity.this, url, pTitle, pImgUrl);
                 postShare();
+                break;
+            case R.id.iv_person_close: // 返回
+                finish();
+                break;
+            case R.id.iv_person_left: // 返回
+                if (webview != null && webview.canGoBack()) {
+                    webview.goBack();
+                } else {
+                    finish();
+                }
                 break;
             default:
                 break;
@@ -545,7 +608,8 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 //                                m_article_content.setText(str);
 //                                    webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
                                     tv_person_title.setText(homePostes.getTitle());
-                                    webView.loadUrl(homePostes.getUrl());
+                                    newsUrl = homePostes.getUrl();
+                                    webView.loadUrl(newsUrl);
                                 } else {
                                     layout_new_webview.setVisibility(View.GONE);
                                     layout_new_show_data.setVisibility(View.VISIBLE);
