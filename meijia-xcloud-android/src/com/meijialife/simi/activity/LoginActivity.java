@@ -661,7 +661,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                 DBHelper.updateUserInfo(LoginActivity.this, userInfo);
                                 loginUmengComm();//登陆友盟社区
                                 loginIm();// 去登陆环信
-                                updateCalendarMark();// 请求日历数据
+//                                updateCalendarMark();// 请求日历数据
                                 getUserMsg();//更新用户未读信息状态
                             } else {
                                 // UIUtils.showToast(LoginActivity.this, "数据错误");
