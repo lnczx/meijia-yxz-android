@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private ImageView mLogoIcon;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
-    
+
     /**
      * 获取当前位置经纬度
      */
@@ -124,8 +124,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.login_layout);
         super.onCreate(savedInstanceState);
         initView();
-        
-        
+
+
         setConfig();// 配置第三方登录
 
         mHandler = new Handler() {
@@ -133,16 +133,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
-                case 0:
-                    if (msg.obj.toString().equalsIgnoreCase("0")) {
-                        login_getcode.setText("获取验证码");
-                        login_getcode.setClickable(true);
-                        login_getcode.setFocusable(true);
-                        login_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_login_getcode));
-                    } else {
-                        login_getcode.setText("重发验证码" + msg.obj + "s");
-                    }
-                    break;
+                    case 0:
+                        if (msg.obj.toString().equalsIgnoreCase("0")) {
+                            login_getcode.setText("获取验证码");
+                            login_getcode.setClickable(true);
+                            login_getcode.setFocusable(true);
+                            login_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_login_getcode));
+                        } else {
+                            login_getcode.setText("重发验证码" + msg.obj + "s");
+                        }
+                        break;
                 }
             }
         };
@@ -168,12 +168,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private void initView() {
 
         setTitleName("快速注册与登录");
-        int is_show_back = getIntent().getIntExtra("is_show_back",1);
-        if(is_show_back==1){
+        int is_show_back = getIntent().getIntExtra("is_show_back", 1);
+        if (is_show_back == 1) {
             requestBackBtn();
         }
         finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.login_logo);
+        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.login_logo);
         et_user = (EditText) findViewById(R.id.login_user_name);
         et_pwd = (EditText) findViewById(R.id.login_password);
 
@@ -190,9 +190,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         sina_login_btn = (ImageView) findViewById(R.id.sina_login_btn);
         wx_login_btn = (ImageView) findViewById(R.id.wx_login_btn);
 
-        
-        finalBitmap.display(mLogoIcon,Constants.LOGO_ICON_URL);
-        
+
+        finalBitmap.display(mLogoIcon, Constants.LOGO_ICON_URL);
+
         login_btn.setOnClickListener(this);
         login_getcode.setOnClickListener(this);
         login_not_get_captcha.setOnClickListener(this);
@@ -201,11 +201,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         qq_login_btn.setOnClickListener(this);
         sina_login_btn.setOnClickListener(this);
         wx_login_btn.setOnClickListener(this);
-        
+
         initLocation();
 
     }
-    
+
     /**
      * 获取用户当前位置的经纬度
      */
@@ -225,56 +225,56 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.qq_login_btn:
+            case R.id.qq_login_btn:
 
-            login_with_social(SHARE_MEDIA.QQ);
-            break;
-        case R.id.sina_login_btn:
-            login_with_social(SHARE_MEDIA.SINA);
-            break;
-        case R.id.wx_login_btn:
-            login_with_social(SHARE_MEDIA.WEIXIN);
-            break;
-        case R.id.login_getcode:// 获取验证码
-            String reg_phone = et_user.getText().toString().trim();
-            if (BasicToolUtil.checkMobileNum(this, reg_phone)) {
-                getSmsToken(reg_phone);
-            }
-
-            break;
-        case R.id.login_btn: // 登录
-            login_nomal();
-            break;
-        case R.id.login_not_get_captcha:// 没有收到
-            String styledText = "<font color='blue'>" + Constants.SERVICE_NUMBER + "</font>";
-            Spanned number = Html.fromHtml("<u>" + styledText + "</u>");
-            tv_number.setText(number, TextView.BufferType.SPANNABLE);
-            String text = getResources().getString(R.string.login_no_code_tip);
-            tv_nocode_tip.setText(text, TextView.BufferType.SPANNABLE);
-            if (login_nocode_tip.getVisibility() == View.INVISIBLE) {
-                login_nocode_tip.setVisibility(View.VISIBLE);
-            }
-
-            tv_number.setOnClickListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                login_with_social(SHARE_MEDIA.QQ);
+                break;
+            case R.id.sina_login_btn:
+                login_with_social(SHARE_MEDIA.SINA);
+                break;
+            case R.id.wx_login_btn:
+                login_with_social(SHARE_MEDIA.WEIXIN);
+                break;
+            case R.id.login_getcode:// 获取验证码
+                String reg_phone = et_user.getText().toString().trim();
+                if (BasicToolUtil.checkMobileNum(this, reg_phone)) {
+                    getSmsToken(reg_phone);
                 }
-            });
 
-            break;
-        case R.id.tv_user_tip:// 用户协议
-            Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra("url", Constants.URL_WEB_AGREE);
-            intent.putExtra("title", "用户使用协议");
-            startActivity(intent);
+                break;
+            case R.id.login_btn: // 登录
+                login_nomal();
+                break;
+            case R.id.login_not_get_captcha:// 没有收到
+                String styledText = "<font color='blue'>" + Constants.SERVICE_NUMBER + "</font>";
+                Spanned number = Html.fromHtml("<u>" + styledText + "</u>");
+                tv_number.setText(number, TextView.BufferType.SPANNABLE);
+                String text = getResources().getString(R.string.login_no_code_tip);
+                tv_nocode_tip.setText(text, TextView.BufferType.SPANNABLE);
+                if (login_nocode_tip.getVisibility() == View.INVISIBLE) {
+                    login_nocode_tip.setVisibility(View.VISIBLE);
+                }
 
-            break;
-        default:
-            break;
+                tv_number.setOnClickListener(new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                });
+
+                break;
+            case R.id.tv_user_tip:// 用户协议
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", Constants.URL_WEB_AGREE);
+                intent.putExtra("title", "用户使用协议");
+                startActivity(intent);
+
+                break;
+            default:
+                break;
         }
     }
 
@@ -350,14 +350,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     /**
      * 第三方登录
-     * 
+     *
      * @param uid
-     * @param platform
-     *            来源
-     * @param info
-     * 
-     *            qq用户信息:{is_yellow_year_vip=0, vip=0, level=0, province=北京, yellow_vip_level=0, is_yellow_vip=0, gender=男, screen_name=清风飘叶, msg=,
-     *            profile_image_url=http://q.qlogo.cn/qqapp/1104934408/06183F86F7AA0ABE4314055856835450/100, city=海淀} time: 1441082419979
+     * @param platform 来源
+     * @param info     qq用户信息:{is_yellow_year_vip=0, vip=0, level=0, province=北京, yellow_vip_level=0, is_yellow_vip=0, gender=男, screen_name=清风飘叶, msg=,
+     *                 profile_image_url=http://q.qlogo.cn/qqapp/1104934408/06183F86F7AA0ABE4314055856835450/100, city=海淀} time: 1441082419979
      */
     private void login_3rd(final String uid, SHARE_MEDIA platform, final Map<String, Object> info) {
         showDialog();
@@ -557,7 +554,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                             e.printStackTrace();
                                         }
                                     }
-                                };
+                                }
+
+                                ;
                             }.start();
 
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -580,16 +579,30 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             }
         });
 
-    };
+    }
+
+    ;
 
     /**
      * 后台接口登陆成功，开始登陆环信
      */
     private void loginSuccess(String data) {
-        Gson gson = new Gson();
-        user = gson.fromJson(data, User.class);
-        DBHelper.updateUser(LoginActivity.this, user);
+        if (null == data) {
+            Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            Gson gson = new Gson();
+            user = gson.fromJson(data, User.class);
+        }catch (Exception e){
+            user = null;
+        }
+        if(null == user ){
+            Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        DBHelper.updateUser(LoginActivity.this, user);
         // 登录成功
         Toast.makeText(getApplicationContext(), "登录成功！", Toast.LENGTH_SHORT).show();
 
@@ -603,14 +616,14 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 if (location == null) {
                     return;
                 }
-                if(DBHelper.getUser(LoginActivity.this)!=null){
+                if (DBHelper.getUser(LoginActivity.this) != null) {
                     post_trail(location);
                 }
             }
         });
-        
+
         String clientidFromWeb = user.getClient_id();
-        if (StringUtils.isEmpty(clientidFromWeb)||!StringUtils.isEquals(clientidFromWeb, clientid)) {
+        if (StringUtils.isEmpty(clientidFromWeb) || !StringUtils.isEquals(clientidFromWeb, clientid)) {
             bind_user(user.getId(), clientid);
         }
     }
@@ -619,7 +632,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      * 获取用户详情接口
      */
     private void getUserInfo() {
-        if (user == null) {
+        if (user.getId() == null) {
             Toast.makeText(LoginActivity.this, "用户信息错误", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -657,14 +670,21 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                userInfo = gson.fromJson(data, UserInfo.class);
-                                DBHelper.updateUserInfo(LoginActivity.this, userInfo);
-                                loginUmengComm();//登陆友盟社区
-                                loginIm();// 去登陆环信
+                                try {
+                                    userInfo = gson.fromJson(data, UserInfo.class);
+                                    if (null != userInfo) {
+                                        loginUmengComm();//登陆友盟社区
+//                                        loginIm();// 去登陆环信 放到友盟登录成功之后
 //                                updateCalendarMark();// 请求日历数据
-                                getUserMsg();//更新用户未读信息状态
+//                                getUserMsg();//更新用户未读信息状态
+                                        DBHelper.updateUserInfo(LoginActivity.this, userInfo);
+                                    }
+                                } catch (Exception e) {
+                                    UIUtils.showToast(LoginActivity.this, "登录失败，请重试");
+                                }
+
                             } else {
-                                // UIUtils.showToast(LoginActivity.this, "数据错误");
+                                UIUtils.showToast(LoginActivity.this, "数据错误");
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -732,13 +752,13 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                     List<UserMsg> userMsgs = gson.fromJson(data, new TypeToken<ArrayList<UserMsg>>() {
                                     }.getType());
 
-                                    if(userMsgs!=null && userMsgs.size()>1){
-                                        SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,true);
-                                    }else{
-                                        SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,false);
+                                    if (userMsgs != null && userMsgs.size() > 1) {
+                                        SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, true);
+                                    } else {
+                                        SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
                                     }
                                 } else {
-                                    SpFileUtil.saveBoolean(LoginActivity.this,SpFileUtil.KEY_MSG_UNREAD,SpFileUtil.KEY_MSG_UNREAD,false);
+                                    SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
                                 }
                             } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                                 errorMsg = getString(R.string.servers_error);
@@ -765,9 +785,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    private void loginUmengComm(){
-        
-        
+    private void loginUmengComm() {
         //创建CommUser前必须先初始化CommunitySDK----------------第三方初始化
         CommunitySDK sdk = CommunityFactory.getCommSDK(this);
         sdk.initSDK(getApplication());
@@ -783,6 +801,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             sLoginListener.onComplete(ErrorCode.SUCCESS, user);
         }
 
+        loginIm();//登录环信
 
 //        sdk.loginToUmengServer(this, user, new LoginListener() {
 //            @Override
@@ -874,20 +893,20 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                     @Override
                     public void run() {
                         dismissDialog();
-//                        Toast.makeText(getApplicationContext(), "环信登录成功！", Toast.LENGTH_SHORT).show();
-                       if(user.getIs_new_user()==0){
-                           Constants.BACK_TYPE =0;
-                           Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                           startActivity(intent);
-                       }else if(user.getIs_new_user()==1){
-                           Constants.BACK_TYPE =1;
-                           Intent intent = new Intent(LoginActivity.this, MainPlusActivity.class);
-                           overridePendingTransition(R.anim.activity_open, 0);
-                           startActivity(intent);
-                       }
-                       //登录成功标志位
-                       SpFileUtil.saveBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, true);
-                       finish();
+                        Toast.makeText(getApplicationContext(), "IM登录成功！", Toast.LENGTH_SHORT).show();
+                        if (user.getIs_new_user() == 0) {
+                            Constants.BACK_TYPE = 0;
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else if (user.getIs_new_user() == 1) {
+                            Constants.BACK_TYPE = 1;
+                            Intent intent = new Intent(LoginActivity.this, MainPlusActivity.class);
+                            overridePendingTransition(R.anim.activity_open, 0);
+                            startActivity(intent);
+                        }
+                        //登录成功标志位
+                        SpFileUtil.saveBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, true);
+                        finish();
                     }
                 });
 
@@ -938,11 +957,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     /**
      * 按月份获取卡片日期分布接口
-     * 
-     * @param year
-     *            年份，格式为 YYYY
-     * @param month
-     *            月份，格式为 MM
+     *
+     * @param year  年份，格式为 YYYY
+     * @param month 月份，格式为 MM
      */
     public void getTotalByMonth(String year, String month) {
 
@@ -1018,7 +1035,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     /**
      * 绑定接口
-     * 
      */
     private void bind_user(String user_id, String client_id) {
         Map<String, String> map = new HashMap<String, String>();
@@ -1071,7 +1087,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             }
         });
     }
-    
+
     /**
      * 获取当前地理位置
      */
@@ -1079,8 +1095,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         String user_id = DBHelper.getUser(LoginActivity.this).getId();
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id);
-        map.put("lat", location.getLatitude()+"");
-        map.put("lng", location.getLongitude()+"");
+        map.put("lat", location.getLatitude() + "");
+        map.put("lng", location.getLongitude() + "");
         map.put("poi_name", location.getProvince());
         map.put("city", location.getCity());
         AjaxParams param = new AjaxParams(map);
@@ -1089,8 +1105,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(LoginActivity.this,  getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -1107,20 +1124,20 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                 locationClient = null;
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg =  getString(R.string.servers_error);
+                            errorMsg = getString(R.string.servers_error);
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg =  getString(R.string.param_missing);
+                            errorMsg = getString(R.string.param_missing);
                         } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg =  getString(R.string.param_illegal);
+                            errorMsg = getString(R.string.param_illegal);
                         } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
                             errorMsg = msg;
                         } else {
-                            errorMsg =  getString(R.string.servers_error);
+                            errorMsg = getString(R.string.servers_error);
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    errorMsg =  getString(R.string.servers_error);
+                    errorMsg = getString(R.string.servers_error);
 
                 }
                 // 操作失败，显示错误信息|
@@ -1130,7 +1147,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             }
         });
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
