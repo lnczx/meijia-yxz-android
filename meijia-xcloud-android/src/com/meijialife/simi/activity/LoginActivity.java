@@ -426,6 +426,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     }
 
+
     /**
      * 授权。如果授权成功，则获取用户信息
      */
@@ -497,6 +498,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         if (ssoHandler != null) {
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     /**
@@ -608,20 +615,24 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         // 获取用户详情，之后去登陆环信
         getUserInfo();
-        //登录成功定位当前位置
-        locationClient.start();
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                if (location == null) {
-                    return;
-                }
-                if (DBHelper.getUser(LoginActivity.this) != null) {
-                    post_trail(location);
-                }
-            }
-        });
 
+        try{
+            //登录成功定位当前位置
+            locationClient.start();
+            locationClient.registerLocationListener(new BDLocationListener() {
+                @Override
+                public void onReceiveLocation(BDLocation location) {
+                    if (location == null) {
+                        return;
+                    }
+                    if (DBHelper.getUser(LoginActivity.this) != null) {
+                        post_trail(location);
+                    }
+                }
+            });
+        }catch (Exception e){
+
+        }
         String clientidFromWeb = user.getClient_id();
         if (StringUtils.isEmpty(clientidFromWeb) || !StringUtils.isEquals(clientidFromWeb, clientid)) {
             bind_user(user.getId(), clientid);
@@ -801,6 +812,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             sLoginListener.onComplete(ErrorCode.SUCCESS, user);
         }
 
+
         loginIm();//登录环信
 
 //        sdk.loginToUmengServer(this, user, new LoginListener() {
@@ -935,6 +947,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     /**
      * 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点
      */
+    @Deprecated
     private void updateCalendarMark() {
         // int year = CalendarUtils.getCurrentYear();
         // int month = CalendarUtils.getCurrentMonth();
@@ -961,6 +974,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
      * @param year  年份，格式为 YYYY
      * @param month 月份，格式为 MM
      */
+    @Deprecated //此处不再获取
     public void getTotalByMonth(String year, String month) {
 
         String user_id = DBHelper.getUser(LoginActivity.this).getId();
@@ -1106,6 +1120,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                if (locationClient != null && locationClient.isStarted()) {
+                    locationClient.stop();
+                    locationClient = null;
+                }
             }
 
             @Override
