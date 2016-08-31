@@ -90,8 +90,9 @@ public class ShareConfig {
             pImage = new UMImage(mContext, imgUrl);
         }
 
+        //微信好友
         WeiXinShareContent weixinContent = new WeiXinShareContent();
-        weixinContent.setShareContent(title + " " + Constants.SHARE_CONTENT);
+        weixinContent.setShareContent(Constants.SHARE_CONTENT);
         weixinContent.setTitle(title);
         weixinContent.setTargetUrl(webUrl);
         if (pImage != null) {
