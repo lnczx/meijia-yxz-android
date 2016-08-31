@@ -394,7 +394,7 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
         totalCalendarMarks = new ArrayList<>();
         int year = CalendarUtils.getCurrentYear();
         int month = CalendarUtils.getCurrentMonth() - 2;
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 8; i++){
             if(month == 12){
                 month = 1;
                 year += 1;
