@@ -12,7 +12,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -94,14 +93,19 @@ public class SplashActivity extends Activity {
 
         final Timer timer = new Timer();
         initDb();
-        initLocation();
-        AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
-        aa.setDuration(2000);
-        findViewById(R.id.iv_welcome).startAnimation(aa);
+        try{
+            initLocation();
+        }catch (Exception e){
+        }
+
+//        AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
+//        aa.setDuration(2000);
+//        findViewById(R.id.iv_welcome).startAnimation(aa);
 
         //启动页动态广告
         mWelcome = (ImageView) findViewById(R.id.iv_welcome);
         mWelcome2 = (ImageView) findViewById(R.id.iv_welcome2);
+
         initSplashAd();
         timer.schedule(task, 2000);
 
@@ -111,7 +115,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
-                if (searchAll.size() <= 0) {
+                if (searchAll.size() > 0) {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     SplashActivity.this.finish();
                     timer.cancel();
@@ -121,14 +125,31 @@ public class SplashActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    initEasemob();
-                    updateCalendarMark();
+                    try {
+                        initEasemob();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        SplashActivity.this.finish();
+                    }
+                    try {
+                        updateCalendarMark();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         };
         timer.schedule(MyTask, 3000);
         initRoute();
-        getCitys(getCityAddtime());
+
+        try{
+            getCitys(getCityAddtime());
+        }catch (Exception e){
+        }
+
+
         getBaseDatas();
 
         //增加图片点击事件
@@ -247,18 +268,25 @@ public class SplashActivity extends Activity {
                             e.printStackTrace();
                         }
                     }
-                    //进入主页面
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    finish();
-                } else {
-                    try {
+//                    //进入主页面
+//                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                    finish();
+                }
+//                else {
+//                    try {
+//                        Thread.sleep(sleepTime);
+//                    } catch (InterruptedException e) {
+//                    }
+                    //去登陆
+//                    startActivity(new Intent(SplashActivity.this, SplashActivity.class));
+//                    finish();
+//                }
+                try {
                         Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
-                    }
-                    //去登陆
-                    startActivity(new Intent(SplashActivity.this, SplashActivity.class));
-                    finish();
-                }
+                  }
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
             }
         }).start();
     }
@@ -283,6 +311,10 @@ public class SplashActivity extends Activity {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(SplashActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                if (locationClient != null && locationClient.isStarted()) {
+                    locationClient.stop();
+                    locationClient = null;
+                }
             }
 
             @Override
@@ -732,15 +764,15 @@ public class SplashActivity extends Activity {
         int year = CalendarUtils.getCurrentYear();
         int month = CalendarUtils.getCurrentMonth();
 //        getTotalByMonth(year + "", month + "");
-        
-        for(int i = 0; i < 3; i++){
-            if(month == 12){
+
+        for (int i = 0; i < 8; i++) {
+            if (month == 12) {
                 month = 1;
                 year += 1;
-            }else{
+            } else {
                 month += 1;
             }
-            getTotalByMonth(year+"", month+"");
+            getTotalByMonth(year + "", month + "");
         }
     }
 
@@ -792,7 +824,7 @@ public class SplashActivity extends Activity {
                                 DBHelper db = DBHelper.getInstance(SplashActivity.this);
                                 for (int i = 0; i < calendarMarks.size(); i++) {
                                     db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
-                                    LogOut.debug("splash date:"+calendarMarks.get(i).getService_date());
+                                    LogOut.debug("splash date:" + calendarMarks.get(i).getService_date());
                                 }
 
                             } else {
