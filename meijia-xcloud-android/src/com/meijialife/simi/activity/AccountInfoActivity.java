@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.easemob.EMCallBack;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
+import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.User;
@@ -408,7 +409,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(User.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(AccountInfoActivity.this).deleteAll(CalendarMark.class);
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.LOGIN_STATUS);//删除登录状态
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.LOGIN_STATUS);//删除登录状态
         SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
         SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_USER_TAGS);//删除用户自定义
         SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
@@ -427,9 +428,9 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
                         Intent intent = new Intent(AccountInfoActivity.this, LoginActivity.class);
                         intent.putExtra("is_show_back", 0);
                         startActivity(intent);
-//                        if (MainActivity.activity != null) {
-//                            MainActivity.activity.finish();
-//                        }
+                        if (MainActivity.activity != null) {
+                            MainActivity.activity.finish();
+                        }
                         AccountInfoActivity.this.finish();
                         if(CommonUtils.isLogin(AccountInfoActivity.this)){
                             CommunitySDKImpl.getInstance().logout(AccountInfoActivity.this, new LoginListener() {
@@ -465,9 +466,9 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
                         // 重新显示登陆页面
                         startActivity(new Intent(AccountInfoActivity.this, LoginActivity.class));
-//                        if (MainActivity.activity != null) {
-//                            MainActivity.activity.finish();
-//                        }
+                        if (MainActivity.activity != null) {
+                            MainActivity.activity.finish();
+                        }
                         AccountInfoActivity.this.finish();
 
                     }
