@@ -41,11 +41,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- *
+ *  视听课程
  */
 public class TrialCourseListActivity extends Activity implements OnClickListener, ListItemClickHelps {
-
 
     private List<HomePosts> homePosts;
     private List<HomePosts> allHomePosts;

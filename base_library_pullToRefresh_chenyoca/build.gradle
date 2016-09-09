@@ -8,13 +8,13 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 22
+    buildToolsVersion "23.0.1"
     enforceUniquePackageName=false
 	
 	defaultConfig { 
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 22
 
     } 
 	
