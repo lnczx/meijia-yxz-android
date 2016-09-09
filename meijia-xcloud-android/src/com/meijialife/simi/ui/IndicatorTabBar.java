@@ -308,7 +308,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
                 
                 }
-				callBack.onClick(pBean,flag);//点击回调首页咨询文章
+				callBack.onClick(pBean, index, flag);//点击回调首页咨询文章
 				if (mViewPager != null) {
 					mViewPager.setCurrentItem(index);
 				}

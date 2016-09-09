@@ -4,8 +4,14 @@ import com.meijialife.simi.bean.ParamsBean;
 
 
 public interface ListItemClickHelps {
-    
-    public void onClick(ParamsBean params,boolean flag);
-    
-    
+
+    /**
+     *
+     * @param params
+     * @param index 点击位置position
+     * @param flag
+     */
+    public void onClick(ParamsBean params, int index, boolean flag);
+
+
 }

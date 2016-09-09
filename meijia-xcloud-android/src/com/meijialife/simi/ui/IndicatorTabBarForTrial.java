@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.ParamsBean;
+import com.meijialife.simi.bean.VideoChannel;
 import com.meijialife.simi.inter.ListItemClickHelps;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
@@ -108,6 +109,17 @@ public class IndicatorTabBarForTrial extends HorizontalScrollView {
 	}
 
 	public void initView(List<String> tabNames) {
+		if (tabNames != null && tabNames.size() > 0) {
+			initView(tabNames, mMaxColumn);
+		}
+	}
+
+	public void initViewForTrial(List<VideoChannel> channels) {
+		List<String> tabNames = new ArrayList<>();
+		for(int i = 0; i < channels.size(); i++){
+			tabNames.add(channels.get(i).getName());
+		}
+
 		if (tabNames != null && tabNames.size() > 0) {
 			initView(tabNames, mMaxColumn);
 		}
@@ -210,26 +222,8 @@ public class IndicatorTabBarForTrial extends HorizontalScrollView {
 				int index =tabView.getIndex();
 				mCurrentTab = tabView;
 				mTabContainer.postInvalidate();
-				ParamsBean pBean =new ParamsBean();
-				pBean.setJson("get_tag_posts");
-				pBean.setCount("10");
-				pBean.setOrder("DESC");
-				pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
 				boolean flag = false;
-				if(index==0){//精选
-					pBean.setSlug("精选课程");
-				}else if (index==1) {//人力
-					pBean.setSlug("人力课程");
-				}else if (index==2) {//行政
-					pBean.setSlug("行政课程");
-				}else if (index==3) {//企管
-					pBean.setSlug("企管课程");
-				}else if (index==4) {//考证
-					pBean.setSlug("考证课程");
-				}else if (index==5) {//技能
-					pBean.setSlug("技能课程");
-				}
-				callBack.onClick(pBean,flag);//点击回调首页咨询文章
+				callBack.onClick(null, index,flag);//点击回调频道事件
 				if (mViewPager != null) {
 					mViewPager.setCurrentItem(index);
 				}

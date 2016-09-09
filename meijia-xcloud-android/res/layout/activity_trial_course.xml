@@ -9,7 +9,6 @@
         android:id="@+id/view_to_fra_title_bar"
         layout="@layout/trial_course_title_bar" />
 
-
     <com.meijialife.simi.ui.IndicatorTabBarForTrial
         android:id="@+id/m_trial_tabBar"
         android:layout_width="match_parent"

@@ -870,7 +870,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     }
 
     @Override
-    public void onClick(ParamsBean params, boolean flag) {
+    public void onClick(ParamsBean params, int index, boolean flag) {
         allHomePosts.clear();
         if (flag) {
             getUserTagMsgList(page, params);

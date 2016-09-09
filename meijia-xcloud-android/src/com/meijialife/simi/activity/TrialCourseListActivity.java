@@ -3,7 +3,6 @@ package com.meijialife.simi.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -18,13 +17,14 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
-import com.meijialife.simi.adapter.HomeListAdapter;
-import com.meijialife.simi.bean.HomePosts;
-import com.meijialife.simi.bean.HomeTag;
+import com.meijialife.simi.adapter.VideoListAdapter;
+import com.meijialife.simi.bean.VideoChannel;
+import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.inter.ListItemClickHelps;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
 import com.meijialife.simi.utils.DateUtils;
+import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
@@ -45,15 +45,15 @@ import java.util.Map;
  */
 public class TrialCourseListActivity extends Activity implements OnClickListener, ListItemClickHelps {
 
-    private List<HomePosts> homePosts;
-    private List<HomePosts> allHomePosts;
-    private HomeListAdapter homeListAdapter;
+    private List<VideoList> videoDatas;
+    private List<VideoList> allVideoDatas;
+    private VideoListAdapter adapter;
     private PullToRefreshListView mListView;
-    private HomeTag homeTag;
-    private IndicatorTabBarForTrial mIndicatorTabBar;
-    private List<String> tabNames;
-    private ParamsBean pBean;
 
+    private IndicatorTabBarForTrial mIndicatorTabBar;
+    private List<VideoChannel> channels;
+
+    private VideoChannel currentChannel;//当前选中的频道
     private int page = 1;
 
 
@@ -64,39 +64,23 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
         initView();
 
+        getChannelList();
     }
 
     private void initView() {
 
-        homePosts = new ArrayList<HomePosts>();
-        allHomePosts = new ArrayList<HomePosts>();
-        homeListAdapter = new HomeListAdapter(this);
+        mIndicatorTabBar = (IndicatorTabBarForTrial) findViewById(R.id.m_trial_tabBar);
+        mIndicatorTabBar.setCallBack(this);
+
+        videoDatas = new ArrayList<VideoList>();
+        allVideoDatas = new ArrayList<VideoList>();
+        adapter = new VideoListAdapter(this);
         mListView = (PullToRefreshListView) findViewById(R.id.m_trial_listview);
-        mListView.setAdapter(homeListAdapter);
+        mListView.setAdapter(adapter);
         mListView.setMode(PullToRefreshBase.Mode.BOTH);
 
         initIndicator();
-        tabNames = new ArrayList<String>();
-        tabNames.add("精选");
-        tabNames.add("人力");
-        tabNames.add("行政");
-        tabNames.add("企管");
-        tabNames.add("考证");
-        tabNames.add("技能");
 
-        mIndicatorTabBar = (IndicatorTabBarForTrial) findViewById(R.id.m_trial_tabBar);
-        mIndicatorTabBar.setCallBack(this);
-        mIndicatorTabBar.setMaxColumn(6);
-        mIndicatorTabBar.initView(tabNames);
-
-        ListView listView = mListView.getRefreshableView();
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                mIndicatorTabBar.getParent().requestDisallowInterceptTouchEvent(false);
-                return false;
-            }
-        });
         mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -104,8 +88,8 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getMsgList(page, pBean);
-                homeListAdapter.notifyDataSetChanged();
+                getVideoList(page, currentChannel);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,34 +97,37 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 // 上拉加载任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if (homePosts != null && homePosts.size() >= 10) {
+                if (videoDatas != null && videoDatas.size() >= 10) {
                     page = page + 1;
-                    getMsgList(page, pBean);
-                    homeListAdapter.notifyDataSetChanged();
+                    getVideoList(page, currentChannel);
+                    adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(TrialCourseListActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
                     mListView.onRefreshComplete();
                 }
             }
         });
+
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int p = position;
-                HomePosts homePost = allHomePosts.get(p);
+                VideoList videoData = allVideoDatas.get(position);
                 Intent intent = new Intent(TrialCourseListActivity.this, ArticleDetailActivity.class);
-                intent.putExtra("url", homePost.getUrl());
-                intent.putExtra("p_id", homePost.getId());// 文章Id
-                intent.putExtra("is_show", true);
-                intent.putExtra("home_post", homePost);
-                intent.putExtra("article_content", homePost.getContent());
-                intent.putExtra("from", ArticleDetailActivity.fromTrial);
-                startActivity(intent);
+                intent.putExtra("videoData", videoData);
+//                startActivity(intent);
             }
         });
         findViewById(R.id.rl_total_search).setOnClickListener(this);
         findViewById(R.id.title_btn_left).setOnClickListener(this);
 
+    }
+
+    /**
+     * 更新顶部频道
+     */
+    private void updateChannel(List<VideoChannel> channels){
+        mIndicatorTabBar.setMaxColumn(channels.size());
+        mIndicatorTabBar.initViewForTrial(channels);
     }
 
 
@@ -161,34 +148,27 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
     @Override
     protected void onStart() {
-        pBean = new ParamsBean();
-        pBean.setCount("10");
-        pBean.setOrder("DESC");
-        pBean.setJson("get_tag_posts");
-        pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-        pBean.setSlug("精选课程");
-        getMsgList(page, pBean);
+        if(currentChannel != null){
+            getVideoList(page, currentChannel);
+        }
         super.onStart();
     }
 
     /**
-     * 获得所有首页列表接口
+     * 获得视频文章列表
      */
-    public void getMsgList(int page, ParamsBean params) {
+    public void getVideoList(int page, VideoChannel channel) {
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
 
-        map.put("json", params.getJson());
-        map.put("count", params.getCount());
-        map.put("order", params.getOrder());
-        map.put("slug", params.getSlug());
-        map.put("include", params.getInclude());
+        map.put("channel_id", channel.getChannel_id());
+        map.put("keyword", "");
         map.put("page", page + "");
         AjaxParams param = new AjaxParams(map);
-        new FinalHttp().post(Constants.GET_HOME1_MSG_URL, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(Constants.GET_VIDEO_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
@@ -201,18 +181,17 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 String errorMsg = "";
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
+                        LogOut.i("onSuccess", t.toString());
                         JSONObject obj = new JSONObject(t.toString());
                         String status = obj.getString("status");
-                        String data = obj.getString("pages");
-                        // String tag = obj.getString("tag");
-                        String posts = obj.getString("posts");
-                        if (StringUtils.isEquals(status, "ok")) { // 正确
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (StringUtils.isEquals(status, "0")) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                homePosts = gson.fromJson(posts, new TypeToken<ArrayList<HomePosts>>() {
+                                videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoList>>() {
                                 }.getType());
-                                homeTag = new HomeTag();
-                                showData(homePosts, homeTag);
+                                showData(videoDatas);
                             } else {
                                 mListView.onRefreshComplete();
                             }
@@ -234,15 +213,15 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
         });
     }
 
-    private void showData(List<HomePosts> homePosts, HomeTag homeTag) {
-        if (homePosts != null && homePosts.size() > 0) {
+    private void showData(List<VideoList> videoDatas) {
+        if (videoDatas != null && videoDatas.size() > 0) {
             if (page == 1) {
-                allHomePosts.clear();
+                allVideoDatas.clear();
             }
-            for (HomePosts homePost : homePosts) {
-                allHomePosts.add(homePost);
+            for (VideoList videoData : videoDatas) {
+                allVideoDatas.add(videoData);
             }
-            homeListAdapter.setData(allHomePosts, homeTag);
+            adapter.setData(allVideoDatas);
         }
         mListView.onRefreshComplete();
     }
@@ -262,8 +241,68 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
     }
 
     @Override
-    public void onClick(ParamsBean params, boolean flag) {
-        allHomePosts.clear();
-        getMsgList(page, params);
+    public void onClick(ParamsBean params, int index, boolean flag) {
+        allVideoDatas.clear();
+        currentChannel = channels.get(index);
+        getVideoList(page, currentChannel);
     }
+
+    /**
+     * 获得频道列表
+     */
+    public void getChannelList() {
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+//        map.put("", "");
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().get(Constants.GET_CHANNEL_LIST, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(TrialCourseListActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        LogOut.i("onSuccess", t.toString());
+                        JSONObject obj = new JSONObject(t.toString());
+                        String status = obj.getString("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (StringUtils.isEquals(status, "0")) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                channels = gson.fromJson(data, new TypeToken<ArrayList<VideoChannel>>() {
+                                }.getType());
+
+                                updateChannel(channels);
+                                currentChannel = channels.get(0);
+                                getVideoList(page, currentChannel);
+
+                            } else {
+                                //无频道
+                            }
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(TrialCourseListActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
 }

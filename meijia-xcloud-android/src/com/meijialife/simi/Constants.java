@@ -916,5 +916,14 @@ public class Constants {
      **/
     public static ArrayList<TagData> tagList = new ArrayList<TagData>();
 
+    /**
+     * 视频课程-频道列表
+     */
+    public static final String GET_CHANNEL_LIST = ROOT_URL + "video/channels.json";
+
+    /**
+     * 视频课程-视频文章列表
+     */
+    public static final String GET_VIDEO_LIST = ROOT_URL + "video/list.json";
 
 }
