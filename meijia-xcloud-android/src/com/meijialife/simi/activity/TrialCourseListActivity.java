@@ -22,6 +22,7 @@ import com.meijialife.simi.bean.VideoChannel;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.inter.ListItemClickHelps;
+import com.meijialife.simi.player.PlayVodActivity;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
@@ -111,10 +112,19 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                VideoList videoData = allVideoDatas.get(position);
+                /*VideoList videoData = allVideoDatas.get(position);
                 Intent intent = new Intent(TrialCourseListActivity.this, ArticleDetailActivity.class);
                 intent.putExtra("videoData", videoData);
-//                startActivity(intent);
+                startActivity(intent);*/
+                String vid = "57ddfa1b0cf2394d3659a195";
+                String client_id = "199b3f31e08d160c";
+                String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";
+
+                Intent intent = new Intent(TrialCourseListActivity.this, PlayVodActivity.class);
+                intent.putExtra(PlayVodActivity.CONSTANCE_VID, vid);
+                intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_ID, client_id);
+                intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_SECRET, client_secret);
+                startActivity(intent);
             }
         });
         findViewById(R.id.rl_total_search).setOnClickListener(this);
@@ -193,6 +203,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                                 }.getType());
                                 showData(videoDatas);
                             } else {
+
                                 mListView.onRefreshComplete();
                             }
                         } else {
