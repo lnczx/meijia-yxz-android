@@ -22,6 +22,7 @@ import com.meijialife.simi.bean.VideoChannel;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.inter.ListItemClickHelps;
+import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.player.PlayVodActivity;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
 import com.meijialife.simi.utils.DateUtils;
@@ -120,10 +121,11 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 String client_id = "199b3f31e08d160c";
                 String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";
 
-                Intent intent = new Intent(TrialCourseListActivity.this, PlayVodActivity.class);
+                Intent intent = new Intent(TrialCourseListActivity.this, CourseActivity.class);
                 intent.putExtra(PlayVodActivity.CONSTANCE_VID, vid);
                 intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_ID, client_id);
                 intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_SECRET, client_secret);
+                intent.putExtra("videoListData", allVideoDatas.get(position));
                 startActivity(intent);
             }
         });
@@ -299,6 +301,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
                             } else {
                                 //无频道
+                                errorMsg = getString(R.string.servers_error);
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);

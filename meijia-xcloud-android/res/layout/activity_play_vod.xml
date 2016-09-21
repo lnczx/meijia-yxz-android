@@ -3,15 +3,199 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--底部功能条-->
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/webview_comment"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#F4F5F6"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <Button
+                android:id="@+id/m_btn_send_comment"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_round_edittext"
+                android:gravity="left|center"
+                android:paddingLeft="10dp"
+                android:text="写评论..."
+                android:textColor="@color/simi_color_gray"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/m_iv_comment"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/new_frg_ping_lun" />
+
+                <ImageView
+                    android:id="@+id/m_iv_zan"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/bg_img_selector" />
+
+                <ImageView
+                    android:id="@+id/m_iv_share"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/new_frg_fen_xiang" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--写评论View-->
+        <include
+            android:id="@+id/m_webview_comment"
+            layout="@layout/webview_comment" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@id/bottom">
 
+        <!--标题栏-->
+        <include layout="@layout/layout_title_bar"/>
+
+        <!--播放器-->
         <RelativeLayout
             android:id="@+id/layout_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"></RelativeLayout>
+
+        <!--页面中部-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#f7f7f7">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#ffffff">
+                <TextView
+                    android:id="@+id/tv_vname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="16.5dp"
+                    android:text="视频名称"/>
+                <TextView
+                    android:id="@+id/tv_tname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="12dp"
+                    android:textColor="#666666"
+                    android:text="讲师 张三"/>
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="10dp"
+                    android:textColor="#b1b0b0"
+                    android:text="0 人学过"/>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="6dp"
+                    android:background="#e6e6e6"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35.2dp"
+                android:paddingLeft="10dp"
+                android:background="#ffffff">
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:textSize="14dp"
+                    android:textColor="#ff8400"
+                    android:text="￥ 0.00"/>
+                <TextView
+                    android:id="@+id/tv_orig_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="16dp"
+                    android:textSize="11dp"
+                    android:textColor="#999999"
+                    android:text="￥ 0.00"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="7dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="6dp"
+                android:paddingBottom="6dp"
+                android:background="#ffffff">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:textSize="15dp"
+                    android:textColor="#333333"
+                    android:text="课程概述"/>
+                <TextView
+                    android:id="@+id/tv_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="11dp"
+                    android:textColor="#999999"
+                    android:text="本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52.8dp"
+                android:layout_marginTop="7dp"
+                android:paddingLeft="10dp"
+                android:background="#ffffff"
+                android:gravity="center_vertical"
+                android:textSize="15dp"
+                android:textColor="#333333"
+                android:text="相关课程"/>
+            <ListView
+                android:id="@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
