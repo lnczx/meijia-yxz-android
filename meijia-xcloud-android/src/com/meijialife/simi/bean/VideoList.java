@@ -27,13 +27,18 @@ public class VideoList implements Serializable {
      * 阅读数
      */
     private String total_view;
+    /**
+     * 时间，格式为MM-dd HH:mm
+     */
+    private String add_time;
 
-    public VideoList(String channel_id, String article_id, String title, String img_url, String total_view) {
+    public VideoList(String channel_id, String article_id, String title, String img_url, String total_view, String add_time) {
         this.channel_id = channel_id;
         this.article_id = article_id;
         this.title = title;
         this.img_url = img_url;
         this.total_view = total_view;
+        this.add_time = add_time;
     }
 
     public String getChannel_id() {
@@ -74,5 +79,13 @@ public class VideoList implements Serializable {
 
     public void setTotal_view(String total_view) {
         this.total_view = total_view;
+    }
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
     }
 }

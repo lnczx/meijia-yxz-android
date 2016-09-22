@@ -931,4 +931,9 @@ public class Constants {
      */
     public static final String GET_VIDEO_DETAIL = ROOT_URL + "video/detail.json";
 
+    /**
+     * 视频课程-相关视频文章接口
+     */
+    public static final String GET_VIDEO_RELATE = ROOT_URL + "video/relate.json";
+
 }

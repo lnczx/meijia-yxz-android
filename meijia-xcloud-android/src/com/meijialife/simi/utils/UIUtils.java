@@ -7,6 +7,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.meijialife.simi.R;
@@ -14,11 +18,11 @@ import com.meijialife.simi.R;
 public class UIUtils {
     
     public static void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, 0).show();
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public static void showToastLong(Context context, String msg) {
-        Toast.makeText(context, msg, 1).show();
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
     
     
@@ -216,5 +220,32 @@ public class UIUtils {
         sigleDialog.show();
     }
 
+    /**
+     *
+     * ScrollView与ListView共存会存在滚动的问题，并且ListView只显示一个半Item。 当ListView的高度设定一定的值时，
+     * ListView同样地会显示对应的高度的Item。 因此我们可以计算出这个ListView的总高度，再将它设置到ListView中，
+     * 那么之前的滚动，高度问题也就不存在了。
+     *
+     * @param listView
+     */
+    public static void setListViewHeightBasedOnChildren (ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for ( int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params. height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+    }
 
 }
