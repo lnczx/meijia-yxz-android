@@ -3,15 +3,21 @@ package com.meijialife.simi.player;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +32,13 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
+import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
@@ -50,6 +58,9 @@ import java.util.Map;
  */
 public class CourseActivity extends PlayVodActivity implements View.OnClickListener{
 
+    private ImageView iv_thum;//播放器缩略图
+
+    private LinearLayout ll_all;
     private TextView tv_vname;//课程名称
     private TextView tv_tname;//讲师
     private TextView tv_count;//阅读数量
@@ -57,6 +68,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     private TextView tv_orig_price;//原价
     private TextView tv_detail;//概述
 
+    private TextView btn_take;//参加该课程按钮
     private EditText comment_content;// 评论输入框
     private Button m_btn_confirm;// 发表评论按钮
 
@@ -71,6 +83,8 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     private VideoData video;//视频详细信息
 
     private User user;
+    private FinalBitmap finalBitmap;
+    private BitmapDrawable defDrawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +95,14 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         initBottomView();
         initListView();
 
-        getVideoDetail();
+        getVideoDetail(videoListData.getArticle_id());
     }
 
     private void init(){
         user = DBHelper.getUser(CourseActivity.this);
         videoListData = (VideoList) getIntent().getSerializableExtra("videoListData");
+        finalBitmap = FinalBitmap.create(this);
+        defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.ad_loading);
     }
 
     /**
@@ -97,6 +113,13 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         findViewById(R.id.title_btn_left).setVisibility(View.VISIBLE);
         findViewById(R.id.title_btn_left).setOnClickListener(this);
 
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int screenWidth = dm.widthPixels;
+        iv_thum = (ImageView)findViewById(R.id.iv_thum);
+        FrameLayout.LayoutParams mPortraitPs = new FrameLayout.LayoutParams(screenWidth, screenWidth * 9 / 16);
+        iv_thum.setLayoutParams(mPortraitPs);
+
+        ll_all = (LinearLayout)findViewById(R.id.ll_all);
         tv_vname = (TextView)findViewById(R.id.tv_vname);
         tv_tname = (TextView)findViewById(R.id.tv_tname);
         tv_count = (TextView)findViewById(R.id.tv_count);
@@ -112,12 +135,16 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     private void initBottomView(){
         findViewById(R.id.layout_mask).setOnClickListener(this);
         findViewById(R.id.m_btn_send_comment).setOnClickListener(this);
+        btn_take = (TextView) findViewById(R.id.btn_take);
         comment_content = (EditText) findViewById(R.id.comment_content);
         comment_content.addTextChangedListener(tw);
         m_btn_confirm = (Button) findViewById(R.id.m_btn_confirms);
 
+        btn_take.setOnClickListener(this);
         m_btn_confirm.setOnClickListener(this);
         findViewById(R.id.m_iv_comment).setOnClickListener(this);
+        findViewById(R.id.m_iv_zan).setOnClickListener(this);
+        findViewById(R.id.m_iv_share).setOnClickListener(this);
     }
 
     TextWatcher tw = new TextWatcher() {
@@ -158,7 +185,8 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(CourseActivity.this, position + " 被点击", Toast.LENGTH_SHORT).show();
+                player.destroyVideo();
+                getVideoDetail(videoDatas.get(position).getArticle_id());
             }
         });
     }
@@ -172,15 +200,35 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         tv_price.setText("￥" + video.getDis_price());
         tv_orig_price.setText("￥" + video.getPrice());
         tv_detail.setText(video.getContent());
+
+        if(video.getCategory()!= null && video.getCategory().trim().equals("h5")){
+            //弹窗
+            VideoPopWindow popWindow = new VideoPopWindow(CourseActivity.this, "提醒", video.getContent_desc(), video.getGoto_url());
+            popWindow.showPopupWindow(ll_all);
+        }
+
+        if(video.getIs_join() == 1){//已参加该课程，直接播放
+            btn_take.setVisibility(View.GONE);
+            iv_thum.setVisibility(View.GONE);
+            play(video.getVid());
+        }else{//未参加过
+            btn_take.setVisibility(View.VISIBLE);
+            iv_thum.setVisibility(View.VISIBLE);
+            //显示缩略图
+            finalBitmap.display(iv_thum,video.getImg_url(),defDrawable.getBitmap(),defDrawable.getBitmap());
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.title_btn_left:
-                finish();
+                onBackClicked();
                 break;
-            case R.id.layout_mask:// 遮罩
+            case R.id.btn_take://参加该课程
+                join();
+                break;
+            case R.id.layout_mask:// 写评论时的遮罩
                 goneCommentView();
                 break;
             case R.id.m_btn_send_comment://写评论
@@ -196,9 +244,19 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 }
                 break;
             case R.id.m_iv_comment:// 评论页面
-                Intent intent = new Intent(CourseActivity.this, CommentForNewFrgActivity.class);
-                intent.putExtra("p_id", videoListData.getArticle_id());
-                startActivity(intent);
+                if(video != null){
+                    Intent intent = new Intent(CourseActivity.this, CommentForNewFrgActivity.class);
+                    intent.putExtra("p_id", video.getArticle_id());
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.m_iv_zan:// 点赞
+                postZan("add");
+                break;
+            case R.id.m_iv_share:// 分享
+
                 break;
         }
     }
@@ -229,8 +287,9 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
 
     /**
      * 获得视频详情
+     * @param article_id 文章id
      */
-    public void getVideoDetail() {
+    public void getVideoDetail(String article_id) {
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
@@ -241,7 +300,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("article_id", videoListData.getArticle_id());//文章id
+        map.put("article_id", article_id);//文章id
         map.put("user_id", user.getId());
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.GET_VIDEO_DETAIL, param, new AjaxCallBack<Object>() {
@@ -294,6 +353,9 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
      * 获得相关视频列表
      */
     public void getVideoRelateList() {
+        if(video == null){
+            return;
+        }
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
@@ -305,7 +367,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("article_id", videoListData.getArticle_id());//文章id
+        map.put("article_id", video.getArticle_id());//文章id
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.GET_VIDEO_RELATE, param, new AjaxCallBack<Object>() {
             @Override
@@ -351,9 +413,84 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     }
 
     /**
+     * 参加课程
+     */
+    private void join(){
+        if(video == null){
+            Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        float price = Float.parseFloat(video.getDis_price());
+        if(price > 0){//去支付
+            Toast.makeText(CourseActivity.this, "去支付", Toast.LENGTH_SHORT).show();
+        }else{//免费
+            postJoin();
+        }
+    }
+
+    /**
+     * * 参加课程接口
+     */
+    private void postJoin() {
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("article_id", video.getArticle_id());//文章id
+        map.put("user_id", user.getId());
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().post(Constants.POST_VIDEO_JOIN, param, new AjaxCallBack<Object>() {
+
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                LogOut.debug("错误码：" + errorNo);
+                Toast.makeText(CourseActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        LogOut.i("onSuccess", t.toString());
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            iv_thum.setVisibility(View.GONE);
+                            play(video.getVid());
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            Toast.makeText(CourseActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            Toast.makeText(CourseActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // UIUtils.showToast(ArticleDetailActivity.this, "网络错误,请稍后重试");
+                }
+            }
+        });
+    }
+
+    /**
      * * 发表评论接口
      */
     private void postComment() {
+        if(video == null){
+            Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String comment = comment_content.getText().toString();
         if (StringUtils.isEmpty(comment.trim())) {
@@ -367,9 +504,9 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         }
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("fid", videoListData.getArticle_id());//文章id
+        map.put("fid", video.getArticle_id());//文章id
         map.put("user_id", user.getId());
-        map.put("feed_type", "");//类型 1 = 文章
+        map.put("feed_type", "1");//类型 1 = 文章
         map.put("comment", comment);
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.URL_POST_FEED_COMMENT, param, new AjaxCallBack<Object>() {
@@ -392,6 +529,68 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             comment_content.setText("");
+                            Toast.makeText(CourseActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            Toast.makeText(CourseActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            Toast.makeText(CourseActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            Toast.makeText(CourseActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    // UIUtils.showToast(ArticleDetailActivity.this, "网络错误,请稍后重试");
+                }
+            }
+        });
+    }
+
+    /**
+     * 点赞接口
+     * @param  action 操作标识  add = 点赞   del = 取消点赞
+     */
+    private void postZan(String action) {
+        if(video == null){
+            Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!NetworkUtils.isNetworkConnected(this)) {
+            Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("fid", video.getArticle_id());//文章id
+        map.put("user_id", user.getId());
+        map.put("feed_type", "1");//类型 1 =文章
+        map.put("action", action);//操作标识  add = 点赞   del = 取消点赞
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().post(Constants.URL_FEED_POST_ZAN, param, new AjaxCallBack<Object>() {
+
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                LogOut.debug("错误码：" + errorNo);
+                Toast.makeText(CourseActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            Toast.makeText(CourseActivity.this, "已点赞", Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

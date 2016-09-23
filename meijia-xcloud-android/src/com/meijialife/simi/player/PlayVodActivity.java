@@ -75,6 +75,12 @@ public class PlayVodActivity extends Activity {
             }
         });
 
+    }
+
+    public void play(String vid){
+        player.destroyVideo();//先销毁之前的播放 by garry
+
+        this.vid = vid;
         //自行获取视频信息 填充 M3u8Video对象,调用play播放
         VideoAuth.requestM3u8(vid, this, new VideoAuthCallback() {
             @Override
@@ -115,18 +121,25 @@ public class PlayVodActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if (keyCode == KeyEvent.KEYCODE_BACK ){
-            if(player != null){
-                //获得vodPlayer横屏还是竖屏
-                int mScreenState = player.getScreenState();
-                if(mScreenState == VODPlayer.Orientation_portrait){
-                    //如果是竖屏 则退出播放器
-                    finish();
-                }else{
-                    //如果是横屏 则变为横屏
-                    player.changeOrientation(VODPlayer.Orientation_portrait);
-                }
-            }
+            onBackClicked();
         }
         return false;
+    }
+
+    /**
+     * 点击返回按钮
+     */
+    public void onBackClicked(){
+        if(player != null){
+            //获得vodPlayer横屏还是竖屏
+            int mScreenState = player.getScreenState();
+            if(mScreenState == VODPlayer.Orientation_portrait){
+                //如果是竖屏 则退出播放器
+                finish();
+            }else{
+                //如果是横屏 则变为横屏
+                player.changeOrientation(VODPlayer.Orientation_portrait);
+            }
+        }
     }
 }

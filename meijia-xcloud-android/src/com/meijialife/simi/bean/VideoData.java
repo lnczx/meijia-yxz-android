@@ -76,7 +76,7 @@ public class VideoData implements Serializable {
      1. 免费课程       0 = 未参加  1 = 已参加
      2. 收费课程       0 = 未购买  1 = 已购买
      */
-    private String is_join;
+    private int is_join;
     /**
      * 购买类参数  服务人员ID
      */
@@ -90,7 +90,7 @@ public class VideoData implements Serializable {
      */
     private String service_price_id;
 
-    public VideoData(String channel_id, String article_id, String title, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, String is_join, String partner_user_id, String service_type_id, String service_price_id) {
+    public VideoData(String channel_id, String article_id, String title, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, int is_join, String partner_user_id, String service_type_id, String service_price_id) {
         this.channel_id = channel_id;
         this.article_id = article_id;
         this.title = title;
@@ -241,11 +241,11 @@ public class VideoData implements Serializable {
         this.goto_url = goto_url;
     }
 
-    public String getIs_join() {
+    public int getIs_join() {
         return is_join;
     }
 
-    public void setIs_join(String is_join) {
+    public void setIs_join(int is_join) {
         this.is_join = is_join;
     }
 

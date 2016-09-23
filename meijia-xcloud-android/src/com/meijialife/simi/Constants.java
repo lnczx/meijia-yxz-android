@@ -936,4 +936,9 @@ public class Constants {
      */
     public static final String GET_VIDEO_RELATE = ROOT_URL + "video/relate.json";
 
+    /**
+     * 视频课程-视频文章参加按钮接口
+     */
+    public static final String POST_VIDEO_JOIN = ROOT_URL + "video/join.json";
+
 }
