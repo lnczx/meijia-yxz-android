@@ -19,12 +19,14 @@ import com.ykcloud.sdk.opentools.player.entity.VideoLists;
 public class PlayVodActivity extends Activity {
 
     private String TAG = "PlayVodActivity";
-    public static final String CONSTANCE_VID = "vid";
+
+    /*public static final String CONSTANCE_VID = "vid";
     public static final String CONSTANCE_CLIENT_ID = "client_id";
     public static final String CONSTANCE_CLIENT_SECRET = "client_secret";
-    private String vid;
-    private String client_id;
-    private String client_secret;
+    private String vid;*/
+
+    private final String client_id = "199b3f31e08d160c";
+    private final String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";
 
     RelativeLayout layout_player;
     VODPlayer player;
@@ -38,9 +40,9 @@ public class PlayVodActivity extends Activity {
     }
 
     private void parseExtra(){
-        vid = getIntent().getStringExtra(CONSTANCE_VID);
+        /*vid = getIntent().getStringExtra(CONSTANCE_VID);
         client_id = getIntent().getStringExtra(CONSTANCE_CLIENT_ID);
-        client_secret = getIntent().getStringExtra(CONSTANCE_CLIENT_SECRET);
+        client_secret = getIntent().getStringExtra(CONSTANCE_CLIENT_SECRET);*/
         initSdk();
     }
 
@@ -80,7 +82,6 @@ public class PlayVodActivity extends Activity {
     public void play(String vid){
         player.destroyVideo();//先销毁之前的播放 by garry
 
-        this.vid = vid;
         //自行获取视频信息 填充 M3u8Video对象,调用play播放
         VideoAuth.requestM3u8(vid, this, new VideoAuthCallback() {
             @Override

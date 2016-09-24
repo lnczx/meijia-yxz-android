@@ -113,18 +113,14 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*VideoList videoData = allVideoDatas.get(position);
-                Intent intent = new Intent(TrialCourseListActivity.this, ArticleDetailActivity.class);
-                intent.putExtra("videoData", videoData);
-                startActivity(intent);*/
-                String vid = "57ddfa1b0cf2394d3659a195";
+                /*String vid = "57ddfa1b0cf2394d3659a195";
                 String client_id = "199b3f31e08d160c";
-                String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";
+                String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";*/
 
                 Intent intent = new Intent(TrialCourseListActivity.this, CourseActivity.class);
-                intent.putExtra(PlayVodActivity.CONSTANCE_VID, vid);
+                /*intent.putExtra(PlayVodActivity.CONSTANCE_VID, vid);
                 intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_ID, client_id);
-                intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_SECRET, client_secret);
+                intent.putExtra(PlayVodActivity.CONSTANCE_CLIENT_SECRET, client_secret);*/
                 intent.putExtra("videoListData", allVideoDatas.get(position));
                 startActivity(intent);
             }

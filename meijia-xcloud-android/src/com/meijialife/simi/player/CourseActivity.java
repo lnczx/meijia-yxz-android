@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +34,13 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.simi.easemob.utils.ShareConfig;
 
 import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
@@ -256,9 +260,27 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 postZan("add");
                 break;
             case R.id.m_iv_share:// 分享
-
+                if(video != null){
+                    ShareConfig.getInstance().inits(CourseActivity.this, video.getVideo_url(), video.getTitle(), video.getImg_url());
+                    postShare();
+                }else{
+                    Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
+    }
+
+    private void postShare() {
+        // layout_mask.setVisibility(View.VISIBLE);
+        CustomShareBoard shareBoard = new CustomShareBoard(this);
+        shareBoard.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                // layout_mask.setVisibility(View.GONE);
+                findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
+            }
+        });
+        shareBoard.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
     }
 
     /**
