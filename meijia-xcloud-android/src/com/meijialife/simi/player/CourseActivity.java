@@ -29,7 +29,10 @@ import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.adapter.VideoRelateListAdapter;
+import com.meijialife.simi.bean.PartnerDetail;
+import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
@@ -444,10 +447,24 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         }
         float price = Float.parseFloat(video.getDis_price());
         if(price > 0){//去支付
-            Toast.makeText(CourseActivity.this, "去支付", Toast.LENGTH_SHORT).show();
+            toPay();
         }else{//免费
             postJoin();
         }
+    }
+
+    /**
+     * 去支付
+     */
+    private void toPay(){
+        Intent intent = new Intent(CourseActivity.this, PayOrderActivity.class);
+        intent.putExtra("from",PayOrderActivity.FROM_MEMBER);
+        intent.putExtra("name", "购买视频");
+        intent.putExtra("PartnerDetail", new PartnerDetail());
+        intent.putExtra("flag", PayOrderActivity.FROM_FIND);
+        intent.putExtra("from", PayOrderActivity.FROM_MISHU);
+        intent.putExtra("servicePrices", new ServicePrices());
+        startActivity(intent);
     }
 
     /**
