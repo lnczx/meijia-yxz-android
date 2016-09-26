@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
@@ -457,14 +457,25 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
      * 去支付
      */
     private void toPay(){
+        user = DBHelper.getUser(CourseActivity.this);
+        if(user.getMobile() == null || user.getMobile().trim().length() < 1){
+            startActivity(new Intent(CourseActivity.this, BindMobileActivity.class));
+            return;
+        }
+
+        PartnerDetail partnerDetail = new PartnerDetail();
+        partnerDetail.setUser_id(Integer.parseInt(video.getPartner_user_id()));
+        partnerDetail.setService_type_id(Integer.parseInt(video.getService_type_id()));
+        ServicePrices prices = new ServicePrices(Long.parseLong(video.getService_price_id()), Double.parseDouble(video.getPrice()), Double.parseDouble(video.getDis_price()), Long.parseLong(video.getService_price_id()));
+
         Intent intent = new Intent(CourseActivity.this, PayOrderActivity.class);
-        intent.putExtra("from",PayOrderActivity.FROM_MEMBER);
+//        intent.putExtra("from",PayOrderActivity.FROM_MEMBER);
         intent.putExtra("name", "购买视频");
-        intent.putExtra("PartnerDetail", new PartnerDetail());
+        intent.putExtra("PartnerDetail", partnerDetail);
         intent.putExtra("flag", PayOrderActivity.FROM_FIND);
         intent.putExtra("from", PayOrderActivity.FROM_MISHU);
-        intent.putExtra("servicePrices", new ServicePrices());
-        startActivity(intent);
+        intent.putExtra("servicePrices", prices);
+        startActivityForResult(intent, 0);
     }
 
     /**
@@ -648,5 +659,14 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        if(resultCode == PayOrderActivity.RESULT_CODE_PAY_OK){//购买课程回来后
+//        }
+        getVideoDetail(videoListData.getArticle_id());
     }
 }

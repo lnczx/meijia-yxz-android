@@ -56,6 +56,8 @@ import com.meijialife.simi.wxpay.WxPay;
  */
 public class PayOrderActivity extends BaseActivity implements OnClickListener {
 
+    public static final int RESULT_CODE_PAY_OK = 10;//支付成功
+
     /**
      * 开关变量定义
      */
@@ -418,6 +420,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("orderId",orderId);
                     startActivity(intent);
                 }
+                setResult(RESULT_CODE_PAY_OK);
                     PayOrderActivity.this.finish();
                 // 管家卡在线支付同步接口
                 // postSeniorOnlinePay(activity, context, tradeNo);
@@ -559,6 +562,7 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             intent.putExtra("orderId",orderId);
             startActivity(intent);
             updateUserInfo(this);
+            setResult(RESULT_CODE_PAY_OK);
             PayOrderActivity.this.finish();
         }
     }

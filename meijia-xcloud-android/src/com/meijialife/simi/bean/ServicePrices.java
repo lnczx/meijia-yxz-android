@@ -20,11 +20,14 @@ public class ServicePrices implements Serializable{
     
     private Long service_price_id;//服务类别
     private int is_addr;
-    
-    
-    
-    
-   
+
+    public ServicePrices(Long id, Double price, Double dis_price, Long service_price_id) {
+        this.id = id;
+        this.price = price;
+        this.dis_price = dis_price;
+        this.service_price_id = service_price_id;
+    }
+
     public String getImg_url() {
         return img_url;
     }
