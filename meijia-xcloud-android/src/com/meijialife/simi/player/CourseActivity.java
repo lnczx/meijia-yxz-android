@@ -485,7 +485,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         PartnerDetail partnerDetail = new PartnerDetail();
         partnerDetail.setUser_id(Integer.parseInt(video.getPartner_user_id()));
         partnerDetail.setService_type_id(Integer.parseInt(video.getService_type_id()));
-        ServicePrices prices = new ServicePrices(Long.parseLong(video.getService_price_id()), Double.parseDouble(video.getPrice()), Double.parseDouble(video.getDis_price()), Long.parseLong(video.getService_price_id()));
+        ServicePrices prices = new ServicePrices(Long.parseLong(video.getService_price_id()), Double.parseDouble(video.getPrice()), Double.parseDouble(video.getDis_price()), Long.parseLong(video.getService_price_id()), video.getTitle());
 
         Intent intent = new Intent(CourseActivity.this, PayOrderActivity.class);
 //        intent.putExtra("from",PayOrderActivity.FROM_MEMBER);
