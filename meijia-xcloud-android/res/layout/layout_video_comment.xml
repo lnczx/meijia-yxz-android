@@ -39,12 +39,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/comment_content"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="1.5dp"
+                android:paddingBottom="1.5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bg_btn_selector"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="发表"
+                android:textSize="17sp"
                 android:textColor="@color/simi_color_white" />
         </RelativeLayout>
     </LinearLayout>

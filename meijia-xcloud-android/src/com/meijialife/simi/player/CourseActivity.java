@@ -41,6 +41,7 @@ import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
@@ -78,6 +79,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     private TextView btn_take;//参加该课程按钮
     private EditText comment_content;// 评论输入框
     private Button m_btn_confirm;// 发表评论按钮
+    private ImageView m_iv_zan;// 点赞
 
     /**
      * 相关视频列表
@@ -105,8 +107,13 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         getVideoDetail(videoListData.getArticle_id());
     }
 
-    private void init(){
+    @Override
+    protected void onResume() {
+        super.onResume();
         user = DBHelper.getUser(CourseActivity.this);
+    }
+
+    private void init(){
         videoListData = (VideoList) getIntent().getSerializableExtra("videoListData");
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.ad_loading);
@@ -146,11 +153,12 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         comment_content = (EditText) findViewById(R.id.comment_content);
         comment_content.addTextChangedListener(tw);
         m_btn_confirm = (Button) findViewById(R.id.m_btn_confirms);
+        m_iv_zan = (ImageView) findViewById(R.id.m_iv_zan);
 
         btn_take.setOnClickListener(this);
         m_btn_confirm.setOnClickListener(this);
+        m_iv_zan.setOnClickListener(this);
         findViewById(R.id.m_iv_comment).setOnClickListener(this);
-        findViewById(R.id.m_iv_zan).setOnClickListener(this);
         findViewById(R.id.m_iv_share).setOnClickListener(this);
     }
 
@@ -224,10 +232,16 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             //显示缩略图
             finalBitmap.display(iv_thum,video.getImg_url(),defDrawable.getBitmap(),defDrawable.getBitmap());
         }
+        if(video.getIs_zan() == 1){//点过赞
+            m_iv_zan.setSelected(true);
+        }else{
+            m_iv_zan.setSelected(false);
+        }
     }
 
     @Override
     public void onClick(View v) {
+        boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()){
             case R.id.title_btn_left:
                 onBackClicked();
@@ -260,7 +274,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 }
                 break;
             case R.id.m_iv_zan:// 点赞
-                postZan("add");
+                if (user == null) {
+                    startActivity(new Intent(CourseActivity.this, LoginActivity.class));
+                } else {
+                    postZan("add");
+                }
                 break;
             case R.id.m_iv_share:// 分享
                 if(video != null){
@@ -319,14 +337,16 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
-        if(user == null){
+        /*if(user == null){
             Toast.makeText(CourseActivity.this, "未登录", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("article_id", article_id);//文章id
-        map.put("user_id", user.getId());
+        if(user != null){
+            map.put("user_id", user.getId());
+        }
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.GET_VIDEO_DETAIL, param, new AjaxCallBack<Object>() {
             @Override
@@ -385,11 +405,6 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
-        User user = DBHelper.getUser(CourseActivity.this);
-        if(user == null){
-            Toast.makeText(CourseActivity.this, "未登录", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("article_id", video.getArticle_id());//文章id
@@ -443,6 +458,10 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     private void join(){
         if(video == null){
             Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(user == null){
+            startActivity(new Intent(CourseActivity.this, LoginActivity.class));
             return;
         }
         float price = Float.parseFloat(video.getDis_price());
@@ -511,6 +530,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                         int status = obj.getInt("status");
                         String msg = obj.getString("msg");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
+                            btn_take.setVisibility(View.GONE);
                             iv_thum.setVisibility(View.GONE);
                             play(video.getVid());
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -640,6 +660,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
+                            m_iv_zan.setSelected(true);
                             Toast.makeText(CourseActivity.this, "已点赞", Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();

@@ -89,8 +89,12 @@ public class VideoData implements Serializable {
      * 购买类参数  服务课程ID
      */
     private String service_price_id;
+    /**
+     * 是否点过赞  0 = 否  1 = 是
+     */
+    private int is_zan;
 
-    public VideoData(String channel_id, String article_id, String title, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, int is_join, String partner_user_id, String service_type_id, String service_price_id) {
+    public VideoData(String channel_id, String article_id, String title, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, int is_join, String partner_user_id, String service_type_id, String service_price_id, int is_zan) {
         this.channel_id = channel_id;
         this.article_id = article_id;
         this.title = title;
@@ -111,6 +115,7 @@ public class VideoData implements Serializable {
         this.partner_user_id = partner_user_id;
         this.service_type_id = service_type_id;
         this.service_price_id = service_price_id;
+        this.is_zan = is_zan;
     }
 
     public String getChannel_id() {
@@ -271,5 +276,13 @@ public class VideoData implements Serializable {
 
     public void setService_price_id(String service_price_id) {
         this.service_price_id = service_price_id;
+    }
+
+    public int getIs_zan() {
+        return is_zan;
+    }
+
+    public void setIs_zan(int is_zan) {
+        this.is_zan = is_zan;
     }
 }
