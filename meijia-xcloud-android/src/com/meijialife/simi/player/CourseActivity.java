@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -200,8 +201,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                player.destroyVideo();
-                getVideoDetail(videoDatas.get(position).getArticle_id());
+                /*player.destroyVideo();
+                getVideoDetail(videoDatas.get(position).getArticle_id());*/
+                Intent intent = new Intent(CourseActivity.this, CourseActivity.class);
+                intent.putExtra("videoListData", videoDatas.get(position));
+                startActivity(intent);
             }
         });
     }
@@ -214,7 +218,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         tv_count.setText(video.getTotal_view() + " 人学过");
         tv_price.setText("￥" + video.getDis_price());
         tv_orig_price.setText("￥" + video.getPrice());
-        tv_detail.setText(video.getContent());
+        if(video.getContent().contains("<div") || video.getContent().contains("<span")){
+            tv_detail.setText(Html.fromHtml(video.getContent()));
+        }else if(StringUtils.isNotEmpty(video.getContent())){
+            tv_detail.setText(video.getContent());
+        }
 
         if(video.getCategory()!= null && video.getCategory().trim().equals("h5")){
             //弹窗
