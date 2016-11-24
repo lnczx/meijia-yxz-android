@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            android:src="@drawable/iconfont_qiandao" />
+            android:src="@drawable/video_popwindow_banner" />
     </LinearLayout>
 
     <LinearLayout

@@ -218,7 +218,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         tv_count.setText(video.getTotal_view() + " 人学过");
         tv_price.setText("￥" + video.getDis_price());
         tv_orig_price.setText("￥" + video.getPrice());
-        if(video.getContent().contains("<div") || video.getContent().contains("<span")){
+        if(isHtml(video.getContent())){
             tv_detail.setText(Html.fromHtml(video.getContent()));
         }else if(StringUtils.isNotEmpty(video.getContent())){
             tv_detail.setText(video.getContent());
@@ -226,7 +226,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
 
         if(video.getCategory()!= null && video.getCategory().trim().equals("h5")){
             //弹窗
-            VideoPopWindow popWindow = new VideoPopWindow(CourseActivity.this, "提醒", video.getContent_desc(), video.getGoto_url());
+            VideoPopWindow popWindow = new VideoPopWindow(CourseActivity.this, "提醒", video.getContent_desc(), video.getGoto_url(), video.getArticle_id());
             popWindow.showPopupWindow(ll_all);
         }
 
@@ -244,6 +244,21 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             m_iv_zan.setSelected(true);
         }else{
             m_iv_zan.setSelected(false);
+        }
+    }
+
+    /**
+     * 判断是否包含html代码
+     * @param text
+     * @return
+     */
+    private boolean isHtml(String text){
+        if(text.contains("<div") || text.contains("<span") || text.contains("<h1")
+                || text.contains("style=") || text.contains("font-size") || text.contains("color:")
+                || text.contains("<p") || text.contains("<br") || text.contains("</") || text.contains("<pre")){
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -350,6 +365,8 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             return;
         }*/
 
+        user = DBHelper.getUser(CourseActivity.this);
+
         Map<String, String> map = new HashMap<String, String>();
         map.put("article_id", article_id);//文章id
         if(user != null){
@@ -442,7 +459,8 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                                 }.getType());
                                 adapter.setData(videoDatas);
                             } else {
-                                errorMsg = getString(R.string.servers_error);
+                                //无相关课程
+//                                errorMsg = getString(R.string.servers_error);
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
