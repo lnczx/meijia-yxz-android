@@ -458,6 +458,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                                 videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoList>>() {
                                 }.getType());
                                 adapter.setData(videoDatas);
+                                UIUtils.setListViewHeightBasedOnChildren(listView);
                             } else {
                                 //无相关课程
 //                                errorMsg = getString(R.string.servers_error);
