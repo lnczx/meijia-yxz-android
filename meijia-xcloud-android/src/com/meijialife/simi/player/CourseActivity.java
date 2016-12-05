@@ -215,6 +215,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
             return;
         }
         tv_vname.setText(video.getTitle());
+        tv_tname.setText("讲师:" + video.getTeacher());
         tv_count.setText(video.getTotal_view() + " 人学过");
         tv_price.setText("￥" + video.getDis_price());
         tv_orig_price.setText("￥" + video.getPrice());

@@ -19,6 +19,12 @@ public class VideoData implements Serializable {
      *
      */
     private String title;
+
+    /**
+     * 讲师
+     */
+    private String teacher;
+
     /**
      *
      */
@@ -94,10 +100,11 @@ public class VideoData implements Serializable {
      */
     private int is_zan;
 
-    public VideoData(String channel_id, String article_id, String title, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, int is_join, String partner_user_id, String service_type_id, String service_price_id, int is_zan) {
+    public VideoData(String channel_id, String article_id, String title, String teacher, String img_url, String total_view, String add_time, String price, String dis_price, String content, String keywords, String video_url, String vid, String cid, String category, String content_desc, String goto_url, int is_join, String partner_user_id, String service_type_id, String service_price_id, int is_zan) {
         this.channel_id = channel_id;
         this.article_id = article_id;
         this.title = title;
+        this.teacher = teacher;
         this.img_url = img_url;
         this.total_view = total_view;
         this.add_time = add_time;
@@ -285,4 +292,13 @@ public class VideoData implements Serializable {
     public void setIs_zan(int is_zan) {
         this.is_zan = is_zan;
     }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
 }
