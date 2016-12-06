@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.meijialife.simi"
     android:versionCode="43"
-    android:versionName="2.6.2" >
+    android:versionName="2.7.0" >
 
     <!-- 在后台服务中弹出dialog用 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
