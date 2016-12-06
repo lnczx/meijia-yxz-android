@@ -1,15 +1,5 @@
 package com.meijialife.simi;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import net.tsz.afinal.FinalHttp;
-import net.tsz.afinal.http.AjaxCallBack;
-import net.tsz.afinal.http.AjaxParams;
-
-import org.json.JSONObject;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,7 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -38,13 +27,23 @@ import com.meijialife.simi.alerm.AlermUtils;
 import com.meijialife.simi.bean.ReceiverBean;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.ui.RouteUtil;
+import com.meijialife.simi.ui.RoutePushUtil;
 import com.meijialife.simi.utils.AndroidUtil;
 import com.meijialife.simi.utils.AssetsDatabaseManager;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+
+import net.tsz.afinal.FinalHttp;
+import net.tsz.afinal.http.AjaxCallBack;
+import net.tsz.afinal.http.AjaxParams;
+
+import org.json.JSONObject;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyPushReceiver extends BroadcastReceiver {
 
@@ -101,9 +100,10 @@ public class MyPushReceiver extends BroadcastReceiver {
                          */
                         if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
                             //推送通知
-                            setNotification(receiverBean);
+//                            setNotification(receiverBean);
                             if(StringUtils.isNotEmpty(receiverBean.getGo()) || StringUtils.isNotEmpty(receiverBean.getAj())){
-                                RouteUtil ru = new RouteUtil(context);
+                                RoutePushUtil ru = new RoutePushUtil(context,receiverBean);
+//                                RouteUtil ru = new RouteUtil(context);
                                 ru.Routings(receiverBean.getCa(),receiverBean.getAj(),receiverBean.getGo(),receiverBean.getPa());
                             }
                         } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
@@ -150,9 +150,9 @@ public class MyPushReceiver extends BroadcastReceiver {
                        */
                         if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
                             //推送通知
-                            setNotification(receiverBean);
+//                            setNotification(receiverBean);
                             if(StringUtils.isNotEmpty(receiverBean.getAj())){
-                                RouteUtil ru = new RouteUtil(context);
+                                RoutePushUtil ru = new RoutePushUtil(context,receiverBean);
                                 ru.Routings(receiverBean.getCa(),receiverBean.getAj(),receiverBean.getGo(),receiverBean.getPa());
                             }
                         } else if (StringUtils.isEquals(receiverBean.getAc(), ACTION_SETCLOCK)) {
