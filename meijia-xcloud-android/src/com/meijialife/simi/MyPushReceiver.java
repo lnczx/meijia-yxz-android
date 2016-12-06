@@ -102,7 +102,7 @@ public class MyPushReceiver extends BroadcastReceiver {
                         if (StringUtils.isEquals(receiverBean.getIs(), "true") && StringUtils.isEquals(receiverBean.getAc(), ACTION_MSG)) {
                             //推送通知
                             setNotification(receiverBean);
-                            if(StringUtils.isNotEmpty(receiverBean.getAj())){
+                            if(StringUtils.isNotEmpty(receiverBean.getGo()) || StringUtils.isNotEmpty(receiverBean.getAj())){
                                 RouteUtil ru = new RouteUtil(context);
                                 ru.Routings(receiverBean.getCa(),receiverBean.getAj(),receiverBean.getGo(),receiverBean.getPa());
                             }

@@ -404,12 +404,12 @@ public class RouteUtil {
 
     public void Routings(String category, String action, String goto_url, String params) {
         Intent intent;
-        if (!StringUtils.isEmpty(category) && !StringUtils.isEmpty(action)) {
+        if (!StringUtils.isEmpty(category) ) {
             if (category.equals("h5")) {
                 intent = new Intent(context, WebViewsActivity.class);
                 intent.putExtra("url", goto_url);
                 context.startActivity(intent);
-            } else if (category.equals("app")) {
+            } else if (category.equals("app") && !StringUtils.isEmpty(action)) {
                 if (action.equals("index")) {// 首页
                     intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
