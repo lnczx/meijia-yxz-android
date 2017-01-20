@@ -73,6 +73,7 @@ public class FindAllAdapter extends BaseAdapter {
 			holder = (Holder) convertView.getTag();
 		}
 		holder.tv_application_name.setText(findBeans.get(position).getTitle());
+		holder.tv_application_name.setTextSize(13);
 		//获得头像的url
         String url = findBeans.get(position).getImg_url();
         //将默认头像摄者为秘书头像

@@ -53,7 +53,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_search"
                 android:focusable="false"
-                android:text="搜索：想找一位年会策划达人..."
+                android:text="搜索：人力资源管理师考试资料..."
                 android:textColor="@color/simi_color_dark_gray"
                 android:textSize="12sp" />
         </RelativeLayout>

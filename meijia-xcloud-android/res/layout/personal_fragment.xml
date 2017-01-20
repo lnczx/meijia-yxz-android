@@ -54,7 +54,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center"
                             android:singleLine="true"
-                            android:text="kerry"
+                            android:text=""
                             android:textColor="#ffffff"
                             android:textSize="18sp" />
 

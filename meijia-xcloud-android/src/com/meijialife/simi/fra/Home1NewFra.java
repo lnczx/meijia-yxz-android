@@ -150,9 +150,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         tabNames.add("招聘");
         tabNames.add("绩效");
         tabNames.add("薪资");
+        tabNames.add("职场");
         tabNames.add("案例");
         tabNames.add("行政");
-        tabNames.add("职场");
         tabNames.add("培训");
         tabNames.add("员工关系");
         tabNames.add(" 人资规划");

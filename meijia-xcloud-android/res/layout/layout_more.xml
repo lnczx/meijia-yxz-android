@@ -50,34 +50,34 @@
 
 
 
-            <RelativeLayout
-                android:id="@+id/index_4_rl_feedback"
-                android:layout_width="match_parent"
-                android:layout_marginTop="9dp"
-                android:layout_height="@dimen/list_item_height"
-                android:background="@drawable/btn_list_item_bg" >
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/index_4_rl_feedback"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_marginTop="9dp"-->
+                <!--android:layout_height="@dimen/list_item_height"-->
+                <!--android:background="@drawable/btn_list_item_bg" >-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/cut_off_rule" />
+                <!--<View-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0.5dp"-->
+                    <!--android:background="@color/cut_off_rule" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="意见反馈"
-                    android:textColor="@color/simi_color_gray" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+                    <!--android:text="意见反馈"-->
+                    <!--android:textColor="@color/simi_color_gray" />-->
 
-                <ImageView
-                    android:layout_width="8dp"
-                    android:layout_height="16dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="18dp"
-                    android:background="@drawable/arrow_right" />
-            </RelativeLayout>
+                <!--<ImageView-->
+                    <!--android:layout_width="8dp"-->
+                    <!--android:layout_height="16dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginRight="18dp"-->
+                    <!--android:background="@drawable/arrow_right" />-->
+            <!--</RelativeLayout>-->
 
             <View
                 android:layout_width="match_parent"
@@ -240,7 +240,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="44dp"
-                    android:text="400-169-1615"
+                    android:text="biz@bolohr.com"
                     android:textColor="#E8374A" />
             </RelativeLayout>
 

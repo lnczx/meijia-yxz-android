@@ -59,14 +59,14 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 
     	/*rl_help = (RelativeLayout) findViewById(R.id.index_4_rl_help);*/
 		rl_agree = (RelativeLayout) findViewById(R.id.index_4_rl_agree);
-		rl_feedback = (RelativeLayout) findViewById(R.id.index_4_rl_feedback);
+		/*rl_feedback = (RelativeLayout) findViewById(R.id.index_4_rl_feedback);*/
 		rl_about = (RelativeLayout) findViewById(R.id.index_4_rl_about);
 		rl_update = (RelativeLayout) findViewById(R.id.index_4_rl_update);
 		rl_service = (RelativeLayout) findViewById(R.id.index_4_rl_service);
 
 		/*rl_help.setOnClickListener(this);*/
 		rl_agree.setOnClickListener(this);
-		rl_feedback.setOnClickListener(this);
+		/*rl_feedback.setOnClickListener(this);*/
 		rl_about.setOnClickListener(this);
 //		rl_update.setOnClickListener(this);
 		rl_service.setOnClickListener(this);
@@ -92,10 +92,10 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			intent.putExtra("url", Constants.URL_WEB_AGREE);
 			intent.putExtra("title", "用户协议");
 			break;
-		case R.id.index_4_rl_feedback: // 意见反馈
+		/*case R.id.index_4_rl_feedback: // 意见反馈
 			intent = new Intent(this, SettingFeedBackActivity.class);
 //			intent = new Intent(this, FeedbackActivity.class);
-			break;
+			break;*/
 		case R.id.index_4_rl_about: // 关于我们
 			intent = new Intent(this, WebViewActivity.class);
 			intent.putExtra("url", Constants.URL_ABOUT_US);
@@ -105,7 +105,7 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			checkVersion(true);
 			break;
 		case R.id.index_4_rl_service: // 联系客服
-			intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
+			intent = new Intent(Intent.ACTION_DIAL, Uri.parse("mailto:" + "biz@bolohr.com"));
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			break;
 

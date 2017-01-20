@@ -59,7 +59,7 @@
                 android:layout_toRightOf="@id/iv_search"
                 android:background="@null"
                 android:focusable="true"
-                android:hint="提前囤好货"
+                android:hint="招聘猎头，人才直达"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
                 android:textColor="@color/text_normal"

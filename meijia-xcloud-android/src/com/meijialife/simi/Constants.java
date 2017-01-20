@@ -17,7 +17,7 @@ public class Constants {
 
     //如果是环信的， 用户为  simi-user-1
     public static final String SERVICE_ID = "1";
-    public static final String SERVICE_NUMBER = "400-169-1615";
+    public static final String SERVICE_NUMBER = "biz@bolohr.com";
     public static final String DESCRIPTOR = "com.umeng.share";
 
     //登录状态key

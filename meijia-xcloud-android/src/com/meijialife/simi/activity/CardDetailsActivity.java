@@ -421,7 +421,7 @@ public class CardDetailsActivity extends BaseActivity implements OnClickListener
         dialog = new AlertDialog.Builder(this);
         dialog.setTitle("提示");
         // dialog.setIcon(R.drawable.ic_launcher_logo);
-        dialog.setMessage("确定要取消卡片吗？取消后会在日程中删除，并且所有提醒人员将收不到提醒");
+        dialog.setMessage("确定要取消卡片吗？取消后会在提醒中删除，并且所有提醒人员将收不到提醒");
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
             @Override

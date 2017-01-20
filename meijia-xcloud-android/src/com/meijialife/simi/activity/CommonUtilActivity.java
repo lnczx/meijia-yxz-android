@@ -48,7 +48,7 @@ public class CommonUtilActivity extends BaseActivity {
     }
 
     private void initView() {
-        setTitleName("常用工具");
+        setTitleName("工具资料");
         requestBackBtn();
         
         adapter = new CompanySettingAdapter(this);
