@@ -428,7 +428,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/iv_person_more"
-                android:text="我是服务者"
+                android:text="服务商入口"
                 android:textColor="@color/simi_color_dark_gray"
                 />
 

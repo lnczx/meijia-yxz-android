@@ -145,6 +145,7 @@
             android:gravity="center"
             android:layout_marginRight="3dp"
             android:text="提问"
+            android:textSize="44px"
             android:textColor="@color/simi_color_blue"
            />
     </RelativeLayout>

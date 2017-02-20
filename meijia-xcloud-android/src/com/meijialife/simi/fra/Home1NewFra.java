@@ -259,17 +259,19 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int p = position - 2;
-                // int p = position;
-                HomePosts homePost = allHomePosts.get(p);
-                Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
-                // Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                intent.putExtra("url", homePost.getUrl());
-                intent.putExtra("p_id", homePost.getId());// 文章Id
-                intent.putExtra("is_show", true);
-                intent.putExtra("home_post", homePost);
-                intent.putExtra("article_content", homePost.getContent());
-                getActivity().startActivity(intent);
+                if (position >= 2) {
+                    int p = position - 2;
+                    // int p = position;
+                    HomePosts homePost = allHomePosts.get(p);
+                    Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+                    // Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                    intent.putExtra("url", homePost.getUrl());
+                    intent.putExtra("p_id", homePost.getId());// 文章Id
+                    intent.putExtra("is_show", true);
+                    intent.putExtra("home_post", homePost);
+                    intent.putExtra("article_content", homePost.getContent());
+                    getActivity().startActivity(intent);
+                }
             }
         });
 
