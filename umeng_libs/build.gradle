@@ -5,12 +5,12 @@ dependencies {
     compile('com.android.support:support-v4:23.3.0') {
         exclude module: 'support-v4'
     }
-    compile 'com.android.support:recyclerview-v7:21.+'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
 }
 
 android {
     compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '25.0.0'
     enforceUniquePackageName=false
 	
 	defaultConfig { 

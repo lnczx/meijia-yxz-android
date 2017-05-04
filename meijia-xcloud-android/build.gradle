@@ -10,7 +10,7 @@ dependencies {
     }
     compile 'com.android.support:multidex:1.0.1'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.facebook.fresco:fresco:0.11.0'
+    compile 'com.facebook.fresco:fresco:0.13.0'
     compile project(':vodPlayerRelease')
 }
 
@@ -20,7 +20,7 @@ android {
         jcenter()
     }
     compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    buildToolsVersion '25.0.0'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
