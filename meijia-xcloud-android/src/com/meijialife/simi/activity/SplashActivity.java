@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -66,7 +68,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends Activity implements Runnable {
 
     private static final int sleepTime = 2000;
     public static String clientid;
@@ -81,72 +83,75 @@ public class SplashActivity extends Activity {
     private BitmapDrawable defDrawable;
     private ImageView mWelcome;
     private ImageView mWelcome2;
-    private Handler handler;
-    private TimerTask task;
-
+    private int waitTimeAd = 3;//广告等待时间s
     private SQLiteDatabase db;//数据库对象
+    private boolean isThreadAlive;
+
+    private TextView tv_time;
+    private LinearLayout layout_skip_view;
+    private Thread mThread;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
 
-        final Timer timer = new Timer();
         initDb();
-        try{
+        try {
             initLocation();
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
 //        AlphaAnimation aa = new AlphaAnimation(0.8f, 1.0f);
 //        aa.setDuration(2000);
 //        findViewById(R.id.iv_welcome).startAnimation(aa);
 
-        //启动页动态广告
         mWelcome = (ImageView) findViewById(R.id.iv_welcome);
         mWelcome2 = (ImageView) findViewById(R.id.iv_welcome2);
+        layout_skip_view = (LinearLayout) findViewById(R.id.layout_skip_view);
+        tv_time = (TextView) findViewById(R.id.tv_time_text);
 
         initSplashAd();
-        timer.schedule(task, 2000);
 
 
-        //2s之后启动页进入首页
-        TimerTask MyTask = new TimerTask() {
-            @Override
-            public void run() {
-                List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
-                if (searchAll.size() > 0) {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    SplashActivity.this.finish();
-                    timer.cancel();
-                } else {
-                    try {
-                        updateUserInfo();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        initEasemob();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                        SplashActivity.this.finish();
-                    }
-                    try {
-                        updateCalendarMark();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        };
-        timer.schedule(MyTask, 3000);
+//        //2s之后启动页进入首页
+//        TimerTask MyTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
+//                if (searchAll.size() > 0) {
+//                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                    SplashActivity.this.finish();
+//                    timer.cancel();
+//                } else {
+//                    try {
+//                        updateUserInfo();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    try {
+//                        initEasemob();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                        SplashActivity.this.finish();
+//                    }
+//                    try {
+//                        updateCalendarMark();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            }
+//        };
+//        timer.schedule(MyTask, 3000);
         initRoute();
 
-        try{
+        try {
             getCitys(getCityAddtime());
-        }catch (Exception e){
+        } catch (Exception e) {
         }
 
 
@@ -157,9 +162,29 @@ public class SplashActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Constants.IS_JUMP = true;
+
             }
         });
         getUserMsg();
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case 1:
+                        tv_time.setText(msg.arg1 + "");
+                        break;
+                }
+                super.handleMessage(msg);
+            }
+        };
+
+        layout_skip_view.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoSkip();
+            }
+        });
 
     }
 
@@ -178,26 +203,93 @@ public class SplashActivity extends Activity {
         finalBitmap = FinalBitmap.create(SplashActivity.this);
         finalBitmap.configDiskCachePath(getCacheDir() + "icon");
         finalBitmap.configDiskCacheSize(10 * 1024);
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 1:
-                        finalBitmap.display(mWelcome2, Constants.SPLASH_ICON_URL);
-                        break;
+        finalBitmap.display(mWelcome2, Constants.SPLASH_ICON_URL);
+
+
+        mThread = new Thread(this);
+        if (!mThread.isAlive()) {
+            isThreadAlive = true;
+            if (mThread.getState() == Thread.State.TERMINATED) {
+                mThread = new Thread(this);
+            }
+            mThread.start();
+        }
+
+
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (isThreadAlive) {
+                if (waitTimeAd > 0) {
+                    waitTimeAd--;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Message message = Message.obtain();
+                    message.what = 1;
+                    message.arg1 = waitTimeAd;
+                    handler.sendMessage(message);
+                } else {
+                    isThreadAlive = false;
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    autoSkip();
                 }
-                super.handleMessage(msg);
             }
-        };
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                //由于主线程安全，页面的更新需放到主线程中
-                Message msg = new Message();
-                msg.what = 1;
-                handler.sendMessage(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 自动跳过
+     */
+    private void autoSkip() {
+        try {
+            if (mThread.isAlive()) {
+                mThread.interrupt();
             }
-        };
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
+        if (searchAll.size() < 0) {
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            SplashActivity.this.finish();
+        } else {
+            try {
+                updateUserInfo();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                updateCalendarMark();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                initEasemob();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            SplashActivity.this.finish();
+
+
+        }
+
+
     }
 
     /**
@@ -261,32 +353,14 @@ public class SplashActivity extends Activity {
                     EMChatManager.getInstance().loadAllConversations();
                     long costTime = System.currentTimeMillis() - start;
                     //等待sleeptime时长
-                    if (sleepTime - costTime > 0) {
-                        try {
-                            Thread.sleep(sleepTime - costTime);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-//                    //进入主页面
-//                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                    finish();
-                }
-//                else {
-//                    try {
-//                        Thread.sleep(sleepTime);
-//                    } catch (InterruptedException e) {
+//                    if (sleepTime - costTime > 0) {
+//                        try {
+//                            Thread.sleep(sleepTime - costTime);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
 //                    }
-                    //去登陆
-//                    startActivity(new Intent(SplashActivity.this, SplashActivity.class));
-//                    finish();
-//                }
-                try {
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                  }
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
+                }
             }
         }).start();
     }
@@ -864,6 +938,14 @@ public class SplashActivity extends Activity {
             locationClient = null;
         }
         AssetsDatabaseManager.closeDatabase("simi01.db");
+
+        try {
+            if (mThread.isAlive()) {
+                mThread.interrupt();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -937,5 +1019,6 @@ public class SplashActivity extends Activity {
             });
         }
     }
+
 
 }

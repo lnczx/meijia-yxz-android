@@ -5,7 +5,7 @@ dependencies {
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
     compile project(':umeng_libs')
-    compile('com.android.support:support-v4:23.3.0') {
+    compile('com.android.support:support-v4:25.3.0') {
         exclude module: 'support-v4'
     }
     compile 'com.android.support:multidex:1.0.1'
@@ -19,7 +19,7 @@ android {
     repositories {
         jcenter()
     }
-    compileSdkVersion 22
+    compileSdkVersion 25
     buildToolsVersion '25.0.0'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
