@@ -56,6 +56,7 @@ import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
 import com.meijialife.simi.utils.SpFileUtil;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.ui.ConversationListFragment;
@@ -381,10 +382,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             case R.id.item_5: // 卡牌集市
                 // Toast.makeText(this, "敬请期待", 0).show();
                 // startActivity(new Intent(this, NullWaitActivity.class));
-                Intent intent5 = new Intent(this, WebViewActivity.class);
-                intent5.putExtra("url", Constants.URL_XUEYUAN);
-                intent5.putExtra("title", "行政人智库");
-                startActivity(intent5);
+                ToActivityUtil.gotoWebPage(this,"行政人智库",Constants.URL_XUEYUAN);
                 break;
             case R.id.item_6: // 积分商城
                 Intent intent6 = new Intent();

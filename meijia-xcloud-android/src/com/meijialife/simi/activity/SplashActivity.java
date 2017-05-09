@@ -115,6 +115,12 @@ public class SplashActivity extends Activity implements Runnable {
         initSplashAd();
 
 
+        mWelcome2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 //        //2s之后启动页进入首页
 //        TimerTask MyTask = new TimerTask() {
 //            @Override

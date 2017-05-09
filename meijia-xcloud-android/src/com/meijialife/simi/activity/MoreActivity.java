@@ -21,6 +21,7 @@ import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.UpdateInfo;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UpdateInfoProvider;
 import com.meijialife.simi.utils.Utils;
 
@@ -88,18 +89,14 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			intent.putExtra("title", "使用帮助");
 			break;*/
 		case R.id.index_4_rl_agree: // 用户协议
-			intent = new Intent(this, WebViewActivity.class);
-			intent.putExtra("url", Constants.URL_WEB_AGREE);
-			intent.putExtra("title", "用户协议");
+			ToActivityUtil.gotoWebPage(MoreActivity.this,"用户协议",Constants.URL_WEB_AGREE);
 			break;
 		/*case R.id.index_4_rl_feedback: // 意见反馈
 			intent = new Intent(this, SettingFeedBackActivity.class);
 //			intent = new Intent(this, FeedbackActivity.class);
 			break;*/
 		case R.id.index_4_rl_about: // 关于我们
-			intent = new Intent(this, WebViewActivity.class);
-			intent.putExtra("url", Constants.URL_ABOUT_US);
-			intent.putExtra("title", "关于我们");
+			ToActivityUtil.gotoWebPage(MoreActivity.this,"关于我们",Constants.URL_ABOUT_US);
 			break;
 		case R.id.index_4_rl_update: // 检查更新
 			checkVersion(true);

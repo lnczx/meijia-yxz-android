@@ -27,6 +27,7 @@ import com.meijialife.simi.adapter.CompanySettingAdapter;
 import com.meijialife.simi.bean.CompanySetting;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
@@ -60,9 +61,7 @@ public class CommonUtilActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CompanySetting setting = companySettings.get(position);
-                Intent intent  = new Intent(CommonUtilActivity.this,WebViewActivity.class);
-                intent.putExtra("url",setting.getSetting_json());
-                startActivity(intent);
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this,"null",setting.getSetting_json());
             }
         });
         

@@ -37,6 +37,7 @@ import com.meijialife.simi.activity.CommonUtilActivity;
 import com.meijialife.simi.activity.FeedListActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.TrialCourseListActivity;
 import com.meijialife.simi.activity.WebViewActivity;
@@ -58,6 +59,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SimpleLoginImpl;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.comm.core.CommunitySDK;
@@ -204,9 +206,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onItemClick(int position) {
                 FindBean findBean = findBeanList.get(position);
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("url", findBean.getGoto_url());
-                startActivity(intent);
+                ToActivityUtil.gotoWebPage(getActivity(),"null",findBean.getGoto_url());
             }
         });
 

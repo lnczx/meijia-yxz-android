@@ -59,6 +59,7 @@ import com.meijialife.simi.ui.TipPopWindow;
 import com.meijialife.simi.utils.BlurUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
@@ -337,13 +338,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             startActivity(new Intent(getActivity(), MoreActivity.class));
             break;
         case R.id.rl_person_items5:// 我是服务商
-            /*
-             * intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615")); intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-             * startActivity(intent);
-             */
-            Intent intent1 = new Intent(getActivity(), WebViewActivity.class);
-            intent1.putExtra("url", Constants.KAI_DIAN + user.getId());
-            getActivity().startActivity(intent1);
+            ToActivityUtil.gotoWebPage(getActivity(),"null",Constants.KAI_DIAN + user.getId());
             break;
         case R.id.rl_person_dong_tai:// 动态
             intent = new Intent(getActivity(), UserInfoActivity.class);

@@ -43,6 +43,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
 import com.umeng.comm.core.CommunitySDK;
@@ -267,11 +268,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
                 break;
             case R.id.tv_user_tip:// 用户协议
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", Constants.URL_WEB_AGREE);
-                intent.putExtra("title", "用户使用协议");
-                startActivity(intent);
-
+                ToActivityUtil.gotoWebPage(LoginActivity.this,"用户使用协议",Constants.URL_WEB_AGREE);
                 break;
             default:
                 break;

@@ -44,6 +44,7 @@ import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
@@ -171,10 +172,7 @@ public class MainPlusLeaveActivity extends BaseActivity implements OnClickListen
             break;
         case R.id.layout_select_who:
             if (userInfo.getHas_company() == 0) {
-                Intent intent1 = new Intent(this, WebViewActivity.class);
-                intent1.putExtra("title", "企业通讯录");
-                intent1.putExtra("url", Constants.HAS_COMPANY);
-                startActivity(intent1);
+                ToActivityUtil.gotoWebPage(MainPlusLeaveActivity.this,"企业通讯录",Constants.HAS_COMPANY);
             } else {
                 intent = new Intent(MainPlusLeaveActivity.this, CompanyListActivity.class);
                 intent.putExtra("flag", 1);

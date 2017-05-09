@@ -48,6 +48,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.ui.ChatActivity;
@@ -824,10 +825,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
         @Override
         public void onClick(View widget) {
-            Intent i = new Intent(ArticleDetailActivity.this, WebViewActivity.class);
-            i.putExtra("url", mUrl);
-            i.putExtra("title", "文章详情");
-            startActivity(i);
+            ToActivityUtil.gotoWebPage(ArticleDetailActivity.this,"文章详情",mUrl);
         }
     }
 
