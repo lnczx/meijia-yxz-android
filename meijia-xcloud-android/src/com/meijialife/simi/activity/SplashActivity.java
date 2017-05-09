@@ -115,13 +115,6 @@ public class SplashActivity extends Activity implements Runnable {
 
         initSplashAd();
 
-
-        mWelcome2.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToActivityUtil.gotoWebPage(SplashActivity.this, "null", Constants.WEB_SPLASH_AD_URL);
-            }
-        });
 //        //2s之后启动页进入首页
 //        TimerTask MyTask = new TimerTask() {
 //            @Override
@@ -169,7 +162,7 @@ public class SplashActivity extends Activity implements Runnable {
             @Override
             public void onClick(View v) {
                 Constants.IS_JUMP = true;
-
+                ToActivityUtil.gotoWebPage(SplashActivity.this, "null", Constants.WEB_SPLASH_AD_URL);
             }
         });
         getUserMsg();
@@ -267,6 +260,7 @@ public class SplashActivity extends Activity implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        isThreadAlive = false;
 
         List<User> searchAll = DBHelper.getInstance(SplashActivity.this).searchAll(User.class);
         if (searchAll.size() < 0) {

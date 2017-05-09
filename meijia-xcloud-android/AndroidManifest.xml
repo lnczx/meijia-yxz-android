@@ -855,7 +855,6 @@ _
         <!-- 上传多张图片注册activity -->
         <activity
             android:name="com.meijialife.simi.photo.activity.MainActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
         <activity
