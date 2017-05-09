@@ -11,37 +11,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 常量归类
+ * @author  yejiurui 2017-05-01
+ */
 public class Constants {
 
-    //我们的用户系统的 user_id = 1
+    //是否使用测试接口
+    public static final boolean DEBUG = false;
 
-    //如果是环信的， 用户为  simi-user-1
-    public static final String SERVICE_ID = "1";
-    public static final String SERVICE_NUMBER = "biz@bolohr.com";
-    public static final String DESCRIPTOR = "com.umeng.share";
+    // 正式地址
+    public static String HOST = "http://app.bolohr.com";
+    // 测试地址
+    public static String HOST_TEST = "http://app.bolohr.com";
 
-    //登录状态key
-    public static final String LOGIN_STATUS = "login_status";
-    //闹钟周期提醒
-    public static final String KEY_ALAERM_CYCLE = "alarm_cycle";
-
-    public static final String USER_TAGS = "user_tags";//用户所选标签key
-
-    public static boolean IS_JUMP = false;//标志位---判断首页点击是否跳转广告url
-
-    //登录图标URL
-    public static final String SPLASH_ICON_URL = "http://app.bolohr.com/simi-h5/img/load-ad-update.jpg";
-    public static final String LOGO_ICON_URL = "http://app.bolohr.com/simi-h5/img/login_logo_update.jpg";
-    public static final String PERSON_ICON_URL = "http://app.bolohr.com/simi-h5/img/my_bg_update.jpg";
-    public static final String FRIEND_ICON_URL = "http://app.bolohr.com/simi-h5/img/friend_bg_update.jpg";
-
-
-    public final static String AlipayHOST = "http://182.92.160.194";
-
-    // 主机地址
-    public static final String HOST = "http://app.bolohr.com";
     // 基础接口
-    public static final String ROOT_URL = HOST + "/simi/app/";
+    public static String ROOT_URL = Constants.DEBUG ? HOST_TEST : HOST + "/simi/app/";
+
 
     // 获取验证码接口
     public final static String URL_GET_SMS_TOKEN = ROOT_URL + "user/get_sms_token.json";
@@ -93,8 +79,6 @@ public class Constants {
      * 企业-员工考勤记录接口
      **/
     public static final String URL_POST_CHECKIN = ROOT_URL + "company/checkin.json";
-
-    //基础数据接口
     /**
      * 基础数据接口
      **/
@@ -122,6 +106,7 @@ public class Constants {
      **/
     public static final String SCORE_HELP_URL = "http://app.bolohr.com/simi-h5/show/score-intro.html";
 
+    /**********************卡片相关接口**************************/
     //卡片列表接口
     public final static String URL_GET_CARD_LIST = ROOT_URL + "card/get_list.json";
     //卡片添加接口
@@ -144,6 +129,8 @@ public class Constants {
      * 卡片点赞接口
      **/
     public static final String URL_POST_CARD_ZAN = ROOT_URL + "card/post_zan.json";
+
+    /**********************好友相关接口**************************/
     /**
      * 个人主页接口
      **/
@@ -172,7 +159,6 @@ public class Constants {
      * 好友申请通过或拒绝接口
      **/
     public static final String URL_POST_FRIEND_REQ = ROOT_URL + "user/post_friend_req.json";
-
 
     /**
      * 获取秘书列表接口
@@ -227,7 +213,7 @@ public class Constants {
      **/
     public static final String URL_POST_TRAIL = ROOT_URL + "user/post_trail.json";
 
-
+/**********************动态相关接口**************************/
     //关于动态的接口
     /**
      * 动态点赞接口
@@ -282,7 +268,7 @@ public class Constants {
      **/
     public static final String URL_GET_USER_MSG_LIST = ROOT_URL + "user/get_msg.json";
 
-    //app帮助类接口
+    /**********************app帮助类接口**************************/
     /**
      * 送水列表接口
      **/
@@ -303,15 +289,6 @@ public class Constants {
      * 送水订单详情接口
      **/
     public static final String URL_GET_DETAIL_WATER = ROOT_URL + "order/get_detail_water.json";
-    /**
-     * 送水订单状态
-     **/
-    public static final int WATER_ORDER_CLOSE = 0; // 已关闭
-    public static final int WATER_ORDER_NOT_PAY = 1; // 未支付
-    public static final int WATER_ORDER_HAS_PAY = 2; // 已支付
-    public static final int WATER_ORDER_PAYING = 3; // 处理中
-    //智能配置h5链接
-    public static final String WATER_ORDER_H5 = "http://app.bolohr.com/simi-h5/show/water-set.html"; // 处理中
 
 
     //加号中应用接口
@@ -405,6 +382,229 @@ public class Constants {
      **/
     public static final String URL_GET_SEC_USER = ROOT_URL + "sec/get_users.json";
 
+    public static final String URL_GET_ORDER_LIST = ROOT_URL + "order/get_list.json";
+    /**
+     * 私密卡购买
+     **/
+    public static final String URL_POST_SENIOR_BUY = ROOT_URL + "user/senior_buy.json";
+    /**
+     * 私密卡在线支付成功同步接口
+     **/
+    public static final String URL_POST_SENIOR_ONLINE = ROOT_URL + "user/senior_online_pay.json";
+    /**
+     * 获取充值卡列表
+     **/
+    public static final String URL_GET_CARDS = ROOT_URL + "dict/get_cards.json";
+    /**
+     * 会员充值接口
+     **/
+    public static final String URL_POST_CARD_BUY = ROOT_URL + "user/card_buy.json";
+    /**
+     * 会员充值在线支付成功同步接口
+     **/
+    public static final String URL_POST_CARD_ONLINE = ROOT_URL + "user/card_online_pay.json";
+
+    /**
+     * 服务订单下单接口
+     **/
+    public static final String URL_POST_PARTNER_SERVICE_BUY = ROOT_URL + "order/post_add.json";
+    /**
+     * 已存在的订单下单接口
+     **/
+    public static final String URL_POST_EXISTED_PARTNER_SERVICE_BUY = ROOT_URL + "order/post_pay.json";
+
+
+    /**
+     * 会员充值在线支付成功同步接口
+     **/
+    public static final String URL_POST_PUSH_BIND = ROOT_URL + "user/post_push_bind.json";
+    public static final String URL_POST_SCORE_SHOP = ROOT_URL + "user/score_shop";
+
+    //微信支付部分
+    //微信预支付接口
+    public static final String URL_ORDER_WEIXIN_PRE = ROOT_URL + "order/wx_pre.json";
+    //微信查询接口
+    public static final String URL_ORDER_WEIXIN_QUERY = ROOT_URL + "order/wx_order_query.json";
+    //微信异步通知接口
+    public static final String URL_ORDER_WEIXIN_NOTIFY = HOST + "/simi/wxpay-notify-ordercard.do";
+
+
+    /**
+     * 视频课程-频道列表
+     */
+    public static final String GET_CHANNEL_LIST = ROOT_URL + "video/channels.json";
+
+    /**
+     * 视频课程-视频文章列表
+     */
+    public static final String GET_VIDEO_LIST = ROOT_URL + "video/list.json";
+
+    /**
+     * 视频课程-视频文章详情
+     */
+    public static final String GET_VIDEO_DETAIL = ROOT_URL + "video/detail.json";
+
+    /**
+     * 视频课程-相关视频文章接口
+     */
+    public static final String GET_VIDEO_RELATE = ROOT_URL + "video/relate.json";
+
+    /**
+     * 视频课程-视频文章参加按钮接口
+     */
+    public static final String POST_VIDEO_JOIN = ROOT_URL + "video/join.json";
+
+    //资产管理
+    /**
+     * 资产管理入库记录列表接口
+     **/
+    public static final String GET_ASSET_IN_LIST_URL = ROOT_URL + "record/get_record_assets.json";
+    /**
+     * 资产领用记录列表接口
+     **/
+    public static final String GET_ASSET_USER_LIST_URL = ROOT_URL + "record/get_asset_use.json";
+    /**
+     * 公司资产领用记录接口
+     **/
+    public static final String POST_ASSET_ASSET_USER_URL = ROOT_URL + "record/post_asset_use.json";
+    /**
+     * 公司资产登记接口
+     **/
+    public static final String POST_ASSET_IN_ORDER_URL = ROOT_URL + "record/post_asset.json";
+    /**
+     * 条形码获取详细信息接口
+     **/
+    public static final String GET_RECORD_BARCODE_URL = ROOT_URL + "record/barcode.json";
+    /**
+     * 公司资产列表接口
+     **/
+    public static final String GET_ASSET_LIST_URL = ROOT_URL + "record/get_asset_list.json";
+
+    //文章标签
+    /**
+     * 获取默认订阅文章标签
+     **/
+    public static final String GET_DEFAULT_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/get_default_subscribe_tags.json";
+    /**
+     * 获取用户订阅的文章标签接口
+     **/
+    public static final String GET_USER_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/get_user_subscribe_tags.json";
+    /**
+     * 设置用户订阅的文章标签接口
+     **/
+    public static final String SET_USER_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/set_user_subscribe_tags.json";
+
+    //问题互助
+    /**
+     * 获取标签列表接口
+     **/
+    public static final String GET_TAG_LIST = ROOT_URL + "dict/get_tag_list.json";
+
+
+    //常用提醒
+    /**
+     * 获取常用提醒接口
+     **/
+    public static final String GET_UESR_ALARM = ROOT_URL + "user/get_alarm.json";
+    /**
+     * 设置常用提醒接口
+     **/
+    public static final String POST_SET_ALARM = ROOT_URL + "user/set_alarm.json";
+
+    /**
+     * 废品回收下单接口
+     **/
+    public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_recycle.json";
+
+    //保洁订单
+    /**
+     * 保洁订单列表
+     **/
+    public static final String GET_CLEAN_ORDER_URL = ROOT_URL + "order/get_list_clean.json";
+    /**
+     * 保洁下单接口
+     **/
+    public static final String POST_CLEAN_ORDER_URL = ROOT_URL + "order/post_add_clean.json";
+    /**
+     * 保洁订单详情
+     **/
+    public static final String URL_GET_DETAIL_CLEAN = ROOT_URL + "order/get_detail_clean.json";
+
+    /**
+     * 团建订单列表
+     **/
+    public static final String GET_TEAM_ORDER_URL = ROOT_URL + "order/get_list_team.json";
+    /**
+     * 获取送水商品列表
+     **/
+    public static final String GET_DEF_SERVICE_URL = ROOT_URL + "partner/get_default_service_price_list.json";
+    /**
+     * 团队建设下单接口
+     **/
+    public static final String POST_ADD_TEAM = ROOT_URL + "order/post_add_team.json";
+    /**
+     * 团队建设订单详情
+     **/
+    public static final String URL_GET_DETAIL_TEAM = ROOT_URL + "order/get_detail_team.json";
+
+    //请假
+    /**
+     * 请假订单列表
+     **/
+    public static final String GET_LEAVE_ORDER_URL = ROOT_URL + "user/leave_list.json";
+    /**
+     * 请假下单接口
+     **/
+    public static final String POST_LEAVE_ORDER_URL = ROOT_URL + "user/post_leave.json";
+    /**
+     * 请假详情接口
+     **/
+    public static final String GET_LEAVE_DETAIL_URL = ROOT_URL + "user/leave_detail.json";
+    /**
+     * 请假审批接口
+     **/
+    public static final String POSE_LEAVE_PASS_URL = ROOT_URL + "user/leave_pass.json";
+    /**
+     * 请假撤销接口
+     **/
+    public static final String POSE_LEAVE_CANCEL_URL = ROOT_URL + "user/leave_cancel.json";
+
+    //
+    /*********************快递接口**************************/
+    /**
+     * 快递订单列表
+     **/
+    public static final String GET_LIST_EXPRESS_URL = ROOT_URL + "record/get_list_express.json";
+
+    /**
+     * 快递下单接口
+     **/
+    public static final String POST_ADD_EXPRESS_URL = ROOT_URL + "record/post_add_express.json";
+    /**
+     * 快递详情
+     **/
+    public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
+    /*********************车辆速通接口**************************/
+    /**
+     * 废品回收订单列表接口
+     **/
+    public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_recycle.json";
+    /**
+     * 车辆速通列表接口
+     **/
+    public static final String GET_CAR_ORDER_LIST_URL = ROOT_URL + "car/get_order_list.json";
+    /**
+     * 车辆速通下单接口
+     **/
+    public static final String POST_CAR_NO_URL = ROOT_URL + "/car/post_car_no.json";
+    /**
+     * 用户车辆信息接口
+     **/
+    public static final String GET_CAR_URL = ROOT_URL + "/car/get_car.json";
+
+
+    /**********************网页类接口**************************/
+
     // 用户协议
     public final static String URL_WEB_AGREE = "http://bolohr.com/agreement.html";
     //  public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
@@ -414,6 +614,17 @@ public class Constants {
     public final static String URL_MORE_INFO = HOST + "/html/simi-inapp/app-faxian-list.htm";
     //行政人学院
     public final static String URL_XUEYUAN = "http://mishuzhuli.com";
+
+    /**********************状态和常量类字段**************************/
+
+    /**
+     * 送水订单状态
+     **/
+    public static final int WATER_ORDER_CLOSE = 0; // 已关闭
+    public static final int WATER_ORDER_NOT_PAY = 1; // 未支付
+    public static final int WATER_ORDER_HAS_PAY = 2; // 已支付
+    public static final int WATER_ORDER_PAYING = 3; // 处理中
+
 
     /**
      * 订单状态
@@ -492,6 +703,10 @@ public class Constants {
      * 企业注册H5页面
      **/
     public final static String HAS_COMPANY = "http://app.bolohr.com/simi-h5/show/company-reg.html";
+
+
+    //智能配置h5链接
+    public static final String WATER_ORDER_H5 = "http://app.bolohr.com/simi-h5/show/water-set.html"; // 处理中
     /**
      * 二维码扫描类型识别
      **/
@@ -505,76 +720,36 @@ public class Constants {
     public static final String QR_ACTION_NEW = "add";//添加
     public static final String QR_ACTION_SEE = "see";//查看
 
+
+    //我们的用户系统的 user_id = 1
+    //如果是环信的， 用户为  simi-user-1
+    public static final String SERVICE_ID = "1";
+    public static final String SERVICE_NUMBER = "biz@bolohr.com";
+    public static final String DESCRIPTOR = "com.umeng.share";
+    //登录状态key
+    public static final String LOGIN_STATUS = "login_status";
+    //闹钟周期提醒
+    public static final String KEY_ALAERM_CYCLE = "alarm_cycle";
+
+    public static final String USER_TAGS = "user_tags";//用户所选标签key
+    public static boolean IS_JUMP = false;//标志位---判断首页点击是否跳转广告url
+
+    //登录图标URL
+    public static final String SPLASH_ICON_URL = "http://app.bolohr.com/simi-h5/img/load-ad-update.jpg";
+    public static final String LOGO_ICON_URL = "http://app.bolohr.com/simi-h5/img/login_logo_update.jpg";
+    public static final String PERSON_ICON_URL = "http://app.bolohr.com/simi-h5/img/my_bg_update.jpg";
+    public static final String FRIEND_ICON_URL = "http://app.bolohr.com/simi-h5/img/friend_bg_update.jpg";
+
+    /**
+     * 快递H5链接
+     **/
+    public static final String H5_EXPRESS_URL = "http://m.kuaidi100.com/courier/search.jsp";
+
     /**
      * 本地临时文件根目录
      **/
     public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Simi";
-    //
-    //
-    // /** 基础数据接口 **/
-    // public static final String URL_GET_BASE = ROOT_URL + "dict/get_base_datas.json";
-    // /** 订单列表接口 **/
-    public static final String URL_GET_ORDER_LIST = ROOT_URL + "order/get_list.json";
-    // /** 订单详情接口 **/
-    // public static final String URL_GET_ORDER_DETAIL = ROOT_URL + "order/get_detail.json";
-    // /** 订单是否可取消验证 */
-    // public static final String URL_POST_ORDER_PRE_CANCEL = ROOT_URL + "order/pre_order_cancel.json";
-    // /** 订单取消接口 **/
-    // public static final String URL_POST_ORDER_CANCEL = ROOT_URL + "order/post_order_cancel.json";
-    // /** 订单评价接口 **/
-    // public static final String URL_POST_ORDER_RATE = ROOT_URL + "order/post_rate.json";
-    // /** 账号信息 **/
-    // public static final String URL_GET_USERINFO = ROOT_URL + "user/get_userinfo.json";
-    // /** 获取地址列表 **/
-    // public static final String URL_GET_ADDRS = ROOT_URL + "user/get_addrs.json";
-    // /** 地址提交接口 **/
-    // public static final String URL_POST_ADDRS = ROOT_URL + "user/post_addrs.json";
-    // /** 地址删除接口 **/
-    // public static final String URL_POST_DEL_ADDRS = ROOT_URL + "user/post_del_addrs.json";
-    /**
-     * 私密卡购买
-     **/
-    public static final String URL_POST_SENIOR_BUY = ROOT_URL + "user/senior_buy.json";
-    /**
-     * 私密卡在线支付成功同步接口
-     **/
-    public static final String URL_POST_SENIOR_ONLINE = ROOT_URL + "user/senior_online_pay.json";
-    /**
-     * 获取充值卡列表
-     **/
-    public static final String URL_GET_CARDS = ROOT_URL + "dict/get_cards.json";
-    /**
-     * 会员充值接口
-     **/
-    public static final String URL_POST_CARD_BUY = ROOT_URL + "user/card_buy.json";
-    /**
-     * 会员充值在线支付成功同步接口
-     **/
-    public static final String URL_POST_CARD_ONLINE = ROOT_URL + "user/card_online_pay.json";
 
-    /**
-     * 服务订单下单接口
-     **/
-    public static final String URL_POST_PARTNER_SERVICE_BUY = ROOT_URL + "order/post_add.json";
-    /**
-     * 已存在的订单下单接口
-     **/
-    public static final String URL_POST_EXISTED_PARTNER_SERVICE_BUY = ROOT_URL + "order/post_pay.json";
-
-
-    /**
-     * 会员充值在线支付成功同步接口
-     **/
-    public static final String URL_POST_PUSH_BIND = ROOT_URL + "user/post_push_bind.json";
-    public static final String URL_POST_SCORE_SHOP = ROOT_URL + "user/score_shop";
-
-    //微信支付部分
-    //微信预支付接口
-    public static final String URL_ORDER_WEIXIN_PRE = ROOT_URL + "order/wx_pre.json";
-    //微信查询接口
-    public static final String URL_ORDER_WEIXIN_QUERY = ROOT_URL + "order/wx_order_query.json";
-    //微信异步通知接口
-    public static final String URL_ORDER_WEIXIN_NOTIFY = HOST + "/simi/wxpay-notify-ordercard.do";
 
     /*
      * H5页面链接
@@ -644,24 +819,12 @@ public class Constants {
      * 废品回收图片链接
      **/
     public static final String WASTER_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-caolv.png";
-    /**
-     * 废品回收订单列表接口
-     **/
-    public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_recycle.json";
+
     /**
      * 废品回收H5链接
      **/
     public static final String H5_WASTER_URL = "http://app.bolohr.com/simi-h5/show/recycle-price.html";
-    /**
-     * 废品回收下单接口
-     **/
-    public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_recycle.json";
 
-    //保洁订单
-    /**
-     * 保洁订单列表
-     **/
-    public static final String GET_CLEAN_ORDER_URL = ROOT_URL + "order/get_list_clean.json";
     /**
      * 保洁图片链接
      **/
@@ -670,14 +833,6 @@ public class Constants {
      * 保洁H5链接
      **/
     public static final String H5_CLEAN_URL = "http://app.bolohr.com/simi-h5/show/clean-set.html";
-    /**
-     * 保洁下单接口
-     **/
-    public static final String POST_CLEAN_ORDER_URL = ROOT_URL + "order/post_add_clean.json";
-    /**
-     * 保洁订单详情
-     **/
-    public static final String URL_GET_DETAIL_CLEAN = ROOT_URL + "order/get_detail_clean.json";
 
 
     //团建
@@ -685,67 +840,15 @@ public class Constants {
      * 团建图片链接
      **/
     public static final String TEAM_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-chenghuang.png";
-    /**
-     * 团建订单列表
-     **/
-    public static final String GET_TEAM_ORDER_URL = ROOT_URL + "order/get_list_team.json";
-    /**
-     * 获取送水商品列表
-     **/
-    public static final String GET_DEF_SERVICE_URL = ROOT_URL + "partner/get_default_service_price_list.json";
+
+
     /**
      * 团建H5链接
      **/
     public static final String H5_TEAM_URL = "http://m.tuanjianbao.com/lines/search?activeType=3";
 //     public static final String H5_TEAM_URL = "http://app.bolohr.com/simi-h5/show/teamwork-set.html";
-    /**
-     * 团队建设下单接口
-     **/
-    public static final String POST_ADD_TEAM = ROOT_URL + "order/post_add_team.json";
-    /**
-     * 团队建设订单详情
-     **/
-    public static final String URL_GET_DETAIL_TEAM = ROOT_URL + "order/get_detail_team.json";
 
-    //请假
-    /**
-     * 请假订单列表
-     **/
-    public static final String GET_LEAVE_ORDER_URL = ROOT_URL + "user/leave_list.json";
-    /**
-     * 请假下单接口
-     **/
-    public static final String POST_LEAVE_ORDER_URL = ROOT_URL + "user/post_leave.json";
-    /**
-     * 请假详情接口
-     **/
-    public static final String GET_LEAVE_DETAIL_URL = ROOT_URL + "user/leave_detail.json";
-    /**
-     * 请假审批接口
-     **/
-    public static final String POSE_LEAVE_PASS_URL = ROOT_URL + "user/leave_pass.json";
-    /**
-     * 请假撤销接口
-     **/
-    public static final String POSE_LEAVE_CANCEL_URL = ROOT_URL + "user/leave_cancel.json";
 
-    //快递
-    /**
-     * 快递订单列表
-     **/
-    public static final String GET_LIST_EXPRESS_URL = ROOT_URL + "record/get_list_express.json";
-    /**
-     * 快递H5链接
-     **/
-    public static final String H5_EXPRESS_URL = "http://m.kuaidi100.com/courier/search.jsp";
-    /**
-     * 快递下单接口
-     **/
-    public static final String POST_ADD_EXPRESS_URL = ROOT_URL + "record/post_add_express.json";
-    /**
-     * 快递详情
-     **/
-    public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
     /**
      * 快递图片链接
      **/
@@ -755,20 +858,6 @@ public class Constants {
      **/
     public static final String GET_KUAIDI_OUT_URL = "http://m.kuaidi100.com/autonumber/auto";
 
-
-    //车辆速通
-    /**
-     * 车辆速通列表接口
-     **/
-    public static final String GET_CAR_ORDER_LIST_URL = ROOT_URL + "car/get_order_list.json";
-    /**
-     * 车辆速通下单接口
-     **/
-    public static final String POST_CAR_NO_URL = ROOT_URL + "/car/post_car_no.json";
-    /**
-     * 用户车辆信息接口
-     **/
-    public static final String GET_CAR_URL = ROOT_URL + "/car/get_car.json";
 
     //加号(卡片标题跳转链接)
     /**
@@ -820,63 +909,6 @@ public class Constants {
      **/
     public static final String CARD_TEAMWORK_HELP_URL = "http://app.bolohr.com/simi-h5/show/help-teamwork.html";
 
-    //资产管理
-    /**
-     * 资产管理入库记录列表接口
-     **/
-    public static final String GET_ASSET_IN_LIST_URL = ROOT_URL + "record/get_record_assets.json";
-    /**
-     * 资产领用记录列表接口
-     **/
-    public static final String GET_ASSET_USER_LIST_URL = ROOT_URL + "record/get_asset_use.json";
-    /**
-     * 公司资产领用记录接口
-     **/
-    public static final String POST_ASSET_ASSET_USER_URL = ROOT_URL + "record/post_asset_use.json";
-    /**
-     * 公司资产登记接口
-     **/
-    public static final String POST_ASSET_IN_ORDER_URL = ROOT_URL + "record/post_asset.json";
-    /**
-     * 条形码获取详细信息接口
-     **/
-    public static final String GET_RECORD_BARCODE_URL = ROOT_URL + "record/barcode.json";
-    /**
-     * 公司资产列表接口
-     **/
-    public static final String GET_ASSET_LIST_URL = ROOT_URL + "record/get_asset_list.json";
-
-    //文章标签
-    /**
-     * 获取默认订阅文章标签
-     **/
-    public static final String GET_DEFAULT_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/get_default_subscribe_tags.json";
-    /**
-     * 获取用户订阅的文章标签接口
-     **/
-    public static final String GET_USER_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/get_user_subscribe_tags.json";
-    /**
-     * 设置用户订阅的文章标签接口
-     **/
-    public static final String SET_USER_SUBSCRIBE_TAGS_URL = ROOT_URL + "user/set_user_subscribe_tags.json";
-
-    //问题互助
-    /**
-     * 获取标签列表接口
-     **/
-    public static final String GET_TAG_LIST = ROOT_URL + "dict/get_tag_list.json";
-
-
-    //常用提醒
-    /**
-     * 获取常用提醒接口
-     **/
-    public static final String GET_UESR_ALARM = ROOT_URL + "user/get_alarm.json";
-    /**
-     * 设置常用提醒接口
-     **/
-    public static final String POST_SET_ALARM = ROOT_URL + "user/set_alarm.json";
-
 
     //卡片选择接收人
     /**
@@ -918,29 +950,5 @@ public class Constants {
      **/
     public static ArrayList<TagData> tagList = new ArrayList<TagData>();
 
-    /**
-     * 视频课程-频道列表
-     */
-    public static final String GET_CHANNEL_LIST = ROOT_URL + "video/channels.json";
-
-    /**
-     * 视频课程-视频文章列表
-     */
-    public static final String GET_VIDEO_LIST = ROOT_URL + "video/list.json";
-
-    /**
-     * 视频课程-视频文章详情
-     */
-    public static final String GET_VIDEO_DETAIL = ROOT_URL + "video/detail.json";
-
-    /**
-     * 视频课程-相关视频文章接口
-     */
-    public static final String GET_VIDEO_RELATE = ROOT_URL + "video/relate.json";
-
-    /**
-     * 视频课程-视频文章参加按钮接口
-     */
-    public static final String POST_VIDEO_JOIN = ROOT_URL + "video/join.json";
 
 }
