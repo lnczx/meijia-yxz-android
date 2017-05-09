@@ -48,6 +48,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
 
@@ -118,7 +119,7 @@ public class SplashActivity extends Activity implements Runnable {
         mWelcome2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ToActivityUtil.gotoWebPage(SplashActivity.this, "null", Constants.WEB_SPLASH_AD_URL);
             }
         });
 //        //2s之后启动页进入首页

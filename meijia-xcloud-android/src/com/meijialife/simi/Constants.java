@@ -407,10 +407,10 @@ public class Constants {
 
     // 用户协议
     public final static String URL_WEB_AGREE = "http://bolohr.com/agreement.html";
-//  public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
+    //  public final static String URL_WEB_AGREE = HOST + "/html/simi-inapp/agreement.htm";
     public final static String URL_USER_HELP = HOST + "/html/simi-inapp/help.htm";
     public final static String URL_ABOUT_US = "http://bolohr.com/aboutus.html";
-//    public final static String URL_ABOUT_US = HOST + "/html/simi-inapp/about-us.htm";
+    //    public final static String URL_ABOUT_US = HOST + "/html/simi-inapp/about-us.htm";
     public final static String URL_MORE_INFO = HOST + "/html/simi-inapp/app-faxian-list.htm";
     //行政人学院
     public final static String URL_XUEYUAN = "http://mishuzhuli.com";
@@ -895,7 +895,7 @@ public class Constants {
     /**
      * 领用资产选中类型
      */
-    public static Map<Long,AssetJsons> ASSET_MAP_JSON = new HashMap<Long,AssetJsons>();
+    public static Map<Long, AssetJsons> ASSET_MAP_JSON = new HashMap<Long, AssetJsons>();
 
 
     //签到获取积分接口
@@ -910,6 +910,8 @@ public class Constants {
     public static final String JIAN_LI_JIAO_HUAN_URL = "http://app.bolohr.com/simi-h5/show/cv-switch-list.html";
     public static final String SHANG_JIN_LIE_REN_URL = "http://app.bolohr.com/simi-h5/show/job-reward-list.html";
     public static final String JIN_PIN_KE_CHENG_URL = "http://edu.bolohr.com";
+
+    public static final String WEB_SPLASH_AD_URL = GET_HOME1_MSG_URL + "/a/load";
 
     /**
      * 选中的问题互答标签
