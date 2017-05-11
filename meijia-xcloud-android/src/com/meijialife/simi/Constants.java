@@ -943,6 +943,11 @@ public class Constants {
     public static final String SHANG_JIN_LIE_REN_URL = "http://app.bolohr.com/simi-h5/show/job-reward-list.html";
     public static final String JIN_PIN_KE_CHENG_URL = "http://edu.bolohr.com";
 
+    public static final String HOME_HREXAM_URL = "http://bolohr.com/hrexam";//考证
+    public static final String HOME_ZHAOPIN_URL = "http://app.bolohr.com/simi-h5/show/job-reward-list.html?user_id=";//
+    public static final String HOME_SIGN_URL = "http://app.bolohr.com/simi-h5/show/sign-today.html?user_id=";//签到
+
+
     public static final String WEB_SPLASH_AD_URL = GET_HOME1_MSG_URL + "/a/load";
 
     /**

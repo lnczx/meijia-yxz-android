@@ -1,5 +1,6 @@
 package com.meijialife.simi.fra;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -84,14 +85,12 @@ import java.util.Map;
 
 /**
  * 首页
- * 
- * @author RUI
  *
-*/
+ * @author RUI
+ */
 public class Home1NewFra extends BaseFragment implements OnClickListener, ListItemClickHelps {
 
     private View v;
-    private View v1;
     private FinalBitmap finalBitmap;
     private final static int SCANNIN_GREQUEST_CODES = 5;
 
@@ -125,7 +124,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.home_1, null);
-        v1 = inflater.inflate(R.layout.home_1, null);
 
         initView(v);
 
@@ -185,6 +183,8 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         v.findViewById(R.id.rl_total_search).setOnClickListener(this);
         v.findViewById(R.id.m_rl_sign).setOnClickListener(this);
         v.findViewById(R.id.m_rl_question).setOnClickListener(this);
+        v.findViewById(R.id.m_rl_test).setOnClickListener(this);
+        v.findViewById(R.id.m_rl_zhaopin).setOnClickListener(this);
         ll_more_columns.setOnClickListener(this);
         ll_more_columns2.setOnClickListener(this);
     }
@@ -206,12 +206,12 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onItemClick(int position) {
                 FindBean findBean = findBeanList.get(position);
-                ToActivityUtil.gotoWebPage(getActivity(),"null",findBean.getGoto_url());
+                ToActivityUtil.gotoWebPage(getActivity(), "null", findBean.getGoto_url());
             }
         });
 
-        View headview2 = View.inflate(getActivity(), R.layout.new_frg_bottom, null);
-        listView.addHeaderView(headview2);// ListView条目中的悬浮部分 添加到头部
+//        View headview2 = View.inflate(getActivity(), R.layout.new_frg_bottom, null);
+//        listView.addHeaderView(headview2);// ListView条目中的悬浮部分 添加到头部
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -422,7 +422,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     protected void showBanner(List<FindBean> adList) {
         urls.clear();
-        for (Iterator iterator = adList.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = adList.iterator(); iterator.hasNext(); ) {
             FindBean findBean = (FindBean) iterator.next();
             urls.add(findBean.getImg_url());
         }
@@ -502,7 +502,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     /**
      * 根据用户标签访问精选接口
-     * 
+     *
      * @param page
      * @param params
      */
@@ -581,7 +581,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     /**
      * 首页扫描加好友
-     * 
+     *
      * @param friend_id
      */
     public void addFriend(final String friend_id) {
@@ -659,146 +659,157 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         Intent intent;
         boolean is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()) {
-        case R.id.m_home1://试听课程
-            startActivity(new Intent(getActivity(), TrialCourseListActivity.class));
-            break;
-        case R.id.m_home2:
+            case R.id.m_home1://试听课程
+                startActivity(new Intent(getActivity(), TrialCourseListActivity.class));
+                break;
+            case R.id.m_home2:
           /*  intent = new Intent(getActivity(), WebViewsActivity.class);
             intent.putExtra("url", Constants.JIN_PIN_KE_CHENG_URL);
             getActivity().startActivity(intent);*/
-            break;
-        case R.id.m_home3:// 知识学院
-            intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
-            getActivity().startActivity(intent);
-            break;
-        case R.id.m_home4:// 常用工具
-            startActivity(new Intent(getActivity(), CommonUtilActivity.class));
-            break;
-        case R.id.m_rl_sign:// 首页签到
-            if (!is_login) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            } else {
-                postSign();
-            }
-            break;
-        case R.id.m_rl_question: // 同行热聊
-            // 打开微社区的接口, 参数1为Context类型(关注页面-------AllFeedsFragment,主页面-------CommunityMainFragment)
-            //关注Fragment：AllFeedsFragment;关注布局：umeng_comm_feeds_frgm_layout,登录布局：umeng_comm_login_dialog
-            CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
-            mCommSDK.openCommunity(getActivity());
-            UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-            UMShareServiceFactory.getSocialService().getConfig()
-                    .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-            useCustomLogin();
-            break;
-        case R.id.m_homes1://互助问答
-            startActivity(new Intent(getActivity(), FeedListActivity.class));
-            break;
+                break;
+            case R.id.m_home3:// 知识学院
+                intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", Constants.ZHI_SHI_XUE_YUAN_URL);
+                getActivity().startActivity(intent);
+                break;
+            case R.id.m_home4:// 常用工具
+                startActivity(new Intent(getActivity(), CommonUtilActivity.class));
+                break;
+            case R.id.m_rl_sign:// 首页签到
+                if (!is_login) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    ToActivityUtil.gotoWebPage(getActivity(), "签到", Constants.HOME_SIGN_URL + DBHelper.getUser(getActivity()).getId());
+                }
+                break;
+            case R.id.m_rl_zhaopin:// 首页招聘
+                if (!is_login) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    ToActivityUtil.gotoWebPage(getActivity(), "招聘", Constants.HOME_ZHAOPIN_URL + DBHelper.getUser(getActivity()).getId());
+                }
+                break;
+            case R.id.m_rl_test:// test
+                ToActivityUtil.gotoWebPage(getActivity(), "考证", Constants.HOME_HREXAM_URL);
 
-        case R.id.m_homes2:// 简历交换
-            intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", Constants.JIAN_LI_JIAO_HUAN_URL);
-            getActivity().startActivity(intent);
-            break;
+                break;
+//            case R.id.m_rl_question: // 同行热聊
+//                // 打开微社区的接口, 参数1为Context类型(关注页面-------AllFeedsFragment,主页面-------CommunityMainFragment)
+//                //关注Fragment：AllFeedsFragment;关注布局：umeng_comm_feeds_frgm_layout,登录布局：umeng_comm_login_dialog
+//                CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
+//                mCommSDK.openCommunity(getActivity());
+//                UMShareServiceFactory.getSocialService().getConfig()
+//                        .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+//                UMShareServiceFactory.getSocialService().getConfig()
+//                        .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
+//                useCustomLogin();
+//                break;
+            case R.id.m_homes1://互助问答
+                startActivity(new Intent(getActivity(), FeedListActivity.class));
+                break;
 
-        case R.id.m_homes3:// 找服务商
-            intent = new Intent(getActivity(), AllPartnerListActivity.class);
-            getActivity().startActivity(intent);
-            break;
+            case R.id.m_homes2:// 简历交换
+                intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", Constants.JIAN_LI_JIAO_HUAN_URL);
+                getActivity().startActivity(intent);
+                break;
 
-        case R.id.m_homes4:// 福利商城
-            is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-            if (!is_login) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            } else {
-                Intent intent6 = new Intent();
-                intent6.setClass(getActivity(), PointsShopActivity.class);
-                intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
-                intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
-                intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
-                getActivity().startActivity(intent6);
-            }
-            break;
-        case R.id.btn_saoma:// 二维码
-            Intent intents = new Intent();
-            intents.setClass(getActivity(), CaptureActivity.class);
-            intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
-            break;
-        case R.id.rl_total_search:// 跳到到搜索页面
-            startActivity(new Intent(getActivity(), ArticleSearchActivity.class));
-            break;
-        case R.id.ll_more_columns:// 频道列表页面
-            if (!is_login) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            } else {
-                startActivity(new Intent(getActivity(), ChannelListActivity.class));
-            }
-            break;
-        case R.id.ll_more_columns2:// 频道列表页面
-            if (!is_login) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            } else {
-                startActivity(new Intent(getActivity(), ChannelListActivity.class));
-            }
-            break;
-        default:
-            break;
+            case R.id.m_homes3:// 找服务商
+                intent = new Intent(getActivity(), AllPartnerListActivity.class);
+                getActivity().startActivity(intent);
+                break;
+
+            case R.id.m_homes4:// 福利商城
+                is_login = SpFileUtil.getBoolean(getActivity().getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+                if (!is_login) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    Intent intent6 = new Intent();
+                    intent6.setClass(getActivity(), PointsShopActivity.class);
+                    intent6.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
+                    intent6.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
+                    intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
+                    getActivity().startActivity(intent6);
+                }
+                break;
+            case R.id.btn_saoma:// 二维码
+                Intent intents = new Intent();
+                intents.setClass(getActivity(), CaptureActivity.class);
+                intents.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intents, SCANNIN_GREQUEST_CODES);
+                break;
+            case R.id.rl_total_search:// 跳到到搜索页面
+                startActivity(new Intent(getActivity(), ArticleSearchActivity.class));
+                break;
+            case R.id.ll_more_columns:// 频道列表页面
+                if (!is_login) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), ChannelListActivity.class));
+                }
+                break;
+            case R.id.ll_more_columns2:// 频道列表页面
+                if (!is_login) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), ChannelListActivity.class));
+                }
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-        case SCANNIN_GREQUEST_CODES:
-            if (resultCode == (-1)) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("result").trim();
-                if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
-                    // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
-                    if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
-                        String category = "", action = "", params = "", goto_url = "";
-                        if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
-                            goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
+            case SCANNIN_GREQUEST_CODES:
+                if (resultCode == (-1)) {
+                    Bundle bundle = data.getExtras();
+                    String result = bundle.getString("result").trim();
+                    if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
+                        // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
+                        if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
+                            String category = "", action = "", params = "", goto_url = "";
+                            if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                                goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
 
-                        } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
 
-                        } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else {
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            }
+                            if (!StringUtils.isEmpty(result)) {
+                                RouteUtil routeUtil = new RouteUtil(getActivity());
+                                routeUtil.Routing(category, action, goto_url, params);
+                            }
                         } else {
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                            intent.putExtra("url", result);
+                            startActivity(intent);
                         }
-                        if (!StringUtils.isEmpty(result)) {
-                            RouteUtil routeUtil = new RouteUtil(getActivity());
-                            routeUtil.Routing(category, action, goto_url, params);
-                        }
-                    } else {
+                    } else {// 非内部app扫描，webView显示
                         Intent intent = new Intent(getActivity(), WebViewsActivity.class);
                         intent.putExtra("url", result);
                         startActivity(intent);
                     }
-                } else {// 非内部app扫描，webView显示
-                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                    intent.putExtra("url", result);
-                    startActivity(intent);
                 }
-            }
-            break;
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -808,7 +819,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      */
     private void postSign() {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.net_not_open),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         User user = DBHelper.getUser(getActivity());
@@ -835,7 +846,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (!StringUtils.isEmpty(data)) {
                                 SignPopWindow signPopWindow = new SignPopWindow(getActivity(), msg, data);
-                                signPopWindow.showPopupWindow(v1);
+                                signPopWindow.showPopupWindow(v);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getActivity().getString(R.string.servers_error);

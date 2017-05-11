@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/simi_color_white"
-     >
+    android:orientation="vertical">
+
     <View
         android:layout_width="match_parent"
         android:layout_height="8dp"
@@ -12,98 +12,195 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-         >
+        android:layout_height="126dp"
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/m_rl_question"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
             android:layout_weight="2"
-            android:gravity="center" >
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/m_rl_zhaopin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:orientation="vertical" >
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_hr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="同行交流"
+                    android:text="HR"
                     android:textColor="#FF5D58"
                     android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="最专业的解答都在这"
-                    android:textSize="11sp"
-                    android:textColor="@color/index_third_title_color"
-                    android:layout_marginTop="5dp"
-                    />
-            </LinearLayout>
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/tv_hr"
+                    android:text="圈内招聘"
+                    android:textColor="#333333"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_zhaopin_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_hr"
+                    android:layout_marginTop="15dp"
+                    android:text="圈内推荐更靠谱\n同行内推赚佣金"
+                    android:textColor="#888888"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="18dp"
+                    android:layout_below="@id/tv_zhaopin_des"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/home_view_shape_bg"
+                    android:gravity="center"
+                    android:text="去看看>"
+                    android:textColor="#ffffff"
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="53dp"
+                android:layout_height="55dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/index_wenda" />
-        </RelativeLayout>
+                android:src="@drawable/zhaopin" />
+        </LinearLayout>
 
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
             android:background="@color/simi_color_line_gray" />
 
-        <RelativeLayout
-            android:id="@+id/m_rl_sign"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
             android:layout_weight="2"
-            android:gravity="center" >
+            android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:orientation="vertical" >
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
 
-                <TextView
+                <RelativeLayout
+                    android:id="@+id/m_rl_sign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="签到惊喜"
-                    android:textColor="@color/simi_color_purple"
-                    android:textSize="14sp" />
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="送完金币还送经验值"
-                    android:textSize="11sp"
-                    android:textColor="@color/index_third_title_color"
-                    android:layout_marginTop="5dp"
-                    />
+                    <TextView
+                        android:id="@+id/tv_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="签到"
+                        android:textColor="#FF5D58"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_sign"
+                        android:text="签到"
+                        android:textColor="#FF5D58"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_sign"
+                        android:layout_marginTop="11dp"
+                        android:text="每日签到 慢慢收货"
+                        android:textColor="#888888"
+                        android:textSize="10sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/qiandao" />
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
-                  android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/index_qiandao" />
-        </RelativeLayout>
-    </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/simi_color_line_gray" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+                <RelativeLayout
+                    android:id="@+id/m_rl_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_test"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="考证"
+                        android:textColor="#FF5D58"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_test"
+                        android:text="看这里"
+                        android:textColor="#FF5D58"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_test"
+                        android:layout_marginTop="11dp"
+                        android:text="模拟考试 考试技巧"
+                        android:textColor="#888888"
+                        android:textSize="10sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/kaozheng" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

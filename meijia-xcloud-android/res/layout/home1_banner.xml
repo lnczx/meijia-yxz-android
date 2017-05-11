@@ -4,14 +4,13 @@
     android:id="@+id/m_banner_homes"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@color/bg_gv"
-     >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <include
             android:id="@+id/m_banner"
@@ -22,14 +21,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/m_banner"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/m_item1"
                 android:layout_width="match_parent"
+                android:layout_marginRight="14dp"
+                android:layout_marginLeft="14dp"
                 android:layout_height="100dp"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:id="@+id/m_homes1"
@@ -38,17 +38,15 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"
                     android:paddingBottom="5dp"
-                    >
+                    android:paddingTop="8dp">
 
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_huzhuwenda"
-                      />
+                        android:src="@drawable/index_huzhuwenda" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -56,8 +54,9 @@
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingTop="2dp"
-                        android:textColor="@color/index_second_title_color"
-                        android:text="@string/m_new_fra_item5" />
+                        android:text="@string/m_new_fra_item5"
+                        android:textColor="@color/index_first_title_color"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,8 +66,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"
                     android:paddingBottom="5dp"
+                    android:paddingTop="8dp"
 
                     >
 
@@ -78,8 +77,7 @@
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_tonghangreliao"
-                       />
+                        android:src="@drawable/index_tonghangreliao" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -87,8 +85,9 @@
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingTop="2dp"
-                        android:textColor="@color/index_second_title_color"
-                        android:text="@string/m_new_fra_item1" />
+                        android:text="@string/m_new_fra_item1"
+                        android:textColor="@color/index_first_title_color"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -98,17 +97,15 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"
                     android:paddingBottom="5dp"
-                    >
+                    android:paddingTop="8dp">
 
                     <ImageView
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_common_tools"
-                        />
+                        android:src="@drawable/index_common_tools" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -117,8 +114,9 @@
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingTop="2dp"
-                        android:textColor="@color/index_second_title_color"
-                        android:text="@string/m_new_fra_item9" />
+                        android:text="@string/m_new_fra_item9"
+                        android:textColor="@color/index_first_title_color"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -128,8 +126,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"
                     android:paddingBottom="5dp"
+                    android:paddingTop="8dp"
 
                     >
 
@@ -139,8 +137,7 @@
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_fuwudating"
-                        />
+                        android:src="@drawable/index_fuwudating" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,17 +146,17 @@
                         android:gravity="center"
                         android:paddingBottom="5dp"
                         android:paddingTop="2dp"
-                        android:textColor="@color/index_second_title_color"
-                        android:text="@string/m_new_fra_item7" />
+                        android:text="@string/m_new_fra_item7"
+                        android:textColor="@color/index_first_title_color"
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
-                android:orientation="horizontal" 
-                android:visibility="gone"
-                >
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/m_home3"
@@ -168,7 +165,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp">
 
                     <com.meijialife.simi.ui.RoundImageView
                         android:layout_width="40dp"
@@ -198,7 +195,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp">
 
                     <com.meijialife.simi.ui.RoundImageView
                         android:layout_width="40dp"
@@ -223,13 +220,13 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
                     android:id="@+id/m_home2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp">
 
                     <com.meijialife.simi.ui.RoundImageView
                         android:layout_width="40dp"
@@ -260,7 +257,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:paddingTop="8dp" >
+                    android:paddingTop="8dp">
 
                     <com.meijialife.simi.ui.RoundImageView
                         android:layout_width="40dp"
@@ -285,10 +282,12 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        
-      
+
+
     </RelativeLayout>
-    
- <include
-      layout="@layout/new_frg_subtitle" />
+
+    <include layout="@layout/new_frg_subtitle" />
+
+    <include layout="@layout/new_frg_bottom" />
+
 </LinearLayout>
