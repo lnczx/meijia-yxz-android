@@ -42,6 +42,7 @@ android {
         incremental true
     }
     defaultConfig {
+        applicationId "com.meijialife.simi"
         useLibrary 'org.apache.http.legacy'
         minSdkVersion 18
         targetSdkVersion 21

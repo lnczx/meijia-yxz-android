@@ -781,6 +781,10 @@ public class Constants {
     public static final String HUI_YUAN_FU_WU = "http://h5.eqxiu.com/s/kdhQZ0t4";
     //经验
     public static final String JING_YAN = "http://app.bolohr.com/simi-h5/show/level-my-index.html?user_id=";
+    //加盟
+    public static final String PERSION_JIAMENG_URL = "http://app.bolohr.com/simi-h5/show/biz-list.html?userid=999";
+    //会员俱乐部
+    public static final String PERSION_JULEBU_URL = "http://app.bolohr.com/simi-h5/show/vipclub-index.html?userid=999";
 
 
     /**

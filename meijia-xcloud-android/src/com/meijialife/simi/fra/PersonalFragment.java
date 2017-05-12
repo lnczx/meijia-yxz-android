@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -117,11 +118,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         layoutInflater = inflater;
         v = inflater.inflate(R.layout.personal_fragment, null, false);
         vs = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.personal_fragment, null);
-      
+
         init(inflater, v);
         return v;
     }
-    
+
 
     @SuppressLint("ResourceAsColor")
     private void init(LayoutInflater inflater, View view) {
@@ -131,7 +132,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         iv_top_head = (RoundImageView) view.findViewById(R.id.iv_top_head);
         rl_top = (RelativeLayout) view.findViewById(R.id.rl_top);
         finalBitmap.display(rl_top, Constants.PERSON_ICON_URL);
-        
+
         getAppHelp();
 
         // 将本地图片设为背景
@@ -154,16 +155,17 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         ll_rq = (LinearLayout) music_popunwindwow.findViewById(R.id.ll_rq);
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
 
-        // 为每一栏增加点击事件
-        view.findViewById(R.id.rl_person_items2).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_items3).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_items4).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_items5).setOnClickListener(this);
-        // 为每种类别增加点击事件
-        view.findViewById(R.id.rl_person_ding_dan).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_you_hui_quan).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_ji_fen).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_fu_wu).setOnClickListener(this);
+        //=======
+        view.findViewById(R.id.layout_person_youhuiquan).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_order).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_jinbihuangou).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_huiyuanjulebu).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_haoping).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_share).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_join).setOnClickListener(this);
+        view.findViewById(R.id.layout_person_more).setOnClickListener(this);
+
+
         // 长按进入应用中心
         /*
          * view.findViewById(R.id.rl_person_items1).setOnLongClickListener(new OnLongClickListener() {
@@ -231,7 +233,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     /**
      * 设置背景颜色模糊
-     * 
+     *
      * @param id
      */
     @SuppressWarnings("deprecation")
@@ -277,62 +279,75 @@ public class PersonalFragment extends Fragment implements OnClickListener {
     public void onClick(View arg0) {
         Intent intent = null;
         switch (arg0.getId()) {
-        case R.id.iv_top_head:
-            intent = new Intent(getActivity(), AccountInfoActivity.class);
-            intent.putExtra("user", user);
-            getActivity().startActivity(intent);
-            break;
-        case R.id.ibtn_person:
-            MainActivity.slideMenu();
-            break;
-        case R.id.item_qianbao:// 经验
-            intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", Constants.JING_YAN + user.getId());
-            startActivity(intent);
-            break;
-        case R.id.item_youhui:// 好友
-            MainActivity mainActivity1 = (MainActivity) getActivity();
-            mainActivity1.changeFeeds();
-            Constants.checkedIndex = 0;
-            break;
-        case R.id.item_jifen:// 积分
-            startActivity(new Intent(getActivity(), MyIntegralActivity.class));
-            break;
-        case R.id.rl_person_items2:// 我的钱包
-            startActivity(new Intent(getActivity(), MyWalletActivity.class));
+            case R.id.iv_top_head:
+                intent = new Intent(getActivity(), AccountInfoActivity.class);
+                intent.putExtra("user", user);
+                getActivity().startActivity(intent);
+                break;
+            case R.id.ibtn_person:
+                MainActivity.slideMenu();
+                break;
+            case R.id.item_qianbao:// 经验
+                intent = new Intent(getActivity(), WebViewsActivity.class);
+                intent.putExtra("url", Constants.JING_YAN + user.getId());
+                startActivity(intent);
+                break;
+            case R.id.item_youhui:// 好友
+                MainActivity mainActivity1 = (MainActivity) getActivity();
+                mainActivity1.changeFeeds();
+                Constants.checkedIndex = 0;
+                break;
+            case R.id.item_jifen:// 积分
+                startActivity(new Intent(getActivity(), MyIntegralActivity.class));
+                break;
+//            case R.id.rl_person_items2:// 我的钱包
+//                startActivity(new Intent(getActivity(), MyWalletActivity.class));
+//
+//                break;
+            case R.id.layout_person_share:// 推荐给好友
+                ShareConfig.getInstance().init(getActivity());
+                postShare();
+                break;
+            case R.id.layout_person_more:// 更多
+                startActivity(new Intent(getActivity(), MoreActivity.class));
+                break;
+//            case R.id.rl_person_items5:// 我是服务商
+//                ToActivityUtil.gotoWebPage(getActivity(), "null", Constants.KAI_DIAN + user.getId());
+//                break;
+            case R.id.layout_person_order:// 订单
+                startActivity(new Intent(getActivity(), MyOrderActivity.class));
+                break;
+            case R.id.layout_person_youhuiquan:// 优惠券
+                startActivity(new Intent(getActivity(), DiscountCardActivity.class));
+                break;
+            case R.id.layout_person_jinbihuangou:// 积分商城
+                Intent intent2 = new Intent();
+                intent2.setClass(getActivity(), PointsShopActivity.class);
+                intent2.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
+                intent2.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
+                intent2.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
+                startActivity(intent2);
+                break;
+//            case R.id.rl_person_fu_wu:// 会员服务
+//                intent = new Intent(getActivity(), WebViewsActivity.class);
+//                intent.putExtra("url", Constants.HUI_YUAN_FU_WU);
+//                startActivity(intent);
+//                break;
+            case R.id.layout_person_join:// 加盟合作
 
-            break;
-        case R.id.rl_person_items3:// 推荐给好友
-            ShareConfig.getInstance().init(getActivity());
-            postShare();
-            break;
-        case R.id.rl_person_items4:// 更多
-            startActivity(new Intent(getActivity(), MoreActivity.class));
-            break;
-        case R.id.rl_person_items5:// 我是服务商
-            ToActivityUtil.gotoWebPage(getActivity(),"null",Constants.KAI_DIAN + user.getId());
-            break;
-        case R.id.rl_person_ding_dan:// 订单
-            startActivity(new Intent(getActivity(), MyOrderActivity.class));
-            break;
-        case R.id.rl_person_you_hui_quan:// 优惠券
-            startActivity(new Intent(getActivity(), DiscountCardActivity.class));
-            break;
-        case R.id.rl_person_ji_fen:// 积分商城
-            Intent intent2 = new Intent();
-            intent2.setClass(getActivity(), PointsShopActivity.class);
-            intent2.putExtra("navColor", "#E8374A"); // 配置导航条的背景颜色，请用#ffffff长格式。
-            intent2.putExtra("titleColor", "#ffffff"); // 配置导航条标题的颜色，请用#ffffff长格式。
-            intent2.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(getActivity()).getUser_id()); // 配置自动登陆地址，每次需服务端动态生成。
-            startActivity(intent2);
-            break;
-        case R.id.rl_person_fu_wu:// 会员服务
-            intent = new Intent(getActivity(), WebViewsActivity.class);
-            intent.putExtra("url", Constants.HUI_YUAN_FU_WU);
-            startActivity(intent);
-            break;
-        default:
-            break;
+                ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JIAMENG_URL);
+                break;
+            case R.id.layout_person_haoping:// 好评
+                Uri uri = Uri.parse("market://details?id=" + "com.meijialife.simi");
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                break;
+            case R.id.layout_person_huiyuanjulebu:// 会员俱乐部
+                ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JULEBU_URL);
+                break;
+            default:
+                break;
         }
     }
 
@@ -364,7 +379,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     /**
      * 弹出显示webview H5页面
-     * 
+     *
      * @param url
      */
     @SuppressLint("JavascriptInterface")
@@ -463,67 +478,67 @@ public class PersonalFragment extends Fragment implements OnClickListener {
      */
     private void getUserData() {
         users = DBHelper.getUser(getActivity());
-        if(users !=null){
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
-            return;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", users.getId());
-        map.put("view_user_id",users.getId());
-        AjaxParams param = new AjaxParams(map);
-
-        new FinalHttp().get(Constants.URL_GET_USER_INDEX, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+        if (users != null) {
+            if (!NetworkUtils.isNetworkConnected(getActivity())) {
+                Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+                return;
             }
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("user_id", users.getId());
+            map.put("view_user_id", users.getId());
+            AjaxParams param = new AjaxParams(map);
 
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                dismissDialog();
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                user = gson.fromJson(data, UserIndexData.class);
-                                showData(user);
+            new FinalHttp().get(Constants.URL_GET_USER_INDEX, param, new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    super.onFailure(t, errorNo, strMsg);
+                    Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(Object t) {
+                    super.onSuccess(t);
+                    String errorMsg = "";
+                    dismissDialog();
+                    try {
+                        if (StringUtils.isNotEmpty(t.toString())) {
+                            JSONObject obj = new JSONObject(t.toString());
+                            int status = obj.getInt("status");
+                            String msg = obj.getString("msg");
+                            String data = obj.getString("data");
+                            if (status == Constants.STATUS_SUCCESS) { // 正确
+                                if (StringUtils.isNotEmpty(data)) {
+                                    Gson gson = new Gson();
+                                    user = gson.fromJson(data, UserIndexData.class);
+                                    showData(user);
+                                } else {
+                                    // UIUtils.showToast(getActivity(), "数据错误");
+                                }
+                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                                errorMsg = getString(R.string.servers_error);
+                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                                errorMsg = getString(R.string.param_missing);
+                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                                errorMsg = getString(R.string.param_illegal);
+                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                                errorMsg = msg;
                             } else {
-                                // UIUtils.showToast(getActivity(), "数据错误");
+                                errorMsg = getString(R.string.servers_error);
                             }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        if (isAdded()) {
                             errorMsg = getString(R.string.servers_error);
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (isAdded()) {
-                        errorMsg = getString(R.string.servers_error);
+                    // 操作失败，显示错误信息|
+                    if (!StringUtils.isEmpty(errorMsg.trim())) {
+                        UIUtils.showToast(getActivity(), errorMsg);
                     }
                 }
-                // 操作失败，显示错误信息|
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
-                }
-            }
-        });
-        }else {
+            });
+        } else {
             startActivity(new Intent(getActivity(), LoginActivity.class));
         }
 
@@ -547,13 +562,14 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             tv_distance.setText("距离你" + user.getPoi_distance() + "米");
         }
         tv_money_num.setText(user.getExp() + "");
-        tv_coupon_num.setText(user.getTotal_friends() + "");
+        tv_coupon_num.setText(user.getRest_money() + "");
         tv_score_num.setText(user.getScore() + "");
         tv_top_level.setText(user.getLevel());
         userInfo.setScore(user.getScore());
         DBHelper.updateUserInfo(getActivity(), userInfo);
         finalBitmap.display(iv_top_head, user.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
     }
+
     /**
      * 获取我的二维码名片
      */
@@ -711,7 +727,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 
     /**
      * 设置添加屏幕的背景透明度
-     * 
+     *
      * @param bgAlpha
      */
     public void backgroundAlpha(float bgAlpha) {
