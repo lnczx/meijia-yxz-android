@@ -46,12 +46,6 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.EMDemoHelper;
-import com.umeng.comm.core.CommunitySDK;
-import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.constants.ErrorCode;
-import com.umeng.comm.core.impl.CommunityFactory;
-import com.umeng.comm.core.login.LoginListener;
-import com.umeng.community.share.UMShareServiceFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.bean.StatusCode;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -118,7 +112,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     private LocationClient locationClient = null;
     private static final int UPDATE_TIME = 5000;
 
-    public static LoginListener sLoginListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -681,8 +674,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                                 try {
                                     userInfo = gson.fromJson(data, UserInfo.class);
                                     if (null != userInfo) {
-                                        loginUmengComm();//登陆友盟社区
-//                                        loginIm();// 去登陆环信 放到友盟登录成功之后
+                                        loginIm();// 去登陆环信 放到友盟登录成功之后
 //                                updateCalendarMark();// 请求日历数据
 //                                getUserMsg();//更新用户未读信息状态
                                         DBHelper.updateUserInfo(LoginActivity.this, userInfo);
@@ -794,37 +786,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     }
 
     private void loginUmengComm() {
-        //创建CommUser前必须先初始化CommunitySDK----------------第三方初始化
-        CommunitySDK sdk = CommunityFactory.getCommSDK(this);
-        sdk.initSDK(getApplication());
-        UMShareServiceFactory.getSocialService().getConfig()
-                .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-        UMShareServiceFactory.getSocialService().getConfig()
-                .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-        CommUser user = new CommUser();
-        user.name = userInfo.getName();
-        user.id = userInfo.getUser_id();
-
-        if (sLoginListener != null) {
-            sLoginListener.onComplete(ErrorCode.SUCCESS, user);
-        }
 
 
-        loginIm();//登录环信
 
-//        sdk.loginToUmengServer(this, user, new LoginListener() {
-//            @Override
-//            public void onStart() {
-//
-//            }
-//            @Override
-//            public void onComplete(int stCode, CommUser commUser) {
-//                if (ErrorCode.NO_ERROR==stCode) {
-//                    //在此处可以跳转到任何一个你想要的activity
-//                }
-//
-//           }
-//        });
+
+
+
     }
 
 

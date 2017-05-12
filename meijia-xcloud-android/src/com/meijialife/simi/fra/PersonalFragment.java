@@ -63,13 +63,6 @@ import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.comm.core.CommunitySDK;
-import com.umeng.comm.core.beans.CommConfig;
-import com.umeng.comm.core.impl.CommunityFactory;
-import com.umeng.comm.ui.activities.FollowedTopicActivity;
-import com.umeng.comm.ui.activities.NewMsgActivity;
-import com.umeng.comm.ui.activities.UserInfoActivity;
-import com.umeng.community.share.UMShareServiceFactory;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import net.tsz.afinal.FinalBitmap;
@@ -125,21 +118,10 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         v = inflater.inflate(R.layout.personal_fragment, null, false);
         vs = (FrameLayout) getActivity().getLayoutInflater().inflate(R.layout.personal_fragment, null);
       
-        initCommunity();
         init(inflater, v);
         return v;
     }
     
-    /**
-     * 初始化社区
-     */
-    private void initCommunity(){
-        CommunitySDK mCommSDK = CommunityFactory.getCommSDK(getActivity());
-        UMShareServiceFactory.getSocialService().getConfig()
-                .setPlatforms(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-        UMShareServiceFactory.getSocialService().getConfig()
-                .setPlatformOrder(SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.SINA);
-    }
 
     @SuppressLint("ResourceAsColor")
     private void init(LayoutInflater inflater, View view) {
@@ -173,16 +155,11 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
 
         // 为每一栏增加点击事件
-        view.findViewById(R.id.rl_person_items1).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items2).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items3).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items4).setOnClickListener(this);
         view.findViewById(R.id.rl_person_items5).setOnClickListener(this);
         // 为每种类别增加点击事件
-        view.findViewById(R.id.rl_person_dong_tai).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_hua_ti).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_guan_zhu).setOnClickListener(this);
-        view.findViewById(R.id.rl_person_fen_si).setOnClickListener(this);
         view.findViewById(R.id.rl_person_ding_dan).setOnClickListener(this);
         view.findViewById(R.id.rl_person_you_hui_quan).setOnClickListener(this);
         view.findViewById(R.id.rl_person_ji_fen).setOnClickListener(this);
@@ -321,11 +298,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         case R.id.item_jifen:// 积分
             startActivity(new Intent(getActivity(), MyIntegralActivity.class));
             break;
-        case R.id.rl_person_items1:// 我的消息
-            intent = new Intent(getActivity(), NewMsgActivity.class);
-            intent.putExtra(com.umeng.comm.core.constants.Constants.USER, user.getId());
-            startActivity(intent);
-            break;
         case R.id.rl_person_items2:// 我的钱包
             startActivity(new Intent(getActivity(), MyWalletActivity.class));
 
@@ -339,30 +311,6 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             break;
         case R.id.rl_person_items5:// 我是服务商
             ToActivityUtil.gotoWebPage(getActivity(),"null",Constants.KAI_DIAN + user.getId());
-            break;
-        case R.id.rl_person_dong_tai:// 动态
-            intent = new Intent(getActivity(), UserInfoActivity.class);
-            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag", 0);
-            startActivity(intent);
-
-            break;
-        case R.id.rl_person_hua_ti:// 话题
-            intent = new Intent(getActivity(), FollowedTopicActivity.class);
-            intent.putExtra(com.umeng.comm.core.constants.Constants.USER_ID_KEY, user.getId());
-            startActivity(intent);
-            break;
-        case R.id.rl_person_guan_zhu:// 关注
-            intent = new Intent(getActivity(), UserInfoActivity.class);
-            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag", 1);
-            startActivity(intent);
-            break;
-        case R.id.rl_person_fen_si:// 粉丝
-            intent = new Intent(getActivity(), UserInfoActivity.class);
-            intent.putExtra(com.umeng.comm.core.constants.Constants.TAG_USER, CommConfig.getConfig().loginedUser);
-            intent.putExtra("flag", 2);
-            startActivity(intent);
             break;
         case R.id.rl_person_ding_dan:// 订单
             startActivity(new Intent(getActivity(), MyOrderActivity.class));

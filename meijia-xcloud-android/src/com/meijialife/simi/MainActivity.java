@@ -64,11 +64,6 @@ import com.simi.easemob.ui.EMBaseActivity;
 import com.simi.easemob.ui.EMLoginActivity;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.impl.CommunitySDKImpl;
-import com.umeng.comm.core.login.LoginListener;
-import com.umeng.comm.core.utils.CommonUtils;
-import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
 import net.tsz.afinal.FinalBitmap;
 
@@ -816,20 +811,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                             MainActivity.activity.finish();
                         }
                         MainActivity.this.finish();
-                        if (CommonUtils.isLogin(MainActivity.this)) {
-                            CommunitySDKImpl.getInstance().logout(MainActivity.this, new LoginListener() {
-                                @Override
-                                public void onStart() {
-
-                                }
-
-                                @Override
-                                public void onComplete(int stCode, CommUser userInfo) {
-                                    BroadcastUtils.sendUserLogoutBroadcast(getApplication());
-                                    finish();
-                                }
-                            });
-                        }
                     }
                 });
             }

@@ -43,7 +43,7 @@
                     android:textColor="@color/simi_color_dark_gray"
                     />
 
-                
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,11 +60,11 @@
                     android:layout_height="13dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/arrow_right" 
+                    android:src="@drawable/arrow_right"
                     android:layout_alignBaseline="@id/iv_person_tools"
                     android:visibility="visible"
                     />
-               
+
             </RelativeLayout>
 
             <View

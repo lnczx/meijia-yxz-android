@@ -37,11 +37,6 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.EMDemoHelper;
 import com.simi.easemob.utils.HTTPUtils;
-import com.umeng.comm.core.beans.CommUser;
-import com.umeng.comm.core.impl.CommunitySDKImpl;
-import com.umeng.comm.core.login.LoginListener;
-import com.umeng.comm.core.utils.CommonUtils;
-import com.umeng.comm.ui.imagepicker.util.BroadcastUtils;
 
 import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
@@ -415,7 +410,6 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
         SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
 
-        CommonUtils.logout();//友盟微社区退出登录
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {
             @Override
@@ -432,19 +426,6 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
                             MainActivity.activity.finish();
                         }
                         AccountInfoActivity.this.finish();
-                        if(CommonUtils.isLogin(AccountInfoActivity.this)){
-                            CommunitySDKImpl.getInstance().logout(AccountInfoActivity.this, new LoginListener() {
-                                @Override
-                                public void onStart() {
-
-                                }
-                                @Override
-                                public void onComplete(int stCode, CommUser userInfo) {
-                                    BroadcastUtils.sendUserLogoutBroadcast(getApplication());
-                                    finish();
-                                }
-                            });
-                        }
                     }
                 });
             }

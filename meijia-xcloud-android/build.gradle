@@ -4,7 +4,6 @@ dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile project(':base_library_pullToRefresh_chenyoca')
     compile project(':meijia-lib-easeui')
-    compile project(':umeng_libs')
     compile('com.android.support:support-v4:25.3.0') {
         exclude module: 'support-v4'
     }
@@ -43,6 +42,7 @@ android {
         incremental true
     }
     defaultConfig {
+        useLibrary 'org.apache.http.legacy'
         minSdkVersion 18
         targetSdkVersion 21
 
@@ -104,14 +104,14 @@ android {
 }
 
 afterEvaluate {
-   tasks.matching {
-      it.name.startsWith('dex')
-   }.each { dx ->
-      if (dx.additionalParameters == null) {
-         dx.additionalParameters = ['--multi-dex']
-      } else {
-         dx.additionalParameters += '--multi-dex'
-      }
-   }
+    tasks.matching {
+        it.name.startsWith('dex')
+    }.each { dx ->
+        if (dx.additionalParameters == null) {
+            dx.additionalParameters = ['--multi-dex']
+        } else {
+            dx.additionalParameters += '--multi-dex'
+        }
+    }
 }
 

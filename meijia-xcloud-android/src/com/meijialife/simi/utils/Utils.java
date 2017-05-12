@@ -10,7 +10,6 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import org.apache.http.util.EncodingUtils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -162,31 +161,5 @@ public class Utils {
         } 
     }    
 
-    /**
-     * 从SD卡读取文件
-     * @param fileName
-     * @return
-     * @throws IOException
-     */
-    public static String readFileSdcardFile(String fileName) throws IOException{   
-        String res="";   
-        try{   
-               FileInputStream fin = new FileInputStream(fileName);   
-        
-               int length = fin.available();   
-        
-               byte [] buffer = new byte[length];   
-               fin.read(buffer);       
-        
-               res = EncodingUtils.getString(buffer, "UTF-8");   
-        
-               fin.close();       
-              }   
-        
-              catch(Exception e){   
-               e.printStackTrace();   
-              }   
-              return res;   
-      }   
-    
+
 }
