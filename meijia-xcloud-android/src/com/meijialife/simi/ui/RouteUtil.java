@@ -3,11 +3,9 @@ package com.meijialife.simi.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
-import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.CardDetailsActivity;
 import com.meijialife.simi.activity.CardListActivity;
@@ -20,6 +18,7 @@ import com.meijialife.simi.activity.Find2DetailActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MainFriendsActivity;
 import com.meijialife.simi.activity.MainPlusActivity;
 import com.meijialife.simi.activity.MainPlusApplicationActivity;
 import com.meijialife.simi.activity.MainPlusAssetListActivity;
@@ -42,6 +41,7 @@ import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 
 /**
  * @description：扫码路由跳转
@@ -76,9 +76,7 @@ public class RouteUtil {
                         MainActivity mainActivity = (MainActivity) context;
                         mainActivity.changeFind();
                     } else if (action.equals("sns")) {// 圈子
-                        MainActivity mainActivity = (MainActivity) context;
-                        mainActivity.change2Contacts();
-                        Constants.checkedIndex = 0;
+                        ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.FRIENDTYPE);
                     } else if (action.equals("mine")) {// 我的
                         MainActivity mainActivity = (MainActivity) context;
                         mainActivity.changePersonal();
@@ -128,7 +126,7 @@ public class RouteUtil {
                         intent = new Intent(context, MainPlusSignInActivity.class);
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
-                    }  else if (action.equals("company")) {// 跳转到公司列表
+                    } else if (action.equals("company")) {// 跳转到公司列表
                         intent = new Intent(context, CompanyListActivity.class);
                         intent.putExtra("flag", 2);
                         context.startActivity(intent);
@@ -136,9 +134,7 @@ public class RouteUtil {
                         intent = new Intent(context, FriendApplyActivity.class);
                         context.startActivity(intent);
                     } else if (action.equals("im")) {// 跳转到IM消息页面
-                        intent = new Intent(context, FriendApplyActivity.class);
-                        MainActivity mainActivity = (MainActivity) context;
-                        mainActivity.change2IM();
+                       ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.MSGTYPE);
                     } else if (action.equals("leave")) {// 跳转到请假列表页面
                         intent = new Intent(context, MainPlusLeaveListActivity.class);
                         intent.putExtra("title", params2);
@@ -177,19 +173,19 @@ public class RouteUtil {
                     } else if (action.equals("order")) {// 跳转到订单列表
                         intent = new Intent(context, MyOrderActivity.class);
                         context.startActivity(intent);
-                    }else if (action.equals("order_detail")) {// 跳转到订详情
+                    } else if (action.equals("order_detail")) {// 跳转到订详情
                         intent = new Intent(context, OrderDetailsActivity.class);
                         intent.putExtra("orderId", params);
                         context.startActivity(intent);
                     } else if (action.equals("friend_req")) {// 跳转到好友申请
                         intent = new Intent(context, FriendApplyActivity.class);
-                        intent.putExtra("flag",true);
+                        intent.putExtra("flag", true);
                         context.startActivity(intent);
                     } else if (action.equals("company_pass")) {// 跳转到团队申请
                         intent = new Intent(context, FriendApplyActivity.class);
-                        intent.putExtra("flag",false);
+                        intent.putExtra("flag", false);
                         context.startActivity(intent);
-                    }  else if (action.equals("p_user_list")) {// 跳转到服务人员列表
+                    } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                         intent = new Intent(context, Find2DetailActivity.class);
                         intent.putExtra("service_type_ids", params);
                         intent.putExtra("title_name", params2);
@@ -223,14 +219,16 @@ public class RouteUtil {
                         intent = new Intent(context, MainPlusAssetListActivity.class);
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
+                    } else if (action.equals("addressbook")) {// 我的通讯录
+                        ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
                     }
                 }
             } else if (category.equals("h5+list")) {
-                    intent = new Intent(context, WebViewsFindActivity.class);
-                    intent.putExtra("url", goto_url);
-                    intent.putExtra("title_name", params2);
-                    intent.putExtra("service_type_ids", params);
-                    context.startActivity(intent);
+                intent = new Intent(context, WebViewsFindActivity.class);
+                intent.putExtra("url", goto_url);
+                intent.putExtra("title_name", params2);
+                intent.putExtra("service_type_ids", params);
+                context.startActivity(intent);
             }
         }
     }
@@ -250,9 +248,7 @@ public class RouteUtil {
                     MainActivity mainActivity = (MainActivity) context;
                     mainActivity.changeFind();
                 } else if (action.equals("sns")) {// 圈子
-                    MainActivity mainActivity = (MainActivity) context;
-                    mainActivity.change2Contacts();
-                    Constants.checkedIndex = 0;
+                    ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
                 } else if (action.equals("mine")) {// 我的
                     MainActivity mainActivity = (MainActivity) context;
                     mainActivity.changePersonal();
@@ -268,7 +264,7 @@ public class RouteUtil {
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "1");
                     context.startActivity(intent);
-                }else if (action.equals("company")) {// 企业通讯录
+                } else if (action.equals("company")) {// 企业通讯录
                     UserInfo userInfo = DBHelper.getUserInfo(context);
                     if (userInfo.getHas_company() == 0) {
                         intent = new Intent(context, CompanyRegisterActivity.class);
@@ -278,7 +274,7 @@ public class RouteUtil {
                         intent.putExtra("flag", 2);
                         context.startActivity(intent);
                     }
-                }  else if (action.equals("notice")) {// 通知公告
+                } else if (action.equals("notice")) {// 通知公告
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "2");
                     context.startActivity(intent);
@@ -295,23 +291,21 @@ public class RouteUtil {
                     intent.putExtra("card_id", params);
                     context.startActivity(intent);
                 } else if (action.equals("feed")) {// 跳转到问答详情
-                    intent = new Intent(context,FeedDetailActivity.class);
-                    intent.putExtra("fid",params);
+                    intent = new Intent(context, FeedDetailActivity.class);
+                    intent.putExtra("fid", params);
                     context.startActivity(intent);
-                }  else if (action.equals("company")) {// 跳转到公司列表
+                } else if (action.equals("company")) {// 跳转到公司列表
                     intent = new Intent(context, CompanyListActivity.class);
                     intent.putExtra("flag", 2);
                     context.startActivity(intent);
-                }else if (action.equals("checkin")) {// 跳转到考勤
+                } else if (action.equals("checkin")) {// 跳转到考勤
                     intent = new Intent(context, MainPlusSignInActivity.class);
                     context.startActivity(intent);
                 } else if (action.equals("friends")) {// 跳转到好友审批页面
                     intent = new Intent(context, FriendApplyActivity.class);
                     context.startActivity(intent);
                 } else if (action.equals("im")) {// 跳转到IM消息页面
-                    intent = new Intent(context, FriendApplyActivity.class);
-                    MainActivity mainActivity = (MainActivity) context;
-                    mainActivity.change2IM();
+                    ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.MSGTYPE);
                 } else if (action.equals("leave")) {// 跳转到请假列表页面
                     intent = new Intent(context, MainPlusLeaveListActivity.class);
                     context.startActivity(intent);
@@ -346,19 +340,19 @@ public class RouteUtil {
                 } else if (action.equals("order")) {// 跳转到订单列表
                     intent = new Intent(context, MyOrderActivity.class);
                     context.startActivity(intent);
-                }else if (action.equals("order_detail")) {// 跳转到订详情
+                } else if (action.equals("order_detail")) {// 跳转到订详情
                     intent = new Intent(context, OrderDetailsActivity.class);
                     intent.putExtra("orderId", params);
                     context.startActivity(intent);
                 } else if (action.equals("friend_req")) {// 跳转到好友申请
                     intent = new Intent(context, FriendApplyActivity.class);
-                    intent.putExtra("flag",true);
+                    intent.putExtra("flag", true);
                     context.startActivity(intent);
                 } else if (action.equals("company_pass")) {// 跳转到团队申请
                     intent = new Intent(context, FriendApplyActivity.class);
-                    intent.putExtra("flag",false);
+                    intent.putExtra("flag", false);
                     context.startActivity(intent);
-                }  else if (action.equals("p_user_list")) {// 跳转到服务人员列表
+                } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                     intent = new Intent(context, Find2DetailActivity.class);
                     intent.putExtra("service_type_ids", params);
                     intent.putExtra("title_name", "");
@@ -389,6 +383,8 @@ public class RouteUtil {
                 } else if (action.equals("asset")) {
                     intent = new Intent(context, MainPlusAssetListActivity.class);
                     context.startActivity(intent);
+                }else if (action.equals("addressbook")) {// 我的通讯录
+                    ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
                 }
             } else if (category.equals("h5+list")) {
                 if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
@@ -402,9 +398,10 @@ public class RouteUtil {
         }
     }
 
+    @Deprecated
     public void Routings(String category, String action, String goto_url, String params) {
         Intent intent;
-        if (!StringUtils.isEmpty(category) ) {
+        if (!StringUtils.isEmpty(category)) {
             if (category.equals("h5")) {
                 intent = new Intent(context, WebViewsActivity.class);
                 intent.putExtra("url", goto_url);
@@ -450,11 +447,11 @@ public class RouteUtil {
                         intent.putExtra("flag", 2);
                         context.startActivity(intent);
                     }
-                }  else if (action.equals("company")) {// 跳转到公司列表
+                } else if (action.equals("company")) {// 跳转到公司列表
                     intent = new Intent(context, CompanyListActivity.class);
                     intent.putExtra("flag", 2);
                     context.startActivity(intent);
-                }else if (action.equals("notice")) {// 通知公告
+                } else if (action.equals("notice")) {// 通知公告
                     intent = new Intent(context, CardListActivity.class);
                     intent.putExtra("cardType", "2");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -554,12 +551,12 @@ public class RouteUtil {
                 } else if (action.equals("friend_req")) {// 跳转到好友申请
                     intent = new Intent(context, FriendApplyActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("flag",true);
+                    intent.putExtra("flag", true);
                     context.startActivity(intent);
-                }else if (action.equals("company_pass")) {// 跳转到团队申请
+                } else if (action.equals("company_pass")) {// 跳转到团队申请
                     intent = new Intent(context, FriendApplyActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("flag",false);
+                    intent.putExtra("flag", false);
                     context.startActivity(intent);
                 } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
                     intent = new Intent(context, Find2DetailActivity.class);

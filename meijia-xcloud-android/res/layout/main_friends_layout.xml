@@ -3,28 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical"
-     >
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/view_title_bar"
+        layout="@layout/layout_title_bar"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:background="@color/activity_bg_color"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <!-- 顶部Tab -->
 
         <include layout="@layout/layout_friend_top_tab" />
         <!-- 好友动态 -->
 
-      <!--   <include layout="@layout/layout_friend_dynamic" /> -->
+        <!--   <include layout="@layout/layout_friend_dynamic" /> -->
         <!-- 好友 -->
 
         <include layout="@layout/layout_friend" />
         <!-- 消息 -->
 
         <include layout="@layout/layout_friend_msg" />
-      
+
     </LinearLayout>
 
     <View

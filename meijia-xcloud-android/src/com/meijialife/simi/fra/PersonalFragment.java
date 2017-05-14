@@ -40,6 +40,7 @@ import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.LoginActivity;
+import com.meijialife.simi.activity.MainFriendsActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
@@ -293,9 +294,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.item_youhui:// 好友
-                MainActivity mainActivity1 = (MainActivity) getActivity();
-                mainActivity1.changeFeeds();
-                Constants.checkedIndex = 0;
+                ToActivityUtil.gotoFriendsActivity(getActivity(), MainFriendsActivity.FRIENDTYPE);
                 break;
             case R.id.item_jifen:// 积分
                 startActivity(new Intent(getActivity(), MyIntegralActivity.class));

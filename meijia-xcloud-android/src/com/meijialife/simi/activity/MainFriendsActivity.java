@@ -1,12 +1,12 @@
-package com.meijialife.simi.fra;
+package com.meijialife.simi.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -25,18 +25,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.CompanyListActivity;
-import com.meijialife.simi.activity.CompanyRegisterActivity;
-import com.meijialife.simi.activity.ContactAddFriendsActivity;
-import com.meijialife.simi.activity.FindSecretaryActivity;
-import com.meijialife.simi.activity.FriendApplyActivity;
-import com.meijialife.simi.activity.FriendPageActivity;
-import com.meijialife.simi.activity.LoginActivity;
-import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.FriendAdapter;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.Friend;
@@ -49,6 +40,7 @@ import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.simi.easemob.ui.ConversationListFragment;
 import com.zbar.lib.CaptureActivity;
 
 import net.tsz.afinal.FinalHttp;
@@ -63,11 +55,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description：好友---消息
+ * @description：我的好友和消息
  * @author： kerryg
- * @date:2015年12月1日
+ * @date:2015年12月1日 update by  ye
  */
-public class Home3Fra extends BaseFragment implements OnClickListener {
+public class MainFriendsActivity extends FragmentActivity implements OnClickListener {
 
     private RadioGroup radiogroup;// 顶部Tab
     private View line_1, line_2, line_3;
@@ -75,7 +67,9 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
     private LinearLayout layout_msg; // 消息View
     private LinearLayout layout_friend; // 好友View
 
-    /** 秘友Tab下所有控件 **/
+    /**
+     * 秘友Tab下所有控件
+     **/
     private FriendAdapter friendAdapter;
     private RelativeLayout rl_add; // 添加通讯录好友
     private RelativeLayout rl_find; // 寻找秘书和助理
@@ -101,26 +95,25 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
 
     private ArrayList<Friend> myFriendList;
     private ArrayList<Friend> totalFriendList;
-    
+
     private User user;
 
-    public Home3Fra() {
-    }
-
-    public Home3Fra(MainActivity activity) {
-        this.activity = activity;
-    }
+    public static final String TYPE = "type";
+    public static final String FRIENDTYPE = "friendType";
+    public static final String MSGTYPE = "msgType";
+    String fromType;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.index_3, null);
-        vs = getActivity().getLayoutInflater().inflate(R.layout.index_3, null);
-        
-        init(v);// 初始化
-        initTab(v);
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.main_friends_layout);
+        super.onCreate(savedInstanceState);
 
-        return v;
+        fromType = getIntent().getStringExtra(TYPE);
+        init();// 初始化
+        initTab();
+
     }
+
 
     @Override
     public void onResume() {
@@ -131,39 +124,39 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         getUserInfo();
     }
 
-    private void init(View v) {
-        userInfo = DBHelper.getUserInfo(getActivity());
-        layout_msg = (LinearLayout) v.findViewById(R.id.layout_msg);
-        layout_friend = (LinearLayout) v.findViewById(R.id.layout_friend);
-        tv_has_company = (TextView) v.findViewById(R.id.tv_has_company);
-        layout_mask = v.findViewById(R.id.layout_mask);
+    private void init() {
+        userInfo = DBHelper.getUserInfo(MainFriendsActivity.this);
+        layout_msg = (LinearLayout) this.findViewById(R.id.layout_msg);
+        layout_friend = (LinearLayout) this.findViewById(R.id.layout_friend);
+        tv_has_company = (TextView) this.findViewById(R.id.tv_has_company);
+        layout_mask = this.findViewById(R.id.layout_mask);
 
-        initFriendView(v);
+        initFriendView();
 
-        rl_add = (RelativeLayout) v.findViewById(R.id.rl_add);
-        rl_find = (RelativeLayout) v.findViewById(R.id.rl_find);
-        rl_rq = (RelativeLayout) v.findViewById(R.id.rl_rq);
-        rl_apply = (RelativeLayout) v.findViewById(R.id.rl_apply);
-        rl_company_contacts = (RelativeLayout) v.findViewById(R.id.rl_company_contacts);
+        rl_add = (RelativeLayout) this.findViewById(R.id.rl_add);
+        rl_find = (RelativeLayout) this.findViewById(R.id.rl_find);
+        rl_rq = (RelativeLayout) this.findViewById(R.id.rl_rq);
+        rl_apply = (RelativeLayout) this.findViewById(R.id.rl_apply);
+        rl_company_contacts = (RelativeLayout) this.findViewById(R.id.rl_company_contacts);
         rl_add.setOnClickListener(this);
         rl_find.setOnClickListener(this);
         rl_rq.setOnClickListener(this);
         rl_company_contacts.setOnClickListener(this);
         rl_apply.setOnClickListener(this);
         // 请求帮助接口
-        user = DBHelper.getUser(getActivity());
-        if(user!=null){
+        user = DBHelper.getUser(MainFriendsActivity.this);
+        if (user != null) {
             getAppHelp();
-        }else {
-            startActivity(new Intent(getActivity(),LoginActivity.class));
+        } else {
+            startActivity(new Intent(MainFriendsActivity.this, LoginActivity.class));
         }
     }
 
-    private void initFriendView(View v) {
+    private void initFriendView() {
         totalFriendList = new ArrayList<Friend>();
         myFriendList = new ArrayList<Friend>();
-        mPullRefreshFriendListView = (PullToRefreshListView) v.findViewById(R.id.pull_refresh_lists);
-        friendAdapter = new FriendAdapter(getActivity());
+        mPullRefreshFriendListView = (PullToRefreshListView) this.findViewById(R.id.pull_refresh_lists);
+        friendAdapter = new FriendAdapter(MainFriendsActivity.this);
         mPullRefreshFriendListView.setAdapter(friendAdapter);
         mPullRefreshFriendListView.setMode(Mode.BOTH);
         initIndicators();
@@ -188,7 +181,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                     getFriendList(friendPage);
                     friendAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getActivity(), "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainFriendsActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
                     mPullRefreshFriendListView.onRefreshComplete();
                 }
             }
@@ -196,7 +189,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         mPullRefreshFriendListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), FriendPageActivity.class);
+//                Intent intent = new Intent(MainFriendsActivity.this, FriendPageActivity.class);
 //                intent.putExtra("friend_id", myFriendList.get(position).getFriend_id());
 //                startActivity(intent);
             }
@@ -218,14 +211,21 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
 
-    private void initTab(View v) {
-        radiogroup = (RadioGroup) v.findViewById(R.id.radiogroup);
-        line_1 = v.findViewById(R.id.line_1);
-        line_2 = v.findViewById(R.id.line_2);
-        line_3 = v.findViewById(R.id.line_3);
+    private void initTab() {
+        radiogroup = (RadioGroup) this.findViewById(R.id.radiogroup);
+        line_1 = this.findViewById(R.id.line_1);
+        line_2 = this.findViewById(R.id.line_2);
+        line_3 = this.findViewById(R.id.line_3);
 
-        rb_friend = (RadioButton) v.findViewById(R.id.rb_friend);
-        rb_msg = (RadioButton) v.findViewById(R.id.rb_msg);
+        rb_friend = (RadioButton) this.findViewById(R.id.rb_friend);
+        rb_msg = (RadioButton) this.findViewById(R.id.rb_msg);
+
+        if (fromType == FRIENDTYPE) {
+            Constants.checkedIndex = 0;
+        } else if (fromType == MSGTYPE) {
+            Constants.checkedIndex = 1;
+        }
+
 
         radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -245,14 +245,22 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                     getFriendList(friendPage);
                 }
                 if (checkedId == rb_msg.getId()) {
+                    Constants.checkedIndex = 1;
                     /*
                      * checkedIndex = 1; line_2.setVisibility(View.VISIBLE); layout_msg.setVisibility(View.GONE);
                      * layout_friend.setVisibility(View.VISIBLE); getFriendList(true);
                      */
                     // 跳转到消息View
-                    if (activity != null) {
-                        activity.change2IM();
-                    }
+//                    if (activity != null) {
+//                        activity.change2IM();
+//                    }
+                    layout_msg.setVisibility(View.VISIBLE);
+                    layout_friend.setVisibility(View.GONE);
+                    ConversationListFragment conversationListFragment = new ConversationListFragment(MainFriendsActivity.this);
+                    getSupportFragmentManager().beginTransaction().add(R.id.layout_msg, conversationListFragment)
+                            .show(conversationListFragment)
+                            .commit();
+
                 }
             }
         });
@@ -267,16 +275,36 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
         layout_mask.setVisibility(View.GONE);
     }
 
+
+    private ProgressDialog m_pDialog;
+
+    public void showDialog() {
+        if (m_pDialog == null) {
+            m_pDialog = new ProgressDialog(this);
+            m_pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            m_pDialog.setMessage("请稍等...");
+            m_pDialog.setIndeterminate(false);
+            m_pDialog.setCancelable(true);
+        }
+        m_pDialog.show();
+    }
+
+    public void dismissDialog() {
+        if (m_pDialog != null && m_pDialog.isShowing()) {
+            m_pDialog.hide();
+        }
+    }
+
     /**
      * 获取好友列表
      */
     public void getFriendList(int friendPage) {
 
         showDialog();
-        String user_id = DBHelper.getUser(getActivity()).getId();
+        String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
 
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+        if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
@@ -291,7 +319,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -331,14 +359,15 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
+                    UIUtils.showToast(MainFriendsActivity.this, errorMsg);
                 }
             }
         });
     }
 
     /**
-     *  处理数据加载的方法
+     * 处理数据加载的方法
+     *
      * @param myFriendList
      */
     private void showFriendData(List<Friend> myFriendList) {
@@ -357,106 +386,106 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
-        case R.id.rl_add: // 添加通讯录好友
-            intent = new Intent(getActivity(), ContactAddFriendsActivity.class);
-            intent.putExtra("friendList", totalFriendList);
-            startActivity(intent);
-            break;
-        case R.id.rl_find: // 寻找秘书和助理
-            startActivity(new Intent(getActivity(), FindSecretaryActivity.class));
-            break;
-        case R.id.rl_rq:// 扫一扫加好友
-            intent = new Intent();
-            intent.setClass(getActivity(), CaptureActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
-            break;
-        case R.id.rl_company_contacts:// 企业通讯录
-            // 跳转到企业通讯录
-            if (userInfo.getHas_company() == 0) {
-                intent = new Intent(getActivity(), CompanyRegisterActivity.class);
+            case R.id.rl_add: // 添加通讯录好友
+                intent = new Intent(MainFriendsActivity.this, ContactAddFriendsActivity.class);
+                intent.putExtra("friendList", totalFriendList);
+                startActivity(intent);
+                break;
+            case R.id.rl_find: // 寻找秘书和助理
+                startActivity(new Intent(MainFriendsActivity.this, FindSecretaryActivity.class));
+                break;
+            case R.id.rl_rq:// 扫一扫加好友
+                intent = new Intent();
+                intent.setClass(MainFriendsActivity.this, CaptureActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, SCANNIN_GREQUEST_CODES);
+                break;
+            case R.id.rl_company_contacts:// 企业通讯录
+                // 跳转到企业通讯录
+                if (userInfo.getHas_company() == 0) {
+                    intent = new Intent(MainFriendsActivity.this, CompanyRegisterActivity.class);
 //                intent.putExtra("url", Constants.HAS_COMPANY);
+                    startActivity(intent);
+                } else {
+                    intent = new Intent(MainFriendsActivity.this, CompanyListActivity.class);
+                    intent.putExtra("flag", 2);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.rl_apply:
+                intent = new Intent(MainFriendsActivity.this, FriendApplyActivity.class);
                 startActivity(intent);
-            } else {
-                intent = new Intent(getActivity(), CompanyListActivity.class);
-                intent.putExtra("flag", 2);
-                startActivity(intent);
-            }
-            break;
-        case R.id.rl_apply:
-            intent = new Intent(getActivity(), FriendApplyActivity.class);
-            startActivity(intent);
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-        case SCANNIN_GREQUEST_CODES:
-            if (resultCode == (-1)) {
-                Bundle bundle = data.getExtras();
-                String result = bundle.getString("result").trim();
-                if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
-                    // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
-                    if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
-                        String category = "", action = "", params = "", goto_url = "";
-                        if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
-                            goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
+            case SCANNIN_GREQUEST_CODES:
+                if (resultCode == (-1)) {
+                    Bundle bundle = data.getExtras();
+                    String result = bundle.getString("result").trim();
+                    if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
+                        // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
+                        if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
+                            String category = "", action = "", params = "", goto_url = "";
+                            if (result.contains("params") && result.contains("goto_url")) {// 两个参数都有
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                                goto_url = temp[3].substring(temp[3].lastIndexOf("=") + 1, temp[3].length());
 
-                        } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else if (result.contains("params") && !result.contains("goto_url")) {// 只有参数params
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                params = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
 
-                        } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
-                            goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else if (result.contains("goto_url") && !result.contains("params")) {// 只有参数goto_url
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                                goto_url = temp[2].substring(temp[2].lastIndexOf("=") + 1, temp[2].length());
+                            } else {
+                                String temp[] = result.split("&");
+                                category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
+                                action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            }
+                            if (!StringUtils.isEmpty(result)) {
+                                RouteUtil routeUtil = new RouteUtil(MainFriendsActivity.this);
+                                routeUtil.Routing(category, action, goto_url, params);
+                            }
                         } else {
-                            String temp[] = result.split("&");
-                            category = temp[0].substring(temp[0].lastIndexOf("=") + 1, temp[0].length());
-                            action = temp[1].substring(temp[1].lastIndexOf("=") + 1, temp[1].length());
+                            Intent intent = new Intent(MainFriendsActivity.this, WebViewsActivity.class);
+                            intent.putExtra("url", result);
+                            startActivity(intent);
                         }
-                        if (!StringUtils.isEmpty(result)) {
-                            RouteUtil routeUtil = new RouteUtil(getActivity());
-                            routeUtil.Routing(category, action, goto_url, params);
-                        }
-                    } else {
-                        Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+                    } else {// 非内部app扫描，webView显示
+                        Intent intent = new Intent(MainFriendsActivity.this, WebViewsActivity.class);
                         intent.putExtra("url", result);
                         startActivity(intent);
                     }
-                } else {// 非内部app扫描，webView显示
-                    Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                    intent.putExtra("url", result);
-                    startActivity(intent);
                 }
-            }
-            break;
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
      * 添加好友接口
-     * 
+     *
      * @param friend_id
      */
     public void addFriend(final String friend_id) {
 
-        String user_id = DBHelper.getUser(getActivity()).getId();
+        String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
 
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+        if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
 
@@ -471,7 +500,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -487,7 +516,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             // 添加成功，跳转到好友界面
-                            Intent intent = new Intent(getActivity(), FriendPageActivity.class);
+                            Intent intent = new Intent(MainFriendsActivity.this, FriendPageActivity.class);
                             intent.putExtra("friend_id", friend_id);
                             startActivity(intent);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -509,7 +538,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
+                    UIUtils.showToast(MainFriendsActivity.this, errorMsg);
                 }
             }
         });
@@ -517,11 +546,11 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
 
     private void getUserInfo() {
         if (userInfo == null) {
-            Toast.makeText(getActivity(), "用户信息错误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainFriendsActivity.this, "用户信息错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+        if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -535,7 +564,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -553,9 +582,9 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 userInfo = gson.fromJson(data, UserInfo.class);
-                                DBHelper.updateUserInfo(getActivity(), userInfo);
+                                DBHelper.updateUserInfo(MainFriendsActivity.this, userInfo);
                             } else {
-                                // UIUtils.showToast(getActivity(), "数据错误");
+                                // UIUtils.showToast(MainFriendsActivity.this, "数据错误");
                             }
                             hasCompany();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -577,7 +606,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                 }
                 // 操作失败，显示错误信息|
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
+                    UIUtils.showToast(MainFriendsActivity.this, errorMsg);
                 }
             }
         });
@@ -612,13 +641,13 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
      */
 
     private void getAppHelp() {
-        String user_id = DBHelper.getUser(getActivity()).getId();
-        if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+        String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
+        if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
         final String action = "sns";
-        User user = DBHelper.getUser(getActivity());
+        User user = DBHelper.getUser(MainFriendsActivity.this);
         Map<String, String> map = new HashMap<String, String>();
         map.put("action", action);
         map.put("user_id", "" + user.getId());
@@ -629,7 +658,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -647,7 +676,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
                                 appHelpData = gson.fromJson(data, AppHelpData.class);
-                                TipPopWindow addPopWindow = new TipPopWindow(getActivity(), appHelpData, action);
+                                TipPopWindow addPopWindow = new TipPopWindow(MainFriendsActivity.this, appHelpData, action);
                                 addPopWindow.showPopupWindow(vs);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
@@ -668,7 +697,7 @@ public class Home3Fra extends BaseFragment implements OnClickListener {
                 }
                 // 操作失败，显示错误信息
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(getActivity(), errorMsg);
+                    UIUtils.showToast(MainFriendsActivity.this, errorMsg);
                 }
             }
         });

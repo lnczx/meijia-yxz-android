@@ -4,7 +4,7 @@
     android:id="@+id/layout_friend"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:layout_height="50dp"
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_4"
@@ -70,7 +70,7 @@
         android:layout_height="50dp"
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_1"
@@ -111,7 +111,7 @@
         android:layout_height="50dp"
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_3"
@@ -151,7 +151,7 @@
         android:layout_height="50dp"
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_5"
@@ -192,7 +192,7 @@
         android:background="@drawable/btn_list_item_bg"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <com.meijialife.simi.ui.RoundImageView
             android:id="@+id/iv_icon_2"
@@ -230,8 +230,7 @@
         android:layout_marginTop="4dp"
         android:text="我的好友" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pull_refresh_lists"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -245,9 +244,6 @@
         android:smoothScrollbar="true"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrListViewExtrasEnabled="false"
-        ptr:ptrScrollingWhileRefreshingEnabled="true"
-        android:layout_marginBottom="60dp"
-         >
-    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+        ptr:ptrScrollingWhileRefreshingEnabled="true"></com.handmark.pulltorefresh.library.PullToRefreshListView>
 
 </LinearLayout>

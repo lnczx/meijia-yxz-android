@@ -24,6 +24,7 @@ import com.easemob.util.NetUtils;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.simi.easemob.db.InviteMessgeDao;
 
 /**
@@ -52,33 +53,34 @@ public class ConversationListFragment extends EaseConversationListFragment{
         errorItemContainer.addView(errorView);
         errorText = (TextView) errorView.findViewById(R.id.tv_connect_errormsg);
         
-        initTab();
+//        initTab();
     }
     
     /**
      * 初始化顶部Tab View
      * @param v
      */
-    private void initTab(){
-        radiogroup = (RadioGroup)getView().findViewById(R.id.radiogroup);
-        rb_friend = (RadioButton)getView().findViewById(R.id.rb_friend);
-        rb_feed = (RadioButton)getView().findViewById(R.id.rb_dynamic);
-        radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            
-            @Override
-            public void onCheckedChanged(RadioGroup grop, int checkedId) {
-                if(checkedId == grop.getChildAt(1).getId()){
-                	Constants.checkedIndex=0;
-                	//跳转到好友View
-                	 if(activity != null){
-                         ((MainActivity)activity).change2Contacts();
-                     }
-                }
-            }
-        });
-        
-//        radiogroup.getChildAt(0).performClick();
-    }
+//    private void initTab(){
+//        radiogroup = (RadioGroup)getView().findViewById(R.id.radiogroup);
+//        rb_friend = (RadioButton)getView().findViewById(R.id.rb_friend);
+//        rb_feed = (RadioButton)getView().findViewById(R.id.rb_dynamic);
+//        radiogroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//
+//            @Override
+//            public void onCheckedChanged(RadioGroup grop, int checkedId) {
+//                if(checkedId == grop.getChildAt(1).getId()){
+//                	Constants.checkedIndex=0;
+//                	//跳转到好友View
+////                	 if(activity != null){
+////                         ((MainActivity)activity).change2Contacts();
+////                     }
+//                    ToActivityUtil.gotoFriendsActivity(getActivity());
+//                }
+//            }
+//        });
+//
+////        radiogroup.getChildAt(0).performClick();
+//    }
     
     @Override
     protected void setUpView() {

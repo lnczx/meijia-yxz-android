@@ -39,7 +39,6 @@ import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
-import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
@@ -47,10 +46,9 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.Find2Fra;
-import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.fra.Home1NewFra;
-import com.meijialife.simi.fra.Home3Fra;
 import com.meijialife.simi.fra.PersonalFragment;
+import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
@@ -428,43 +426,43 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     /**
      * 切换到动态
      */
-    public void changeFeeds() {
-        currentTabIndex = 4;
-        change(new Home3Fra(this));
-        setSelected(mBt4);
-        SlideMenu.isUse = false;
-        view_title_bar.setVisibility(View.GONE);
-    }
+//    public void changeFeeds() {
+//        currentTabIndex = 4;
+//        change(new Home3Fra(this));
+//        setSelected(mBt4);
+//        SlideMenu.isUse = false;
+//        view_title_bar.setVisibility(View.GONE);
+//    }
 
     /**
      * 切换到消息Fragment
      */
-    public void change2IM() {
-        if (!slideMenu.isMainScreenShowing()) {
-            return;
-        }
-        currentTabIndex = 4;
-        view_title_bar.setVisibility(View.GONE);
-        conversationListFragment = new ConversationListFragment(this);
-        change(conversationListFragment);
-        setSelected(mBt4);
-//        updateTitle(3);
-        SlideMenu.isUse = false;
-    }
+//    public void change2IM() {
+//        if (!slideMenu.isMainScreenShowing()) {
+//            return;
+//        }
+//        currentTabIndex = 4;
+//        view_title_bar.setVisibility(View.GONE);
+//        conversationListFragment = new ConversationListFragment(this);
+//        change(conversationListFragment);
+//        setSelected(mBt4);
+////        updateTitle(3);
+//        SlideMenu.isUse = false;
+//    }
 
     /**
      * 切换到秘友Fragment
      */
-    public void change2Contacts() {
-        if (!slideMenu.isMainScreenShowing()) {
-            return;
-        }
-        view_title_bar.setVisibility(View.GONE);
-        change(new Home3Fra(this));
-        setSelected(mBt4);
-//        updateTitle(3);
-        SlideMenu.isUse = false;
-    }
+//    public void change2Contacts() {
+//        if (!slideMenu.isMainScreenShowing()) {
+//            return;
+//        }
+//        view_title_bar.setVisibility(View.GONE);
+//        change(new Home3Fra(this));
+//        setSelected(mBt4);
+////        updateTitle(3);
+//        SlideMenu.isUse = false;
+//    }
 
     public void change2ScheduleFra() {
         if (!slideMenu.isMainScreenShowing()) {
