@@ -33,7 +33,7 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * 
+ * 找服务商
  * 
  */
 public class AllPartnerListActivity extends BaseActivity implements OnClickListener {

@@ -32,6 +32,7 @@ import com.meijialife.simi.ui.PopupMenu;
 import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
@@ -48,7 +49,7 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
 
     private String url;
     private String titleStr;
-    private TextView m_tv_buy;
+    private TextView m_tv_buy, m_tv_ask;
     private Double disPrice;
     private PartnerDetail partnerDetail;
     private ServicePrices servicePrices;//服务报价
@@ -228,6 +229,7 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         tv_person_title = (TextView) findViewById(R.id.tv_person_title);
         m_ll_bottom = (RelativeLayout) findViewById(R.id.m_ll_bottom);
         m_tv_buy = (TextView) findViewById(R.id.m_tv_buy);
+        m_tv_ask = (TextView) findViewById(R.id.m_tv_ask);
         m_tv_money = (TextView) findViewById(R.id.m_tv_money);
         mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
@@ -238,6 +240,13 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         iv_person_close.setOnClickListener(this);
         m_ll_bottom.setVisibility(View.VISIBLE);
         m_tv_money.setText("￥" + disPrice);
+
+        m_tv_ask.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToActivityUtil.gotoSimiChat(WebViewPartnerActivity.this);
+            }
+        });
     }
 
     @Override
