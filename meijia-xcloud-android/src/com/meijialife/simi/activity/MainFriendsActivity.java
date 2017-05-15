@@ -236,6 +236,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
                 line_3.setVisibility(View.INVISIBLE);
 
                 if (checkedId == rb_friend.getId()) {
+//                    radiogroup.setVisibility(View.VISIBLE);
                     Constants.checkedIndex = 0;
                     line_2.setVisibility(View.VISIBLE);
                     rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -243,17 +244,14 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
                     layout_msg.setVisibility(View.GONE);
                     layout_friend.setVisibility(View.VISIBLE);
                     getFriendList(friendPage);
+
                 }
                 if (checkedId == rb_msg.getId()) {
+//                    radiogroup.setVisibility(View.GONE);
                     Constants.checkedIndex = 1;
-                    /*
-                     * checkedIndex = 1; line_2.setVisibility(View.VISIBLE); layout_msg.setVisibility(View.GONE);
-                     * layout_friend.setVisibility(View.VISIBLE); getFriendList(true);
-                     */
-                    // 跳转到消息View
-//                    if (activity != null) {
-//                        activity.change2IM();
-//                    }
+
+                    rb_friend.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                    rb_msg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                     layout_msg.setVisibility(View.VISIBLE);
                     layout_friend.setVisibility(View.GONE);
                     ConversationListFragment conversationListFragment = new ConversationListFragment(MainFriendsActivity.this);
@@ -291,7 +289,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
 
     public void dismissDialog() {
         if (m_pDialog != null && m_pDialog.isShowing()) {
-            m_pDialog.hide();
+            m_pDialog.dismiss();
         }
     }
 
@@ -299,21 +297,17 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
      * 获取好友列表
      */
     public void getFriendList(int friendPage) {
-
         showDialog();
         String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
-
         if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
             Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
-
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user_id + "");
         map.put("page", "" + friendPage);
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_FRIENDS, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
