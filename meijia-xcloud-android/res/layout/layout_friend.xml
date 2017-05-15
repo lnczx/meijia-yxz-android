@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    xmlns:simi="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_friend"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,10 +25,10 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/iconfont_company_tongxunbu"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+            simi:border_inside_color="@color/simi_color_white"
+            simi:border_outside_color="@color/simi_color_white"
+            simi:border_thickness_in="1dp"
+            simi:border_thickness_out="1dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_4"
-            android:text="企业/团队通讯录" />
+            android:text="企业/团队通讯录"
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/iv_arrow"
@@ -78,10 +79,10 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/iconfont_tongxunbu"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+            simi:border_inside_color="@color/simi_color_white"
+            simi:border_outside_color="@color/simi_color_white"
+            simi:border_thickness_in="1dp"
+            simi:border_thickness_out="1dp" />
 
         <TextView
             android:id="@+id/tv_name_1"
@@ -90,7 +91,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_1"
-            android:text="添加通讯录好友" />
+            android:text="添加通讯录好友"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="10dp"
@@ -119,10 +121,10 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/iconfont_rq_code"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+            simi:border_inside_color="@color/simi_color_white"
+            simi:border_outside_color="@color/simi_color_white"
+            simi:border_thickness_in="1dp"
+            simi:border_thickness_out="1dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -130,7 +132,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_3"
-            android:text="扫一扫加好友" />
+            android:text="扫一扫加好友"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="10dp"
@@ -159,10 +162,10 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/iconfont_haoyoushenqing"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+            simi:border_inside_color="@color/simi_color_white"
+            simi:border_outside_color="@color/simi_color_white"
+            simi:border_thickness_in="1dp"
+            simi:border_thickness_out="1dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -170,7 +173,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_5"
-            android:text="好友申请" />
+            android:text="好友申请"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="10dp"
@@ -200,10 +204,10 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@drawable/iconfont_xunzhaomishu"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+            simi:border_inside_color="@color/simi_color_white"
+            simi:border_outside_color="@color/simi_color_white"
+            simi:border_thickness_in="1dp"
+            simi:border_thickness_out="1dp" />
 
         <TextView
             android:id="@+id/tv_name_2"
@@ -212,7 +216,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_toRightOf="@id/iv_icon_2"
-            android:text="寻找秘书和助理" />
+            android:text="寻找秘书和助理"
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="10dp"
@@ -224,16 +229,19 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="3dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="4dp"
-        android:text="我的好友" />
+        android:gravity="center_vertical"
+        android:text="我的好友"
+        android:textSize="14sp" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/pull_refresh_lists"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:cacheColorHint="#00000000"
         android:divider="#19000000"
         android:dividerHeight="0.1dp"
@@ -242,8 +250,7 @@
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
         android:smoothScrollbar="true"
-        ptr:ptrAnimationStyle="flip"
-        ptr:ptrListViewExtrasEnabled="false"
-        ptr:ptrScrollingWhileRefreshingEnabled="true"></com.handmark.pulltorefresh.library.PullToRefreshListView>
+        simi:ptrAnimationStyle="flip"
+        simi:ptrListViewExtrasEnabled="false" />
 
 </LinearLayout>

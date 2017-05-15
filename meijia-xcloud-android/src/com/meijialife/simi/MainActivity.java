@@ -360,7 +360,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 intent.putExtra("user", PersonalFragment.user);
                 startActivity(intent);
                 break;
-            case R.id.item_1: // 我的钱包
+            case R.id.item_1: // 我的钱包O
                 startActivity(new Intent(this, MyWalletActivity.class));
                 break;
             case R.id.item_2: // 优惠卡券

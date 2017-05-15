@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,7 +34,9 @@ import com.simi.easemob.utils.ShareConfig;
 
 /**
  * 网页专用Activity
- * 
+ *
+ * @author yejiurui
+ *         通用此webview，之前的乱七八糟的，禁止替换，from 2017.05.15
  */
 public class WebViewActivity extends Activity implements OnClickListener {
 
@@ -40,12 +44,10 @@ public class WebViewActivity extends Activity implements OnClickListener {
     private ImageView iv_person_left;
     private TextView tv_person_title;
     private ImageView iv_person_close;
-
     private String url;
     private String titleStr;
-    
     private ProgressBar mProgressBar; //webView进度条
-    
+
     //右边菜单
     private ImageView iv_menu;
     private PopupMenu popupMenu;
@@ -61,7 +63,7 @@ public class WebViewActivity extends Activity implements OnClickListener {
         init();
     }
 
-    @SuppressLint({ "JavascriptInterface", "NewApi", "SetJavaScriptEnabled" })
+    @SuppressLint({"JavascriptInterface", "NewApi", "SetJavaScriptEnabled"})
     private void init() {
         url = getIntent().getStringExtra("url");
         titleStr = getIntent().getStringExtra("title");
@@ -74,9 +76,9 @@ public class WebViewActivity extends Activity implements OnClickListener {
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
         layout_mask = findViewById(R.id.layout_mask);
         popupMenu = new PopupMenu(this);
-        
-        mProgressBar = (ProgressBar)findViewById(R.id.myProgressBar);
-     
+
+        mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
+
 
         if (StringUtils.isEmpty(url)) {
             Toast.makeText(getApplicationContext(), "数据错误", 0).show();
@@ -87,16 +89,17 @@ public class WebViewActivity extends Activity implements OnClickListener {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-               titles =title;
-               tv_person_title.setText(title);
+                titles = title;
+                tv_person_title.setText(title);
             }
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                if(newProgress==100){
+                if (newProgress == 100) {
                     mProgressBar.setVisibility(View.INVISIBLE);
-                }else {
-                    if(View.INVISIBLE==mProgressBar.getVisibility()){
+                } else {
+                    if (View.INVISIBLE == mProgressBar.getVisibility()) {
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
                     mProgressBar.setProgress(newProgress);
@@ -121,14 +124,35 @@ public class WebViewActivity extends Activity implements OnClickListener {
         if (Build.VERSION.SDK_INT >= 21) {
             webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        //添加打电话和发短信的意图，拦截网页事件
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
+                if (StringUtils.isEmpty(url)) {
+                    return true;
+                }
+                Uri uri = Uri.parse(url);
+                if (url.startsWith("tel:") || url.startsWith("mailto:")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                } else if (url.startsWith("sms")) {
+                    Intent sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(url));
+                    startActivity(sendIntent);
+                    return true;
+                } else {
+                    view.loadUrl(url);
+                    return true;
+                }
+
+            }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                return super.shouldOverrideUrlLoading(view, request);
             }
         });
-        
+
         iv_menu.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,27 +161,27 @@ public class WebViewActivity extends Activity implements OnClickListener {
                     @Override
                     public void onClick(MENUITEM item, String str) {
                         switch (item) {
-                        case ITEM1:// 刷新
-                            webview.reload();
-                            break;
-                        case ITEM2:// 分享
-                            ShareConfig.getInstance().inits(WebViewActivity.this,url,titles, "");
-                            postShare();
-                            break;
-                        case ITEM3:// 吐槽
-                            Intent intent = new Intent(WebViewActivity.this,ChatActivity.class);
-                            intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-                            intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
-                            startActivity(intent);
-                            break;
-                        default:
-                            break;
+                            case ITEM1:// 刷新
+                                webview.reload();
+                                break;
+                            case ITEM2:// 分享
+                                ShareConfig.getInstance().inits(WebViewActivity.this, url, titles, "");
+                                postShare();
+                                break;
+                            case ITEM3:// 吐槽
+                                Intent intent = new Intent(WebViewActivity.this, ChatActivity.class);
+                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                startActivity(intent);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
             }
         });
-        
+
     }
 
     @Override
@@ -175,22 +199,22 @@ public class WebViewActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.iv_person_close: // 返回
-            finish();
-            break;
-        case R.id.iv_person_left: // 返回
-            if (webview != null && webview.canGoBack()) {
-                webview.goBack();
-            } else {
+            case R.id.iv_person_close: // 返回
                 finish();
-            }
-            break;
+                break;
+            case R.id.iv_person_left: // 返回
+                if (webview != null && webview.canGoBack()) {
+                    webview.goBack();
+                } else {
+                    finish();
+                }
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
-    
+
     private void postShare() {
 //        layout_mask.setVisibility(View.VISIBLE);
         CustomShareBoard shareBoard = new CustomShareBoard(this);

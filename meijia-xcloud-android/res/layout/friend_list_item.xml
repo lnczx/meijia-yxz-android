@@ -1,93 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_friend_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/simi_color_white"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical" >
+    android:gravity="center_vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="5dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/simi_color_white"
+    <com.meijialife.simi.ui.RoundImageView
+        android:id="@+id/item_iv_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_defult_touxiang"
+        imagecontrol:border_inside_color="@color/simi_color_white"
+        imagecontrol:border_outside_color="@color/simi_color_white"
+        imagecontrol:border_thickness_in="1dp"
+        imagecontrol:border_thickness_out="1dp" />
+
+    <TextView
+        android:id="@+id/item_tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@id/item_iv_icon"
+        android:text=""
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/item_tv_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/item_tv_name"
+        android:text=""
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_tv_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/cb_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/item_tv_name"
+        android:layout_alignParentRight="true"
+        android:checked="false"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin" >
+        android:gravity="center_vertical"
+        android:text=""
+        android:visibility="gone" />
 
-        <com.meijialife.simi.ui.RoundImageView
-            android:id="@+id/item_iv_icon"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_defult_touxiang"
-            imagecontrol:border_inside_color="@color/simi_color_white"
-            imagecontrol:border_outside_color="@color/simi_color_white"
-            imagecontrol:border_thickness_in="1dp"
-            imagecontrol:border_thickness_out="1dp" />
+    <LinearLayout
+        android:id="@+id/m_ll_checked"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/item_tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:layout_toRightOf="@id/item_iv_icon"
-            android:text="" />
-
-        <TextView
-            android:id="@+id/item_tv_mobile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/item_tv_name"
-            android:text=""
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/item_tv_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/item_tv_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <CheckBox
-            android:id="@+id/cb_check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/item_tv_name"
-            android:layout_alignParentRight="true"
-            android:checked="false"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center_vertical"
-            android:text=""
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:id="@+id/m_ll_checked"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+        <ImageView
+            android:id="@+id/m_iv_friend"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone" >
+            android:src="@drawable/friend_select" />
+    </LinearLayout>
+</RelativeLayout>
 
-            <ImageView
-                android:id="@+id/m_iv_friend"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:src="@drawable/friend_select"
-                 />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>

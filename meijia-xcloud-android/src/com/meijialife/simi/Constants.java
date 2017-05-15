@@ -754,6 +754,9 @@ public class Constants {
     /*
      * H5页面链接
      */
+    //好友详情
+    public static final String FRIEND_DETAIL_URL = "http://app.bolohr.com/simi-h5/show/friend-detail.html?user_id=";
+
     public static final String JOB_URL = "http://www.yingsheng.com/college/list-103-0-0-0";
     //知识库
     public static final String SHOP_URL = "http://mishuzhuli.com/category/xingzhengbaike";

@@ -299,7 +299,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
     public void getFriendList(int friendPage) {
         String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
         if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
-            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -476,7 +476,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
         String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
 
         if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
-            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -631,7 +631,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
     private void getAppHelp() {
         String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
         if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
-            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         final String action = "sns";
