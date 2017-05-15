@@ -147,7 +147,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         tv_score_num = (TextView) view.findViewById(R.id.tv_friend_num);
         tv_top_level = (TextView) view.findViewById(R.id.tv_top_level);
         view.findViewById(R.id.item_qianbao).setOnClickListener(this);
-        view.findViewById(R.id.item_youhui).setOnClickListener(this);
+        view.findViewById(R.id.item_money).setOnClickListener(this);
         view.findViewById(R.id.item_jifen).setOnClickListener(this);
 
         ibtn_rq = (ImageButton) view.findViewById(R.id.ibtn_rq);
@@ -293,8 +293,8 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 intent.putExtra("url", Constants.JING_YAN + user.getId());
                 startActivity(intent);
                 break;
-            case R.id.item_youhui:// 好友
-                ToActivityUtil.gotoFriendsActivity(getActivity(), MainFriendsActivity.FRIENDTYPE);
+            case R.id.item_money:// 我的余额
+                startActivity(new Intent(getActivity(), MyWalletActivity.class));
                 break;
             case R.id.item_jifen:// 积分
                 startActivity(new Intent(getActivity(), MyIntegralActivity.class));

@@ -39,7 +39,7 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
         preDexLibraries = false
-        incremental true
+//        incremental true
     }
     defaultConfig {
         applicationId "com.meijialife.simi"
