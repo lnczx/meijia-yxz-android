@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -33,7 +34,7 @@ import com.meijialife.simi.utils.UIUtils;
 /**
  * 首页常用工具页面
  */
-public class CommonUtilActivity extends BaseActivity {
+public class CommonUtilActivity extends BaseActivity implements View.OnClickListener {
 
     private ListView listview;
     private CompanySettingAdapter adapter;
@@ -51,9 +52,16 @@ public class CommonUtilActivity extends BaseActivity {
     private void initView() {
         setTitleName("工具资料");
         requestBackBtn();
-        
+        findViewById(R.id.layout_policy).setOnClickListener(this);
+        findViewById(R.id.layout_talents).setOnClickListener(this);
+        findViewById(R.id.layout_calculator).setOnClickListener(this);
+        findViewById(R.id.layout_free_data).setOnClickListener(this);
+
+
+        listview = (ListView) findViewById(R.id.listview);
+
         adapter = new CompanySettingAdapter(this);
-        listview = (ListView)findViewById(R.id.listview);
+        listview = (ListView) findViewById(R.id.listview);
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new OnItemClickListener() {
@@ -61,10 +69,10 @@ public class CommonUtilActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CompanySetting setting = companySettings.get(position);
-                ToActivityUtil.gotoWebPage(CommonUtilActivity.this,"null",setting.getSetting_json());
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this, "null", setting.getSetting_json());
             }
         });
-        
+
     }
 
     @Override
@@ -76,7 +84,7 @@ public class CommonUtilActivity extends BaseActivity {
     public void getSetting() {
         // 判断是否有网络
         if (!NetworkUtils.isNetworkConnected(CommonUtilActivity.this)) {
-            Toast.makeText(CommonUtilActivity.this, getString(R.string.net_not_open), 0).show();
+            Toast.makeText(CommonUtilActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -88,6 +96,7 @@ public class CommonUtilActivity extends BaseActivity {
                 super.onFailure(t, errorNo, strMsg);
                 Toast.makeText(CommonUtilActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
@@ -129,4 +138,26 @@ public class CommonUtilActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.layout_free_data:
+                String url = "http://bolohr.com/doc";
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this, null, url);
+                break;
+            case R.id.layout_talents:
+                String url2 = "http://bolohr.com/hrtest";
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this, null, url2);
+                break;
+            case R.id.layout_calculator:
+                String url3 = "http://app.bolohr.com/simi-h5/show/tools-list.html";
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this, null, url3);
+                break;
+            case R.id.layout_policy:
+                String url4 = "http://bolohr.com/hrpolicy";
+                ToActivityUtil.gotoWebPage(CommonUtilActivity.this, null, url4);
+                break;
+        }
+
+    }
 }
