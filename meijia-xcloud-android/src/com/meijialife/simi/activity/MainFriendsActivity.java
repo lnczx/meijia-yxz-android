@@ -297,7 +297,6 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
      * 获取好友列表
      */
     public void getFriendList(int friendPage) {
-        showDialog();
         String user_id = DBHelper.getUser(MainFriendsActivity.this).getId();
         if (!NetworkUtils.isNetworkConnected(MainFriendsActivity.this)) {
             Toast.makeText(MainFriendsActivity.this, getString(R.string.net_not_open), 0).show();
@@ -312,7 +311,6 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -320,7 +318,6 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -552,12 +549,10 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
         map.put("user_id", userInfo.getId());
         AjaxParams param = new AjaxParams(map);
 
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(MainFriendsActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -565,7 +560,6 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
