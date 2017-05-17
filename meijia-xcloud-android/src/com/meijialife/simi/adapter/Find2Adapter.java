@@ -1,6 +1,7 @@
 package com.meijialife.simi.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.tsz.afinal.FinalBitmap;
 import android.annotation.SuppressLint;
@@ -23,7 +24,7 @@ import com.meijialife.simi.bean.FindBean;
 public class Find2Adapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	
-	private ArrayList<FindBean> findBeanList;
+	private List<FindBean> findBeanList;
 	
 	private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
@@ -40,7 +41,7 @@ public class Find2Adapter extends BaseAdapter {
         defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
 	}
 
-	public void setData(ArrayList<FindBean> findBeanList) {
+	public void setData(List<FindBean> findBeanList) {
 		this.findBeanList = findBeanList;
 		notifyDataSetChanged();
 	}
