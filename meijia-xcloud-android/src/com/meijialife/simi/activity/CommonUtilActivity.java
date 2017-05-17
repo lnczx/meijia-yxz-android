@@ -11,13 +11,11 @@ import net.tsz.afinal.http.AjaxParams;
 
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -53,7 +51,7 @@ public class CommonUtilActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.layout_city_list);
+        setContentView(R.layout.layout_commonutils_list);
         super.onCreate(savedInstanceState);
 
         initView();
