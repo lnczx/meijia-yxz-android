@@ -73,7 +73,7 @@ public class CommonUtilActivity extends BaseActivity implements View.OnClickList
 
         findAdapter = new Find2Adapter(CommonUtilActivity.this);
         mPullRefreshListView.setAdapter(findAdapter);
-        mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
+        mPullRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         initIndicator();
 
         mPullRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
