@@ -79,7 +79,6 @@ import java.util.regex.Pattern;
  */
 public class ArticleDetailActivity extends BaseActivity implements OnClickListener {
 
-    private ProgressBar mProgressBar; // webView进度条
     private View layout_mask;// 遮罩
     private ImageView m_iv_article;//图片显示
 
@@ -116,9 +115,9 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     TextView txt_publish_from;
     TextView txt_publish_source;
     SimpleDraweeView thumbnail_images;
-    ScrollView  layout_new_show_data;
+    ScrollView layout_new_show_data;
     public static final String fromTrial = "fromTrial";
-    PopupMenu  popupMenu;
+    PopupMenu popupMenu;
 
     private WebView webview;
     private ImageView iv_person_left;
@@ -154,7 +153,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         setOnClick();
 
 
-
         layout_new_show_data = (ScrollView) findViewById(R.id.layout_new_show_data);
         layout_new_webview = (LinearLayout) findViewById(R.id.layout_new_webview);
         layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
@@ -182,16 +180,16 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                     public void onClick(PopupMenu.MENUITEM item, String str) {
                         switch (item) {
                             case ITEM1:// 刷新
-                                if (webview != null  ) {
-                                  webview.reload();
+                                if (webview != null) {
+                                    webview.reload();
                                 }
                                 break;
                             case ITEM2:// 分享
-                                ShareConfig.getInstance().inits(ArticleDetailActivity.this,newsUrl,title, "");
+                                ShareConfig.getInstance().inits(ArticleDetailActivity.this, newsUrl, title, "");
                                 postShare();
                                 break;
                             case ITEM3:// 吐槽
-                                Intent intent = new Intent(ArticleDetailActivity.this,ChatActivity.class);
+                                Intent intent = new Intent(ArticleDetailActivity.this, ChatActivity.class);
                                 intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
                                 intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
                                 startActivity(intent);
@@ -208,7 +206,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
     @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     private void initWebView() {
-        mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         m_iv_article = (ImageView) findViewById(R.id.m_iv_article);
         layout_mask = findViewById(R.id.layout_mask);
         view = findViewById(R.id.m_top_line);
@@ -825,7 +822,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
         @Override
         public void onClick(View widget) {
-            ToActivityUtil.gotoWebPage(ArticleDetailActivity.this,"文章详情",mUrl);
+            ToActivityUtil.gotoWebPage(ArticleDetailActivity.this, "文章详情", mUrl);
         }
     }
 

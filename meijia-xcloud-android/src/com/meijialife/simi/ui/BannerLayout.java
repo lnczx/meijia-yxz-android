@@ -34,7 +34,7 @@ import com.meijialife.simi.R;
  */
 public class BannerLayout extends RelativeLayout {
 
-    private ViewPager pager;
+    private MyViewPager pager;
     //指示器容器
     private LinearLayout indicatorContainer;
 
@@ -261,7 +261,7 @@ public class BannerLayout extends RelativeLayout {
     //添加任意View视图
     private void setViews(final List<View> views) {
         //初始化pager
-        pager = new ViewPager(getContext());
+        pager = new MyViewPager(getContext());
         //添加viewpager到SliderLayout
         addView(pager);
         setSliderTransformDuration(scrollDuration);

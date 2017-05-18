@@ -250,19 +250,18 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= 2) {
-                    int p = position - 2;
-                    // int p = position;
-                    HomePosts homePost = allHomePosts.get(p);
-                    Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
-                    // Intent intent = new Intent(getActivity(), WebViewsActivity.class);
-                    intent.putExtra("url", homePost.getUrl());
-                    intent.putExtra("p_id", homePost.getId());// 文章Id
-                    intent.putExtra("is_show", true);
-                    intent.putExtra("home_post", homePost);
-                    intent.putExtra("article_content", homePost.getContent());
-                    getActivity().startActivity(intent);
-                }
+//                if (position >= 2) {
+//                    int p = position - 1;
+//                    // int p = position;
+//                    HomePosts homePost = allHomePosts.get(p);
+//                    Intent intent = new Intent(getActivity(), ArticleDetailActivity.class);
+//                    // Intent intent = new Intent(getActivity(), WebViewsActivity.class);
+//                    intent.putExtra("url", homePost.getUrl());
+//                    intent.putExtra("p_id", homePost.getId());// 文章Id
+//                    intent.putExtra("is_show", true);
+//                    intent.putExtra("article_content", homePost.getContent());
+//                    getActivity().startActivity(intent);
+//                }
             }
         });
 
@@ -270,7 +269,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
@@ -279,7 +277,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
                     AnimationSet as = new AnimationSet(true);
                     AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-                    aa.setDuration(500);
+                    aa.setDuration(200);
                     as.addAnimation(aa);
                     LayoutAnimationController ac = new LayoutAnimationController(as);
                     new_frg_search.setLayoutAnimation(ac);
@@ -443,7 +441,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -511,7 +508,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -592,7 +588,6 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 // dismissDialog();
-                Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -814,7 +809,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(getActivity(), getActivity().getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), getActivity().getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override

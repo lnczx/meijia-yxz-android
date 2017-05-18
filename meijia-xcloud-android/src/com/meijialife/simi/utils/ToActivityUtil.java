@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.easemob.easeui.EaseConstant;
+import com.meijialife.simi.activity.ArticleDetailActivity;
 import com.meijialife.simi.activity.MainFriendsActivity;
 import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewPartnerActivity;
@@ -56,6 +57,23 @@ public class ToActivityUtil {
         if (null == mContext) return;
         Intent intent = new Intent(mContext, MainFriendsActivity.class);
         intent.putExtra(MainFriendsActivity.TYPE, type);
+        mContext.startActivity(intent);
+    }
+
+    /**
+     * 去文章详情页面
+     *
+     * @param mContext
+     */
+
+    public static void gotoArticleDetailActivity(Context mContext, String url, String id,   String Contents) {
+        if (null == mContext) return;
+        Intent intent = new Intent(mContext, ArticleDetailActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("p_id", id);// 文章Id
+        intent.putExtra("is_show", true);
+//        intent.putExtra("home_post", homePost);
+        intent.putExtra("article_content", Contents);
         mContext.startActivity(intent);
     }
 
