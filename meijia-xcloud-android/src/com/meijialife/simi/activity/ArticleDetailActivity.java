@@ -107,9 +107,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private View view;
-    private WebView webView;
 
-    LinearLayout layout_new_webview;
     LinearLayout layout_richtext;
     TextView txt_content_title;
     TextView txt_publish_from;
@@ -117,13 +115,10 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     SimpleDraweeView thumbnail_images;
     ScrollView layout_new_show_data;
     public static final String fromTrial = "fromTrial";
-    PopupMenu popupMenu;
-
-    private WebView webview;
-    private ImageView iv_person_left;
+    //    private ImageView iv_person_left;
     private TextView tv_person_title;
-    private ImageView iv_person_close;
-    private ImageView iv_menu;
+    //    private ImageView iv_person_close;
+//    private ImageView iv_menu;
     String title;
 
     String newsUrl;
@@ -142,19 +137,13 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
         url = getIntent().getStringExtra("url");
         pId = getIntent().getStringExtra("p_id");
-        from = getIntent().getStringExtra("from");
         is_show = getIntent().getBooleanExtra("is_show", false);
-
-        // setTitleName(homePost.getTitle());
         requestBackBtn();
 
-        initWebView();
         getMsgList(pId);
         setOnClick();
 
 
-        layout_new_show_data = (ScrollView) findViewById(R.id.layout_new_show_data);
-        layout_new_webview = (LinearLayout) findViewById(R.id.layout_new_webview);
         layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
         txt_content_title = (TextView) findViewById(R.id.txt_content_title);
         txt_publish_from = (TextView) findViewById(R.id.txt_publish_from);
@@ -163,93 +152,12 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         thumbnail_images = (SimpleDraweeView) findViewById(R.id.thumbnail_images);
 
 
-        iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
-        iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
-        iv_person_left.setOnClickListener(this);
-        iv_person_close.setOnClickListener(this);
-        iv_menu = (ImageView) findViewById(R.id.iv_person_more);
-
-        popupMenu = new PopupMenu(this);
-
-        iv_menu.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupMenu.showLocation(R.id.iv_person_more);
-                popupMenu.setOnItemClickListener(new PopupMenu.OnItemClickListener() {
-                    @Override
-                    public void onClick(PopupMenu.MENUITEM item, String str) {
-                        switch (item) {
-                            case ITEM1:// 刷新
-                                if (webview != null) {
-                                    webview.reload();
-                                }
-                                break;
-                            case ITEM2:// 分享
-                                ShareConfig.getInstance().inits(ArticleDetailActivity.this, newsUrl, title, "");
-                                postShare();
-                                break;
-                            case ITEM3:// 吐槽
-                                Intent intent = new Intent(ArticleDetailActivity.this, ChatActivity.class);
-                                intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
-                                startActivity(intent);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                });
-            }
-        });
+//        iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
+//        iv_person_close = (ImageView) findViewById(R.id.iv_person_close);
+//        iv_person_left.setOnClickListener(this);
+//        iv_person_close.setOnClickListener(this);
 
     }
-
-    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
-    private void initWebView() {
-        m_iv_article = (ImageView) findViewById(R.id.m_iv_article);
-        layout_mask = findViewById(R.id.layout_mask);
-        view = findViewById(R.id.m_top_line);
-        view.setVisibility(View.GONE);
-        finalBitmap = FinalBitmap.create(this);
-        webView = (WebView) findViewById(R.id.m_article_webView);
-        //默认图标赋值
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
-        webview_comment = (LinearLayout) findViewById(R.id.webview_comment);
-        if (is_show) {
-            webview_comment.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-
-    TextWatcher tw = new TextWatcher() {
-        private CharSequence temp;
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            temp = s;
-            m_btn_confirm.setEnabled(false);
-            m_btn_confirm.setSelected(false);
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            m_btn_confirm.setEnabled(false);
-            m_btn_confirm.setSelected(false);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String content = comment_content.getText().toString();
-            if (StringUtils.isNotEmpty(content) && !StringUtils.isEquals("写下您的看法与见解……", content.trim())) {
-                m_btn_confirm.setEnabled(true);
-                m_btn_confirm.setSelected(true);
-            } else {
-                m_btn_confirm.setEnabled(false);
-                m_btn_confirm.setSelected(false);
-            }
-        }
-    };
 
     private void setOnClick() {
 
@@ -267,7 +175,34 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         findViewById(R.id.m_iv_comment).setOnClickListener(this);
         findViewById(R.id.m_iv_zan).setOnClickListener(this);
         findViewById(R.id.m_iv_share).setOnClickListener(this);
-        comment_content.addTextChangedListener(tw);
+        comment_content.addTextChangedListener(new TextWatcher() {
+            private CharSequence temp;
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                temp = s;
+                m_btn_confirm.setEnabled(false);
+                m_btn_confirm.setSelected(false);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                m_btn_confirm.setEnabled(false);
+                m_btn_confirm.setSelected(false);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String content = comment_content.getText().toString();
+                if (StringUtils.isNotEmpty(content) && !StringUtils.isEquals("写下您的看法与见解……", content.trim())) {
+                    m_btn_confirm.setEnabled(true);
+                    m_btn_confirm.setSelected(true);
+                } else {
+                    m_btn_confirm.setEnabled(false);
+                    m_btn_confirm.setSelected(false);
+                }
+            }
+        });
         boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         if (is_login) {
             getZan();// 是否点赞接口
@@ -342,13 +277,6 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                 break;
             case R.id.iv_person_close: // 返回
                 finish();
-                break;
-            case R.id.iv_person_left: // 返回
-                if (webview != null && webview.canGoBack()) {
-                    webview.goBack();
-                } else {
-                    finish();
-                }
                 break;
             default:
                 break;
@@ -560,7 +488,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         Map<String, String> map = new HashMap<String, String>();
         map.put("json", "get_post");
         map.put("post_id", pId);
-        map.put("include", "id,title,modified,url,thumbnail,custom_fields,content");
+        map.put("include", "id,title,modified,url,thumbnail,custom_fields,content,categories");
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.GET_HOME1_MSG_URL, param, new AjaxCallBack<Object>() {
             @Override
@@ -584,38 +512,12 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                         if (StringUtils.isEquals(status, "ok")) { // 正确
                             if (StringUtils.isNotEmpty(post)) {
                                 Gson gson = new Gson();
-//                                homePost = gson.fromJson(post, HomePost.class);
                                 homePostes = gson.fromJson(post, HomePostes.class);
                                 String content = homePostes.getContent();
-
                                 title = homePostes.getTitle();
+                                layout_new_show_data.setVisibility(View.VISIBLE);
+                                fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
 
-                                if (StringUtils.isNotEmpty(from) && StringUtils.isEquals(from, fromTrial)) {
-                                    layout_new_webview.setVisibility(View.VISIBLE);
-                                    layout_new_show_data.setVisibility(View.GONE);
-
-                                    finalBitmap.display(m_iv_article, homePostes.getThumbnail());
-                                    m_tv_article_title.setText(homePostes.getTitle());
-
-
-//                               /* CustomField customField = gson.fromJson(homePostes.getCustom_fields(),CustomField.class);
-//                                m_tv_from_name.setText(customField.getFromname_value().get(0));*/
-                                    m_tv_update_time.setText(homePostes.getModified());
-
-
-                                    webView.getSettings().setTextSize(WebSettings.TextSize.NORMAL);
-                                    String str = Html.fromHtml(content).toString();
-//                                str.replaceAll("\n","</br>");
-//                                m_article_content.setText(str);
-//                                    webView.loadDataWithBaseURL(null, str, "text/html", "UTF-8", null);
-                                    tv_person_title.setText(title);
-                                    newsUrl = homePostes.getUrl();
-                                    webView.loadUrl(newsUrl);
-                                } else {
-                                    layout_new_webview.setVisibility(View.GONE);
-                                    layout_new_show_data.setVisibility(View.VISIBLE);
-                                    fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
-                                }
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
