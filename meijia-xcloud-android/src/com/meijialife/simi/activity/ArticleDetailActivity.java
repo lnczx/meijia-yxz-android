@@ -1,7 +1,10 @@
 package com.meijialife.simi.activity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -14,19 +17,24 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +47,14 @@ import com.google.gson.Gson;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.adapter.AddressListAdapter;
+import com.meijialife.simi.adapter.HomeListAdapter;
+import com.meijialife.simi.bean.AddressData;
+import com.meijialife.simi.bean.Categories;
+import com.meijialife.simi.bean.CustomFields;
 import com.meijialife.simi.bean.HomePost;
 import com.meijialife.simi.bean.HomePostes;
+import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.PopupMenu;
@@ -68,6 +82,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,20 +123,20 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     private BitmapDrawable defDrawable;
     private View view;
 
-    LinearLayout layout_richtext;
-    TextView txt_content_title;
-    TextView txt_publish_from;
-    TextView txt_publish_source;
-    SimpleDraweeView thumbnail_images;
-    ScrollView layout_new_show_data;
+    private LinearLayout layout_richtext;
+    private RelativeLayout layout_more_news;
+    private TextView txt_content_title;
+    private TextView txt_publish_from;
+    private TextView txt_publish_source;
+    private SimpleDraweeView thumbnail_images;
+    private ScrollView layout_new_show_data;
     public static final String fromTrial = "fromTrial";
-    //    private ImageView iv_person_left;
     private TextView tv_person_title;
-    //    private ImageView iv_person_close;
-//    private ImageView iv_menu;
-    String title;
+    private String title;
 
-    String newsUrl;
+    private String newsUrl;
+    private ListView myListview;
+    private CategoriesListAdapter categoriesListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +165,13 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         txt_publish_source = (TextView) findViewById(R.id.txt_publish_source);
         tv_person_title = (TextView) findViewById(R.id.tv_person_title);
         thumbnail_images = (SimpleDraweeView) findViewById(R.id.thumbnail_images);
+        layout_new_show_data = (ScrollView) findViewById(R.id.layout_new_show_data);
+
+        myListview = (ListView) findViewById(R.id.listview);
+        layout_more_news = (RelativeLayout) findViewById(R.id.layout_more_news);
+
+        categoriesListAdapter = new CategoriesListAdapter(this);
+        myListview.setAdapter(categoriesListAdapter);
 
 
 //        iv_person_left = (ImageView) findViewById(R.id.iv_person_left);
@@ -513,11 +535,17 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                             if (StringUtils.isNotEmpty(post)) {
                                 Gson gson = new Gson();
                                 homePostes = gson.fromJson(post, HomePostes.class);
-                                String content = homePostes.getContent();
                                 title = homePostes.getTitle();
                                 layout_new_show_data.setVisibility(View.VISIBLE);
                                 fillContent(homePostes);//全新解析的方式  by andye 2016/07/22
+                                List<Categories> categories = homePostes.getCategories();
 
+                                if (null != categories && categories.size() > 0) {
+                                    layout_more_news.setVisibility(View.VISIBLE);
+                                    categoriesListAdapter.setData(categories);
+                                } else {
+                                    layout_more_news.setVisibility(View.GONE);
+                                }
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -726,6 +754,87 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         public void onClick(View widget) {
             ToActivityUtil.gotoWebPage(ArticleDetailActivity.this, "文章详情", mUrl);
         }
+    }
+
+
+    class CategoriesListAdapter extends BaseAdapter {
+
+        private Context context;
+        private List<Categories> datas;
+
+        private LayoutInflater layoutInflater;
+
+        public CategoriesListAdapter(Context context) {
+            this.context = context;
+            layoutInflater = LayoutInflater.from(context);
+            this.datas = new ArrayList<Categories>();
+
+            finalBitmap = FinalBitmap.create(context);
+            //设置缓存路径和缓存大小
+            finalBitmap.configDiskCachePath(context.getFilesDir().toString());
+            finalBitmap.configDiskCacheSize(1024 * 1024 * 10);
+            defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
+        }
+
+        public void setData(List<Categories> datas) {
+            this.datas = datas;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return datas.size();
+        }
+
+        @Override
+        public Categories getItem(int position) {
+            return datas.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(R.layout.home_list_item, null);//
+                holder = new ViewHolder();
+                holder.tv_title = (TextView) convertView.findViewById(R.id.msg_tv_title);
+                holder.tv_summary = (TextView) convertView.findViewById(R.id.msg_tv_summary);
+                holder.iv_iconUrl = (ImageView) convertView.findViewById(R.id.msg_iv_icon_url);
+                holder.layout_home_item = (LinearLayout) convertView.findViewById(R.id.layout_home_item);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            final Categories categories = getItem(position);
+            holder.tv_title.setText(categories.getTitle());
+            int postcount = categories.getPost_count();
+            holder.tv_summary.setText(postcount + "人已看过");
+            finalBitmap.display(holder.iv_iconUrl, categories.getDescription(), defDrawable.getBitmap(), defDrawable.getBitmap());
+            holder.layout_home_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToActivityUtil.gotoArticleDetailActivity(ArticleDetailActivity.this, null, categories.getId(), null);
+                }
+            });
+
+            return convertView;
+        }
+
+        class ViewHolder {
+            TextView tv_title; //标题
+            TextView tv_summary; //摘要
+            ImageView iv_iconUrl; //图片
+            LinearLayout layout_home_item;
+
+        }
+
+
     }
 
 }
