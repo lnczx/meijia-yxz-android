@@ -57,7 +57,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
     private IndicatorTabBars tab_indicators;
     private RelativeLayout m__rl_question;
-    private int page = 1;
+    private int page = 0;
     private String feedFrom = "0";// 0=所有，1=我发布
 
     @Override
@@ -111,7 +111,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 // 下拉刷新任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
-                page = 1;
+                page = 0;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getFeedList(page, feedFrom);
                 feedListAdapter.notifyDataSetChanged();
@@ -176,12 +176,10 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
         map.put("feed_from", feed_from);
         map.put("feed_type", "2");
         AjaxParams param = new AjaxParams(map);
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_FRIEND_DYNAMIC_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(FeedListActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
@@ -189,7 +187,6 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -236,9 +233,6 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        page = 1;
-        myFeedDataList = null;
-        myFeedDataList = null;
     }
 
     /**
@@ -248,7 +242,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
      */
     private void showData(List<FeedData> myFeedDataList) {
         if (myFeedDataList != null && myFeedDataList.size() > 0) {
-            if (page == 1) {
+            if (page == 0) {
                 totalFeedDataList.clear();
             }
             for (FeedData feedData : myFeedDataList) {
