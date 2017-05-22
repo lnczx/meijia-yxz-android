@@ -111,7 +111,7 @@ public class FeedQuestionActivity extends BaseActivity implements OnClickListene
 
         UserInfo userInfo = DBHelper.getUserInfo(this);
         if (null != userInfo) {
-            m_tv_gold.setText("您有" + userInfo.getRest_money() + "金币，有赏有效果哦");
+            m_tv_gold.setText("您有" + userInfo.getScore() + "金币，有赏有效果哦");
         }
 
         setOnClick();
