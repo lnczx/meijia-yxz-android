@@ -190,19 +190,16 @@ public class FeedDetailActivity extends BaseActivity implements OnClickListener,
         map.put("fid",fid);
         map.put("feed_type", "2");
         AjaxParams param = new AjaxParams(map);
-        showDialog();
         new FinalHttp().get(Constants.URL_GET_DYNAMIC_COMMENT_LIST, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
                 Toast.makeText(FeedDetailActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
-                dismissDialog();
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());

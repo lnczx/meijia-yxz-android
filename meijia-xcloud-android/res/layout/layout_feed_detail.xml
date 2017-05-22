@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,52 +12,55 @@
         android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:gravity="center|left"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="top|left"
-            >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="问："
-            android:textColor="@color/simi_color_blue" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/m_iv_gold"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/icon_gold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="问："
+                android:textColor="@color/simi_color_blue"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/m_tv_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="0"
-            android:textColor="@color/feed_gold_count"
-            />
+            <ImageView
+                android:id="@+id/m_iv_gold"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_gold" />
+
+            <TextView
+                android:id="@+id/m_tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="0"
+                android:textColor="@color/feed_gold_count" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/m_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="题目"
             android:textColor="@color/feed_question_title"
-             />
+            android:textSize="16sp" />
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/m_tv_time"
@@ -65,9 +68,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:text="5分钟前" 
+            android:text="5分钟前"
             android:textColor="@color/feed_question_time"
-            />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/m_tv_count"
@@ -75,9 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:text="2个答案" 
+            android:text="2个答案"
             android:textColor="@color/feed_answer_count"
-            />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <View
