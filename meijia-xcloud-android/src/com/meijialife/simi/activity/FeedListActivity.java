@@ -94,12 +94,14 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
         mPullRefreshListView.setMode(Mode.BOTH);
 
         tabNames = new ArrayList<String>();
-        tabNames.add("全部");
+        tabNames.add("最新");
+        tabNames.add("悬赏");
+        tabNames.add("精选");
         tabNames.add("我的");
 
         tab_indicators = (IndicatorTabBars) findViewById(R.id.tab_indicators);
         tab_indicators.setCallBack(this);
-        tab_indicators.setMaxColumn(5);
+        tab_indicators.setMaxColumn(4);
         tab_indicators.initView(tabNames);
 
         initIndicator();
@@ -200,7 +202,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
                                 myFeedDataList = gson.fromJson(data, new TypeToken<ArrayList<FeedData>>() {
                                 }.getType());
                                 showData(myFeedDataList);
-                            }else{
+                            } else {
                                 feedListAdapter.setData(new ArrayList<FeedData>());
                                 mPullRefreshListView.onRefreshComplete();
                             }
@@ -241,7 +243,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
 
     /**
      * 处理数据加载的方法
-     * 
+     *
      * @param list
      */
     private void showData(List<FeedData> myFeedDataList) {
@@ -262,16 +264,16 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     public void onClick(View v) {
         Boolean login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
         switch (v.getId()) {
-        case R.id.m__rl_question:// 我要提问
-            if (!login) {
-                startActivity(new Intent(FeedListActivity.this, LoginActivity.class));
-                return;
-            } else {
-                startActivity(new Intent(FeedListActivity.this, FeedQuestionActivity.class));
-            }
-            break;
-        default:
-            break;
+            case R.id.m__rl_question:// 我要提问
+                if (!login) {
+                    startActivity(new Intent(FeedListActivity.this, LoginActivity.class));
+                    return;
+                } else {
+                    startActivity(new Intent(FeedListActivity.this, FeedQuestionActivity.class));
+                }
+                break;
+            default:
+                break;
         }
 
     }
