@@ -52,6 +52,7 @@ import com.meijialife.simi.adapter.HomeListAdapter;
 import com.meijialife.simi.bean.AddressData;
 import com.meijialife.simi.bean.Categories;
 import com.meijialife.simi.bean.CustomFields;
+import com.meijialife.simi.bean.HomeAboutNewsBean;
 import com.meijialife.simi.bean.HomePost;
 import com.meijialife.simi.bean.HomePostes;
 import com.meijialife.simi.bean.HomePosts;
@@ -542,7 +543,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
 
                                 if (null != categories && categories.size() > 0) {
                                     layout_more_news.setVisibility(View.VISIBLE);
-                                    categoriesListAdapter.setData(categories);
+                                    getAboutNewsList(categories.get(0).getId());
                                 } else {
                                     layout_more_news.setVisibility(View.GONE);
                                 }
@@ -551,6 +552,59 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                             errorMsg = getString(R.string.servers_error);
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(ArticleDetailActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 获取相关文章接口
+     */
+    public void getAboutNewsList(String id) {
+        if (!NetworkUtils.isNetworkConnected(ArticleDetailActivity.this)) {
+            Toast.makeText(ArticleDetailActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("json", "get_category_posts");
+        map.put("id", id);
+        map.put("order", "DESC");
+        map.put("count", "5");
+        map.put("page", "1");
+        map.put("include", "id,title,modified,url,thumbnail,custom_fields");
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().post(Constants.GET_HOME1_MSG_URL, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(ArticleDetailActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        Gson gson = new Gson();
+                        HomeAboutNewsBean homeAboutNewsBean = gson.fromJson(t.toString(), HomeAboutNewsBean.class);
+                        List<HomeAboutNewsBean.PostsBean> postsBeen = homeAboutNewsBean.getPosts();
+                        if (null != postsBeen && postsBeen.size() > 0) {
+                            categoriesListAdapter.setData(postsBeen);
+                        }
+
+                    } else {
+                        errorMsg = getString(R.string.servers_error);
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     errorMsg = getString(R.string.servers_error);
@@ -760,14 +814,14 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
     class CategoriesListAdapter extends BaseAdapter {
 
         private Context context;
-        private List<Categories> datas;
+        private List<HomeAboutNewsBean.PostsBean> datas;
 
         private LayoutInflater layoutInflater;
 
         public CategoriesListAdapter(Context context) {
             this.context = context;
             layoutInflater = LayoutInflater.from(context);
-            this.datas = new ArrayList<Categories>();
+            this.datas = new ArrayList<HomeAboutNewsBean.PostsBean>();
 
             finalBitmap = FinalBitmap.create(context);
             //设置缓存路径和缓存大小
@@ -776,7 +830,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             defDrawable = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ad_loading);
         }
 
-        public void setData(List<Categories> datas) {
+        public void setData(List<HomeAboutNewsBean.PostsBean> datas) {
             this.datas = datas;
             notifyDataSetChanged();
         }
@@ -787,7 +841,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         }
 
         @Override
-        public Categories getItem(int position) {
+        public HomeAboutNewsBean.PostsBean getItem(int position) {
             return datas.get(position);
         }
 
@@ -811,15 +865,14 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            final Categories categories = getItem(position);
+            final HomeAboutNewsBean.PostsBean categories = getItem(position);
             holder.tv_title.setText(categories.getTitle());
-            int postcount = categories.getPost_count();
-            holder.tv_summary.setText(postcount + "人已看过");
-            finalBitmap.display(holder.iv_iconUrl, categories.getDescription(), defDrawable.getBitmap(), defDrawable.getBitmap());
+            holder.tv_summary.setText(categories.getCustom_fields().getViews().get(0) + "人已看过");
+            finalBitmap.display(holder.iv_iconUrl, categories.getThumbnail(), defDrawable.getBitmap(), defDrawable.getBitmap());
             holder.layout_home_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ToActivityUtil.gotoArticleDetailActivity(ArticleDetailActivity.this, null, categories.getId(), null);
+                    ToActivityUtil.gotoArticleDetailActivity(ArticleDetailActivity.this, categories.getUrl(), categories.getId(), null);
                 }
             });
 
