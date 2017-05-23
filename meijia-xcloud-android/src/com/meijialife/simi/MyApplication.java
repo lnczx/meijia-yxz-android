@@ -1,8 +1,7 @@
 package com.meijialife.simi;
 
-import android.app.Application;
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -10,7 +9,7 @@ import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.igexin.sdk.PushManager;
 import com.simi.easemob.EMDemoHelper;
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     private static final String TAG = "MyApplication";
 
@@ -23,13 +22,7 @@ public class MyApplication extends Application {
      * 当前用户nickname,为了苹果推送不是userid而是昵称
      */
     public static String currentUserNick = "";
-    
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
-    
+
     @Override
     public void onCreate() {
         super.onCreate();
