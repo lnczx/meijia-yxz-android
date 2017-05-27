@@ -176,6 +176,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         v.findViewById(R.id.m_rl_question).setOnClickListener(this);
         v.findViewById(R.id.m_rl_test).setOnClickListener(this);
         v.findViewById(R.id.m_rl_zhaopin).setOnClickListener(this);
+        v.findViewById(R.id.iv_zhaopin).setOnClickListener(this);
+        v.findViewById(R.id.iv_qiandao).setOnClickListener(this);
+        v.findViewById(R.id.iv_kaozheng).setOnClickListener(this);
         ll_more_columns.setOnClickListener(this);
         ll_more_columns2.setOnClickListener(this);
     }
@@ -654,6 +657,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             case R.id.m_home4:// 常用工具
                 startActivity(new Intent(getActivity(), CommonUtilActivity.class));
                 break;
+            case R.id.iv_qiandao:
             case R.id.m_rl_sign:// 首页签到
                 if (!is_login) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -661,6 +665,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                     ToActivityUtil.gotoWebPage(getActivity(), "签到", Constants.HOME_SIGN_URL + DBHelper.getUser(getActivity()).getId());
                 }
                 break;
+            case R.id.iv_zhaopin:// 首页招聘
             case R.id.m_rl_zhaopin:// 首页招聘
                 if (!is_login) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -668,6 +673,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                     ToActivityUtil.gotoWebPage(getActivity(), "招聘", Constants.HOME_ZHAOPIN_URL + DBHelper.getUser(getActivity()).getId());
                 }
                 break;
+            case R.id.iv_kaozheng:// test
             case R.id.m_rl_test:// test
                 ToActivityUtil.gotoWebPage(getActivity(), "考证", Constants.HOME_HREXAM_URL);
 
