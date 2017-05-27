@@ -128,6 +128,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
@@ -229,6 +230,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".activity.WebViewActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

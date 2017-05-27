@@ -161,6 +161,7 @@ public class SplashActivity extends Activity implements Runnable {
         mWelcome2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                autoSkip();
                 Constants.IS_JUMP = true;
                 ToActivityUtil.gotoWebPage(SplashActivity.this, "null", Constants.WEB_SPLASH_AD_URL);
             }
