@@ -217,18 +217,23 @@ public class IndicatorTabBars extends HorizontalScrollView {
                 String typeId = "0";
                 if (index == 0) {//最新
                     typeId = "0";
-                } else if (index == 1) {//我的发布的
-                    typeId = "1";
+                } else if (index == 1) {//悬赏
+                    typeId = "2";
 
                     User user = DBHelper.getUser(context);
                     if (user == null) {
                         context.startActivity(new Intent(context, LoginActivity.class));
                         return;
                     }
-                } else if (index == 2) {//悬赏
-                    typeId = "2";
-                } else if (index == 3) {//精选
+                } else if (index == 2) {//精选
                     typeId = "3";
+                } else if (index == 3) {//我的
+                    typeId = "1";
+                    User user = DBHelper.getUser(context);
+                    if (user == null) {
+                        context.startActivity(new Intent(context, LoginActivity.class));
+                        return;
+                    }
                 }
                 callBack.onClick(typeId);
                 if (mViewPager != null) {
