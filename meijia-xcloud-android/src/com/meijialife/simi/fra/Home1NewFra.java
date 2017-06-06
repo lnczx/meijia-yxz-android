@@ -146,18 +146,19 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         tabNames.add("行政");
         tabNames.add("培训");
         tabNames.add("员工关系");
-        tabNames.add(" 人资规划");
+        tabNames.add("人资规划");
         tabNames.add("行业");
 
-        mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
-        mIndicatorTabBar1.setCallBack(this);
-        mIndicatorTabBar1.setMaxColumn(5);
-        mIndicatorTabBar1.initView(tabNames);
+//        mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
+//        mIndicatorTabBar1.setCallBack(this);
+//        mIndicatorTabBar1.setMaxColumn(5);
+//        mIndicatorTabBar1.initView(tabNames);
 
         mIndicatorTabBar3 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator3);
         mIndicatorTabBar3.setCallBack(this);
         mIndicatorTabBar3.setMaxColumn(5);
         mIndicatorTabBar3.initView(tabNames);
+
 
     }
 
@@ -209,7 +210,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                mIndicatorTabBar1.getParent().requestDisallowInterceptTouchEvent(false);
+//                mIndicatorTabBar1.getParent().requestDisallowInterceptTouchEvent(false);
                 mIndicatorTabBar3.getParent().requestDisallowInterceptTouchEvent(false);
                 return false;
             }
@@ -278,14 +279,14 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem >= 1) {
 
-                    AnimationSet as = new AnimationSet(true);
-                    AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-                    aa.setDuration(200);
-                    as.addAnimation(aa);
-                    LayoutAnimationController ac = new LayoutAnimationController(as);
-                    new_frg_search.setLayoutAnimation(ac);
+//                    AnimationSet as = new AnimationSet(true);
+//                    AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
+//                    aa.setDuration(50);
+//                    as.addAnimation(aa);
+//                    LayoutAnimationController ac = new LayoutAnimationController(as);
+//                    new_frg_search.setLayoutAnimation(ac);
                     new_frg_search.setVisibility(View.VISIBLE);
-                    m_rl_category.setVisibility(View.VISIBLE);
+//                    m_rl_category.setVisibility(View.VISIBLE);
                 } else {
                     m_rl_category.setVisibility(View.GONE);
                     new_frg_search.setVisibility(View.GONE);
