@@ -119,7 +119,6 @@
     <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
     <orderEntry type="library" exported="" name="Parse-1.9.4" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="GetuiSDK2.6.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-fragment-25.3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="alipaySDK-20151014" level="project" />
@@ -127,7 +126,7 @@
     <orderEntry type="library" exported="" name="httpmime-4.2.4" level="project" />
     <orderEntry type="library" exported="" name="umeng-analytics-v6.0.0" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-base-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="GetuiExt-2.0.3" level="project" />
+    <orderEntry type="library" exported="" name="GetuiSDK2.9.3.0" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.4" level="project" />
     <orderEntry type="library" exported="" name="support-compat-25.3.0" level="project" />
     <orderEntry type="library" exported="" name="joda-time-2.1" level="project" />
@@ -142,5 +141,33 @@
     <orderEntry type="module" module-name="vodPlayerRelease" exported="" />
     <orderEntry type="module" module-name="meijia-lib-easeui" exported="" />
     <orderEntry type="library" exported="" name="org.apache.http.legacy-android-25" level="project" />
+    <orderEntry type="library" exported="" name="wasabi" level="project" />
+    <orderEntry type="library" exported="" name="official_unicom" level="project" />
+    <orderEntry type="library" exported="" name="libijkplayer" level="project" />
+    <orderEntry type="library" exported="" name="tracking" level="project" />
+    <orderEntry type="library" exported="" name="mvvtracker" level="project" />
+    <orderEntry type="library" exported="" name="securityguard-1.0.7" level="project" />
+    <orderEntry type="library" exported="" name="YoukuAnalytics" level="project" />
+    <orderEntry type="library" exported="" name="danmakuflamemaster" level="project" />
+    <orderEntry type="library" exported="" name="AlimmAD_Android_16_yk_V1.0.2" level="project" />
+    <orderEntry type="library" exported="" name="fastjson-1.1.45.android" level="project" />
+    <orderEntry type="library" exported="" name="domob_android_sdk" level="project" />
+    <orderEntry type="library" exported="" name="taesdk-1.0.2" level="project" />
+    <orderEntry type="library" exported="" name="Cocounion_AD_SDK_Android_v4.1.5" level="project" />
+    <orderEntry type="library" exported="" name="xadsdk" level="project" />
+    <orderEntry type="library" exported="" name="mobisageSDK" level="project" />
+    <orderEntry type="library" exported="" name="android-async-http-1.4.3" level="project" />
+    <orderEntry type="library" exported="" name="mAppTracker" level="project" />
+    <orderEntry type="library" exported="" name="libykcloudsdk" level="project" />
+    <orderEntry type="library" exported="" name="libplayer" level="project" />
+    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_map_v3_6_1" level="project" />
+    <orderEntry type="library" exported="" name="easemobchat_2.2.3" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_search_v3_6_1" level="project" />
+    <orderEntry type="library" exported="" name="final" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_base_v3_6_1" level="project" />
+    <orderEntry type="library" exported="" name="locSDK_6.13" level="project" />
+    <orderEntry type="library" exported="" name="baidumapapi_util_v3_6_1" level="project" />
   </component>
 </module>

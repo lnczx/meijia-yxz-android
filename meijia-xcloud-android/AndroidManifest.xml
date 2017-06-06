@@ -724,25 +724,17 @@ _
             android:name="PUSH_APPSECRET"
             android:value="tt7n6qd2Gi8sQqWMz0rN45" />
         <!-- 替换为应用的APPSECRET -->
-        <!-- 配置第三方Receiver 用来接收ClientId和透传消息 -->
-        <receiver
-            android:name="com.meijialife.simi.MyPushReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
-            </intent-filter>
-        </receiver>
+
         <!-- 配置SDK核心服务 -->
         <service
             android:name="com.igexin.sdk.PushService"
             android:exported="true"
             android:label="NotificationCenter"
-            android:process=":pushservice"></service>
-        <!-- SDK　2.6.1.0版本新增配置项 -->
+            android:process=":pushservice" />
         <service
             android:name="com.igexin.sdk.PushServiceUser"
             android:exported="true"
-            android:label="NotificationCenterUser"></service>
+            android:label="NotificationCenterUser" />
 
         <receiver android:name="com.igexin.sdk.PushReceiver">
             <intent-filter>
@@ -770,11 +762,20 @@ _
             android:exported="false"
             android:process=":pushservice"
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.igexin.sdk.GActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:process=":pushservice"
+            android:taskAffinity="com.igexin.sdk.PushActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
+
 
         <receiver android:name="com.igexin.download.DownloadReceiver">
             <intent-filter>
@@ -782,34 +783,23 @@ _
             </intent-filter>
         </receiver>
 
+        <!--android:authorities="downloads.com.getui.demo"-->
+
         <provider
             android:name="com.igexin.download.DownloadProvider"
             android:authorities="downloads.com.meijialife.simi"
             android:exported="true"
             android:process=":pushservice" />
 
-        <activity
-            android:name="com.igexin.getuiext.activity.GetuiExtActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:process=":pushservice"
-            android:taskAffinity="android.task.myServicetask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <!--	配置第三⽅Receiver	-->
+        <!-- 配置第三方Receiver 用来接收ClientId和透传消息 -->
         <receiver
-            android:name="com.igexin.getuiext.service.PayloadReceiver"
+            android:name="com.meijialife.simi.MyPushReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
                 <action android:name="com.igexin.sdk.action.6t18dZQ2Vn9nv7ozqdl4EA" />
             </intent-filter>
         </receiver>
-
-        <service
-            android:name="com.igexin.getuiext.service.GetuiExtService"
-            android:process=":pushservice" />
-
         <!-- 个推SDK配置结束 -->
         <!-- 上传多张图片注册activity -->
         <activity
