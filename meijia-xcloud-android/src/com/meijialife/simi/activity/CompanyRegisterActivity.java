@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//创建企业
 public class CompanyRegisterActivity extends BaseActivity implements OnClickListener {
 
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -102,6 +103,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
     public static final String FRIENDTYPE = "friendType";
     public static final String MSGTYPE = "msgType";
     String fromType;
+    ImageView m_iv_card_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,13 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
         tv_has_company = (TextView) this.findViewById(R.id.tv_has_company);
         layout_mask = this.findViewById(R.id.layout_mask);
 
+        m_iv_card_back = (ImageView) this.findViewById(R.id.m_iv_card_back);
+        m_iv_card_back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainFriendsActivity.this.finish();
+            }
+        });
         initFriendView();
 
         rl_add = (RelativeLayout) this.findViewById(R.id.rl_add);

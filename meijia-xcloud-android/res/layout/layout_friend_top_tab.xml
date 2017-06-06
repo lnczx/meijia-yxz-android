@@ -1,68 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-     >
+    android:layout_height="45dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/cut_off_rule" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp" >
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <RadioGroup
             android:id="@+id/radiogroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/rb_friend"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="right"
-                android:layout_marginRight="10dp"
                 android:text="好友"
-                android:textSize="15sp"
-                android:textColor="@color/index2_radiobutton_color" />
+                android:textColor="@color/index2_radiobutton_color"
+                android:textSize="15sp" />
 
             <RadioButton
                 android:id="@+id/rb_msg"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="10dp"
-                android:gravity="left"
+                android:layout_weight="1"
                 android:button="@null"
-                android:textSize="15sp"
+                android:gravity="left"
                 android:text="消息"
-                android:textColor="@color/index2_radiobutton_color" />
-            
+                android:textColor="@color/index2_radiobutton_color"
+                android:textSize="15sp" />
+
         </RadioGroup>
 
         <LinearLayout
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:orientation="horizontal" 
-            android:visibility="gone"
-            >
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/line_1"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_weight="1"
                 android:background="@color/simi_color_red" />
+
             <View
                 android:id="@+id/line_2"
                 android:layout_width="0dp"
@@ -76,8 +71,16 @@
                 android:layout_height="1dp"
                 android:layout_weight="1"
                 android:background="@color/simi_color_red" />
-          
+
         </LinearLayout>
     </RelativeLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/m_iv_card_back"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_left_back"
+        android:focusable="true"
+        android:scaleType="center" />
+
+</RelativeLayout>
