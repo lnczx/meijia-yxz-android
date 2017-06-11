@@ -3,23 +3,176 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
 
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/simi_color_line_gray" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/cut_off_rule"
-        android:dividerHeight="1dp"
-        android:scrollbars="none" />
+        <LinearLayout
+            android:id="@+id/layout_search_above"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_search_title"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="#efefef"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="6dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/community_location_search_shape"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/guess_ic_searche" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="5dp"
+                        android:drawablePadding="5dp"
+                        android:gravity="center"
+                        android:text="搜索所在城市"
+                        android:textColor="#999999" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_search_view"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:background="#efefef"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="6dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/search_title_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="取消"
+                    android:textColor="@color/simi_color_yellow"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@id/search_title_cancel"
+                    android:background="@drawable/community_location_search_shape" />
+
+
+                <EditText
+                    android:id="@+id/search_title_auto_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@id/search_title_cancel"
+                    android:background="#00ffffff"
+                    android:gravity="center_vertical"
+                    android:hint="搜索所在城市"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="#999999"
+                    android:textColorHint="#88999999"
+                    android:textCursorDrawable="@drawable/city_search_text_bg"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:id="@+id/search_title_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_toLeftOf="@id/search_title_cancel"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/city_search_del_selector"
+                    android:visibility="gone" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:background="@drawable/guess_ic_searche" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/simi_color_line_gray" />
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_search_above"
+            android:divider="@color/cut_off_rule"
+            android:dividerHeight="1dp"
+            android:scrollbars="none" />
+
+
+        <View
+            android:id="@+id/view_mark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_search_above"
+            android:background="#B3000000"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layout_list_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_search_above"
+            android:background="@android:color/white"
+            android:visibility="gone">
+
+            <ListView
+                android:id="@+id/list_search_keyword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/cut_off_rule"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>
