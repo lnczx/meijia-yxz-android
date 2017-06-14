@@ -49,9 +49,9 @@ android {
 
 //        Enabling multidex support.
         multiDexEnabled true
-        ndk {
-            abiFilters "armeabi"
-        }
+//        ndk {
+//            abiFilters "armeabi"
+//        }
 
     }
     signingConfigs {
