@@ -3,14 +3,13 @@
     android:id="@+id/mainRLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/activity_bg_color" >
+    android:background="@color/activity_bg_color">
 
-    <com.meijialife.simi.ui.FristSplashLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.meijialife.simi.ui.FristSplashLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ScrollLayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <!-- 每一页的布局均以一个RelativeLayout来控制，后面类似 -->
 
@@ -19,39 +18,58 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/splash_img_1" />
+                android:background="@drawable/splash_img_bg1" />
         </RelativeLayout>
 
         <!-- 第二页 -->
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/splash_img_2" />
+                android:background="@drawable/splash_img_bg2" />
         </RelativeLayout>
 
-     
 
         <!-- 第三页 -->
 
         <RelativeLayout
-            android:id="@+id/layout_start"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" >
+            android:layout_height="fill_parent">
 
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/splash_img_3" />
+                android:background="@drawable/splash_img_bg3" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/splash_img_bg4" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_start"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/splash_img_bg5" />
         </RelativeLayout>
     </com.meijialife.simi.ui.FristSplashLayout>
 
@@ -65,7 +83,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="10dp"
@@ -79,7 +97,7 @@
             android:layout_height="10dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
+
             android:clickable="true"
             android:src="@drawable/page_indicator_bg" />
 
@@ -87,10 +105,26 @@
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
             android:clickable="true"
             android:src="@drawable/page_indicator_bg" />
 
-  
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:clickable="true"
+            android:src="@drawable/page_indicator_bg" />
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="18dp"
+            android:clickable="true"
+            android:src="@drawable/page_indicator_bg" />
+
     </LinearLayout>
 
 </RelativeLayout>
