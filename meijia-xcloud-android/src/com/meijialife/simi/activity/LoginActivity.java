@@ -161,7 +161,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private void initView() {
 
-        setTitleName("快速注册与登录");
+        setTitleName("免费注册与登录");
         int is_show_back = getIntent().getIntExtra("is_show_back", 1);
         if (is_show_back == 1) {
             requestBackBtn();

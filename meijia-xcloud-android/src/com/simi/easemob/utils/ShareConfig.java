@@ -228,7 +228,7 @@ public class ShareConfig {
         weixinContent.setShareContent(Constants.SHARE_CONTENT);
         weixinContent.setTitle(Constants.SHARE_TITLE);
         weixinContent.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        weixinContent.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        weixinContent.setTargetUrl("http://bolohr.com/m/app");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
@@ -240,7 +240,7 @@ public class ShareConfig {
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
             circleMedia.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        circleMedia.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        circleMedia.setTargetUrl("http://bolohr.com/m/app");
         mController.setShareMedia(circleMedia);
 
 
@@ -249,7 +249,7 @@ public class ShareConfig {
         qzone.setShareContent(Constants.SHARE_CONTENT);
       
             qzone.setTargetUrl(Constants.SHARE_TARGET_URL+card_id);
-//        qzone.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        qzone.setTargetUrl("http://bolohr.com/m/app");
         qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
@@ -296,7 +296,7 @@ public class ShareConfig {
         weixinContent.setTitle(Constants.SHARE_TITLE);
         weixinContent.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
         
-//        weixinContent.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        weixinContent.setTargetUrl("http://bolohr.com/m/app");
         weixinContent.setShareMedia(localImage);
         mController.setShareMedia(weixinContent);
 
@@ -308,7 +308,7 @@ public class ShareConfig {
         // circleMedia.setShareMedia(uMusic);
         // circleMedia.setShareMedia(video);
             circleMedia.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
-//        circleMedia.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        circleMedia.setTargetUrl("http://bolohr.com/m/app");
         mController.setShareMedia(circleMedia);
 
 
@@ -316,7 +316,7 @@ public class ShareConfig {
         QZoneShareContent qzone = new QZoneShareContent();
         qzone.setShareContent(Constants.SHARE_CONTENT);
             qzone.setTargetUrl(Constants.SHARE_CUSTOMER_TARGET_URL);
-//        qzone.setTargetUrl("http://bolohr.com/h5-app-download.html");
+//        qzone.setTargetUrl("http://bolohr.com/m/app");
         qzone.setTitle(Constants.SHARE_TITLE);
         qzone.setShareMedia(localImage);
         // qzone.setShareMedia(uMusic);
@@ -381,7 +381,7 @@ public class ShareConfig {
         String appKey = "bRW2glhUCR6aJYIZ";
         // 添加QQ支持, 并且设置QQ分享内容的target url
         UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(mContext, appId, appKey);
-        qqSsoHandler.setTargetUrl("http://bolohr.com/web/h5-app-download.html");
+        qqSsoHandler.setTargetUrl("http://bolohr.com/m/app");
         qqSsoHandler.addToSocialSDK();
 
         // 添加QZone平台
