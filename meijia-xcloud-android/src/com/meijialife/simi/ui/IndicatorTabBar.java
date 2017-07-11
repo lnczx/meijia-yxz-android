@@ -233,14 +233,14 @@ public class IndicatorTabBar extends HorizontalScrollView {
                         pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
                     }
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-                } else if (index == 6) {//职场
+                } else if (index == 4) {//职场
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
                     pBean.setId("50");
                     flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
-                } else if (index == 4) {//案例
+                } else if (index == 5) {//案例
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
@@ -264,7 +264,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     flag = false;
                     pBean.setInclude("id,title,modified,url,thumbnail,custom_fields");
 
-                } else if (index == 5) {//行政
+                } else if (index == 6) {//行政
                     pBean.setJson("get_category_posts");
                     pBean.setCount("10");
                     pBean.setOrder("DESC");
