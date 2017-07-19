@@ -61,32 +61,13 @@ public class PlayAliyunActivity extends Activity {
         AliyunLocalSource.AliyunLocalSourceBuilder asb = new AliyunLocalSource.AliyunLocalSourceBuilder();
         asb.setSource(videourl);
         mAliyunVodPlayerView.setLocalSource(asb.build());
-//        mAliyunVodPlayerView.start();
-
+        mAliyunVodPlayerView.setTitleBarCanShow(false);
         mAliyunVodPlayerView.setOnPreparedListener(new IAliyunVodPlayer.OnPreparedListener() {
             @Override
             public void onPrepared() {
                 mAliyunVodPlayerView.start();
             }
         });
-
-//        //设置监听事件
-//        mAliyunVodPlayerView.setOnPreparedListener(new IAliyunVodPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared() {
-//            }
-//        });
-//        //构建播放数据源 AliyunDataSource.AliyunDataSourceBuilder
-//        AliyunDataSource.AliyunDataSourceBuilder mAliyunDataSourceBuilder = new AliyunDataSource.AliyunDataSourceBuilder(this);
-//        mAliyunDataSourceBuilder.setAccessKeyId("FMrXKsmYlcHlo4tX");
-//        mAliyunDataSourceBuilder.setAccessKeySecret("4QB8hB6psAp87UTSGA9OjaGBQQr4a9");
-//        mAliyunDataSourceBuilder.setVideoId(videoId);
-//        mAliyunDataSourceBuilder.setPlayKey("3d2jh2owey89cpuhvpk8zjpcrxxsy7oew7kgi8j7nmvb8hg12mfnmmc6dnyntsef");
-//        //设置期望播放的清晰度。可以不设置，默认为原画清晰度
-//        mAliyunDataSourceBuilder.setQuality(IAliyunVodPlayer.QualityValue.QUALITY_ORIGINAL);
-//        //设置数据源。设置完成之后，将会自动prepare
-//        mAliyunVodPlayerView.setDataSource(mAliyunDataSourceBuilder.build());
-
     }
 
     public void playAliyunPlayAuth(String authInfo, String videoId) {
@@ -96,6 +77,7 @@ public class PlayAliyunActivity extends Activity {
         aliyunPlayAuthBuilder.setVid(videoId);
         aliyunPlayAuthBuilder.setPlayAuth(authInfo);
         aliyunPlayAuthBuilder.setQuality(IAliyunVodPlayer.QualityValue.QUALITY_ORIGINAL);
+        mAliyunVodPlayerView.setTitleBarCanShow(false);
         mAliyunVodPlayerView.setAuthInfo(aliyunPlayAuthBuilder.build());
 
         mAliyunVodPlayerView.setOnPreparedListener(new IAliyunVodPlayer.OnPreparedListener() {
