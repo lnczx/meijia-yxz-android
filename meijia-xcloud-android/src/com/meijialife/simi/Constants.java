@@ -443,7 +443,10 @@ public class Constants {
      * 视频课程-视频文章详情
      */
     public static final String GET_VIDEO_DETAIL = ROOT_URL + "video/detail.json";
-
+    /**
+     * 视频课程-视频文章详情
+     */
+    public static final String GET_VIDEO_ALI_DETAIL = ROOT_URL + "video/detail_ali.json";
     /**
      * 视频课程-相关视频文章接口
      */
@@ -453,6 +456,16 @@ public class Constants {
      * 视频课程-视频文章参加按钮接口
      */
     public static final String POST_VIDEO_JOIN = ROOT_URL + "video/join.json";
+
+    /**
+     * 视频课程-获取凭证
+     */
+    public static final String POST_VIDEO_GET_AUTH = ROOT_URL + "video/get_playauth.json";
+
+    /**
+     * 视频课程-视频文章参加按钮接口，新接口
+     */
+    public static final String POST_VIDEO_JOIN_ALI = ROOT_URL + "video/join_ali.json";
 
     //资产管理
     /**

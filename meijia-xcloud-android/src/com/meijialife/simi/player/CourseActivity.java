@@ -35,6 +35,7 @@ import com.meijialife.simi.adapter.VideoRelateListAdapter;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.VideoAliData;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
@@ -62,10 +63,10 @@ import java.util.Map;
 
 /**
  * 课程详情
- *
+ * <p>
  * Created by Lenovo on 2016/9/21.
  */
-public class CourseActivity extends PlayVodActivity implements View.OnClickListener{
+public class CourseActivity extends PlayAliyunActivity implements View.OnClickListener {
 
     private ImageView iv_thum;//播放器缩略图
 
@@ -114,40 +115,40 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         user = DBHelper.getUser(CourseActivity.this);
     }
 
-    private void init(){
+    private void init() {
         videoListData = (VideoList) getIntent().getSerializableExtra("videoListData");
         finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable)getResources().getDrawable(R.drawable.ad_loading);
+        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);
     }
 
     /**
      * 初始化View
      */
-    private void initView(){
-        ((TextView)findViewById(R.id.header_tv_name)).setText("课程详情");
+    private void initView() {
+        ((TextView) findViewById(R.id.header_tv_name)).setText("课程详情");
         findViewById(R.id.title_btn_left).setVisibility(View.VISIBLE);
         findViewById(R.id.title_btn_left).setOnClickListener(this);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
-        iv_thum = (ImageView)findViewById(R.id.iv_thum);
+        iv_thum = (ImageView) findViewById(R.id.iv_thum);
         FrameLayout.LayoutParams mPortraitPs = new FrameLayout.LayoutParams(screenWidth, screenWidth * 9 / 16);
         iv_thum.setLayoutParams(mPortraitPs);
 
-        ll_all = (LinearLayout)findViewById(R.id.ll_all);
-        tv_vname = (TextView)findViewById(R.id.tv_vname);
-        tv_tname = (TextView)findViewById(R.id.tv_tname);
-        tv_count = (TextView)findViewById(R.id.tv_count);
-        tv_price = (TextView)findViewById(R.id.tv_price);
-        tv_orig_price = (TextView)findViewById(R.id.tv_orig_price);
+        ll_all = (LinearLayout) findViewById(R.id.ll_all);
+        tv_vname = (TextView) findViewById(R.id.tv_vname);
+        tv_tname = (TextView) findViewById(R.id.tv_tname);
+        tv_count = (TextView) findViewById(R.id.tv_count);
+        tv_price = (TextView) findViewById(R.id.tv_price);
+        tv_orig_price = (TextView) findViewById(R.id.tv_orig_price);
         tv_orig_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        tv_detail = (TextView)findViewById(R.id.tv_detail);
+        tv_detail = (TextView) findViewById(R.id.tv_detail);
     }
 
     /**
      * 初始化底部功能条
      */
-    private void initBottomView(){
+    private void initBottomView() {
         findViewById(R.id.layout_mask).setOnClickListener(this);
         findViewById(R.id.m_btn_send_comment).setOnClickListener(this);
         btn_take = (TextView) findViewById(R.id.btn_take);
@@ -192,7 +193,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         }
     };
 
-    private void initListView(){
+    private void initListView() {
         videoDatas = new ArrayList<VideoList>();
         adapter = new VideoRelateListAdapter(this);
         listView = (ListView) findViewById(R.id.listview);
@@ -210,8 +211,8 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         });
     }
 
-    private void showData(){
-        if(video == null){
+    private void showData() {
+        if (video == null) {
             return;
         }
         tv_vname.setText(video.getTitle());
@@ -219,46 +220,51 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         tv_count.setText(video.getTotal_view() + " 人学过");
         tv_price.setText("￥" + video.getDis_price());
         tv_orig_price.setText("￥" + video.getPrice());
-        if(isHtml(video.getContent())){
+        if (isHtml(video.getContent())) {
             tv_detail.setText(Html.fromHtml(video.getContent()));
-        }else if(StringUtils.isNotEmpty(video.getContent())){
+        } else if (StringUtils.isNotEmpty(video.getContent())) {
             tv_detail.setText(video.getContent());
         }
 
-        if(video.getCategory()!= null && video.getCategory().trim().equals("h5")){
+        if (video.getCategory() != null && video.getCategory().trim().equals("h5")) {
             //弹窗
             VideoPopWindow popWindow = new VideoPopWindow(CourseActivity.this, "提醒", video.getContent_desc(), video.getGoto_url(), video.getArticle_id());
             popWindow.showPopupWindow(ll_all);
         }
 
-        if(video.getIs_join() == 1){//已参加该课程，直接播放
+        if (video.getIs_join() == 1) {//已参加该课程，直接播放
             btn_take.setVisibility(View.GONE);
             iv_thum.setVisibility(View.GONE);
-            play(video.getVid());
-        }else{//未参加过
+            if (video.getNeed_playauth() == "1") {
+                getVideoAuth(video.getArticle_id(), video.getVideo_url());
+            } else {
+                playAliyunLocalSource(video.getVideo_url());
+            }
+        } else {//未参加过
             btn_take.setVisibility(View.VISIBLE);
             iv_thum.setVisibility(View.VISIBLE);
             //显示缩略图
-            finalBitmap.display(iv_thum,video.getImg_url(),defDrawable.getBitmap(),defDrawable.getBitmap());
+            finalBitmap.display(iv_thum, video.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
         }
-        if(video.getIs_zan() == 1){//点过赞
+        if (video.getIs_zan() == 1) {//点过赞
             m_iv_zan.setSelected(true);
-        }else{
+        } else {
             m_iv_zan.setSelected(false);
         }
     }
 
     /**
      * 判断是否包含html代码
+     *
      * @param text
      * @return
      */
-    private boolean isHtml(String text){
-        if(text.contains("<div") || text.contains("<span") || text.contains("<h1")
+    private boolean isHtml(String text) {
+        if (text.contains("<div") || text.contains("<span") || text.contains("<h1")
                 || text.contains("style=") || text.contains("font-size") || text.contains("color:")
-                || text.contains("<p") || text.contains("<br") || text.contains("</") || text.contains("<pre")){
+                || text.contains("<p") || text.contains("<br") || text.contains("</") || text.contains("<pre")) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -266,7 +272,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.title_btn_left:
                 onBackClicked();
                 break;
@@ -289,11 +295,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 }
                 break;
             case R.id.m_iv_comment:// 评论页面
-                if(video != null){
+                if (video != null) {
                     Intent intent = new Intent(CourseActivity.this, CommentForNewFrgActivity.class);
                     intent.putExtra("p_id", video.getArticle_id());
                     startActivity(intent);
-                }else{
+                } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -305,10 +311,10 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                 }
                 break;
             case R.id.m_iv_share:// 分享
-                if(video != null){
+                if (video != null) {
                     ShareConfig.getInstance().inits(CourseActivity.this, video.getVideo_url(), video.getTitle(), video.getImg_url());
                     postShare();
-                }else{
+                } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -331,7 +337,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     /**
      * 显示输入评论View
      */
-    private void showCommentView(){
+    private void showCommentView() {
         findViewById(R.id.rl_comment).setVisibility(View.VISIBLE);
         findViewById(R.id.webview_comment).setVisibility(View.GONE);
         // 弹出软键盘
@@ -344,7 +350,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     /**
      * 隐藏输入评论View
      */
-    private void goneCommentView(){
+    private void goneCommentView() {
         findViewById(R.id.rl_comment).setVisibility(View.GONE);
         findViewById(R.id.webview_comment).setVisibility(View.VISIBLE);
         // 关闭软件盘
@@ -354,6 +360,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
 
     /**
      * 获得视频详情
+     *
      * @param article_id 文章id
      */
     public void getVideoDetail(String article_id) {
@@ -370,11 +377,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
 
         Map<String, String> map = new HashMap<String, String>();
         map.put("article_id", article_id);//文章id
-        if(user != null){
+        if (user != null) {
             map.put("user_id", user.getId());
         }
         AjaxParams param = new AjaxParams(map);
-        new FinalHttp().get(Constants.GET_VIDEO_DETAIL, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(Constants.GET_VIDEO_ALI_DETAIL, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
@@ -420,11 +427,63 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         });
     }
 
+
+    /**
+     * 获得视频认证
+     *
+     * @param article_id 文章id
+     */
+    public void getVideoAuth(String article_id, final String url) {
+
+        user = DBHelper.getUser(CourseActivity.this);
+
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("article_id", article_id);//文章id
+        if (user != null) {
+            map.put("user_id", user.getId());
+        }
+        AjaxParams param = new AjaxParams(map);
+        new FinalHttp().get(Constants.POST_VIDEO_GET_AUTH, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                Toast.makeText(CourseActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        LogOut.i("onSuccess", t.toString());
+                        JSONObject obj = new JSONObject(t.toString());
+                        String status = obj.getString("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (StringUtils.isEquals(status, "0")) { // 正确
+                            playAliyunPlayAuth(data, url);
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(CourseActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
     /**
      * 获得相关视频列表
      */
     public void getVideoRelateList() {
-        if(video == null){
+        if (video == null) {
             return;
         }
         if (!NetworkUtils.isNetworkConnected(this)) {
@@ -483,19 +542,19 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     /**
      * 参加课程
      */
-    private void join(){
-        if(video == null){
+    private void join() {
+        if (video == null) {
             Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(user == null){
+        if (user == null) {
             startActivity(new Intent(CourseActivity.this, LoginActivity.class));
             return;
         }
         float price = Float.parseFloat(video.getDis_price());
-        if(price > 0){//去支付
+        if (price > 0) {//去支付
             toPay();
-        }else{//免费
+        } else {//免费
             postJoin();
         }
     }
@@ -503,9 +562,9 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
     /**
      * 去支付
      */
-    private void toPay(){
+    private void toPay() {
         user = DBHelper.getUser(CourseActivity.this);
-        if(user.getMobile() == null || user.getMobile().trim().length() < 1){
+        if (user.getMobile() == null || user.getMobile().trim().length() < 1) {
             startActivity(new Intent(CourseActivity.this, BindMobileActivity.class));
             return;
         }
@@ -538,7 +597,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
         map.put("article_id", video.getArticle_id());//文章id
         map.put("user_id", user.getId());
         AjaxParams param = new AjaxParams(map);
-        new FinalHttp().post(Constants.POST_VIDEO_JOIN, param, new AjaxCallBack<Object>() {
+        new FinalHttp().post(Constants.POST_VIDEO_JOIN_ALI, param, new AjaxCallBack<Object>() {
 
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
@@ -557,10 +616,17 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
                         JSONObject obj = new JSONObject(t.toString());
                         int status = obj.getInt("status");
                         String msg = obj.getString("msg");
+                        String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             btn_take.setVisibility(View.GONE);
                             iv_thum.setVisibility(View.GONE);
-                            play(video.getVid());
+
+                            VideoAliData videoAliData = new Gson().fromJson(data, VideoAliData.class);
+                            if (videoAliData.getNeed_playauth() == 1) {//auth
+                                getVideoAuth(video.getArticle_id(), videoAliData.getVideo_url());
+                            } else if (videoAliData.getNeed_playauth() == 0) {
+                                playAliyunLocalSource(videoAliData.getVideo_url());
+                            }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
@@ -585,7 +651,7 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
      * * 发表评论接口
      */
     private void postComment() {
-        if(video == null){
+        if (video == null) {
             Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -650,10 +716,11 @@ public class CourseActivity extends PlayVodActivity implements View.OnClickListe
 
     /**
      * 点赞接口
-     * @param  action 操作标识  add = 点赞   del = 取消点赞
+     *
+     * @param action 操作标识  add = 点赞   del = 取消点赞
      */
     private void postZan(String action) {
-        if(video == null){
+        if (video == null) {
             Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }

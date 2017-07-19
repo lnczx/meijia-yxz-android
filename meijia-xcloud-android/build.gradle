@@ -1,18 +1,5 @@
 apply plugin: 'com.android.application'
 
-dependencies {
-    compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':base_library_pullToRefresh_chenyoca')
-    compile project(':meijia-lib-easeui')
-    compile('com.android.support:support-v4:25.3.0') {
-        exclude module: 'support-v4'
-    }
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.facebook.fresco:fresco:0.13.0'
-    compile project(':vodPlayerRelease')
-}
-
 
 android {
     repositories {
@@ -105,6 +92,30 @@ android {
     }
     productFlavors {
     }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    compile fileTree(include: '*.jar', dir: 'libs')
+    compile project(':base_library_pullToRefresh_chenyoca')
+    compile project(':meijia-lib-easeui')
+    compile('com.android.support:support-v4:25.3.0') {
+        exclude module: 'support-v4'
+    }
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'com.facebook.fresco:fresco:0.13.0'
+    compile project(':vodPlayerRelease')
+
+    compile(name: 'AlivcPlayer', ext: 'aar')
+    compile(name: 'AliyunVodPlayer', ext: 'aar')
+    compile(name: 'AliyunVodPlayerView', ext: 'aar')
 }
 
 //afterEvaluate {
