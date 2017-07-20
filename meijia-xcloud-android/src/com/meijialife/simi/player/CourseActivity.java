@@ -740,7 +740,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         Map<String, String> map = new HashMap<String, String>();
         map.put("fid", video.getArticle_id());//文章id
         map.put("user_id", user.getId());
-        map.put("feed_type", "1");//类型 1 =文章
+        map.put("feed_type", "3");//类型 3 =视频课程类
         map.put("action", action);//操作标识  add = 点赞   del = 取消点赞
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().post(Constants.URL_FEED_POST_ZAN, param, new AjaxCallBack<Object>() {

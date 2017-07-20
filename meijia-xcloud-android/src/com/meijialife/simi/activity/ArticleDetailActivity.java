@@ -319,6 +319,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("fid", pId + "");
+        map.put("feed_type", "1");
         map.put("user_id", user_id);
         map.put("action", action);
         AjaxParams param = new AjaxParams(map);
