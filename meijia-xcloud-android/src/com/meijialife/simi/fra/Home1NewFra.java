@@ -7,9 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -30,7 +27,6 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AllPartnerListActivity;
-import com.meijialife.simi.activity.ArticleDetailActivity;
 import com.meijialife.simi.activity.ArticleSearchActivity;
 import com.meijialife.simi.activity.ChannelListActivity;
 import com.meijialife.simi.activity.CommonUtilActivity;
@@ -41,7 +37,7 @@ import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.TrialCourseListActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.adapter.HomeListAdapter;
-import com.meijialife.simi.bean.FindBean;
+import com.meijialife.simi.bean.AdData;
 import com.meijialife.simi.bean.HomePosts;
 import com.meijialife.simi.bean.HomeTag;
 import com.meijialife.simi.bean.ParamsBean;
@@ -85,7 +81,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private FinalBitmap finalBitmap;
     private final static int SCANNIN_GREQUEST_CODES = 5;
 
-    private ArrayList<FindBean> findBeanList;
+    private ArrayList<AdData> adBeanList;
     // 列表
     private PullToRefreshListView mListView;
     private HomeTag homeTag;
@@ -187,7 +183,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private void initListView(View v) {
         homePosts = new ArrayList<HomePosts>();
         allHomePosts = new ArrayList<HomePosts>();
-        findBeanList = new ArrayList<FindBean>();
+        adBeanList = new ArrayList<AdData>();
         mListView = (PullToRefreshListView) v.findViewById(R.id.m_lv_home);
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
                 AbsListView.LayoutParams.WRAP_CONTENT);
@@ -200,8 +196,11 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         bannerLayout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                FindBean findBean = findBeanList.get(position);
-                ToActivityUtil.gotoWebPage(getActivity(), "null", findBean.getGoto_url());
+                AdData adBean = adBeanList.get(position);
+                RouteUtil routeUtil =new RouteUtil(getActivity());
+                routeUtil.Routing(adBean.getGoto_type(),adBean.getAction(),adBean.getGoto_url(),adBean.getParams());
+
+//                ToActivityUtil.gotoWebPage(getActivity(), "null", findBean.getGoto_url());
             }
         });
 
@@ -380,9 +379,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                findBeanList = gson.fromJson(data, new TypeToken<ArrayList<FindBean>>() {
+                                adBeanList = gson.fromJson(data, new TypeToken<ArrayList<AdData>>() {
                                 }.getType());
-                                showBanner(findBeanList);
+                                showBanner(adBeanList);
                             }
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             errorMsg = getString(R.string.servers_error);
@@ -410,11 +409,11 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         });
     }
 
-    protected void showBanner(List<FindBean> adList) {
+    protected void showBanner(List<AdData> adList) {
         urls.clear();
         for (Iterator iterator = adList.iterator(); iterator.hasNext(); ) {
-            FindBean findBean = (FindBean) iterator.next();
-            urls.add(findBean.getImg_url());
+            AdData adBean = (AdData) iterator.next();
+            urls.add(adBean.getImg_url());
         }
         bannerLayout.setViewUrls(urls);
     }
@@ -577,7 +576,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         String user_id = DBHelper.getUser(getActivity()).getId();
 
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
-            Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
+            Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -39,6 +39,7 @@ import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.bean.ReceiverBean;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.utils.StringUtils;
 
 import static android.R.attr.id;
@@ -287,6 +288,11 @@ public class RoutePushUtil {
                     intent = new Intent(context, MainPlusAssetListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                    notify(PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                }else if (action.equals("video_detail")) {//视频详情
+                    intent = new Intent(context, CourseActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("videoId", params);
                     notify(PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
                 }
             } else if (category.equals("h5+list")) {

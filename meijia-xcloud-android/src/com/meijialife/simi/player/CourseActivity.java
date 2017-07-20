@@ -96,6 +96,8 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     private User user;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
+    private String videoId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,12 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         initBottomView();
         initListView();
 
-        getVideoDetail(videoListData.getArticle_id());
+        if (StringUtils.isNotEmpty(videoId)) {
+            getVideoDetail(videoId);
+        } else {
+            getVideoDetail(videoListData.getArticle_id());
+        }
+
     }
 
     @Override
@@ -116,6 +123,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     }
 
     private void init() {
+        videoId = getIntent().getStringExtra("videoId");
         videoListData = (VideoList) getIntent().getSerializableExtra("videoListData");
         finalBitmap = FinalBitmap.create(this);
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ad_loading);

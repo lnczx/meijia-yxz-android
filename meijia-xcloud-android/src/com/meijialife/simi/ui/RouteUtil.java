@@ -39,6 +39,7 @@ import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
@@ -134,7 +135,7 @@ public class RouteUtil {
                         intent = new Intent(context, FriendApplyActivity.class);
                         context.startActivity(intent);
                     } else if (action.equals("im")) {// 跳转到IM消息页面
-                       ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.MSGTYPE);
+                        ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.MSGTYPE);
                     } else if (action.equals("leave")) {// 跳转到请假列表页面
                         intent = new Intent(context, MainPlusLeaveListActivity.class);
                         intent.putExtra("title", params2);
@@ -220,7 +221,12 @@ public class RouteUtil {
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
                     } else if (action.equals("addressbook")) {// 我的通讯录
-                        ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
+                        ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.FRIENDTYPE);
+                    } else if (action.equals("video_detail")) {//视频详情
+                        intent = new Intent(context, CourseActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("videoId", params);
+                        context.startActivity(intent);
                     }
                 }
             } else if (category.equals("h5+list")) {
@@ -248,7 +254,7 @@ public class RouteUtil {
                     MainActivity mainActivity = (MainActivity) context;
                     mainActivity.changeFind();
                 } else if (action.equals("sns")) {// 圈子
-                    ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
+                    ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.FRIENDTYPE);
                 } else if (action.equals("mine")) {// 我的
                     MainActivity mainActivity = (MainActivity) context;
                     mainActivity.changePersonal();
@@ -383,8 +389,13 @@ public class RouteUtil {
                 } else if (action.equals("asset")) {
                     intent = new Intent(context, MainPlusAssetListActivity.class);
                     context.startActivity(intent);
-                }else if (action.equals("addressbook")) {// 我的通讯录
-                    ToActivityUtil.gotoFriendsActivity(context,MainFriendsActivity.FRIENDTYPE);
+                } else if (action.equals("addressbook")) {// 我的通讯录
+                    ToActivityUtil.gotoFriendsActivity(context, MainFriendsActivity.FRIENDTYPE);
+                } else if (action.equals("video_detail")) {//视频详情
+                    intent = new Intent(context, CourseActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("videoId", params);
+                    context.startActivity(intent);
                 }
             } else if (category.equals("h5+list")) {
                 if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
