@@ -17,7 +17,7 @@ public class AppTools implements Serializable {
     
     private String logo;//图标
     
-    private String app_type;//云行政=xcloud,时光机=timerchick
+    private String app_type;//菠萝人事=xcloud,时光机=timerchick
    
     private String menu_type;//工具与服务 =t,成长与赚钱=d
   

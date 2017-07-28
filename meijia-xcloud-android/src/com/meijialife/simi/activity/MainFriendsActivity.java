@@ -428,7 +428,7 @@ public class MainFriendsActivity extends FragmentActivity implements OnClickList
                 if (resultCode == (-1)) {
                     Bundle bundle = data.getExtras();
                     String result = bundle.getString("result").trim();
-                    if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为云行政二维码
+                    if (!StringUtils.isEmpty(result) && result.contains(Constants.RQ_IN_APP)) {// 判断是否为菠萝人事二维码
                         // http://www.bolohr.com/d/open.html?category=app&action=feed&params=&goto_url=
                         if (!StringUtils.isEmpty(result) && result.contains("category=app")) {
                             String category = "", action = "", params = "", goto_url = "";

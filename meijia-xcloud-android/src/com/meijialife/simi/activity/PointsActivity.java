@@ -99,7 +99,7 @@ public class PointsActivity extends BaseActivity implements OnClickListener {
 
 	private void testTab1() {
 		tab1_datas = new ArrayList<PointsGiftData>();
-		PointsGiftData data1 = new PointsGiftData("云行政通用优惠券（20元）", "100");
+		PointsGiftData data1 = new PointsGiftData("菠萝人事通用优惠券（20元）", "100");
 		tab1_datas.add(data1);
 
 		tab1_adapter = new PointsGiftListAdapter(this, account, tab1_datas);
