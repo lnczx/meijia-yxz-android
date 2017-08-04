@@ -141,7 +141,7 @@ public class CommonUtilActivity extends BaseActivity implements View.OnClickList
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("channel_id", "1");
+        map.put("channel_id", "109");
         map.put("page", "" + "1");
         AjaxParams param = new AjaxParams(map);
         new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
