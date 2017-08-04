@@ -43,7 +43,7 @@ public class ToActivityUtil {
         if (null == mContext) return;
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-        intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+        intent.putExtra(EaseConstant.EXTRA_USER_NAME, "菠萝小秘");
         mContext.startActivity(intent);
     }
 

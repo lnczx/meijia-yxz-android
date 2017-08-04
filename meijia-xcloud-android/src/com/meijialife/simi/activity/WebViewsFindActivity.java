@@ -221,7 +221,7 @@ public class WebViewsFindActivity extends Activity {
                             case ITEM3:// 吐槽
                                 Intent intent = new Intent(WebViewsFindActivity.this, ChatActivity.class);
                                 intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "菠萝小秘");
                                 startActivity(intent);
                                 break;
                             default:

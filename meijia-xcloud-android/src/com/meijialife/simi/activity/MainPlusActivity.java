@@ -114,7 +114,7 @@ public class MainPlusActivity extends Activity implements OnClickListener {
         case R.id.tv_call_mishu://跳转到聊天界面
             Intent intent = new Intent(MainPlusActivity.this,ChatActivity.class);
             intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-            intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+            intent.putExtra(EaseConstant.EXTRA_USER_NAME, "菠萝小秘");
             startActivity(intent);
           /*  UserInfo userInfo = DBHelper.getUserInfo(this);
             String is_senior = userInfo.getIs_senior();

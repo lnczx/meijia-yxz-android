@@ -171,7 +171,7 @@ public class WebViewActivity extends Activity implements OnClickListener {
                             case ITEM3:// 吐槽
                                 Intent intent = new Intent(WebViewActivity.this, ChatActivity.class);
                                 intent.putExtra(EaseConstant.EXTRA_USER_ID, "simi-user-366");
-                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "云小秘");
+                                intent.putExtra(EaseConstant.EXTRA_USER_NAME, "菠萝小秘");
                                 startActivity(intent);
                                 break;
                             default:
