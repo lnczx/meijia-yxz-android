@@ -20,11 +20,19 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_youhuiquan"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/youhuiquan"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/youhuiquan"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_youhuiquan"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="优惠券"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -43,6 +51,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -63,11 +72,19 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_dingdan"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/dingdan"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/dingdan"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_dingdan"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="我的订单"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -86,6 +103,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -105,11 +123,19 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_huangou"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/jinbihuangou"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/jinbihuangou"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_huangou"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="金币换购"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -128,6 +154,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -147,11 +174,19 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_julebu"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/huiyuanjulebu"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/huiyuanjulebu"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_julebu"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="会员俱乐部"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -170,6 +205,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -189,11 +225,18 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_songhaoli"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/haopingsongli"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/haopingsongli"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_songhaoli"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="好评送好礼"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -202,6 +245,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:text="好评截图有好礼"
@@ -210,12 +254,16 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
 
         </RelativeLayout>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#eeeeee" />
         <RelativeLayout
             android:id="@+id/layout_person_share"
             android:layout_width="match_parent"
@@ -224,11 +272,18 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_geihaoyou"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/tuijianhaoyou"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/tuijianhaoyou"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_geihaoyou"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="推荐给好友"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -237,6 +292,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:text="流量送不停"
@@ -245,6 +301,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -265,11 +322,18 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_hezuorukou"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/jiamenghezuo"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/jiamenghezuo"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_hezuorukou"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="加盟合作入口"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -278,6 +342,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:text="诚邀入住"
@@ -286,6 +351,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
@@ -305,11 +371,19 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            <ImageView
+                android:id="@+id/iv_gengduo"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/jiamenghezuo"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/jiamenghezuo"
-                android:drawablePadding="5dp"
+                android:layout_toRightOf="@id/iv_gengduo"
+                android:layout_marginLeft="6dp"
+                android:layout_centerVertical="true"
                 android:text="更多"
                 android:textColor="@color/text_color_gray_9"
                 android:textSize="16sp" />
@@ -318,6 +392,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
                 android:text="新版本记着更新哦"
@@ -326,6 +401,7 @@
             <ImageView
                 android:layout_width="13dp"
                 android:layout_height="13dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/arrow_right"
                 android:visibility="visible" />
