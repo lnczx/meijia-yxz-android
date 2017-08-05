@@ -26,11 +26,13 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
+import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
+import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.adapter.VideoRelateListAdapter;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
@@ -45,6 +47,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 
@@ -76,6 +79,8 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     private TextView tv_count;//阅读数量
     private TextView tv_price;//价格
     private TextView tv_orig_price;//原价
+    private TextView tv_exchange;//金币兑换代金券
+    private TextView tv_more;//了解更多
     private TextView tv_detail;//概述
 
     private TextView btn_take;//参加该课程按钮
@@ -150,7 +155,12 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         tv_price = (TextView) findViewById(R.id.tv_price);
         tv_orig_price = (TextView) findViewById(R.id.tv_orig_price);
         tv_orig_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        tv_exchange = (TextView) findViewById(R.id.tv_exchange);
+        tv_more = (TextView) findViewById(R.id.tv_more);
         tv_detail = (TextView) findViewById(R.id.tv_detail);
+
+        tv_exchange.setOnClickListener(this);
+        tv_more.setOnClickListener(this);
     }
 
     /**
@@ -323,6 +333,21 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 if (video != null) {
                     ShareConfig.getInstance().inits(CourseActivity.this, video.getVideo_url(), video.getTitle(), video.getImg_url());
                     postShare();
+                } else {
+                    Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.tv_exchange://金币兑换代金券
+                Intent intent6 = new Intent();
+                intent6.setClass(CourseActivity.this, PointsShopActivity.class);
+                intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
+                intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
+                intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(CourseActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
+                startActivity(intent6);
+                break;
+            case R.id.tv_more://了解更多
+                if (video != null) {
+                    ToActivityUtil.gotoWebPage(this,"详情",video.getVide_more_url());
                 } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
                 }

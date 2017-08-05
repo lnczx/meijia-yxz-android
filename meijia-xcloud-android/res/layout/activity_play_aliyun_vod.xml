@@ -161,17 +161,18 @@
                         android:background="#e6e6e6" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="35.2dp"
                     android:background="#ffffff"
-                    android:paddingLeft="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <TextView
                         android:id="@+id/tv_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="9dp"
+                        android:layout_centerVertical="true"
                         android:text="￥ 0.00"
                         android:textColor="#ff8400"
                         android:textSize="14dp" />
@@ -180,12 +181,30 @@
                         android:id="@+id/tv_orig_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/tv_price"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="9dp"
                         android:text="￥ 0.00"
                         android:textColor="#999999"
                         android:textSize="11dp" />
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_exchange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dp"
+                        android:text="金币兑换代金券"
+                        android:textColor="#ff8400"
+                        android:textSize="13dp" />
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/arrow_right"
+                        android:visibility="visible" />
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,13 +216,36 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="6dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="课程概述"
-                        android:textColor="#333333"
-                        android:textSize="15dp" />
+                        android:layout_marginRight="4dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="课程概述"
+                            android:textColor="#333333"
+                            android:textSize="15dp" />
+                        <TextView
+                            android:id="@+id/tv_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="20dp"
+                            android:text="了解更多"
+                            android:textColor="#ff8400"
+                            android:textSize="13dp" />
+                        <ImageView
+                            android:layout_width="13dp"
+                            android:layout_height="13dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/arrow_right"
+                            android:visibility="visible" />
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/tv_detail"
