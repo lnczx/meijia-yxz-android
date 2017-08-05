@@ -215,6 +215,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 Intent intent = new Intent(CourseActivity.this, CourseActivity.class);
                 intent.putExtra("videoListData", videoDatas.get(position));
                 startActivity(intent);
+                finish();
             }
         });
     }

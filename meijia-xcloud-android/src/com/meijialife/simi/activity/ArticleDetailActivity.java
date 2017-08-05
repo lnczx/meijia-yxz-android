@@ -874,6 +874,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
                 @Override
                 public void onClick(View v) {
                     ToActivityUtil.gotoArticleDetailActivity(ArticleDetailActivity.this, categories.getUrl(), categories.getId(), null);
+                    finish();
                 }
             });
 
