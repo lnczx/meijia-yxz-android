@@ -291,6 +291,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
             case R.id.item_qianbao:// 经验
                 intent = new Intent(getActivity(), WebViewsActivity.class);
                 intent.putExtra("url", Constants.JING_YAN + user.getId());
+                intent.putExtra("title", "经验");
                 startActivity(intent);
                 break;
             case R.id.item_money:// 我的余额

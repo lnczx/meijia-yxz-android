@@ -62,6 +62,7 @@ import com.simi.easemob.utils.ShareConfig;
 public class WebViewsActivity extends Activity implements OnClickListener {
 
     private String url;
+    private String titleStr;
 
     private WebView webview;
     private ImageView iv_person_left;
@@ -96,6 +97,7 @@ public class WebViewsActivity extends Activity implements OnClickListener {
     @SuppressLint({"JavascriptInterface", "NewApi", "SetJavaScriptEnabled"})
     private void init() {
         url = getIntent().getStringExtra("url");
+        titleStr = getIntent().getStringExtra("title");
         m_p_id = getIntent().getIntExtra("p_id", 0);
         is_show = getIntent().getBooleanExtra("is_show", false);
 
@@ -105,6 +107,11 @@ public class WebViewsActivity extends Activity implements OnClickListener {
         mProgressBar = (ProgressBar) findViewById(R.id.myProgressBar);
         webview = (WebView) findViewById(R.id.webview);
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
+        if(titleStr!= null && (titleStr.equals("签到") || titleStr.equals("招聘") || titleStr.equals("经验"))){
+            iv_menu.setVisibility(View.GONE);
+        }else{
+            iv_menu.setVisibility(View.VISIBLE);
+        }
         layout_mask = findViewById(R.id.layout_mask);
         webview_comment = (LinearLayout) findViewById(R.id.webview_comment);
         if (is_show) {

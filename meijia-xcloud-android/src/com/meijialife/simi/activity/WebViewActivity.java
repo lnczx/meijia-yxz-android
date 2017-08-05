@@ -74,6 +74,11 @@ public class WebViewActivity extends Activity implements OnClickListener {
         iv_person_left.setOnClickListener(this);
         iv_person_close.setOnClickListener(this);
         iv_menu = (ImageView) findViewById(R.id.iv_person_more);
+        if(titleStr!= null && (titleStr.equals("签到") || titleStr.equals("招聘") || titleStr.equals("经验"))){
+            iv_menu.setVisibility(View.GONE);
+        }else{
+            iv_menu.setVisibility(View.VISIBLE);
+        }
         layout_mask = findViewById(R.id.layout_mask);
         popupMenu = new PopupMenu(this);
 
