@@ -164,7 +164,9 @@ public class SearchViewActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchViewActivity.this, PartnerActivity.class);
-                intent.putExtra("Partner", myPartnerList.get(position));
+//                intent.putExtra("Partner", myPartnerList.get(position));
+                intent.putExtra("partner_user_id", myPartnerList.get(position).getUser_id());
+                intent.putExtra("service_type_id", myPartnerList.get(position).getService_type_id());
                 startActivity(intent);          
             }
         });

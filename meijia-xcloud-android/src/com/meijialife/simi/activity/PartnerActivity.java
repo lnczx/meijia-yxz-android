@@ -66,7 +66,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
      */
     private MyHorizontalScrollView mHorizontalScrollView;
     private HorizontalScrollViewAdapter mAdapter;
-    private Partner partner;
+//    private Partner partner;
     private List<ServicePrices> servicePricesList;
     private List<SecretaryImages> secretaryImagesList;
     private List<UserTag> userTagList;
@@ -105,9 +105,9 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         
         
         
-        partner = (Partner) getIntent().getSerializableExtra("Partner");
-        partner_user_id = String.valueOf(partner.getUser_id());
-        service_type_id = String.valueOf(partner.getService_type_id());
+//        partner = (Partner) getIntent().getSerializableExtra("Partner");
+        partner_user_id = String.valueOf(getIntent().getIntExtra("partner_user_id", 0));
+        service_type_id = String.valueOf(getIntent().getIntExtra("service_type_id", 0));
         getPartnerDetail(service_type_id, partner_user_id);  
         
         userInfo = DBHelper.getUserInfo(PartnerActivity.this);

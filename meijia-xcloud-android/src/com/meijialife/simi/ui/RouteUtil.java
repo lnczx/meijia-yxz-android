@@ -34,6 +34,7 @@ import com.meijialife.simi.activity.MainPlusWaterActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.OrderDetailsActivity;
+import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.activity.WebViewsFindActivity;
@@ -395,6 +396,11 @@ public class RouteUtil {
                     intent = new Intent(context, CourseActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("videoId", params);
+                    context.startActivity(intent);
+                } else if (action.equals("partner_user_detail")) {//服务商
+                    intent = new Intent(context, PartnerActivity.class);
+                    intent.putExtra("partner_user_id", params);
+                    intent.putExtra("service_type_id", "0");
                     context.startActivity(intent);
                 }
             } else if (category.equals("h5+list")) {

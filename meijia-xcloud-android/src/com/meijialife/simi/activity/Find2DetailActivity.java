@@ -129,8 +129,10 @@ public class Find2DetailActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Partner partner = totalPartnerList.get(position);
                 Intent intent = new Intent(Find2DetailActivity.this,PartnerActivity.class);
-                intent.putExtra("Partner",totalPartnerList.get(position));
-                startActivity(intent);                
+//                intent.putExtra("Partner",totalPartnerList.get(position));
+                intent.putExtra("partner_user_id", totalPartnerList.get(position).getUser_id());
+                intent.putExtra("service_type_id", totalPartnerList.get(position).getService_type_id());
+                startActivity(intent);
             }
         });
     }

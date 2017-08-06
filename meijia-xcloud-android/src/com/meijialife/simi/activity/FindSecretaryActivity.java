@@ -60,7 +60,9 @@ public class FindSecretaryActivity extends BaseListActivity implements OnClickLi
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Partner partner = partnerList.get(position);
         Intent intent = new Intent(FindSecretaryActivity.this,PartnerActivity.class);
-        intent.putExtra("Partner",partnerList.get(position));
+//        intent.putExtra("Partner",partnerList.get(position));
+        intent.putExtra("partner_user_id", partnerList.get(position).getUser_id());
+        intent.putExtra("service_type_id", partnerList.get(position).getService_type_id());
         startActivity(intent);
         
     }
