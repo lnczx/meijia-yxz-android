@@ -976,4 +976,8 @@ public class Constants {
     public static ArrayList<TagData> tagList = new ArrayList<TagData>();
 
 
+    /**
+     * 基础类 - 点击计数器接口
+     **/
+    public static final String URL_ADD_HIT = ROOT_URL + "total/add_hit.json";
 }
