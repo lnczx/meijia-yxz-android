@@ -151,12 +151,12 @@
 
                 <ImageView
                     android:id="@+id/unread_im_number"
-                    android:layout_width="5dp"
-                    android:layout_height="5dp"
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/em_unread_count_bg"
+                    android:layout_marginRight="17dp"
+                    android:layout_marginTop="7dp"
+                    android:background="@drawable/em_unread_count_bg"
                     android:gravity="center"
                     android:visibility="invisible" />
                 <TextView
