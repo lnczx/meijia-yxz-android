@@ -10,8 +10,10 @@ import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -170,6 +172,16 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.login_logo);
         et_user = (EditText) findViewById(R.id.login_user_name);
         et_pwd = (EditText) findViewById(R.id.login_password);
+        et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEND){
+                    login_nomal();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         login_getcode = (TextView) findViewById(R.id.login_getcode);
         login_not_get_captcha = (TextView) findViewById(R.id.login_not_get_captcha);
