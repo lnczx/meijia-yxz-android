@@ -440,6 +440,16 @@ public class Constants {
     public static final String GET_VIDEO_LIST = ROOT_URL + "video/list.json";
 
     /**
+     * 我的收藏-视频接口
+     */
+    public static final String GET_FAVORITES_VIDEO_LIST = ROOT_URL + "video/my_favorites.json";
+
+    /**
+     * 我的收藏-文章接口
+     */
+    public static final String GET_FAVORITES_NEWS_LIST = "http://app.bolohr.com/simi/news/my_favorites.json";
+
+    /**
      * 视频课程-视频文章详情
      */
     public static final String GET_VIDEO_DETAIL = ROOT_URL + "video/detail.json";

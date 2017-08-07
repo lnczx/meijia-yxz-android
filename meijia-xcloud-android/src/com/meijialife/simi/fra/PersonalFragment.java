@@ -42,6 +42,7 @@ import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.MainFriendsActivity;
 import com.meijialife.simi.activity.MoreActivity;
+import com.meijialife.simi.activity.MyCollectionListActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
@@ -157,6 +158,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
         iv_rq_left = (ImageView) music_popunwindwow.findViewById(R.id.iv_rq_left);
 
         //=======
+        view.findViewById(R.id.layout_person_shoucang).setOnClickListener(this);
         view.findViewById(R.id.layout_person_youhuiquan).setOnClickListener(this);
         view.findViewById(R.id.layout_person_order).setOnClickListener(this);
         view.findViewById(R.id.layout_person_jinbihuangou).setOnClickListener(this);
@@ -316,6 +318,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
 //                break;
             case R.id.layout_person_order:// 订单
                 startActivity(new Intent(getActivity(), MyOrderActivity.class));
+                break;
+            case R.id.layout_person_shoucang:// 我的收藏
+                startActivity(new Intent(getActivity(), MyCollectionListActivity.class));
                 break;
             case R.id.layout_person_youhuiquan:// 优惠券
                 startActivity(new Intent(getActivity(), DiscountCardActivity.class));
