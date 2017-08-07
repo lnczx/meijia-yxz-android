@@ -231,6 +231,11 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 allVideoDatas.add(videoData);
             }
             adapter.setData(allVideoDatas);
+        }else{
+            if(page == 1){
+                allVideoDatas.clear();
+                adapter.setData(allVideoDatas);
+            }
         }
         mListView.onRefreshComplete();
     }
