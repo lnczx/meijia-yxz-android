@@ -8,7 +8,8 @@ import java.io.Serializable;
  * @date:2015年12月9日 
  */
 public class FindBean implements Serializable{
-    
+
+    private int id;
     private String title;//标题
     private String img_url;//图片链接
     private String goto_type;//跳转方式h5/app
@@ -20,8 +21,9 @@ public class FindBean implements Serializable{
         super();
     }
     
-    public FindBean(String title, String img_url, String goto_type, String goto_url, String service_type_ids) {
+    public FindBean(int id, String title, String img_url, String goto_type, String goto_url, String service_type_ids) {
         super();
+        this.id = id;
         this.title = title;
         this.img_url = img_url;
         this.goto_type = goto_type;
@@ -29,8 +31,14 @@ public class FindBean implements Serializable{
         this.service_type_ids = service_type_ids;
     }
 
+    public int getId() {
+        return id;
+    }
 
-    
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getAction() {
         return action;
     }

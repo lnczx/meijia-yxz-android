@@ -199,7 +199,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 AdData adBean = adBeanList.get(position);
                 RouteUtil routeUtil =new RouteUtil(getActivity());
                 routeUtil.Routing(adBean.getGoto_type(),adBean.getAction(),adBean.getGoto_url(),adBean.getParams());
-                //postAddHit(String.valueOf(adBean.getId()));
+                postAddHit(adBean.getId());
 
 //                ToActivityUtil.gotoWebPage(getActivity(), "null", findBean.getGoto_url());
             }
@@ -864,13 +864,13 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
      * 点击计数器接口
      * @param link_id 对于的ID
      */
-    public void postAddHit(String link_id) {
+    public void postAddHit(int link_id) {
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("link_id", link_id);
+        map.put("link_id", ""+link_id);
         map.put("link_type", "op_ad");//枚举   op_ad = 首页广告位
         AjaxParams param = new AjaxParams(map);
         // showDialog();
