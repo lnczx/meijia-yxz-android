@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 我的收藏-->视频页面
+ * 我的收藏-->视频页面 （同首页试听课程一样）
  */
 public class MyCollectionVideoFra extends BaseFragment {
 
@@ -60,6 +60,7 @@ public class MyCollectionVideoFra extends BaseFragment {
 
         initView(v);
 
+        showDialog();
         getVideoList(page);
 
         return v;
@@ -149,12 +150,14 @@ public class MyCollectionVideoFra extends BaseFragment {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
                 Toast.makeText(getActivity(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
+                dismissDialog();
                 String errorMsg = "";
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
