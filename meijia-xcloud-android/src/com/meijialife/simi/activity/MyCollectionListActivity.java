@@ -30,6 +30,9 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
 
     private FragmentManager mFM = null;
 
+    private MyCollectionNewsFra newsFra;
+    private MyCollectionVideoFra videoFra;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_my_collection);
@@ -95,10 +98,16 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
         currentChannel = channels.get(index);
         if(currentChannel.getChannel_id().equals("0")){
             //文章
-            change(new MyCollectionNewsFra());
+            if(newsFra == null){
+                newsFra = new MyCollectionNewsFra();
+            }
+            change(newsFra);
         }else{
             //视频
-            change(new MyCollectionVideoFra());
+            if(videoFra == null){
+                videoFra = new MyCollectionVideoFra();
+            }
+            change(videoFra);
         }
     }
 
