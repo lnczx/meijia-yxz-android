@@ -7,6 +7,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -100,7 +103,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private ParamsBean pBean;
 
     private LinearLayout m_rl_category;
-    private LinearLayout new_frg_search;
+    private LinearLayout mSearchView;
 
     private LinearLayout ll_more_columns;// 更多频道
     private LinearLayout ll_more_columns2;// 更多频道
@@ -127,7 +130,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
         initListView(v);
         m_rl_category = (LinearLayout) v.findViewById(R.id.m_rl_category);
-        new_frg_search = (LinearLayout) v.findViewById(R.id.new_frg_search);
+        mSearchView = (LinearLayout) v.findViewById(R.id.new_frg_search);
         ll_more_columns = (LinearLayout) v.findViewById(R.id.ll_more_columns);
         ll_more_columns2 = (LinearLayout) v.findViewById(R.id.ll_more_columns2);
         setListener(v);
@@ -279,21 +282,46 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem >= 1) {
 
-//                    AnimationSet as = new AnimationSet(true);
-//                    AlphaAnimation aa = new AlphaAnimation(0.5f, 1.0f);
-//                    aa.setDuration(50);
-//                    as.addAnimation(aa);
-//                    LayoutAnimationController ac = new LayoutAnimationController(as);
-//                    new_frg_search.setLayoutAnimation(ac);
-                    new_frg_search.setVisibility(View.VISIBLE);
+                    showSearchView();
 //                    m_rl_category.setVisibility(View.VISIBLE);
                 } else {
+                    hideSearchView();
                     m_rl_category.setVisibility(View.GONE);
-                    new_frg_search.setVisibility(View.GONE);
                 }
             }
         });
     }
+
+    /**
+     * 显示顶部搜索View
+     */
+    private void showSearchView(){
+        if(!mSearchView.isShown()){
+            AnimationSet as = new AnimationSet(true);
+            AlphaAnimation aa = new AlphaAnimation(0.1f, 1.0f);
+            aa.setDuration(300);
+            as.addAnimation(aa);
+            mSearchView.setAnimation(as);
+            as.startNow();
+            mSearchView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 隐藏顶部搜索View
+     */
+    private void hideSearchView(){
+        if(mSearchView.isShown()){
+            AnimationSet as = new AnimationSet(true);
+            AlphaAnimation aa = new AlphaAnimation(1.0f, 0.1f);
+            aa.setDuration(300);
+            as.addAnimation(aa);
+            mSearchView.setAnimation(as);
+            as.startNow();
+            mSearchView.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * 设置下拉刷新提示

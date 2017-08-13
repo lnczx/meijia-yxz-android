@@ -6,20 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/simi_color_white" >
 
-    <LinearLayout
-        android:id="@+id/new_frg_search"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <include layout="@layout/new_frg_search" />
-    </LinearLayout>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/new_frg_search"
         android:layout_centerInParent="true"
         android:orientation="vertical" >
 
@@ -88,5 +77,16 @@
                 android:background="@color/simi_color_line_gray" />
         </LinearLayout>
     </FrameLayout>
+
+    <!--顶部搜索-->
+    <LinearLayout
+        android:id="@+id/new_frg_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_bar_height"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <include layout="@layout/new_frg_search" />
+    </LinearLayout>
 
 </RelativeLayout>
