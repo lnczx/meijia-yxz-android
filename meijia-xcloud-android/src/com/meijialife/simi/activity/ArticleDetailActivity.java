@@ -160,6 +160,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
         setOnClick();
 
 
+        layout_mask = findViewById(R.id.layout_mask);
         layout_richtext = (LinearLayout) findViewById(R.id.layout_news_richtext);
         txt_content_title = (TextView) findViewById(R.id.txt_content_title);
         txt_publish_from = (TextView) findViewById(R.id.txt_publish_from);
@@ -263,7 +264,7 @@ public class ArticleDetailActivity extends BaseActivity implements OnClickListen
             case R.id.m_btn_send_comment:// 写评论按钮
                 findViewById(R.id.m_webview_comment).setVisibility(View.VISIBLE);
                 findViewById(R.id.webview_comment).setVisibility(View.GONE);
-                layout_mask.setVisibility(View.VISIBLE);
+                //layout_mask.setVisibility(View.VISIBLE);
                 // 弹出软键盘
                 comment_content.setFocusable(true);
                 comment_content.requestFocus();
