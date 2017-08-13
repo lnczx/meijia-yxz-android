@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="18dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.meijialife.simi.ui.RoundImageView
+            xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/item_iv_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_defult_touxiang"
+            imagecontrol:border_inside_color="@color/simi_color_white"
+            imagecontrol:border_outside_color="@color/simi_color_white"
+            imagecontrol:border_thickness_in="1dp"
+            imagecontrol:border_thickness_out="1dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/item_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textColor="@color/simi_color_gray" />
+            <RatingBar
+                android:id="@+id/ratingbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyleSmall"
+                android:numStars="5"
+                android:rating="5"
+                android:stepSize="0.5"
+                android:progressTint="#F5C501"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/text_color_black"
+        android:text="content"/>
+
+</LinearLayout>

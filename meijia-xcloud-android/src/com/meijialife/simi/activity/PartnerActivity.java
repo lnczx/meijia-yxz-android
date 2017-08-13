@@ -26,14 +26,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.BaseActivity;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.HorizontalScrollViewAdapter;
+import com.meijialife.simi.adapter.SecretaryRatesAdapter;
 import com.meijialife.simi.adapter.SecretaryServiceAdapter;
 import com.meijialife.simi.bean.Partner;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.SecretaryImages;
+import com.meijialife.simi.bean.SecretaryRatesData;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
@@ -60,6 +63,12 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private User user;
+
+    /**
+     * 评价列表
+     */
+    private ListView mRatesListview;
+    private SecretaryRatesAdapter mRatesAdapter;
  
     /**
      * HorizontalScrollView实现图片左右滑动
@@ -76,15 +85,26 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     private String service_type_id;
     
     private UserInfo userInfo;
-            
-            
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.secretary_activity);
         super.onCreate(savedInstanceState);
         user = DBHelper.getUser(this);
+
+        initRatesListView();
         init();
     }
+
+    /**
+     * 初始化评价列表UI
+     */
+    private void initRatesListView(){
+        mRatesListview = (ListView) findViewById(R.id.rates_listview);
+        mRatesAdapter = new SecretaryRatesAdapter(this);
+        mRatesListview.setAdapter(mRatesAdapter);
+    }
+
     private void init(){
         setTitleName("详情");
         requestBackBtn();
@@ -111,6 +131,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         getPartnerDetail(service_type_id, partner_user_id);  
         
         userInfo = DBHelper.getUserInfo(PartnerActivity.this);
+
+        getRates(1, partner_user_id);
     }
     /**
      * 获取服务人员详情
@@ -239,6 +261,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         if(list!=null && list.size()>0){
             adapter.setData(list,partnerDetail);
         }
+        UIUtils.setListViewHeightBasedOnChildren(listview);
         
     }
     @Override
@@ -325,5 +348,89 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
                 }
             }
         });
+    }
+
+    /**
+     * 获取服务人员评价列表
+     */
+    public void getRates(int page, String link_id) {
+        if (!NetworkUtils.isNetworkConnected(PartnerActivity.this)) {
+            Toast.makeText(PartnerActivity.this, getString(R.string.net_not_open), 0).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("rate_type", "1");
+        map.put("link_id", link_id);
+        map.put("page", ""+page);
+        AjaxParams param = new AjaxParams(map);
+
+        showDialog();
+        new FinalHttp().get(Constants.URL_GET_RETES, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                dismissDialog();
+                Toast.makeText(PartnerActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                ArrayList<SecretaryRatesData> mDatas = gson.fromJson(data, new TypeToken<ArrayList<SecretaryRatesData>>() {
+                                }.getType());
+
+                                showRates(mDatas);
+                            }else{
+                                showRates(new ArrayList<SecretaryRatesData>());
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(PartnerActivity.this, errorMsg);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 显示评价列表
+     * @param mDatas
+     */
+    private void showRates(List<SecretaryRatesData> mDatas) {
+        //test
+        mDatas = new ArrayList<>();
+        mDatas.add(new SecretaryRatesData(0, "http://img.bolohr.com/f7fafd2d406cb87abbc31dd4fe7a940f", "user1", 4.5, "这个人还不错吧", "17.8.2"));
+        mDatas.add(new SecretaryRatesData(1, "http://img.bolohr.com/f7fafd2d406cb87abbc31dd4fe7a940f", "user1", 3, "附近看到了撒娇", "17.8.3"));
+
+        mRatesAdapter.setData(mDatas);
+        mRatesListview.setAdapter(mRatesAdapter);
+        UIUtils.setListViewHeightBasedOnChildren(mRatesListview);
     }
 }

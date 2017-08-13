@@ -185,6 +185,10 @@ public class Constants {
      **/
     public static final String URL_GET_USER_DETAIL = ROOT_URL + "partner/get_user_detail.json";
     /**
+     * 服务人员评价列表接口
+     **/
+    public static final String URL_GET_RETES = ROOT_URL + "record/get_rates.json";
+    /**
      * 订单列表接口
      **/
     public static final String URL_GET_ORDER_GET_LIST = ROOT_URL + "order/get_list.json";
