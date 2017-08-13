@@ -55,6 +55,11 @@ public class SecretaryRatesAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void addData(List<SecretaryRatesData> mList){
+        this.mList.addAll(mList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mList.size();

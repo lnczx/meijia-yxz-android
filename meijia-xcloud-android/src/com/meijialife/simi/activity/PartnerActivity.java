@@ -12,12 +12,14 @@ import net.tsz.afinal.FinalHttp;
 import net.tsz.afinal.http.AjaxCallBack;
 import net.tsz.afinal.http.AjaxParams;
 
+import org.bitlet.weupnp.LogUtils;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -46,6 +48,7 @@ import com.meijialife.simi.photo.activity.GalleryUrlActivity;
 import com.meijialife.simi.ui.MyHorizontalScrollView;
 import com.meijialife.simi.ui.MyHorizontalScrollView.OnItemClickListener;
 import com.meijialife.simi.ui.RoundImageView;
+import com.meijialife.simi.ui.ScanScrollView;
 import com.meijialife.simi.ui.TagGroup;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -69,6 +72,15 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
      */
     private ListView mRatesListview;
     private SecretaryRatesAdapter mRatesAdapter;
+    /**
+     * 评价接口是否在加载
+     */
+    private boolean isRatesLoading;
+    private int pageNo = 1;
+    /**
+     * 两个listView外面的滚动条 用来监听滑动到底部加载下一页
+     */
+    private ScanScrollView mScrollView;
  
     /**
      * HorizontalScrollView实现图片左右滑动
@@ -103,6 +115,24 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         mRatesListview = (ListView) findViewById(R.id.rates_listview);
         mRatesAdapter = new SecretaryRatesAdapter(this);
         mRatesListview.setAdapter(mRatesAdapter);
+
+        mScrollView = (ScanScrollView) findViewById(R.id.scan_scrollview);
+        mScrollView.setScanScrollChangedListener(new ScanScrollView.ISmartScrollChangedListener(){
+
+            @Override
+            public void onScrolledToBottom() {
+                //滑动到底部，加载更多
+                if(!isRatesLoading){
+                    Log.i("=====", "加载更多");
+                    pageNo++;
+                    getRates(pageNo);
+                }
+            }
+
+            @Override
+            public void onScrolledToTop() {
+            }
+        });
     }
 
     private void init(){
@@ -132,7 +162,7 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         
         userInfo = DBHelper.getUserInfo(PartnerActivity.this);
 
-        getRates(1, partner_user_id);
+        getRates(pageNo);
     }
     /**
      * 获取服务人员详情
@@ -353,30 +383,33 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
     /**
      * 获取服务人员评价列表
      */
-    public void getRates(int page, String link_id) {
+    public void getRates(int page) {
         if (!NetworkUtils.isNetworkConnected(PartnerActivity.this)) {
             Toast.makeText(PartnerActivity.this, getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("rate_type", "1");
-        map.put("link_id", link_id);
+        map.put("link_id", partner_user_id);
         map.put("page", ""+page);
         AjaxParams param = new AjaxParams(map);
 
         showDialog();
+        isRatesLoading = true;
         new FinalHttp().get(Constants.URL_GET_RETES, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
                 Toast.makeText(PartnerActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                isRatesLoading = false;
             }
             @Override
             public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
+                isRatesLoading = false;
                 try {
                     if (StringUtils.isNotEmpty(t.toString())) {
                         JSONObject obj = new JSONObject(t.toString());
@@ -424,13 +457,15 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
      * @param mDatas
      */
     private void showRates(List<SecretaryRatesData> mDatas) {
-        //test
-        mDatas = new ArrayList<>();
-        mDatas.add(new SecretaryRatesData(0, "http://img.bolohr.com/f7fafd2d406cb87abbc31dd4fe7a940f", "user1", 4.5, "这个人还不错吧", "17.8.2"));
-        mDatas.add(new SecretaryRatesData(1, "http://img.bolohr.com/f7fafd2d406cb87abbc31dd4fe7a940f", "user1", 3, "附近看到了撒娇", "17.8.3"));
+        if(mDatas == null || mDatas.size() == 0){
+            return;
+        }
 
-        mRatesAdapter.setData(mDatas);
-        mRatesListview.setAdapter(mRatesAdapter);
+        if(pageNo == 1){
+            mRatesAdapter.setData(mDatas);
+        }else{
+            mRatesAdapter.addData(mDatas);
+        }
         UIUtils.setListViewHeightBasedOnChildren(mRatesListview);
     }
 }
