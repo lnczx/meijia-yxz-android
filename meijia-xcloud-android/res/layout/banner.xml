@@ -45,7 +45,8 @@
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@drawable/rq_bg"
                 android:padding="2dp"
-                android:src="@drawable/iconfont_saotiaoma" />
+                android:src="@drawable/iconfont_saotiaoma"
+                android:visibility="gone"/>
         </LinearLayout>
     </FrameLayout>
 

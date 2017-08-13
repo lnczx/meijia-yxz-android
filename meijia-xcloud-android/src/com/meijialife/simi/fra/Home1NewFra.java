@@ -170,7 +170,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         v.findViewById(R.id.m_homes2).setOnClickListener(this);
         v.findViewById(R.id.m_homes3).setOnClickListener(this);
         v.findViewById(R.id.m_homes4).setOnClickListener(this);
-        v.findViewById(R.id.btn_saoma).setOnClickListener(this);
+//        v.findViewById(R.id.btn_saoma).setOnClickListener(this);
         v.findViewById(R.id.rl_total_search).setOnClickListener(this);
         v.findViewById(R.id.m_rl_sign).setOnClickListener(this);
         v.findViewById(R.id.m_rl_question).setOnClickListener(this);
