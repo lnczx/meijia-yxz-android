@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -138,7 +139,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                 @Override
                 public void onPageSelected(int position) {
                     // The IndicatorTabBar's ScrollX and ScrollY both are 0 at first.
-                    setTabSelected(position);
+                    setTabSelected(position, true);
                     if (position >= mMaxColumn / 2) {
                         smoothScrollTo((position - (mMaxColumn / 2)) * tabWidth, 0);
                     }
@@ -211,13 +212,24 @@ public class IndicatorTabBar extends HorizontalScrollView {
         tabView.setWidth(width);
         tabView.setTabWidth(width);
 
+        tabView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         tabView.setOnTabSelectedListener(new OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabView tabView) {
+            public void onTabSelected(TabView tabView, boolean isRefresh) {
                 int index = tabView.getIndex();
                 position = index;
                 mCurrentTab = tabView;
                 mTabContainer.postInvalidate();
+
+                if(!isRefresh){
+                    return;
+                }
                 ParamsBean pBean = new ParamsBean();
                 boolean flag = false;
                 if (index == 0) {//精选
@@ -348,11 +360,11 @@ public class IndicatorTabBar extends HorizontalScrollView {
      *
      * @param position
      */
-    public void setTabSelected(int position) {
+    public void setTabSelected(int position, boolean isRefresh) {
         if (mTabList != null) {
             TabView currentTabView = mTabList.get(position);
             if (currentTabView != null) {
-                currentTabView.performSelectAction();
+                currentTabView.performSelectAction(isRefresh);
             }
         }
     }
@@ -457,9 +469,9 @@ public class IndicatorTabBar extends HorizontalScrollView {
             this.mOnTabSelectedListener = listener;
         }
 
-        public void performSelectAction() {
+        public void performSelectAction(boolean isRefresh) {
             if (mOnTabSelectedListener != null) {
-                mOnTabSelectedListener.onTabSelected(TabView.this);
+                mOnTabSelectedListener.onTabSelected(TabView.this, isRefresh);
             }
         }
 
@@ -490,7 +502,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                 case MotionEvent.ACTION_DOWN:
                     lastX = x;
                     lastY = y;
-                    performSelectAction();
+                    performSelectAction(true);
                     break;
                 case MotionEvent.ACTION_MOVE:
                     int deltaY = y - lastY;
@@ -504,7 +516,7 @@ public class IndicatorTabBar extends HorizontalScrollView {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    performSelectAction();
+                    performSelectAction(true);
                     break;
                 default:
                     break;
@@ -512,14 +524,18 @@ public class IndicatorTabBar extends HorizontalScrollView {
             return false;
         }
 
-
     }
 
     /**
      * the interface will response when a Tab is selected
      */
     public interface OnTabSelectedListener {
-        void onTabSelected(TabView tabView);
+        /**
+         *
+         * @param tabView
+         * @param isRefresh 是否刷新数据
+         */
+        void onTabSelected(TabView tabView, boolean isRefresh);
     }
 
 

@@ -29,13 +29,23 @@
             ptr:ptrScrollingWhileRefreshingEnabled="true" >
         </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/new_frg_search"
+        android:layout_width="match_parent"
+        android:layout_height="91dp"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <!--顶部搜索-->
+        <include layout="@layout/new_frg_search" />
+        <!--顶部标签-->
         <LinearLayout
-            android:id="@+id/m_rl_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="43dp"
             android:background="@color/simi_color_white"
-            android:orientation="vertical"
-            android:visibility="visible" >
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -76,17 +86,6 @@
                 android:layout_height="1dp"
                 android:background="@color/simi_color_line_gray" />
         </LinearLayout>
-    </FrameLayout>
-
-    <!--顶部搜索-->
-    <LinearLayout
-        android:id="@+id/new_frg_search"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/title_bar_height"
-        android:orientation="vertical"
-        android:visibility="gone" >
-
-        <include layout="@layout/new_frg_search" />
     </LinearLayout>
 
 </RelativeLayout>

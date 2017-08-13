@@ -102,7 +102,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
     private List<String> tabNames;
     private ParamsBean pBean;
 
-    private LinearLayout m_rl_category;
+//    private LinearLayout m_rl_category;
     private LinearLayout mSearchView;
 
     private LinearLayout ll_more_columns;// 更多频道
@@ -129,7 +129,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         urls = new ArrayList<String>();
 
         initListView(v);
-        m_rl_category = (LinearLayout) v.findViewById(R.id.m_rl_category);
+//        m_rl_category = (LinearLayout) v.findViewById(R.id.m_rl_category);
         mSearchView = (LinearLayout) v.findViewById(R.id.new_frg_search);
         ll_more_columns = (LinearLayout) v.findViewById(R.id.ll_more_columns);
         ll_more_columns2 = (LinearLayout) v.findViewById(R.id.ll_more_columns2);
@@ -148,10 +148,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         tabNames.add("人资规划");
         tabNames.add("行业");
 
-//        mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
-//        mIndicatorTabBar1.setCallBack(this);
-//        mIndicatorTabBar1.setMaxColumn(5);
-//        mIndicatorTabBar1.initView(tabNames);
+        mIndicatorTabBar1 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator1);
+        mIndicatorTabBar1.setCallBack(this);
+        mIndicatorTabBar1.setMaxColumn(5);
+        mIndicatorTabBar1.initView(tabNames);
 
         mIndicatorTabBar3 = (IndicatorTabBar) v.findViewById(R.id.tab_indicator3);
         mIndicatorTabBar3.setCallBack(this);
@@ -213,7 +213,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         listView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-//                mIndicatorTabBar1.getParent().requestDisallowInterceptTouchEvent(false);
+                mIndicatorTabBar1.getParent().requestDisallowInterceptTouchEvent(false);
                 mIndicatorTabBar3.getParent().requestDisallowInterceptTouchEvent(false);
                 return false;
             }
@@ -286,7 +286,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 //                    m_rl_category.setVisibility(View.VISIBLE);
                 } else {
                     hideSearchView();
-                    m_rl_category.setVisibility(View.GONE);
+//                    m_rl_category.setVisibility(View.GONE);
                 }
             }
         });
@@ -957,6 +957,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
 
     @Override
     public void onClick(ParamsBean params, int index, boolean flag) {
+        //为了两个选中状态同步 模拟调用的
+        mIndicatorTabBar1.setTabSelected(index, false);
+        mIndicatorTabBar3.setTabSelected(index, false);
+
         allHomePosts.clear();
         if (flag) {
             getUserTagMsgList(page, params);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/new_frg_search"
     android:layout_width="match_parent"
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/simi_color_red"
