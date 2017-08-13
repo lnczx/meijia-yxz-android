@@ -59,7 +59,7 @@
                 android:layout_toRightOf="@id/iv_search"
                 android:background="@null"
                 android:focusable="true"
-                android:hint="招人秘籍、升职技巧一搜就有"
+                android:hint="招人秘籍、升职技巧一键拥有"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
                 android:textColor="@color/text_normal"
