@@ -245,12 +245,14 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         TextView item_tv_fav = (TextView) findViewById(R.id.item_tv_fav);
         TextView item_tv_addr_name = (TextView)findViewById(R.id.item_tv_addr_name);
         TextView item_tv_des_name = (TextView)findViewById(R.id.item_tv_des_name);
+        RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingbar);
         RoundImageView item_iv_icon = (RoundImageView) findViewById(R.id.item_iv_icon);
         item_tv_name.setText(partnerDetail.getName());
         item_tv_text.setText(partnerDetail.getIntroduction());
         item_tv_fav.setText(partnerDetail.getService_type_name());
         item_tv_addr_name.setText(partnerDetail.getCity_and_region());
         item_tv_des_name.setText(partnerDetail.getResponse_time_name());
+        ratingbar.setRating(5);
         finalBitmap.display(item_iv_icon, partnerDetail.getHead_img(), defDrawable.getBitmap(), defDrawable.getBitmap());
         
         TagGroup tg = (TagGroup) findViewById(R.id.ll_user_tags);
