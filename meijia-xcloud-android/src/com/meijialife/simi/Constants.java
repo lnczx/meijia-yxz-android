@@ -444,6 +444,26 @@ public class Constants {
     public static final String GET_VIDEO_LIST = ROOT_URL + "video/list.json";
 
     /**
+     * 搜索接口-文章
+     */
+    public static final String GET_SEARCH_NEWS = "http://app.bolohr.com/simi/news/app_search.json";
+
+    /**
+     * 搜索接口-视频
+     */
+    public static final String GET_SEARCH_VIDEO = ROOT_URL + "video/list.json";
+
+    /**
+     * 搜索接口-问答
+     */
+    public static final String GET_SEARCH_FEED = ROOT_URL + "feed/get_list.json";
+
+    /**
+     * 搜索接口-服务
+     */
+    public static final String GET_SEARCH_FUWU = ROOT_URL + "partner/search.json";
+
+    /**
      * 我的收藏-视频接口
      */
     public static final String GET_FAVORITES_VIDEO_LIST = ROOT_URL + "video/my_favorites.json";
