@@ -190,6 +190,8 @@ public class SearchNewsFra extends BaseFragment {
                                 }.getType());
                                 HomeTag homeTag = new HomeTag();
                                 showData(homePosts, homeTag);
+                            }else{
+                                Toast.makeText(getActivity(), "没有相关文章", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             errorMsg = getString(R.string.servers_error);
@@ -220,6 +222,10 @@ public class SearchNewsFra extends BaseFragment {
                 allHomePosts.add(homePost);
             }
             homeListAdapter.setData(allHomePosts, homeTag);
+        }else{
+            if(page == 1){
+                Toast.makeText(getActivity(), "没有相关文章", Toast.LENGTH_SHORT).show();
+            }
         }
         mListView.onRefreshComplete();
     }
