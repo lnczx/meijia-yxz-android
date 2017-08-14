@@ -125,6 +125,7 @@ public class ArticleSearchActivity extends FragmentActivity implements ListItemC
             mVideoFra.search(kw);
         }else if(currentChannel.getChannel_id().equals("2")){
             //问答
+            mFeedFra.search(kw);
         }else if(currentChannel.getChannel_id().equals("3")){
             //服务
         }
