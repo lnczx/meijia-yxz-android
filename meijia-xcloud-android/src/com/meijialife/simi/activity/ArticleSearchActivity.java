@@ -104,11 +104,45 @@ public class ArticleSearchActivity extends FragmentActivity implements ListItemC
      * 切换fragement
      */
     private void change(Fragment fragment) {
+        currentFragment = fragment;
         if (null == mFM)
             mFM = getSupportFragmentManager();
         FragmentTransaction ft = mFM.beginTransaction();
         ft.replace(R.id.content_container, fragment);
         ft.commit();
+    }
+
+    private Fragment currentFragment;
+
+    private void switchFrament(Fragment from,Fragment to) {
+        if(from != to){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            currentFragment = to;
+            //才切换
+            //判断有没有被添加
+            if(!to.isAdded()){
+                //to没有被添加
+                //from隐藏
+                if(from != null){
+                    ft.hide(from);
+                }
+                //添加to
+                if(to != null){
+                    ft.add(R.id.content_container,to).commit();
+                }
+            }else{
+                //to已经被添加
+                // from隐藏
+                if(from != null){
+                    ft.hide(from);
+                }
+                //显示to
+                if(to != null){
+                    ft.show(to).commit();
+                }
+            }
+        }
+
     }
 
     @Override
@@ -128,36 +162,50 @@ public class ArticleSearchActivity extends FragmentActivity implements ListItemC
             mFeedFra.search(kw);
         }else if(currentChannel.getChannel_id().equals("3")){
             //服务
+            mServiceFra.search(kw);
         }
     }
 
     @Override
     public void onClick(ParamsBean params, int index, boolean flag) {
         currentChannel = channels.get(index);
+        String kword = et_search_kw.getText().toString();
         if(currentChannel.getChannel_id().equals("0")){
             //文章
             if(mNewsFra == null){
                 mNewsFra = new SearchNewsFra();
             }
-            change(mNewsFra);
+            switchFrament(currentFragment, mNewsFra);
+            if(!StringUtils.isEmpty(kword)){
+                mNewsFra.search(kword);
+            }
         }else if(currentChannel.getChannel_id().equals("1")){
             //视频
             if(mVideoFra == null){
                 mVideoFra = new SearchVideoFra();
             }
-            change(mVideoFra);
+            switchFrament(currentFragment, mVideoFra);
+            if(!StringUtils.isEmpty(kword)){
+                mVideoFra.search(kword);
+            }
         }else if(currentChannel.getChannel_id().equals("2")){
             //问答
             if(mFeedFra == null){
                 mFeedFra = new SearchFeedFra();
             }
-            change(mFeedFra);
+            switchFrament(currentFragment, mFeedFra);
+            if(!StringUtils.isEmpty(kword)){
+                mFeedFra.search(kword);
+            }
         }else if(currentChannel.getChannel_id().equals("3")){
             //服务
             if(mServiceFra == null){
                 mServiceFra = new SearchServiceFra();
             }
-            change(mServiceFra);
+            switchFrament(currentFragment, mServiceFra);
+            if(!StringUtils.isEmpty(kword)){
+                mServiceFra.search(kword);
+            }
         }
     }
 }

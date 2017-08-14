@@ -128,6 +128,9 @@ public class SearchFeedFra extends BaseFragment {
     }
 
     public void search(String keyword){
+        if(getActivity() == null){
+            return;
+        }
         this.keyword = keyword;
         page = 1;
         showDialog();
@@ -222,6 +225,11 @@ public class SearchFeedFra extends BaseFragment {
             }
             // 给适配器赋值
             feedListAdapter.setData(totalFeedDataList);
+        }else{
+            if (page == 0) {
+                totalFeedDataList.clear();
+                feedListAdapter.setData(totalFeedDataList);
+            }
         }
         mPullRefreshListView.onRefreshComplete();
     }

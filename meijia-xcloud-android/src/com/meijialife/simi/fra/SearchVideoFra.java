@@ -125,6 +125,9 @@ public class SearchVideoFra extends BaseFragment {
     }
 
     public void search(String keyword){
+        if(getActivity() == null){
+            return;
+        }
         this.keyword = keyword;
         page = 1;
         showDialog();

@@ -134,6 +134,9 @@ public class SearchNewsFra extends BaseFragment {
     }
 
     public void search(String keyword){
+        if(getActivity() == null){
+            return;
+        }
         this.keyword = keyword;
         page = 1;
         showDialog();
@@ -224,6 +227,8 @@ public class SearchNewsFra extends BaseFragment {
             homeListAdapter.setData(allHomePosts, homeTag);
         }else{
             if(page == 1){
+                allHomePosts.clear();
+                homeListAdapter.setData(allHomePosts, homeTag);
                 Toast.makeText(getActivity(), "没有相关文章", Toast.LENGTH_SHORT).show();
             }
         }
