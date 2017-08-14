@@ -132,7 +132,7 @@ public class SearchFeedFra extends BaseFragment {
             return;
         }
         this.keyword = keyword;
-        page = 1;
+        page = 0;
         showDialog();
         getFeedList(page);
     }
