@@ -3,7 +3,7 @@ package com.meijialife.simi.bean;
 import java.io.Serializable;
 
 /**
- * @description：废品回收实体
+ * @description：企业内训实体
  * @author： kerryg
  * @date:2016年3月7日 
  */
@@ -19,7 +19,7 @@ public class WasterData implements Serializable {
     
     private String name;//用户名称
     
-    private String recycle_type_name;//废品回收类型名称
+    private String recycle_type_name;//企业内训类型名称
     
     private String service_type_name;//服务类型名称
     

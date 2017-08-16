@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:padding="3dp"
-                    android:text="2.批量导入通讯录，可登陆yun.bolohr.com,体验更多人事行政服务。"
+                    android:text="2.批量导入通讯录，可在PC端浏览器登录x.bolohr.com,体验更多人事行政服务。"
                     android:textColor="@color/index_first_title_color"
                     android:textSize="12sp" />
             </LinearLayout>

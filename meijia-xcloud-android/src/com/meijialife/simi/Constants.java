@@ -565,7 +565,7 @@ public class Constants {
     public static final String POST_SET_ALARM = ROOT_URL + "user/set_alarm.json";
 
     /**
-     * 废品回收下单接口
+     * 企业内训下单接口
      **/
     public static final String POST_WASTER_ORDER_URL = ROOT_URL + "order/post_add_recycle.json";
 
@@ -639,7 +639,7 @@ public class Constants {
     public static final String GET_DETAIL_EXPRESS_URL = ROOT_URL + "record/get_detail_express.json";
     /*********************车辆速通接口**************************/
     /**
-     * 废品回收订单列表接口
+     * 企业内训订单列表接口
      **/
     public static final String URL_GET_LIST_WASTER = ROOT_URL + "order/get_list_recycle.json";
     /**
@@ -855,11 +855,11 @@ public class Constants {
      **/
     public static String SHARE_TARGET_URL = "http://app.bolohr.com//simi-h5/show/card-share.html?card_id=";
 
-    public static String SHARE_CUSTOMER_TARGET_URL = "http://bolohr.com/web/h5-app-download.html";
+    public static String SHARE_CUSTOMER_TARGET_URL = "http://bolohr.com/m/app";
     /**
      * 分享标题
      **/
-    public static String SHARE_TITLE = "菠萝HR，人事行政必备神器！我们专注“人事行政”的成长与服务！快来体验吧：http://bolohr.com/web";
+    public static String SHARE_TITLE = "菠萝HR，人事行政必备神器！我们专注“人事行政”的成长与服务！快来体验吧：http://bolohr.com/m/app";
     /**
      * 分享内容
      **/
@@ -874,16 +874,16 @@ public class Constants {
      **/
     public static String PLUS_SIGN_URL = "http://app.bolohr.com/simi-h5/show/checkin-index.html?user_id=";
 
-    //废品回收
+    //企业内训
     /**
-     * 废品回收图片链接
+     * 企业内训图片链接
      **/
     public static final String WASTER_ICON_URL = "http://app.bolohr.com/simi-h5/icon/icon-dingdan-caolv.png";
 
     /**
-     * 废品回收H5链接
+     * 企业内训H5链接
      **/
-    public static final String H5_WASTER_URL = "http://app.bolohr.com/simi-h5/show/recycle-price.html";
+    public static final String H5_WASTER_URL = "http://bolohr.com/trainer";
 
     /**
      * 保洁图片链接

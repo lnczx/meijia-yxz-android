@@ -20,7 +20,7 @@ import com.meijialife.simi.bean.WasterData;
 import com.meijialife.simi.inter.ListItemClickHelp;
 
 /**
- * 加号--废品回收---适配器
+ * 加号--企业内训---适配器
  *
  */
 public class MainPlusWasterAdapter extends BaseAdapter {

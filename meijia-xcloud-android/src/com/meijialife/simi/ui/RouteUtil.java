@@ -209,7 +209,7 @@ public class RouteUtil {
                         intent = new Intent(context, MainPlusCleanActivity.class);
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
-                    } else if (action.equals("recycle")) {// 废品回收列表页面
+                    } else if (action.equals("recycle")) {// 企业内训列表页面
                         intent = new Intent(context, MainPlusWasterActivity.class);
                         intent.putExtra("title", params2);
                         context.startActivity(intent);
@@ -380,7 +380,7 @@ public class RouteUtil {
                 } else if (action.equals("clean")) {// 保洁列表页面
                     intent = new Intent(context, MainPlusCleanActivity.class);
                     context.startActivity(intent);
-                } else if (action.equals("recycle")) {// 废品回收列表页面
+                } else if (action.equals("recycle")) {// 企业内训列表页面
                     intent = new Intent(context, MainPlusWasterActivity.class);
                     context.startActivity(intent);
                 } else if (action.equals("card")) {
@@ -602,7 +602,7 @@ public class RouteUtil {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     context.startActivity(intent);
-                } else if (action.equals("recycle")) {// 废品回收列表页面
+                } else if (action.equals("recycle")) {// 企业内训列表页面
                     intent = new Intent(context, MainPlusWasterActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

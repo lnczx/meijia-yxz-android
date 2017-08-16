@@ -240,7 +240,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="170dp"
                 android:layout_marginRight="30dp"
-                android:text="沙龙活动限时报名"
+                android:text="每月都有活动哦"
                 android:textColor="@color/simi_color_dark_gray" />
 
             <ImageView

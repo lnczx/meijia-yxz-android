@@ -277,7 +277,7 @@ public class MainPlusSignInActivity extends Activity {
                     }
 
                 } else {
-                    Toast.makeText(MainPlusSignInActivity.this, "请选择签到公司", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainPlusSignInActivity.this, "需要您在企业花名册中先创建公司", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }

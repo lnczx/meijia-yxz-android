@@ -924,13 +924,13 @@ _
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
-        <!-- 废品回收订单列表 -->
+        <!-- 企业内训订单列表 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWasterActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
-        <!-- 废品回收下单 -->
+        <!-- 企业内训下单 -->
         <activity
             android:name="com.meijialife.simi.activity.MainPlusWasterOrderActivity"
             android:configChanges="orientation"

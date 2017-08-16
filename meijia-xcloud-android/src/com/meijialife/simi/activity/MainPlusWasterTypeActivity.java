@@ -53,9 +53,9 @@ public class MainPlusWasterTypeActivity extends BaseActivity implements OnItemCl
     }
     
     private void setData(){
-        WasterTypeData wasterTypeData1 = new WasterTypeData("0","日常办公垃圾");
-        WasterTypeData wasterTypeData2 = new WasterTypeData("1","废旧电器");
-        WasterTypeData wasterTypeData3 = new WasterTypeData("2","硒鼓墨盒");
+        WasterTypeData wasterTypeData1 = new WasterTypeData("0","企业培训定制化服务");
+        WasterTypeData wasterTypeData2 = new WasterTypeData("1","内训体系设计与建设");
+        WasterTypeData wasterTypeData3 = new WasterTypeData("2","管理咨询与解决方案");
         WasterTypeData wasterTypeData4 = new WasterTypeData("3","其他");
         totalWasterTypeList.add(wasterTypeData1);
         totalWasterTypeList.add(wasterTypeData2);

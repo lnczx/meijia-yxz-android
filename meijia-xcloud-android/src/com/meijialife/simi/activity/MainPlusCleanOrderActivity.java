@@ -113,7 +113,7 @@ public class MainPlusCleanOrderActivity extends BaseActivity implements OnClickL
         map.put("user_id", userInfo.getUser_id());
         map.put("company_name",userInfo.getCompany_name());
         map.put("addr_id", mServiceAddrId);
-        map.put("clean_type",cleanTypeId);//0=日常办公垃圾 1=废旧电器 2=硒鼓墨盒 3=其他
+        map.put("clean_type",cleanTypeId);//0=企业培训定制化服务 1=内训体系设计与建设 2=管理咨询与解决方案 3=其他
         map.put("link_man", mLinkMan);
         map.put("link_tel", mLinkTel);
         map.put("remarks", Constants.WATER_ADD_REMARK);

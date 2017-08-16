@@ -272,7 +272,7 @@ public class RoutePushUtil {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     notify(PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
-                } else if (action.equals("recycle")) {// 废品回收列表页面
+                } else if (action.equals("recycle")) {// 企业内训列表页面
                     intent = new Intent(context, MainPlusWasterActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

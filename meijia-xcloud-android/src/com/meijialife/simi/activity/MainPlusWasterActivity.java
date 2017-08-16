@@ -48,7 +48,7 @@ import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 /**
- * @description：应用中心---废品回收
+ * @description：应用中心---企业内训
  * @author： kerryg
  * @date:2016年3月3日 
  */
@@ -122,8 +122,8 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
         mTv1 = (TextView)findViewById(R.id.m_tv1);
         mTv2 = (TextView)findViewById(R.id.m_tv2);
       
-        mTv1.setText("上门回收");
-        mTv2.setText("参考价格");
+        mTv1.setText("发布培训需求");
+        mTv2.setText("讲师大全");
        
         setOnClick();//设置点击事件
         setCardTitleColor();//设置标题颜色
@@ -264,7 +264,7 @@ public class MainPlusWasterActivity extends Activity implements ListItemClickHel
         
     }
     /**
-     * 废品回收列表接口
+     * 企业内训列表接口
      * @param page
      */
     public void getWasterListData(int page) {
