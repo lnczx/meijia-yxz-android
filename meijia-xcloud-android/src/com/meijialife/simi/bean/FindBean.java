@@ -15,13 +15,14 @@ public class FindBean implements Serializable{
     private String goto_type;//跳转方式h5/app
     private String goto_url;//跳转url h5=纯跳转，app=app内跳转，h5+list跳转h5后点击咨询
     private String service_type_ids;//服务大类集合
+    private String sub_service_type_ids; //服务小类集合
     private String action;//操作表示
     private int enable;//0==不可用，1==可用
     public FindBean() {
         super();
     }
     
-    public FindBean(int id, String title, String img_url, String goto_type, String goto_url, String service_type_ids) {
+    public FindBean(int id, String title, String img_url, String goto_type, String goto_url, String service_type_ids, String sub_service_type_ids) {
         super();
         this.id = id;
         this.title = title;
@@ -29,6 +30,7 @@ public class FindBean implements Serializable{
         this.goto_type = goto_type;
         this.goto_url = goto_url;
         this.service_type_ids = service_type_ids;
+        this.sub_service_type_ids = sub_service_type_ids;
     }
 
     public int getId() {
@@ -87,5 +89,12 @@ public class FindBean implements Serializable{
     public void setImg_url(String img_url) {
         this.img_url = img_url;
     }
-    
+    public String getSub_service_type_ids() {
+        return sub_service_type_ids;
+    }
+
+    public void setSub_service_type_ids(String sub_service_type_ids) {
+        this.sub_service_type_ids = sub_service_type_ids;
+    }
+
 }

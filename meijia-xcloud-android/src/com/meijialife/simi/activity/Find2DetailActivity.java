@@ -50,6 +50,7 @@ public class Find2DetailActivity extends BaseActivity {
     private SecretaryAdapter adapter;//服务商适配器
     private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
     private String service_type_ids;
+    private String sub_service_type_ids;
     private String title_name;
     
     private ArrayList<Partner> myPartnerList;
@@ -82,8 +83,9 @@ public class Find2DetailActivity extends BaseActivity {
      */
     public void init() {
         
-        title_name = getIntent().getStringExtra("title_name");
+
         service_type_ids = getIntent().getStringExtra("service_type_ids");
+        sub_service_type_ids = getIntent().getStringExtra("sub_service_type_ids");
         requestBackBtn();
         setTitleName(title_name);
         initPartnerView();
@@ -96,7 +98,7 @@ public class Find2DetailActivity extends BaseActivity {
         mPullRefreshListView.setAdapter(adapter);
         mPullRefreshListView.setMode(Mode.BOTH);
         initIndicator();
-        getPartnerList(service_type_ids,page);
+        getPartnerList(service_type_ids, sub_service_type_ids,page);
         mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -105,7 +107,7 @@ public class Find2DetailActivity extends BaseActivity {
                         "MM_dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getPartnerList(service_type_ids,page);
+                getPartnerList(service_type_ids, sub_service_type_ids,page);
                 adapter.notifyDataSetChanged(); 
             }
             @Override
@@ -116,7 +118,7 @@ public class Find2DetailActivity extends BaseActivity {
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 if(myPartnerList!=null && myPartnerList.size()>=10){
                     page = page+1;
-                    getPartnerList(service_type_ids,page);
+                    getPartnerList(service_type_ids, sub_service_type_ids,page);
                     adapter.notifyDataSetChanged(); 
                 }else {
                     Toast.makeText(Find2DetailActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
@@ -158,7 +160,7 @@ public class Find2DetailActivity extends BaseActivity {
      * 获取对应的服务商列表接口
      * @param service_type_ids
      */
-    public void getPartnerList(String service_type_ids,int page) {
+    public void getPartnerList(String service_type_ids, String sub_service_type_ids, int page) {
         User  user = DBHelper.getUser(this);
         if(user!=null){
         if (!NetworkUtils.isNetworkConnected(this)) {
@@ -168,10 +170,19 @@ public class Find2DetailActivity extends BaseActivity {
         Map<String, String> map = new HashMap<String, String>();
         map.put("user_id", user.getId());
         map.put("page", ""+page);
-        map.put("service_type_ids", service_type_ids);
+
+            //如果是专家大咖，则调用方式不一样
+            String url = Constants.URL_GET_USER_LIST;
+        if (service_type_ids.indexOf("317") >= 0) {
+            url = Constants.URL_GET_USER_LIST_SUB_TYPE;
+            map.put("sub_service_type_ids", sub_service_type_ids);
+        } else {
+            map.put("service_type_ids", service_type_ids);
+        }
+
         AjaxParams param = new AjaxParams(map);
         showDialog();
-        new FinalHttp().get(Constants.URL_GET_USER_LIST, param, new AjaxCallBack<Object>() {
+        new FinalHttp().get(url, param, new AjaxCallBack<Object>() {
             @Override
             public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);

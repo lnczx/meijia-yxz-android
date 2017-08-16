@@ -56,7 +56,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
     }
 
     private void initView() {
-        setTitleName("找服务商");
+        setTitleName("专家大咖");
         requestBackBtn();
         
         myFindBeanList = new ArrayList<FindBean>();
@@ -83,11 +83,13 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
                 String goto_type = findBean.getGoto_type().trim();
                 String goto_url = findBean.getGoto_url().trim();
                 String service_type_ids = findBean.getService_type_ids().toString().trim();
+                String sub_service_type_ids = findBean.getSub_service_type_ids().toString().trim();
                 if (goto_type.equals("h5")) {
                     Intent intent = new Intent(AllPartnerListActivity.this, WebViewsFindActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", "");
+                    intent.putExtra("sub_service_type_ids", "");
                     startActivity(intent);
                 } else if (goto_type.equals("app")) {
                    boolean is_login = SpFileUtil.getBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
@@ -96,6 +98,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
                     }else{
                         Intent intent = new Intent(AllPartnerListActivity.this, Find2DetailActivity.class);
                         intent.putExtra("service_type_ids", service_type_ids);
+                        intent.putExtra("sub_service_type_ids", sub_service_type_ids);
                         intent.putExtra("title_name", title_name);
                         startActivity(intent);
                     }
@@ -104,6 +107,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", title_name);
                     intent.putExtra("service_type_ids", service_type_ids);
+                    intent.putExtra("sub_service_type_ids", sub_service_type_ids);
                     startActivity(intent);
                 }
             }
@@ -123,7 +127,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put("channel_id", "99");
-        map.put("page", "1");
+        map.put("service_type_id", "317");
         AjaxParams param = new AjaxParams(map);
         showDialog();
         new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {

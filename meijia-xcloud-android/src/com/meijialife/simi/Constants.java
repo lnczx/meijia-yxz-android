@@ -180,6 +180,12 @@ public class Constants {
      * 服务商列表接口
      **/
     public static final String URL_GET_USER_LIST = ROOT_URL + "partner/get_user_list.json";
+
+    /**
+     * 子类的服务商列表接口,
+     **/
+    public static final String URL_GET_USER_LIST_SUB_TYPE = ROOT_URL + "partner/get_user_list_sub_type.json";
+
     /**
      * 服务人员详情接口
      **/
