@@ -36,6 +36,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 
 /**
  * @description：免费资源--支付页面
@@ -95,16 +96,16 @@ public class PayZeroOrderActivity extends BaseActivity implements OnClickListene
         TextView tv_pay_money = (TextView) findViewById(R.id.tv_pay_money);
         if(flag == FROM_FIND){
             tv_pay_name.setText(servicePrices.getName());
-            tv_pay_money.setText(servicePrices.getDis_price() + "元");
+            tv_pay_money.setText(Utils.decimalFormat(servicePrices.getDis_price()) + "元");
         }else if (flag==FROM_MYORDER_DETAIL) {
             tv_pay_name.setText(myOrderDetail.getService_type_name());
-            tv_pay_money.setText(0.0+ "元");
+            tv_pay_money.setText(0.00+ "元");
         }else if (flag==FROM_MYORDER) {
             tv_pay_name.setText(myOrder.getService_type_name());
-            tv_pay_money.setText(0.0+ "元");
+            tv_pay_money.setText(0.00+ "元");
         }else if(flag==FROM_DEF_SERVICE){
             tv_pay_name.setText(def.getName());
-            tv_pay_money.setText(def.getDis_price() + "元");
+            tv_pay_money.setText(Utils.decimalFormat(def.getDis_price()) + "元");
         }
     }
     @Override

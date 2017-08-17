@@ -33,6 +33,7 @@ import com.meijialife.simi.ui.PopupMenu.MENUITEM;
 import com.meijialife.simi.ui.PopupMenu.OnItemClickListener;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
+import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.ui.ChatActivity;
 import com.simi.easemob.utils.ShareConfig;
 
@@ -239,7 +240,7 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
         iv_person_left.setOnClickListener(this);
         iv_person_close.setOnClickListener(this);
         m_ll_bottom.setVisibility(View.VISIBLE);
-        m_tv_money.setText("￥" + disPrice);
+        m_tv_money.setText("￥" + Utils.decimalFormat(disPrice));
 
         m_tv_ask.setOnClickListener(new OnClickListener() {
             @Override

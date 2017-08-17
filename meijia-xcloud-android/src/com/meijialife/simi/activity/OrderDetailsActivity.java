@@ -41,6 +41,7 @@ import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 
 /**
  * @description：侧边栏--我的订单--订单详情
@@ -559,7 +560,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mOrderName.setText(myOrderDetail.getService_type_name().trim());
         mOrderDate.setText(myOrderDetail.getAdd_time_str().trim());
         mOrderStatus.setText(myOrderDetail.getOrder_status_name().trim());
-        mOrderMoney.setText(myOrderDetail.getOrder_money().trim() + "元");
+        mOrderMoney.setText(Utils.decimalFormat(myOrderDetail.getOrder_money().trim()) + "元");
         mRemarks.setText(myOrderDetail.getRemarks().trim());
         mOrderPayType.setText(myOrderDetail.getPay_type_name().trim());
         tv_city_name.setText(myOrderDetail.getCity_name());
@@ -590,7 +591,7 @@ public class OrderDetailsActivity extends BaseActivity implements OnClickListene
         mOrderName.setText(waterData.getService_type_name().trim());
         mOrderDate.setText(waterData.getAdd_time_str().trim());
         mOrderStatus.setText(waterData.getOrder_status_name().trim());
-        mOrderMoney.setText(waterData.getOrder_pay().trim() + "元");
+        mOrderMoney.setText(Utils.decimalFormat(waterData.getOrder_pay().trim()) + "元");
         mRemarks.setText("");
         mOrderPayType.setText("");
         tv_city_name.setText("");

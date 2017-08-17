@@ -47,6 +47,7 @@ import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 import com.meijialife.simi.wxpay.WxPay;
 
 /**
@@ -187,52 +188,52 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
         if (flag == FROM_FIND) {
             if (from == FROM_MEMBER) {
                 tv_pay_name.setText(name);
-                tv_pay_money.setText(card_pay + "元");
-                Constants.REAL_PAY_CONTENT = card_pay + "元";
-                Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+                tv_pay_money.setText(Utils.decimalFormat(card_pay) + "元");
+                Constants.REAL_PAY_CONTENT = Utils.decimalFormat(card_pay) + "元";
+                Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
                 tvRealPay.setText(Constants.REAL_PAY_CONTENT);
                 tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
             } else if (from == FROM_MISHU) {
                 tv_pay_name.setText(servicePrices.getName());
-                tv_pay_money.setText(servicePrices.getDis_price() + "元");
-                Constants.REAL_PAY_CONTENT = servicePrices.getDis_price() + "元";
-                Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+                tv_pay_money.setText(Utils.decimalFormat(servicePrices.getDis_price()) + "元");
+                Constants.REAL_PAY_CONTENT = Utils.decimalFormat(servicePrices.getDis_price()) + "元";
+                Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
                 tvRealPay.setText(Constants.REAL_PAY_CONTENT);
                 tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
             }else if(from == FROM_DEF_SERVICE){
                 tv_pay_name.setText(def.getName());
-                tv_pay_money.setText(def.getDis_price() + "元");
-                Constants.REAL_PAY_CONTENT = def.getDis_price() + "元";
-                Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+                tv_pay_money.setText(Utils.decimalFormat(def.getDis_price()) + "元");
+                Constants.REAL_PAY_CONTENT = Utils.decimalFormat(def.getDis_price()) + "元";
+                Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
                 tvRealPay.setText(Constants.REAL_PAY_CONTENT);
                 tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
             }
         } else if (flag == FROM_MYORDER_DETAIL) {
             tv_pay_name.setText(myOrderDetail.getService_type_name());
-            tv_pay_money.setText(myOrderDetail.getOrder_pay() + "元");
-            Constants.REAL_PAY_CONTENT = myOrderDetail.getOrder_pay() + "元";
-            Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+            tv_pay_money.setText(Utils.decimalFormat(myOrderDetail.getOrder_pay()) + "元");
+            Constants.REAL_PAY_CONTENT = Utils.decimalFormat(myOrderDetail.getOrder_pay()) + "元";
+            Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
         } else if (flag == FROM_MYORDER) {
             
             tv_pay_name.setText(myOrder.getService_type_name());
-            tv_pay_money.setText(myOrder.getOrder_pay() + "元");
-            Constants.REAL_PAY_CONTENT = myOrder.getOrder_pay() + "元";
-            Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+            tv_pay_money.setText(Utils.decimalFormat(myOrder.getOrder_pay()) + "元");
+            Constants.REAL_PAY_CONTENT = Utils.decimalFormat(myOrder.getOrder_pay()) + "元";
+            Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
 
         }else if (flag == FROM_WATER_ORDER) {
             tv_pay_name.setText(waterData.getService_type_name());
-            tv_pay_money.setText(waterData.getOrder_pay() + "元");
-            Constants.REAL_PAY_CONTENT = waterData.getOrder_pay() + "元";
-            Constants.DISCOUNT_CARD_CONTENT = "为您节省0元";
+            tv_pay_money.setText(Utils.decimalFormat(waterData.getOrder_pay()) + "元");
+            Constants.REAL_PAY_CONTENT = Utils.decimalFormat(waterData.getOrder_pay()) + "元";
+            Constants.DISCOUNT_CARD_CONTENT = "为您节省0.00元";
 
             tvRealPay.setText(Constants.REAL_PAY_CONTENT);
             tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);

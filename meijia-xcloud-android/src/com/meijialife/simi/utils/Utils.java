@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,27 @@ public class Utils {
     private static float densityDpi = -1;
     private static float density = -1;
     private static String deviceId = "";
+
+    private static DecimalFormat df = new DecimalFormat("######0.00");
+
+    /**
+     * double保留两位小数
+     * @param d
+     * @return
+     */
+    public static String decimalFormat(double d){
+        return df.format(d);
+    }
+
+    /**
+     * double保留两位小数
+     * @param s
+     * @return
+     */
+    public static String decimalFormat(String s){
+        double d = Double.valueOf(s);
+        return df.format(d);
+    }
 
 
     /**
@@ -159,7 +181,7 @@ public class Utils {
 
          e.printStackTrace(); 
         } 
-    }    
+    }
 
 
 }

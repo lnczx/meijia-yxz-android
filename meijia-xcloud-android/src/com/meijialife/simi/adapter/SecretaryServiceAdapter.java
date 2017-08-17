@@ -1,5 +1,6 @@
 package com.meijialife.simi.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import com.meijialife.simi.activity.WebViewPartnerActivity;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.Utils;
 
 /**
  * 秘书服务订单适配器
@@ -92,7 +94,8 @@ public class SecretaryServiceAdapter extends BaseAdapter {
         }
         ServicePrices sp = mList.get(position);
         holder.tv_title.setText(sp.getName());
-        holder.tv_price.setText(sp.getDis_price() + "元");
+
+        holder.tv_price.setText(Utils.decimalFormat(sp.getDis_price()) + "元");
         holder.tv_sub_title.setText(mList.get(position).getService_title());
         finalBitmap.display(holder.m_sec_icon,sp.getImg_url(), defDrawable.getBitmap(), defDrawable.getBitmap());
         final Double disPrice =mList.get(position).getDis_price();

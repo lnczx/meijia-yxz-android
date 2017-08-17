@@ -1185,7 +1185,7 @@ _
             android:name="com.meijialife.simi.activity.ArticleSearchActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
         <!--试听课程列表页面-->
         <activity
             android:name="com.meijialife.simi.activity.TrialCourseListActivity"
