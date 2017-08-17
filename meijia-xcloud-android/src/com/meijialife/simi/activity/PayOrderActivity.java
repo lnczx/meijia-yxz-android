@@ -289,16 +289,24 @@ public class PayOrderActivity extends BaseActivity implements OnClickListener {
             myDiscountCard = (MyDiscountCard) data.getSerializableExtra("myDiscountCard");
             user_coupon_id = String.valueOf(myDiscountCard.getId());
 
-//            Double orderPays = Double.valueOf(orderPay);
-//            Double value = Double.valueOf(myDiscountCard.getValue());
-//                // 1.判断优惠券是否满足最大金额消费使用
-//                if (orderPays > value) {// 如果订单金额>maxValue则可以使用优惠券
-//                    Constants.REAL_PAY_CONTENT = (orderPays - value) + "元";
-//                    Constants.DISCOUNT_CARD_CONTENT = "为您节省" + myDiscountCard.getValue() + "元";
-//                } else {
-//                    Toast.makeText(PayOrderActivity.this, "订单满" + myDiscountCard.getMax_value() + "元才能使用优惠券", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+            Double orderPays = Double.valueOf(orderPay);
+            Double value = Double.valueOf(myDiscountCard.getValue());
+            Double max = Double.valueOf(myDiscountCard.getMax_value());
+                // 1.判断优惠券是否满足最大金额消费使用
+                if (orderPays > max) {// 如果订单金额>maxValue则可以使用优惠券
+                    double realD = orderPays - value;
+                    if(realD < 0){
+                        realD = 0.00;
+                    }
+                    Constants.REAL_PAY_CONTENT = Utils.decimalFormat(realD) + "元";
+                    Constants.DISCOUNT_CARD_CONTENT = "为您节省" + Utils.decimalFormat(myDiscountCard.getValue()) + "元";
+
+                    tvRealPay.setText(Constants.REAL_PAY_CONTENT);
+                    tvDiscountCard.setText(Constants.DISCOUNT_CARD_CONTENT);
+                } else {
+                    Toast.makeText(PayOrderActivity.this, "订单满" + myDiscountCard.getMax_value() + "元才能使用优惠券", Toast.LENGTH_SHORT).show();
+                    return;
+                }
          
             break;
         default:
