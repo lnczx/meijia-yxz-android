@@ -317,6 +317,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 if (video != null) {
                     Intent intent = new Intent(CourseActivity.this, CommentForNewFrgActivity.class);
                     intent.putExtra("p_id", video.getArticle_id());
+                    intent.putExtra("feed_type", 3);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();

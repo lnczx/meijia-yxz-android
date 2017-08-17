@@ -53,11 +53,12 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
     private ArrayList<WebViewComment> myCommentList;
     private ArrayList<WebViewComment> totalCommentList;
     //布局控件定义
-    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
+    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件
     private LinearLayout m_ll_comments;//评论文字
     private int page = 1;
     private String fid = "0";//文章Id
-    
+    private int feed_type;//0 =  文章  3 = 视听课程
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.my_order_activity);
@@ -69,6 +70,7 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
     	setTitleName("评论列表");
     	requestBackBtn();
     	fid = getIntent().getStringExtra("p_id");
+        feed_type = getIntent().getIntExtra("feed_type", 0);
     	/**
     	 * 列表赋值
     	 */
@@ -93,7 +95,7 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getCommentList(page);
-                adapter.notifyDataSetChanged(); 
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -104,15 +106,15 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
                 if(myCommentList!=null && myCommentList.size()>=10){
                     page = page+1;
                     getCommentList(page);
-                    adapter.notifyDataSetChanged(); 
+                    adapter.notifyDataSetChanged();
                 }else {
                     Toast.makeText(CommentForNewFrgActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshListView.onRefreshComplete(); 
+                    mPullRefreshListView.onRefreshComplete();
                 }
             }
         });
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -123,30 +125,30 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
     /**
      * 设置下拉刷新提示
      */
-    private void initIndicator()  
-    {  
-        ILoadingLayout startLabels = mPullRefreshListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-  
-        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
-                false, true);  
+    private void initIndicator()
+    {
+        ILoadingLayout startLabels = mPullRefreshListView
+                .getLoadingLayoutProxy(true, false);
+        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示
+        startLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示
+
+        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(
+                false, true);
         endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
+        endLabels.setRefreshingLabel("正在刷新...");// 刷新时
+        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示
     }
-    
-    
+
+
     /**
      * webView评论列表接口
      */
      public void getCommentList(final int page){
-         
+
          myCommentList = new ArrayList<WebViewComment>();
          showData(myCommentList);
-         
+
          //判断是否有网络
          if (!NetworkUtils.isNetworkConnected(CommentForNewFrgActivity.this)) {
              Toast.makeText(CommentForNewFrgActivity.this, getString(R.string.net_not_open), 0).show();
@@ -154,6 +156,9 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
          }
          Map<String,String> map = new HashMap<String,String>();
          map.put("fid",fid);
+         if(feed_type != 0){
+             map.put("feed_type",""+feed_type);
+         }
          map.put("user_id",user.getId());
          map.put("page",""+page);
          AjaxParams params = new AjaxParams(map);
@@ -183,7 +188,7 @@ public class CommentForNewFrgActivity extends BaseActivity implements OnItemClic
                                  myCommentList = gson.fromJson(data, new TypeToken<ArrayList<WebViewComment>>() {
                                  }.getType());
                                showData(myCommentList);
-                             } 
+                             }
                          } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                              errorMsg = getString(R.string.servers_error);
                              mPullRefreshListView.onRefreshComplete();
