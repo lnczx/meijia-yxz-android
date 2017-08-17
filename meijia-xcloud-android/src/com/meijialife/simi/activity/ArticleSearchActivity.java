@@ -66,6 +66,12 @@ public class ArticleSearchActivity extends FragmentActivity implements ListItemC
     }
 
     private void initView() {
+        findViewById(R.id.title_btn_left).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         tv_search = (TextView) findViewById(R.id.tv_search);
         et_search_kw = (EditText) findViewById(R.id.et_search_kw);
         // 搜索增加点击事件
