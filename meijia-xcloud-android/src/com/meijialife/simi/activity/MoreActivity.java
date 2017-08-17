@@ -70,7 +70,7 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 		/*rl_feedback.setOnClickListener(this);*/
 		rl_about.setOnClickListener(this);
 //		rl_update.setOnClickListener(this);
-		rl_service.setOnClickListener(this);
+//		rl_service.setOnClickListener(this);
 
 		tv_version_new = (TextView) findViewById(R.id.tv_version_new);
 		tv_version_new.setVisibility(View.INVISIBLE);
@@ -102,8 +102,8 @@ public class MoreActivity extends BaseActivity implements OnClickListener {
 			checkVersion(true);
 			break;
 		case R.id.index_4_rl_service: // 联系客服
-			intent = new Intent(Intent.ACTION_DIAL, Uri.parse("mailto:" + "biz@bolohr.com"));
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			/*intent = new Intent(Intent.ACTION_DIAL, Uri.parse("mailto:" + "biz@bolohr.com"));
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);*/
 			break;
 
 		default:

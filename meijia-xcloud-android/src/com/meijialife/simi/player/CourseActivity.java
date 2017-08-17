@@ -338,6 +338,10 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 }
                 break;
             case R.id.tv_exchange://金币兑换代金券
+                if (user == null) {
+                    startActivity(new Intent(CourseActivity.this, LoginActivity.class));
+                    return;
+                }
                 Intent intent6 = new Intent();
                 intent6.setClass(CourseActivity.this, PointsShopActivity.class);
                 intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
@@ -346,6 +350,10 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 startActivity(intent6);
                 break;
             case R.id.tv_more://了解更多
+                if (user == null) {
+                    startActivity(new Intent(CourseActivity.this, LoginActivity.class));
+                    return;
+                }
                 if (video != null) {
                     ToActivityUtil.gotoWebPage(this,"详情",video.getVide_more_url());
                 } else {
