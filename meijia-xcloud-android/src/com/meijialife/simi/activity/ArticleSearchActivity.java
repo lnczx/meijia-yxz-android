@@ -56,7 +56,13 @@ public class ArticleSearchActivity extends FragmentActivity implements ListItemC
         getChannelList();
 
         mNewsFra = new SearchNewsFra();
-        change(mNewsFra);
+        mVideoFra = new SearchVideoFra();
+        mFeedFra = new SearchFeedFra();
+        mServiceFra = new SearchServiceFra();
+        change(mServiceFra);
+        switchFrament(mServiceFra, mFeedFra);
+        switchFrament(mFeedFra, mVideoFra);
+        switchFrament(mVideoFra, mNewsFra);
     }
 
     private void initView() {

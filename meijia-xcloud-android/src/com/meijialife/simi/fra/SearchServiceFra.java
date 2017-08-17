@@ -22,6 +22,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
+import com.meijialife.simi.activity.ArticleDetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
@@ -141,6 +142,12 @@ public class SearchServiceFra extends BaseFragment {
         if(getActivity() == null){
             return;
         }
+        User user = DBHelper.getUser(getActivity());
+        if(user == null){
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            return;
+        }
+
         this.keyword = keyword;
         page = 1;
         showDialog();
@@ -152,13 +159,16 @@ public class SearchServiceFra extends BaseFragment {
      *
      */
     public void searchPartnerByKw(int page) {
-        String user_id = DBHelper.getUser(getActivity()).getId();
+        User user = DBHelper.getUser(getActivity());
+        if(user == null){
+            return;
+        }
         if (!NetworkUtils.isNetworkConnected(getActivity())) {
             Toast.makeText(getActivity(), getString(R.string.net_not_open), 0).show();
             return;
         }
         Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
+        map.put("user_id", user.getId() + "");
         map.put("page", page+"");
         map.put("keyword", keyword);
         AjaxParams param = new AjaxParams(map);
