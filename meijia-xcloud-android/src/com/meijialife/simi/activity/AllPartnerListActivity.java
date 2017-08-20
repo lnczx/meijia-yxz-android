@@ -56,7 +56,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
     }
 
     private void initView() {
-        setTitleName("专家大咖");
+        setTitleName("专家面授");
         requestBackBtn();
         
         myFindBeanList = new ArrayList<FindBean>();

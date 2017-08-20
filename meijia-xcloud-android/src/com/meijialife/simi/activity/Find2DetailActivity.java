@@ -171,7 +171,7 @@ public class Find2DetailActivity extends BaseActivity {
         map.put("user_id", user.getId());
         map.put("page", ""+page);
 
-            //如果是专家大咖，则调用方式不一样
+            //如果是专家面授，则调用方式不一样
             String url = Constants.URL_GET_USER_LIST;
         if (service_type_ids.indexOf("317") >= 0) {
             url = Constants.URL_GET_USER_LIST_SUB_TYPE;

@@ -57,7 +57,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
     private IndicatorTabBars tab_indicators;
     private RelativeLayout m__rl_question;
-    private int page = 0;
+    private int page = 1;
     private String feedFrom = "0";// 0=所有，1=我发布
 
     @Override

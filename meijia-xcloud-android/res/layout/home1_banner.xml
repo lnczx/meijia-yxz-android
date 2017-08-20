@@ -137,7 +137,7 @@
                         android:layout_centerVertical="true"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/index_fuwudating" />
+                        android:src="@drawable/index_zhuanjia" />
 
                     <TextView
                         android:layout_width="wrap_content"
