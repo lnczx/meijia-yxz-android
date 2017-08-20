@@ -228,6 +228,11 @@ public class RouteUtil {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra("videoId", params);
                         context.startActivity(intent);
+                    } else if (action.equals("partner_user_detail")) {//服务商
+                        intent = new Intent(context, PartnerActivity.class);
+                        intent.putExtra("partner_user_id", params);
+                        intent.putExtra("service_type_id", params2);
+                        context.startActivity(intent);
                     }
                 }
             } else if (category.equals("h5+list")) {
@@ -400,7 +405,7 @@ public class RouteUtil {
                 } else if (action.equals("partner_user_detail")) {//服务商
                     intent = new Intent(context, PartnerActivity.class);
                     intent.putExtra("partner_user_id", params);
-                    intent.putExtra("service_type_id", "306");
+                    intent.putExtra("service_type_id", params);
                     context.startActivity(intent);
                 }
             } else if (category.equals("h5+list")) {

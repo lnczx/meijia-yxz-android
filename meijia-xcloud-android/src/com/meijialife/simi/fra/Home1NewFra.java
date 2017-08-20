@@ -201,7 +201,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             public void onItemClick(int position) {
                 AdData adBean = adBeanList.get(position);
                 RouteUtil routeUtil =new RouteUtil(getActivity());
-                routeUtil.Routing(adBean.getGoto_type(),adBean.getAction(),adBean.getGoto_url(),adBean.getParams());
+                routeUtil.Routing(adBean.getGoto_type(),adBean.getAction(),adBean.getGoto_url(),adBean.getParams(), adBean.getService_type_ids());
                 postAddHit(adBean.getId());
 
 //                ToActivityUtil.gotoWebPage(getActivity(), "null", findBean.getGoto_url());
