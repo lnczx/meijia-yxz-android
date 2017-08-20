@@ -400,7 +400,7 @@ public class RouteUtil {
                 } else if (action.equals("partner_user_detail")) {//服务商
                     intent = new Intent(context, PartnerActivity.class);
                     intent.putExtra("partner_user_id", params);
-                    intent.putExtra("service_type_id", "0");
+                    intent.putExtra("service_type_id", "306");
                     context.startActivity(intent);
                 }
             } else if (category.equals("h5+list")) {
