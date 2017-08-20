@@ -156,8 +156,8 @@ public class PartnerActivity extends BaseActivity implements OnItemClickListener
         
         
 //        partner = (Partner) getIntent().getSerializableExtra("Partner");
-        partner_user_id = String.valueOf(getIntent().getIntExtra("partner_user_id", 0));
-        service_type_id = String.valueOf(getIntent().getIntExtra("service_type_id", 0));
+        partner_user_id = getIntent().getStringExtra("partner_user_id");
+        service_type_id = getIntent().getStringExtra("service_type_id");
         getPartnerDetail(service_type_id, partner_user_id);  
         
         userInfo = DBHelper.getUserInfo(PartnerActivity.this);
