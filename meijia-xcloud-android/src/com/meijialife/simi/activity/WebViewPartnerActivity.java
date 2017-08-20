@@ -85,6 +85,11 @@ public class WebViewPartnerActivity extends Activity implements OnClickListener 
 
         findViewBy();
         UserInfo userInfo = DBHelper.getUserInfo(WebViewPartnerActivity.this);
+        if(userInfo == null){
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+            return;
+        }
         final String mobile = userInfo.getMobile();
         final String name = userInfo.getName();
         if (flag == 0) {
