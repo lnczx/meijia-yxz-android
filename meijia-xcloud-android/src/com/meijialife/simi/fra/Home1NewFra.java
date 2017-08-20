@@ -961,6 +961,9 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
         mIndicatorTabBar1.setTabSelected(index, false);
         mIndicatorTabBar3.setTabSelected(index, false);
 
+        pBean = params;
+        page = 1;
+        homePosts.clear();
         allHomePosts.clear();
         if (flag) {
             getUserTagMsgList(page, params);
