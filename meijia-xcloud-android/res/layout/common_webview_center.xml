@@ -92,7 +92,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/bg_img_selector" />
+                    android:src="@drawable/bg_img_shoucang_selector" />
 
                 <ImageView
                     android:id="@+id/m_iv_share"

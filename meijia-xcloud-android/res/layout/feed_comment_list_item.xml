@@ -90,7 +90,7 @@
                     android:layout_height="15dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/bg_img_selector"
+                    android:src="@drawable/bg_img_dianzan_selector"
                     android:textSize="14sp" />
 
                 <TextView
