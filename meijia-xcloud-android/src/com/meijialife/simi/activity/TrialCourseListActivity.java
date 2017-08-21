@@ -58,6 +58,8 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
     private List<VideoChannel> channels;
 
     private VideoChannel currentChannel;//当前选中的频道
+    private int lastChannelIndex = 0; //上一个选中的频道；
+
     private int page = 1;
 
 
@@ -159,6 +161,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
     @Override
     protected void onStart() {
         if(currentChannel != null){
+            page = 1;
             getVideoList(page, currentChannel);
         }
         super.onStart();
@@ -265,6 +268,12 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
     public void onClick(ParamsBean params, int index, boolean flag) {
         allVideoDatas.clear();
         currentChannel = channels.get(index);
+
+        if (index != lastChannelIndex) {
+            page = 1;
+            lastChannelIndex = index;
+        }
+
         getVideoList(page, currentChannel);
     }
 
@@ -305,6 +314,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
                                 updateChannel(channels);
                                 currentChannel = channels.get(0);
+                                lastChannelIndex = 0;
                                 getVideoList(page, currentChannel);
 
                             } else {

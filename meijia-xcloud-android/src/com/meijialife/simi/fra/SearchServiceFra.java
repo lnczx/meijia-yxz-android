@@ -116,8 +116,14 @@ public class SearchServiceFra extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), PartnerActivity.class);
-                intent.putExtra("partner_user_id", myPartnerList.get(position).getUser_id());
-                intent.putExtra("service_type_id", myPartnerList.get(position).getService_type_id());
+
+                int userId = myPartnerList.get(position).getUser_id();
+                int ServiceTypeId = myPartnerList.get(position).getService_type_id();
+                intent.putExtra("partner_user_id", String.valueOf(userId));
+
+                intent.putExtra("service_type_id", String.valueOf(ServiceTypeId));
+
+
                 startActivity(intent);
             }
         });

@@ -52,7 +52,7 @@ public class SearchFeedFra extends BaseFragment {
     private ArrayList<FeedData> totalFeedDataList;
     private PullToRefreshListView mPullRefreshListView;// 上拉刷新的控件
 
-    private int page = 0;
+    private int page = 1;
     private String keyword;
 
     @Nullable
@@ -79,7 +79,7 @@ public class SearchFeedFra extends BaseFragment {
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 // 下拉刷新任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
-                page = 0;
+                page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getFeedList(page);
                 feedListAdapter.notifyDataSetChanged();
@@ -132,7 +132,7 @@ public class SearchFeedFra extends BaseFragment {
             return;
         }
         this.keyword = keyword;
-        page = 0;
+        page = 1;
         showDialog();
         getFeedList(page);
     }
@@ -217,7 +217,7 @@ public class SearchFeedFra extends BaseFragment {
      */
     private void showData(List<FeedData> myFeedDataList) {
         if (myFeedDataList != null && myFeedDataList.size() > 0) {
-            if (page == 0) {
+            if (page == 1) {
                 totalFeedDataList.clear();
             }
             for (FeedData feedData : myFeedDataList) {
@@ -226,7 +226,7 @@ public class SearchFeedFra extends BaseFragment {
             // 给适配器赋值
             feedListAdapter.setData(totalFeedDataList);
         }else{
-            if (page == 0) {
+            if (page == 1) {
                 totalFeedDataList.clear();
                 feedListAdapter.setData(totalFeedDataList);
             }

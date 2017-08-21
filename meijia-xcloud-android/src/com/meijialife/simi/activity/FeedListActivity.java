@@ -59,6 +59,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     private RelativeLayout m__rl_question;
     private int page = 1;
     private String feedFrom = "0";// 0=所有，1=我发布
+    private String lastFeedFrom = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 // 下拉刷新任务
                 String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
-                page = 0;
+                page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getFeedList(page, feedFrom);
                 feedListAdapter.notifyDataSetChanged();
@@ -242,7 +243,7 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
      */
     private void showData(List<FeedData> myFeedDataList) {
         if (myFeedDataList != null && myFeedDataList.size() > 0) {
-            if (page == 0) {
+            if (page == 1) {
                 totalFeedDataList.clear();
             }
             for (FeedData feedData : myFeedDataList) {
@@ -275,6 +276,12 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
     @Override
     public void onClick(String typeId) {
         feedFrom = typeId;
+
+        if (!feedFrom.equals(lastFeedFrom)) {
+            page = 1;
+            lastFeedFrom = feedFrom;
+        }
+
         getFeedList(page, feedFrom);
     }
 }
