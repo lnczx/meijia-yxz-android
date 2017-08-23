@@ -2,6 +2,7 @@ package com.meijialife.simi.fra;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -343,10 +344,18 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JIAMENG_URL);
                 break;
             case R.id.layout_person_haoping:// 好评
-                Uri uri = Uri.parse("market://details?id=" + "com.meijialife.simi");
-                intent = new Intent(Intent.ACTION_VIEW, uri);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                try{
+                    Uri uri = Uri.parse("market://details?id=" + "com.meijialife.simi");
+                    intent = new Intent(Intent.ACTION_VIEW, uri);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }catch (ActivityNotFoundException e){
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "您未安装任何应用市场", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "应用市场异常", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.layout_person_huiyuanjulebu:// 会员俱乐部
                 ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JULEBU_URL);
