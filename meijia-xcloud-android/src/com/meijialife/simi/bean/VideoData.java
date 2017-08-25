@@ -36,7 +36,7 @@ public class VideoData implements Serializable {
     private String img_url;
     private int is_join;
     private String keywords;
-    private String vide_more_url;
+    private String video_more_url;
     private String total_view;
     private String cid;
     private String channel_id;
@@ -82,12 +82,12 @@ public class VideoData implements Serializable {
         this.keywords = keywords;
     }
 
-    public String getVide_more_url() {
-        return vide_more_url;
+    public String getVideo_more_url() {
+        return video_more_url;
     }
 
-    public void setVide_more_url(String vide_more_url) {
-        this.vide_more_url = vide_more_url;
+    public void setVideo_more_url(String video_more_url) {
+        this.video_more_url = video_more_url;
     }
 
     public String getTotal_view() {

@@ -332,7 +332,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 break;
             case R.id.m_iv_share:// 分享
                 if (video != null) {
-                    ShareConfig.getInstance().inits(CourseActivity.this, video.getVide_more_url(), video.getTitle(), video.getImg_url());
+                    ShareConfig.getInstance().inits(CourseActivity.this, video.getVideo_more_url(), video.getTitle(), video.getImg_url());
                     postShare();
                 } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
@@ -356,7 +356,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                     return;
                 }
                 if (video != null) {
-                    ToActivityUtil.gotoWebPage(this,"详情",video.getVide_more_url());
+                    ToActivityUtil.gotoWebPage(this,"详情",video.getVideo_more_url());
                 } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
                 }
