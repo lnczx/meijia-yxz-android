@@ -29,7 +29,7 @@
             android:layout_below="@id/iv_application_icon"  
             android:layout_centerHorizontal="true"  
             android:layout_marginTop="5.0dip"  
-            android:maxLines="1"  
+            android:maxLines="2"
             android:textSize="14.0sp" 
             android:text=""
             />  

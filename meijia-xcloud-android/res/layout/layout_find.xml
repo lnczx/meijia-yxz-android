@@ -15,7 +15,7 @@
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/icon_plus_callmishu"
         android:gravity="center_horizontal"
-        android:text="点我来吐槽"
+        android:text="有问题就点我"
         android:paddingBottom="8dp"
         android:textColor="#333333"
         android:textSize="16sp" />
