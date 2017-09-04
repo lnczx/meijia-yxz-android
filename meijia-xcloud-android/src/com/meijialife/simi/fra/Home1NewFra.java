@@ -351,8 +351,10 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             pBean.setSlug(userTags);
             getUserTagMsgList(page, pBean);
         } else {
-            pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
-            getMsgList(page, pBean);
+            if(page == 1){
+                pBean.setSlug("%E9%A6%96%E9%A1%B5%E7%B2%BE%E9%80%89");
+                getMsgList(page, pBean);
+            }
         }
         getAdList();
         super.onStart();
