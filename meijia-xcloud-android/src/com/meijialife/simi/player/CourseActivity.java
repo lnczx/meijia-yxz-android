@@ -799,7 +799,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
                             m_iv_zan.setSelected(true);
-                            Toast.makeText(CourseActivity.this, "已点赞", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(CourseActivity.this, "已点赞", Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

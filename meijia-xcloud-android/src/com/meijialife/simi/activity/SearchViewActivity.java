@@ -117,6 +117,7 @@ public class SearchViewActivity extends BaseActivity {
                     m.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     key = tag;
                     if(user!=null){
+                        et_search_kw.setHint(tag);
                         searchPartnerByKw(tag,page);
                     }else {
                         startActivity(new Intent(SearchViewActivity.this,LoginActivity.class));

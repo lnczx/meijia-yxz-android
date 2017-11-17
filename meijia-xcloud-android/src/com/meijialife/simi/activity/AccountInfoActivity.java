@@ -192,6 +192,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         if (isEdit) {
             // 开始编辑
             et_name.setEnabled(true);
+            et_mobile.setEnabled(true);
 //            title_btn_edit.setBackgroundColor(getResources().getColor(R.color.transparent));
             title_btn_edit.setText("保存");
             tv_logout.setVisibility(View.GONE);
