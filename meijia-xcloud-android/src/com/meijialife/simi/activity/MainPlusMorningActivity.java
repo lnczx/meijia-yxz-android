@@ -389,7 +389,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
 
         year = (WheelView) view.findViewById(R.id.year);
 
-        NumericWheelAdapter numericWheelAdapter1 = new NumericWheelAdapter(this, norYear, 2065);
+        NumericWheelAdapter numericWheelAdapter1 = new NumericWheelAdapter(this, norYear, norYear + 5);
         numericWheelAdapter1.setLabel("年");
         year.setViewAdapter(numericWheelAdapter1);
         year.setCyclic(false);// 是否可循环滑动
@@ -427,7 +427,7 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
 
         hour.setCurrentItem(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
         minute.setCurrentItem(Calendar.getInstance().get(Calendar.MINUTE));
-        year.setCurrentItem(norYear - 2016);
+        year.setCurrentItem(norYear - norYear);
         month.setCurrentItem(curMonth - 1);
         day.setCurrentItem(curDate - 1);
 
@@ -436,7 +436,9 @@ public class MainPlusMorningActivity extends BaseActivity implements OnClickList
 
             @Override
             public void onClick(View v) {
-                int mYear = year.getCurrentItem() + 2016;
+                Calendar c = Calendar.getInstance();
+                int norYear = c.get(Calendar.YEAR);
+                int mYear = year.getCurrentItem() + norYear;
                 int mMonth = month.getCurrentItem() + 1;
                 int mDay = day.getCurrentItem() + 1;
                 int mhour = hour.getCurrentItem();

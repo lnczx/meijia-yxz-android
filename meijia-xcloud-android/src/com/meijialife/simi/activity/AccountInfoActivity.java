@@ -210,6 +210,8 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
 
         String name = et_name.getText().toString();
         String gender = et_gender.getText().toString();
+        String mobile = et_mobile.getText().toString();
+        mobile = mobile.replaceAll(" ", "");
 
         if (StringUtils.isEmpty(name)) {
             Toast.makeText(AccountInfoActivity.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
@@ -224,7 +226,7 @@ public class AccountInfoActivity extends BaseActivity implements OnClickListener
         map.put("user_id", user.getId());
         map.put("name", name);
         map.put("sex", gender);
-        // map.put("mobile", mobile);
+         map.put("mobile", mobile);
         // map.put("head_img", "");
         AjaxParams param = new AjaxParams(map);
         showDialog();
