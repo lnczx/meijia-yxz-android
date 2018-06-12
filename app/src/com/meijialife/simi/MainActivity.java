@@ -87,7 +87,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     //    private static SlideMenu slideMenu;// 侧边栏
     private RoundImageView left_menu_header_im;// 侧边栏用户头像
-    private TextView tv_user_name;// 侧边栏用户昵称
+//    private TextView tv_user_name;// 侧边栏用户昵称
     private RelativeLayout item_0, item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8;// 侧边栏内控件
 
     public static Activity activity;
@@ -622,7 +622,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         if (null != userInfo) {
             String head_img = userInfo.getHead_img();
             String name = userInfo.getName();
-            tv_user_name.setText(name);
+//            tv_user_name.setText(name);
             finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
         }
         //友盟统计
