@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":meijia-xcloud-android" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="meijia-yxz-android" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":meijia-xcloud-android" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -15,11 +15,10 @@
           <task>generateDebugSources</task>
         </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/res" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/debug" />
     <exclude-output />
@@ -73,8 +72,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/shaders" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/build/.DS_Store" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/.DS_Store" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/assets" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/blame" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/classes" />
@@ -86,85 +83,55 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/sourceFolderJavaResources" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="jsoup-1.8.3" level="project" />
-    <orderEntry type="library" exported="" name="AliyunVodPlayer-" level="project" />
-    <orderEntry type="library" exported="" name="drawee-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="libammsdk" level="project" />
-    <orderEntry type="library" exported="" name="SocialSDK_Sina" level="project" />
-    <orderEntry type="library" exported="" name="zxing" level="project" />
-    <orderEntry type="library" exported="" name="fresco-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="umeng_social_sdk" level="project" />
-    <orderEntry type="library" exported="" name="com.umeng.fb.5.4.0" level="project" />
-    <orderEntry type="library" exported="" name="bolts-tasks-1.4.0" level="project" />
-    <orderEntry type="library" exported="" name="support-core-ui-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="SocialSDK_QQZone_1" level="project" />
-    <orderEntry type="library" exported="" name="SocialSDK_QQZone_2" level="project" />
-    <orderEntry type="library" exported="" name="SocialSDK_WeiXin_2" level="project" />
-    <orderEntry type="library" exported="" name="SocialSDK_QQZone_3" level="project" />
-    <orderEntry type="library" exported="" name="fbcore-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="glide-3.7.0" level="project" />
-    <orderEntry type="library" exported="" name="Parse-1.9.4" level="project" />
-    <orderEntry type="library" exported="" name="support-core-utils-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-fragment-25.3.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="alipaySDK-20151014" level="project" />
-    <orderEntry type="library" exported="" name="imagepipeline-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="httpmime-4.2.4" level="project" />
-    <orderEntry type="library" exported="" name="umeng-analytics-v6.0.0" level="project" />
-    <orderEntry type="library" exported="" name="AlivcPlayer-" level="project" />
-    <orderEntry type="library" exported="" name="imagepipeline-base-0.13.0" level="project" />
-    <orderEntry type="library" exported="" name="GetuiSDK2.9.3.0" level="project" />
-    <orderEntry type="library" exported="" name="AliyunVodPlayerView-" level="project" />
-    <orderEntry type="library" exported="" name="universal-image-loader-1.9.4" level="project" />
-    <orderEntry type="library" exported="" name="support-compat-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="joda-time-2.1" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="support-media-compat-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="animated-vector-drawable-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-25.3.0" level="project" />
-    <orderEntry type="library" exported="" name="support-vector-drawable-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:appcompat-v7-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-fragment-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:drawee-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:fbcore-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-media-compat-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.parse.bolts:bolts-tasks:1.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/glide-3.7.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/SocialSDK_QQZone_3.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/joda-time-2.1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-compat-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-annotations:25.3.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/umeng_social_sdk.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/SocialSDK_QQZone_2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/umeng-analytics-v6.0.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:animated-vector-drawable-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/Parse-1.9.4.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/SocialSDK_WeiXin_2.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/SocialSDK_Sina.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:fresco-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:imagepipeline-base-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/libammsdk.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/com.umeng.fb.5.4.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.jsoup:jsoup:1.10.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-ui-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: AliyunVodPlayer:@aar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-25.3.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: com.android.support:multidex-instrumentation-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: AlivcPlayer:@aar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/universal-image-loader-1.9.4.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/zxing.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/alipaySDK-20151014.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-vector-drawable-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.facebook.fresco:imagepipeline-1.5.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/httpmime-4.2.4.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-utils-25.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/SocialSDK_QQZone_1.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:/Users/yejiurui/Documents/git_work/meijia-yxz-android/meijia-xcloud-android/libs/GetuiSDK2.9.3.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: AliyunVodPlayerView:@aar" level="project" />
     <orderEntry type="module" module-name="base_library_pullToRefresh_chenyoca" exported="" />
     <orderEntry type="module" module-name="vodPlayerRelease" exported="" />
     <orderEntry type="module" module-name="meijia-lib-easeui" exported="" />
-    <orderEntry type="library" exported="" name="org.apache.http.legacy-android-25" level="project" />
-    <orderEntry type="library" exported="" name="wasabi" level="project" />
-    <orderEntry type="library" exported="" name="official_unicom" level="project" />
-    <orderEntry type="library" exported="" name="libijkplayer" level="project" />
-    <orderEntry type="library" exported="" name="tracking" level="project" />
-    <orderEntry type="library" exported="" name="mvvtracker" level="project" />
-    <orderEntry type="library" exported="" name="securityguard-1.0.7" level="project" />
-    <orderEntry type="library" exported="" name="YoukuAnalytics" level="project" />
-    <orderEntry type="library" exported="" name="danmakuflamemaster" level="project" />
-    <orderEntry type="library" exported="" name="AlimmAD_Android_16_yk_V1.0.2" level="project" />
-    <orderEntry type="library" exported="" name="fastjson-1.1.45.android" level="project" />
-    <orderEntry type="library" exported="" name="domob_android_sdk" level="project" />
-    <orderEntry type="library" exported="" name="taesdk-1.0.2" level="project" />
-    <orderEntry type="library" exported="" name="Cocounion_AD_SDK_Android_v4.1.5" level="project" />
-    <orderEntry type="library" exported="" name="xadsdk" level="project" />
-    <orderEntry type="library" exported="" name="mobisageSDK" level="project" />
-    <orderEntry type="library" exported="" name="android-async-http-1.4.3" level="project" />
-    <orderEntry type="library" exported="" name="mAppTracker" level="project" />
-    <orderEntry type="library" exported="" name="libykcloudsdk" level="project" />
-    <orderEntry type="library" exported="" name="libplayer" level="project" />
-    <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" exported="" name="baidumapapi_map_v3_6_1" level="project" />
-    <orderEntry type="library" exported="" name="easemobchat_2.2.3" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="baidumapapi_search_v3_6_1" level="project" />
-    <orderEntry type="library" exported="" name="final" level="project" />
-    <orderEntry type="library" exported="" name="baidumapapi_base_v3_6_1" level="project" />
-    <orderEntry type="library" exported="" name="locSDK_6.13" level="project" />
-    <orderEntry type="library" exported="" name="baidumapapi_util_v3_6_1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.apache.http.legacy-android-27" level="project" />
   </component>
 </module>

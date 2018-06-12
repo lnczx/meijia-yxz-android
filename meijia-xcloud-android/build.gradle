@@ -5,8 +5,8 @@ android {
     repositories {
         jcenter()
     }
-    compileSdkVersion 25
-    buildToolsVersion '25.0.3'
+       compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -114,8 +114,8 @@ dependencies {
         exclude module: 'support-v4'
     }
     compile 'com.android.support:multidex:1.0.1'
-    compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.facebook.fresco:fresco:0.13.0'
+    compile 'org.jsoup:jsoup:1.10.3'
+    compile 'com.facebook.fresco:fresco:1.5.0'
     compile project(':vodPlayerRelease')
 
     compile(name: 'AlivcPlayer', ext: 'aar')
