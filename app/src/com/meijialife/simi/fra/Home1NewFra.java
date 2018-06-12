@@ -232,7 +232,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
                 // 下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM-dd HH:mm");
                 page = 1;
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 getMsgList(page, pBean);
@@ -242,7 +242,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
                 // 上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
+                String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM-dd HH:mm");
                 refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
                 if (homePosts != null && homePosts.size() >= 10) {
                     page = page + 1;
@@ -731,7 +731,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
                 getActivity().startActivity(intent);
                 break;
 
-            case R.id.m_homes3:// 找服务商
+            case R.id.m_homes3:// 专家面授
                 intent = new Intent(getActivity(), AllPartnerListActivity.class);
                 getActivity().startActivity(intent);
                 break;

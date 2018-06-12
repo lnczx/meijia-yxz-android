@@ -3,24 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include
         android:id="@+id/view_title_bar"
         layout="@layout/layout_title_bar" />
-    
-     <RelativeLayout
+
+
+    <RelativeLayout
         android:id="@+id/rl_total_search"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/find2_fra_bg_gv"
-        android:gravity="center" >
+        android:gravity="center">
 
         <RelativeLayout
             android:id="@+id/rl_search"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:gravity="center" >
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_search"
@@ -51,6 +52,7 @@
                 android:textSize="12sp" />
         </RelativeLayout>
 
+
         <ImageView
             android:id="@+id/iv_voice"
             android:layout_width="20dp"
@@ -58,13 +60,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:src="@drawable/iconfont_yuyin"
-            android:visibility="invisible"
-             />
+            android:visibility="invisible" />
     </RelativeLayout>
 
-   <include
-       android:id="@+id/find_all_list"
-       layout="@layout/find_all_list"
-       />
+    <include
+        android:id="@+id/m_banner"
+        layout="@layout/banner" />
+
+    <include
+        android:id="@+id/find_all_list"
+        layout="@layout/find_all_list" />
 
 </LinearLayout>
