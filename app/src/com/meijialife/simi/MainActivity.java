@@ -85,7 +85,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private FragmentManager mFM = null;
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
 
-    private static SlideMenu slideMenu;// 侧边栏
+//    private static SlideMenu slideMenu;// 侧边栏
     private RoundImageView left_menu_header_im;// 侧边栏用户头像
     private TextView tv_user_name;// 侧边栏用户昵称
     private RelativeLayout item_0, item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8;// 侧边栏内控件
@@ -126,7 +126,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
 
         init();
-        initLeft();
+//        initLeft();
         mBt1.performClick();
 
 //        initIM(savedInstanceState);
@@ -266,34 +266,34 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     /**
      * 初始化左侧边栏控件
      */
-    private void initLeft() {
-        finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
-
-        slideMenu = (SlideMenu) findViewById(R.id.slide_menu);
-        left_menu_header_im = (RoundImageView) findViewById(R.id.left_menu_header_im);
-        tv_user_name = (TextView) findViewById(R.id.tv_user_name);
-
-        item_0 = (RelativeLayout) findViewById(R.id.item_0);
-        item_1 = (RelativeLayout) findViewById(R.id.item_1);
-        item_2 = (RelativeLayout) findViewById(R.id.item_2);
-        item_3 = (RelativeLayout) findViewById(R.id.item_3);
-        item_4 = (RelativeLayout) findViewById(R.id.item_4);
-        item_5 = (RelativeLayout) findViewById(R.id.item_5);
-        item_6 = (RelativeLayout) findViewById(R.id.item_6);
-        item_7 = (RelativeLayout) findViewById(R.id.item_7);
-        item_8 = (RelativeLayout) findViewById(R.id.item_8);
-
-        item_0.setOnClickListener(this);
-        item_1.setOnClickListener(this);
-        item_2.setOnClickListener(this);
-        item_3.setOnClickListener(this);
-        item_4.setOnClickListener(this);
-        item_5.setOnClickListener(this);
-        item_6.setOnClickListener(this);
-        item_7.setOnClickListener(this);
-        item_8.setOnClickListener(this);
-    }
+//    private void initLeft() {
+//        finalBitmap = FinalBitmap.create(this);
+//        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.ic_defult_touxiang);
+//
+////        slideMenu = (SlideMenu) findViewById(R.id.slide_menu);
+//        left_menu_header_im = (RoundImageView) findViewById(R.id.left_menu_header_im);
+//        tv_user_name = (TextView) findViewById(R.id.tv_user_name);
+//
+//        item_0 = (RelativeLayout) findViewById(R.id.item_0);
+//        item_1 = (RelativeLayout) findViewById(R.id.item_1);
+//        item_2 = (RelativeLayout) findViewById(R.id.item_2);
+//        item_3 = (RelativeLayout) findViewById(R.id.item_3);
+//        item_4 = (RelativeLayout) findViewById(R.id.item_4);
+//        item_5 = (RelativeLayout) findViewById(R.id.item_5);
+//        item_6 = (RelativeLayout) findViewById(R.id.item_6);
+//        item_7 = (RelativeLayout) findViewById(R.id.item_7);
+//        item_8 = (RelativeLayout) findViewById(R.id.item_8);
+//
+//        item_0.setOnClickListener(this);
+//        item_1.setOnClickListener(this);
+//        item_2.setOnClickListener(this);
+//        item_3.setOnClickListener(this);
+//        item_4.setOnClickListener(this);
+//        item_5.setOnClickListener(this);
+//        item_6.setOnClickListener(this);
+//        item_7.setOnClickListener(this);
+//        item_8.setOnClickListener(this);
+//    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -308,9 +308,9 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         switch (arg0.getId()) {
             case R.id.tab_bt_1: // 首页
                 currentTabIndex = 1;
-                if (!slideMenu.isMainScreenShowing()) {
-                    return;
-                }
+//                if (!slideMenu.isMainScreenShowing()) {
+//                    return;
+//                }
                 change(new Home1NewFra());
                 setSelected(mBt1);
                 updateTitle(1);
@@ -401,9 +401,9 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
      */
     public void changeFind() {
         currentTabIndex = 2;
-        if (!slideMenu.isMainScreenShowing()) {
-            return;
-        }
+//        if (!slideMenu.isMainScreenShowing()) {
+//            return;
+//        }
         view_title_bar.setVisibility(View.GONE);
         change(new Find2Fra(this));
         setSelected(mBt2);
@@ -465,9 +465,9 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //    }
 
     public void change2ScheduleFra() {
-        if (!slideMenu.isMainScreenShowing()) {
-            return;
-        }
+//        if (!slideMenu.isMainScreenShowing()) {
+//            return;
+//        }
         view_title_bar.setVisibility(View.GONE);
         change(new ScheduleFra());
         setSelected(mBt3);
@@ -521,13 +521,13 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     /**
      * 打开或关闭侧边栏
      */
-    public static void slideMenu() {
-        if (slideMenu.isMainScreenShowing()) {
-            slideMenu.openMenu();
-        } else {
-            slideMenu.closeMenu();
-        }
-    }
+//    public static void slideMenu() {
+//        if (slideMenu.isMainScreenShowing()) {
+//            slideMenu.openMenu();
+//        } else {
+//            slideMenu.closeMenu();
+//        }
+//    }
 
     private static Boolean isQuit = false;
     private Timer timer = new Timer();
@@ -542,10 +542,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
 
-            if (!slideMenu.isMainScreenShowing()) {
-                slideMenu.closeMenu();
-                return false;
-            }
+//            if (!slideMenu.isMainScreenShowing()) {
+//                slideMenu.closeMenu();
+//                return false;
+//            }
 
             if (isQuit == false) {
                 isQuit = true;

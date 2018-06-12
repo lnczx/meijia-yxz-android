@@ -219,6 +219,7 @@ public class Home1NewFra extends BaseFragment implements OnClickListener, ListIt
             }
         });
 
+
         // listView.addFooterView(footView);
         mListView.setMode(Mode.BOTH);
         initIndicator();

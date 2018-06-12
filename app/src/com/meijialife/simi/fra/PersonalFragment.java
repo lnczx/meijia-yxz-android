@@ -35,20 +35,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.meijialife.simi.Constants;
-import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AccountInfoActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
-import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.LoginActivity;
-import com.meijialife.simi.activity.MainFriendsActivity;
 import com.meijialife.simi.activity.MoreActivity;
 import com.meijialife.simi.activity.MyCollectionListActivity;
 import com.meijialife.simi.activity.MyIntegralActivity;
 import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
-import com.meijialife.simi.activity.WebViewActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.AppHelpData;
 import com.meijialife.simi.bean.User;
@@ -67,7 +63,6 @@ import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import net.tsz.afinal.FinalBitmap;
 import net.tsz.afinal.FinalHttp;
@@ -288,9 +283,9 @@ public class PersonalFragment extends Fragment implements OnClickListener {
                 intent.putExtra("user", user);
                 getActivity().startActivity(intent);
                 break;
-            case R.id.ibtn_person:
-                MainActivity.slideMenu();
-                break;
+//            case R.id.ibtn_person:
+//                MainActivity.slideMenu();
+//                break;
             case R.id.item_qianbao:// 经验
                 intent = new Intent(getActivity(), WebViewsActivity.class);
                 intent.putExtra("url", Constants.JING_YAN + user.getId());
