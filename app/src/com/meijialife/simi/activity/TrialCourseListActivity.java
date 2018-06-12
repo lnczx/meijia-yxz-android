@@ -18,6 +18,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.VideoListAdapter;
+import com.meijialife.simi.bean.AdData;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoChannel;
 import com.meijialife.simi.bean.VideoList;
@@ -26,7 +27,9 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.inter.ListItemClickHelps;
 import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.player.PlayVodActivity;
+import com.meijialife.simi.ui.BannerLayout;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
+import com.meijialife.simi.ui.RouteUtil;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
@@ -41,11 +44,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- *  视听课程
+ * 视听课程
  */
 public class TrialCourseListActivity extends Activity implements OnClickListener, ListItemClickHelps {
 
@@ -53,15 +57,14 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
     private List<VideoList> allVideoDatas;
     private VideoListAdapter adapter;
     private PullToRefreshListView mListView;
-
     private IndicatorTabBarForTrial mIndicatorTabBar;
     private List<VideoChannel> channels;
-
     private VideoChannel currentChannel;//当前选中的频道
     private int lastChannelIndex = 0; //上一个选中的频道；
-
     private int page = 1;
-
+    private List<String> urls;
+    private BannerLayout bannerLayout;
+    private ArrayList<AdData> adBeanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +72,10 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
         super.onCreate(savedInstanceState);
 
         initView();
-
         getChannelList();
     }
 
     private void initView() {
-
         mIndicatorTabBar = (IndicatorTabBarForTrial) findViewById(R.id.m_trial_tabBar);
         mIndicatorTabBar.setCallBack(this);
 
@@ -132,12 +133,90 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
         findViewById(R.id.rl_total_search).setOnClickListener(this);
         findViewById(R.id.title_btn_left).setOnClickListener(this);
 
+        bannerLayout = (BannerLayout) findViewById(R.id.m_top_banner);
+        bannerLayout.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                AdData adBean = adBeanList.get(position);
+                RouteUtil routeUtil = new RouteUtil(TrialCourseListActivity.this);
+                routeUtil.Routing(adBean.getGoto_type(), adBean.getAction(), adBean.getGoto_url(), adBean.getParams(), adBean.getService_type_ids());
+            }
+        });
+
     }
+
+    public void getAdList() {
+        if (!NetworkUtils.isNetworkConnected(TrialCourseListActivity.this)) {
+            Toast.makeText(TrialCourseListActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("channel_id", "0");
+        map.put("app_type", "xcloud");
+        AjaxParams param = new AjaxParams(map);
+        // showDialog();
+        new FinalHttp().get(Constants.URL_GET_ADS_LIST, param, new AjaxCallBack<Object>() {
+            @Override
+            public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+            }
+
+            @Override
+            public void onSuccess(Object t) {
+                super.onSuccess(t);
+                String errorMsg = "";
+                // dismissDialog();
+                try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                        JSONObject obj = new JSONObject(t.toString());
+                        int status = obj.getInt("status");
+                        String msg = obj.getString("msg");
+                        String data = obj.getString("data");
+                        if (status == Constants.STATUS_SUCCESS) { // 正确
+                            if (StringUtils.isNotEmpty(data)) {
+                                Gson gson = new Gson();
+                                adBeanList = gson.fromJson(data, new TypeToken<ArrayList<AdData>>() {
+                                }.getType());
+                                showBanner(adBeanList);
+                            }
+                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                            errorMsg = getString(R.string.servers_error);
+                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                            errorMsg = getString(R.string.param_missing);
+                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                            errorMsg = getString(R.string.param_illegal);
+                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                            errorMsg = msg;
+                        } else {
+                            errorMsg = getString(R.string.servers_error);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // 操作失败，显示错误信息
+                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(TrialCourseListActivity.this, errorMsg);
+                }
+            }
+        });
+    }
+
+
+    protected void showBanner(List<AdData> adList) {
+        urls = new ArrayList<>();
+        for (Iterator iterator = adList.iterator(); iterator.hasNext(); ) {
+            AdData adBean = (AdData) iterator.next();
+            urls.add(adBean.getImg_url());
+        }
+        bannerLayout.setViewUrls(urls);
+    }
+
 
     /**
      * 更新顶部频道
      */
-    private void updateChannel(List<VideoChannel> channels){
+    private void updateChannel(List<VideoChannel> channels) {
         mIndicatorTabBar.setMaxColumn(channels.size());
         mIndicatorTabBar.initViewForTrial(channels);
     }
@@ -160,10 +239,11 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
     @Override
     protected void onStart() {
-        if(currentChannel != null){
+        if (currentChannel != null) {
             page = 1;
             getVideoList(page, currentChannel);
         }
+        getAdList();
         super.onStart();
     }
 
@@ -179,7 +259,7 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
 
         Map<String, String> map = new HashMap<String, String>();
 
-        if(user != null){
+        if (user != null) {
             map.put("user_id", user.getId());
         }
         map.put("channel_id", channel.getChannel_id());
@@ -241,8 +321,8 @@ public class TrialCourseListActivity extends Activity implements OnClickListener
                 allVideoDatas.add(videoData);
             }
             adapter.setData(allVideoDatas);
-        }else{
-            if(page == 1){
+        } else {
+            if (page == 1) {
                 allVideoDatas.clear();
                 adapter.setData(allVideoDatas);
             }

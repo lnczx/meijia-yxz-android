@@ -85,7 +85,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private FragmentManager mFM = null;
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
 
-//    private static SlideMenu slideMenu;// 侧边栏
+    //    private static SlideMenu slideMenu;// 侧边栏
     private RoundImageView left_menu_header_im;// 侧边栏用户头像
     private TextView tv_user_name;// 侧边栏用户昵称
     private RelativeLayout item_0, item_1, item_2, item_3, item_4, item_5, item_6, item_7, item_8;// 侧边栏内控件
@@ -294,7 +294,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //        item_7.setOnClickListener(this);
 //        item_8.setOnClickListener(this);
 //    }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -375,7 +374,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
             case R.id.item_5: // 卡牌集市
                 // Toast.makeText(this, "敬请期待", 0).show();
                 // startActivity(new Intent(this, NullWaitActivity.class));
-                ToActivityUtil.gotoWebPage(this,"行政人智库",Constants.URL_XUEYUAN);
+                ToActivityUtil.gotoWebPage(this, "行政人智库", Constants.URL_XUEYUAN);
                 break;
             case R.id.item_6: // 积分商城
                 Intent intent6 = new Intent();
@@ -463,7 +462,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 ////        updateTitle(3);
 //        SlideMenu.isUse = false;
 //    }
-
     public void change2ScheduleFra() {
 //        if (!slideMenu.isMainScreenShowing()) {
 //            return;
@@ -788,10 +786,10 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         DBHelper.getInstance(MainActivity.this).deleteAll(UserInfo.class);
         DBHelper.getInstance(MainActivity.this).deleteAll(CalendarMark.class);
         SpFileUtil.clearFile(getApplication(), SpFileUtil.LOGIN_STATUS);//删除登录状态
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_USER_TAGS);//删除用户自定义
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
-        SpFileUtil.clearFile(getApplication(),SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.KEY_MSG_UNREAD);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.KEY_USER_TAGS);//删除用户自定义
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.KEY_CHECKED_STAFFS);//删除未读消息状态
+        SpFileUtil.clearFile(getApplication(), SpFileUtil.KEY_CHECKED_FRIENDS);//删除未读消息状态
 
         showDialog();
         EMDemoHelper.getInstance().logout(false, new EMCallBack() {

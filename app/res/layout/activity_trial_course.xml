@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:widgets="http://schemas.android.com/apk/res-auto"
+    xmlns:ptr="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,22 +9,24 @@
         android:id="@+id/view_to_fra_title_bar"
         layout="@layout/trial_course_title_bar" />
 
+    <include
+        android:id="@+id/m_banner"
+        layout="@layout/banner" />
+
     <com.meijialife.simi.ui.IndicatorTabBarForTrial
         android:id="@+id/m_trial_tabBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:background="@color/simi_color_white"
-        widgets:tab_text_color="@color/tab_text_color"
-        widgets:tab_text_selected_color="@color/simi_color_red"
-        widgets:tab_text_size="14sp" />
+        ptr:tab_text_color="@color/tab_text_color"
+        ptr:tab_text_selected_color="@color/simi_color_red"
+        ptr:tab_text_size="14sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/simi_color_line_gray" />
+    <include layout="@layout/view_line" />
 
-    <com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/m_trial_listview"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -38,6 +40,6 @@
         android:smoothScrollbar="true"
         ptr:ptrAnimationStyle="flip"
         ptr:ptrListViewExtrasEnabled="false"
-        ptr:ptrScrollingWhileRefreshingEnabled="true"></com.handmark.pulltorefresh.library.PullToRefreshListView>
+        ptr:ptrScrollingWhileRefreshingEnabled="true" />
 
 </LinearLayout>
