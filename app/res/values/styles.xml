@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices. -->
-    <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">
-        <!--
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:clipToPadding">true</item>
-        -->
-        <!-- Theme customizations available in newer API levels can go in res/values-vXX/styles.xml, while customizations related to backward-compatibility can go here. -->
+     Base application theme, dependent on API level. This theme is replaced by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    <!--<style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar">-->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="colorPrimaryDark">@color/simi_color_red</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorAccent">@color/simi_color_red</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <!-- 标题layout style -->
@@ -172,6 +175,11 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-      
-      
+
+    <!--<style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">-->
+        <!--<item name="tabMode">scrollable</item>-->
+        <!--<item name="tabIndicatorColor">@color/simi_color_red</item>-->
+        <!--<item name="tabSelectedTextColor">@color/simi_color_red</item>-->
+        <!--<item name="tabTextColor">@color/white</item>-->
+    <!--</style>-->
 </resources>

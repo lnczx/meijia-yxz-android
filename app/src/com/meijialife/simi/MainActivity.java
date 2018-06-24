@@ -618,13 +618,13 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                         EMNotifierEvent.Event.EventConversationListChanged});
 
         DBHelper.getInstance(this);
-        UserInfo userInfo = DBHelper.getUserInfo(this);
-        if (null != userInfo) {
-            String head_img = userInfo.getHead_img();
-            String name = userInfo.getName();
+//        UserInfo userInfo = DBHelper.getUserInfo(this);
+//        if (null != userInfo) {
+//            String head_img = userInfo.getHead_img();
+//            String name = userInfo.getName();
 //            tv_user_name.setText(name);
-            finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
-        }
+//            finalBitmap.display(left_menu_header_im, head_img, defDrawable.getBitmap(), defDrawable.getBitmap());
+//        }
         //友盟统计
         MobclickAgent.onResume(this);
     }
