@@ -278,6 +278,7 @@ public class Constants {
      **/
     public static final String URL_GET_USER_MSG_LIST = ROOT_URL + "user/get_msg.json";
 
+
     /**********************app帮助类接口**************************/
     /**
      * 送水列表接口

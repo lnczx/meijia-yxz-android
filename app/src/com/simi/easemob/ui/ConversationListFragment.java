@@ -151,7 +151,7 @@ public class ConversationListFragment extends EaseConversationListFragment{
 
         // 更新消息未读数
 //        ((EMMainActivity) getActivity()).updateUnreadLabel();
-        ((MainActivity) getActivity()).updateUnreadLabel();//modify by garry
+        ((MainActivity) getActivity()).getUnreadMsgCountTotal();//modify by garry
         
         return handled ? true : super.onContextItemSelected(item);
     }
