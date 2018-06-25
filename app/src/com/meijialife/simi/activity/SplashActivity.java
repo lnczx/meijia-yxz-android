@@ -675,10 +675,13 @@ public class SplashActivity extends Activity implements Runnable {
   /** 获得基础数据接口 */
   private void getBaseDatas() {
 
-    String user_id = DBHelper.getUser(SplashActivity.this).getId();
+    User user = DBHelper.getUser(SplashActivity.this);
+    if(user == null){
+      return;
+    }
 
     Map<String, String> map = new HashMap<String, String>();
-    map.put("user_id", user_id + "");
+    map.put("user_id", user.getId() + "");
     map.put("t_city", AssetsDatabaseManager.searchCityAddTime(db) + "");
     map.put("t_apptools", AssetsDatabaseManager.searchAppToolsUpdateTime(db) + "");
     map.put("t_express", AssetsDatabaseManager.searchExpressTypeUpdateTime(db) + "");
