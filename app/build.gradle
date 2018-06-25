@@ -111,9 +111,9 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.3'
     compile 'com.facebook.fresco:fresco:1.5.0'
     compile project(':vodPlayerRelease')
-
     compile(name: 'AlivcPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayerView', ext: 'aar')
+    compile 'com.android.support:design:25.3.0'
 }
 

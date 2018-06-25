@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -26,7 +29,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
-import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
@@ -41,6 +43,10 @@ import com.meijialife.simi.bean.VideoAliData;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.player.adapter.FragmentAdapterUtils;
+import com.meijialife.simi.player.fragment.CourseDetailFragment;
+import com.meijialife.simi.player.fragment.CourseListFragment;
+import com.meijialife.simi.player.fragment.CourseMoreFragment;
 import com.meijialife.simi.ui.CustomShareBoard;
 import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.LogOut;
@@ -73,27 +79,19 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
 
     private ImageView iv_thum;//播放器缩略图
 
-    private LinearLayout ll_all;
-    private TextView tv_vname;//课程名称
-    private TextView tv_tname;//讲师
-    private TextView tv_count;//阅读数量
-    private TextView tv_price;//价格
-    private TextView tv_orig_price;//原价
-    private TextView tv_exchange;//金币兑换代金券
-    private TextView tv_more;//了解更多
-    private TextView tv_detail;//概述
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private FragmentAdapterUtils adapter;
+    private List<String> titleList;
+    private List<Fragment> fragmentList;
+    private CourseDetailFragment detailFragment;
+    private CourseListFragment listFragment;
+    private CourseMoreFragment moreFragment;
 
     private TextView btn_take;//参加该课程按钮
     private EditText comment_content;// 评论输入框
     private Button m_btn_confirm;// 发表评论按钮
     private ImageView m_iv_zan;// 点赞
-
-    /**
-     * 相关视频列表
-     */
-    private List<VideoList> videoDatas;
-    private VideoRelateListAdapter adapter;
-    private ListView listView;
 
     private VideoList videoListData;//上一页传来的item数据
     private VideoData video;//视频详细信息
@@ -111,7 +109,6 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         init();
         initView();
         initBottomView();
-        initListView();
 
         if (StringUtils.isNotEmpty(videoId)) {
             getVideoDetail(videoId);
@@ -119,6 +116,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             getVideoDetail(videoListData.getArticle_id());
         }
 
+        showLabels();
     }
 
     @Override
@@ -141,6 +139,8 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         ((TextView) findViewById(R.id.header_tv_name)).setText("课程详情");
         findViewById(R.id.title_btn_left).setVisibility(View.VISIBLE);
         findViewById(R.id.title_btn_left).setOnClickListener(this);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
 
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;
@@ -148,19 +148,27 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         FrameLayout.LayoutParams mPortraitPs = new FrameLayout.LayoutParams(screenWidth, screenWidth * 9 / 16);
         iv_thum.setLayoutParams(mPortraitPs);
 
-        ll_all = (LinearLayout) findViewById(R.id.ll_all);
-        tv_vname = (TextView) findViewById(R.id.tv_vname);
-        tv_tname = (TextView) findViewById(R.id.tv_tname);
-        tv_count = (TextView) findViewById(R.id.tv_count);
-        tv_price = (TextView) findViewById(R.id.tv_price);
-        tv_orig_price = (TextView) findViewById(R.id.tv_orig_price);
-        tv_orig_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        tv_exchange = (TextView) findViewById(R.id.tv_exchange);
-        tv_more = (TextView) findViewById(R.id.tv_more);
-        tv_detail = (TextView) findViewById(R.id.tv_detail);
+    }
 
-        tv_exchange.setOnClickListener(this);
-        tv_more.setOnClickListener(this);
+    private void showLabels(){
+        titleList = new ArrayList<>();
+        titleList.add("介绍");
+        titleList.add("目录");
+        titleList.add("更多");
+
+        detailFragment = CourseDetailFragment.getInstace(titleList.get(0));
+        listFragment = CourseListFragment.getInstace(titleList.get(1));
+        moreFragment = CourseMoreFragment.getInstace(titleList.get(2));
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(detailFragment);
+        fragmentList.add(listFragment);
+        fragmentList.add(moreFragment);
+
+        adapter = new FragmentAdapterUtils(getSupportFragmentManager(), titleList, fragmentList);
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(titleList.size()-1);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     /**
@@ -211,44 +219,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         }
     };
 
-    private void initListView() {
-        videoDatas = new ArrayList<VideoList>();
-        adapter = new VideoRelateListAdapter(this);
-        listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapter);
-        UIUtils.setListViewHeightBasedOnChildren(listView);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*player.destroyVideo();
-                getVideoDetail(videoDatas.get(position).getArticle_id());*/
-                Intent intent = new Intent(CourseActivity.this, CourseActivity.class);
-                intent.putExtra("videoListData", videoDatas.get(position));
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-
     private void showData() {
         if (video == null) {
             return;
-        }
-        tv_vname.setText(video.getTitle());
-        tv_tname.setText("讲师:" + video.getTeacher());
-        tv_count.setText(video.getTotal_view() + " 人学过");
-        tv_price.setText("￥" + video.getDis_price());
-        tv_orig_price.setText("￥" + video.getPrice());
-        if (isHtml(video.getContent())) {
-            tv_detail.setText(Html.fromHtml(video.getContent()));
-        } else if (StringUtils.isNotEmpty(video.getContent())) {
-            tv_detail.setText(video.getContent());
-        }
-
-        if (video.getCategory() != null && video.getCategory().trim().equals("h5")) {
-            //弹窗
-            VideoPopWindow popWindow = new VideoPopWindow(CourseActivity.this, "提醒", video.getContent_desc(), video.getGoto_url(), video.getArticle_id());
-            popWindow.showPopupWindow(ll_all);
         }
 
         if (video.getIs_join() == 1) {//已参加该课程，直接播放
@@ -334,29 +307,6 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                 if (video != null) {
                     ShareConfig.getInstance().inits(CourseActivity.this, video.getVideo_more_url(), video.getTitle(), video.getImg_url());
                     postShare();
-                } else {
-                    Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.tv_exchange://金币兑换代金券
-                if (user == null) {
-                    startActivity(new Intent(CourseActivity.this, LoginActivity.class));
-                    return;
-                }
-                Intent intent6 = new Intent();
-                intent6.setClass(CourseActivity.this, PointsShopActivity.class);
-                intent6.putExtra("navColor", "#E8374A");    //配置导航条的背景颜色，请用#ffffff长格式。
-                intent6.putExtra("titleColor", "#ffffff");    //配置导航条标题的颜色，请用#ffffff长格式。
-                intent6.putExtra("url", Constants.URL_POST_SCORE_SHOP + "?user_id=" + DBHelper.getUserInfo(CourseActivity.this).getUser_id());    //配置自动登陆地址，每次需服务端动态生成。
-                startActivity(intent6);
-                break;
-            case R.id.tv_more://了解更多
-                if (user == null) {
-                    startActivity(new Intent(CourseActivity.this, LoginActivity.class));
-                    return;
-                }
-                if (video != null) {
-                    ToActivityUtil.gotoWebPage(this,"详情",video.getVideo_more_url());
                 } else {
                     Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
                 }
@@ -447,6 +397,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
 
                                 Gson gson = new Gson();
                                 video = gson.fromJson(data, VideoData.class);
+                                detailFragment.setVideo(video);
 
                                 showData();
                                 getVideoRelateList();
@@ -558,10 +509,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                         if (StringUtils.isEquals(status, "0")) { // 正确
                             if (StringUtils.isNotEmpty(data)) {
                                 Gson gson = new Gson();
-                                videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoList>>() {
+                                List<VideoList> videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoList>>() {
                                 }.getType());
-                                adapter.setData(videoDatas);
-                                UIUtils.setListViewHeightBasedOnChildren(listView);
+                                detailFragment.setVideoDatas(videoDatas);
                             } else {
                                 //无相关课程
 //                                errorMsg = getString(R.string.servers_error);

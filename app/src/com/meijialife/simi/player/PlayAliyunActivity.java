@@ -3,6 +3,7 @@ package com.meijialife.simi.player;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.meijialife.simi.R;
 import com.ykcloud.sdk.opentools.player.VODPlayer;
 
-public class PlayAliyunActivity extends Activity {
+public class PlayAliyunActivity extends AppCompatActivity {
 
     private String TAG = "PlayVodActivity";
 
