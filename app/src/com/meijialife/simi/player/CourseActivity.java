@@ -398,6 +398,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                                 Gson gson = new Gson();
                                 video = gson.fromJson(data, VideoData.class);
                                 detailFragment.setVideo(video);
+                                listFragment.setVideo(video);
 
                                 showData();
                                 getVideoRelateList();

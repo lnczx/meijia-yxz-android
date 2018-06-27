@@ -1021,4 +1021,9 @@ public class Constants {
      * 基础类 - 点击计数器接口
      **/
     public static final String URL_ADD_HIT = ROOT_URL + "total/add_hit.json";
+
+    /**
+     * 视频课程-目录列表
+     */
+    public static final String GET_VIDEO_SUB_LIST = ROOT_URL + "video/sub-list.json";
 }
