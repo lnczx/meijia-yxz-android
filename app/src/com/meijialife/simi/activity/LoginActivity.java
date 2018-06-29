@@ -76,772 +76,845 @@ import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
-    // 整个平台的Controller, 负责管理整个SDK的配置、操作等处理
-    private UMSocialService mController = UMServiceFactory.getUMSocialService(Constants.DESCRIPTOR);
+  // 整个平台的Controller, 负责管理整个SDK的配置、操作等处理
+  private UMSocialService mController = UMServiceFactory.getUMSocialService(Constants.DESCRIPTOR);
 
-    private EditText et_user, et_pwd;
-    private TextView login_btn;
-    private ImageView qq_login_btn;
-    private ImageView sina_login_btn;
-    private ImageView wx_login_btn;
-    private String qq_uid;
+  private EditText et_user, et_pwd;
+  private TextView login_btn;
+  private ImageView qq_login_btn;
+  private ImageView sina_login_btn;
+  private ImageView wx_login_btn;
+  private String qq_uid;
 
-    private TextView login_getcode;
+  private TextView login_getcode;
 
-    private TextView tv_user_tip;
+  private TextView tv_user_tip;
 
-    private TextView login_not_get_captcha;
+  private TextView login_not_get_captcha;
 
-    private LinearLayout login_nocode_tip;
+  private LinearLayout login_nocode_tip;
 
-    private Handler mHandler;
+  private Handler mHandler;
 
-    private User user;// 登陆成功后的用户数据
-    private UserInfo userInfo;// 用户详情数据
+  private User user; // 登陆成功后的用户数据
+  private UserInfo userInfo; // 用户详情数据
 
-    private TextView tv_nocode_tip;
+  private TextView tv_nocode_tip;
 
-    private TextView tv_number;
-    public static String clientid;
-    //首页广告
-    private ImageView mLogoIcon;
-    private FinalBitmap finalBitmap;
-    private BitmapDrawable defDrawable;
+  private TextView tv_number;
+  public String clientid;
+  // 首页广告
+  private ImageView mLogoIcon;
+  private FinalBitmap finalBitmap;
+  private BitmapDrawable defDrawable;
 
-    /**
-     * 获取当前位置经纬度
-     */
-    private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000;
+  /** 获取当前位置经纬度 */
+  private LocationClient locationClient = null;
 
+  private static final int UPDATE_TIME = 5000;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.login_layout);
-        super.onCreate(savedInstanceState);
-        initView();
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setContentView(R.layout.login_layout);
+    super.onCreate(savedInstanceState);
+    initView();
 
+    setConfig(); // 配置第三方登录
 
-        setConfig();// 配置第三方登录
-
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case 0:
-                        if (msg.obj.toString().equalsIgnoreCase("0")) {
-                            login_getcode.setText("获取验证码");
-                            login_getcode.setClickable(true);
-                            login_getcode.setFocusable(true);
-                            login_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_login_getcode));
-                        } else {
-                            login_getcode.setText("重发验证码" + msg.obj + "s");
-                        }
-                        break;
-                }
-            }
-        };
-    }
-
-    private void setConfig() {
-        // 设置qq的
-        String appId = "1104934408";
-        String appKey = "bRW2glhUCR6aJYIZ";
-        // 添加QQ支持, 并且设置QQ分享内容的target url
-        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(LoginActivity.this, appId, appKey);
-        qqSsoHandler.addToSocialSDK();
-
-        // 设置新浪SSO handler
-        mController.getConfig().setSsoHandler(new SinaSsoHandler());
-
-        // 添加微信平台
-        UMWXHandler wxHandler = new UMWXHandler(LoginActivity.this, "wx93aa45d30bf6cba3", "7a4ec42a0c548c6e39ce9ed25cbc6bd7");
-        wxHandler.addToSocialSDK();
-
-    }
-
-    private void initView() {
-
-        setTitleName("免费注册与登录");
-        int is_show_back = getIntent().getIntExtra("is_show_back", 1);
-        if (is_show_back == 1) {
-            requestBackBtn();
-        }
-        finalBitmap = FinalBitmap.create(this);
-        defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.login_logo);
-        et_user = (EditText) findViewById(R.id.login_user_name);
-        et_pwd = (EditText) findViewById(R.id.login_password);
-        et_pwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEND){
-                    login_nomal();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        login_getcode = (TextView) findViewById(R.id.login_getcode);
-        login_not_get_captcha = (TextView) findViewById(R.id.login_not_get_captcha);
-        login_btn = (TextView) findViewById(R.id.login_btn);
-        tv_user_tip = (TextView) findViewById(R.id.tv_user_tip);
-        tv_nocode_tip = (TextView) findViewById(R.id.tv_nocode_tip);
-        tv_number = (TextView) findViewById(R.id.tv_number);
-        login_nocode_tip = (LinearLayout) findViewById(R.id.login_nocode_tip);
-
-        mLogoIcon = (ImageView) findViewById(R.id.m_logo_icon);
-        qq_login_btn = (ImageView) findViewById(R.id.qq_login_btn);
-        sina_login_btn = (ImageView) findViewById(R.id.sina_login_btn);
-        wx_login_btn = (ImageView) findViewById(R.id.wx_login_btn);
-
-
-        finalBitmap.display(mLogoIcon, Constants.LOGO_ICON_URL);
-
-        login_btn.setOnClickListener(this);
-        login_getcode.setOnClickListener(this);
-        login_not_get_captcha.setOnClickListener(this);
-        tv_user_tip.setOnClickListener(this);
-
-        qq_login_btn.setOnClickListener(this);
-        sina_login_btn.setOnClickListener(this);
-        wx_login_btn.setOnClickListener(this);
-
-        initLocation();
-
-    }
-
-    /**
-     * 获取用户当前位置的经纬度
-     */
-    private void initLocation() {
-        locationClient = new LocationClient(this);
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true); // 是否打开GPS
-        option.setCoorType("bd09ll"); // 设置返回值的坐标类型。
-        option.setPriority(LocationClientOption.NetWorkFirst); // 设置定位优先级
-        option.setProdName("Secretary"); // 设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
-        option.setScanSpan(UPDATE_TIME); // 设置定时定位的时间间隔。单位毫秒
-        option.setIsNeedAddress(true);// 设置返回城市
-        option.setIsNeedLocationDescribe(true);
-        locationClient.setLocOption(option);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.qq_login_btn:
-
-                login_with_social(SHARE_MEDIA.QQ);
-                break;
-            case R.id.sina_login_btn:
-                login_with_social(SHARE_MEDIA.SINA);
-                break;
-            case R.id.wx_login_btn:
-                login_with_social(SHARE_MEDIA.WEIXIN);
-                break;
-            case R.id.login_getcode:// 获取验证码
-                String reg_phone = et_user.getText().toString().trim();
-                if (BasicToolUtil.checkMobileNum(this, reg_phone)) {
-                    getSmsToken(reg_phone);
-                }
-
-                break;
-            case R.id.login_btn: // 登录
-                login_nomal();
-                break;
-            case R.id.login_not_get_captcha:// 没有收到
-                String styledText = "<font color='blue'>" + Constants.SERVICE_NUMBER + "</font>";
-                Spanned number = Html.fromHtml("<u>" + styledText + "</u>");
-                tv_number.setText(number, TextView.BufferType.SPANNABLE);
-                String text = getResources().getString(R.string.login_no_code_tip);
-                tv_nocode_tip.setText(text, TextView.BufferType.SPANNABLE);
-                if (login_nocode_tip.getVisibility() == View.INVISIBLE) {
-                    login_nocode_tip.setVisibility(View.VISIBLE);
-                }
-
-                tv_number.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                    }
-                });
-
-                break;
-            case R.id.tv_user_tip:// 用户协议
-                ToActivityUtil.gotoWebPage(LoginActivity.this,"用户使用协议",Constants.URL_WEB_AGREE);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * 普通登录
-     */
-    private void login_nomal() {
-        final String mobile = et_user.getText().toString().trim();
-        String sms_token = et_pwd.getText().toString().trim();
-
-        if (StringUtils.isEmpty(mobile)) {
-            Toast.makeText(this, "手机号不能为空", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (StringUtils.isEmpty(sms_token)) {
-            Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        showDialog();
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("mobile", mobile);
-        map.put("sms_token", sms_token);
-        map.put("device_type", "android");
-        map.put("login_from", "0");
-        AjaxParams param = new AjaxParams(map);
-        new FinalHttp().post(Constants.URL_LOGIN, param, new AjaxCallBack<Object>() {
-
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                LogOut.debug("错误码：" + errorNo);
-                dismissDialog();
-                Toast.makeText(getApplicationContext(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                dismissDialog();
-                LogOut.debug("成功:" + t.toString());
-
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            loginSuccess(data);
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    UIUtils.showToast(LoginActivity.this, "登录失败,请稍后重试");
-                }
-
-            }
-        });
-
-    }
-
-    /**
-     * 第三方登录
-     *
-     * @param uid
-     * @param platform 来源
-     * @param info     qq用户信息:{is_yellow_year_vip=0, vip=0, level=0, province=北京, yellow_vip_level=0, is_yellow_vip=0, gender=男, screen_name=清风飘叶, msg=,
-     *                 profile_image_url=http://q.qlogo.cn/qqapp/1104934408/06183F86F7AA0ABE4314055856835450/100, city=海淀} time: 1441082419979
-     */
-    private void login_3rd(final String uid, SHARE_MEDIA platform, final Map<String, Object> info) {
-        showDialog();
-
-        Map<String, String> map = new HashMap<String, String>();
-        if (platform == SHARE_MEDIA.QQ) {
-            map.put("openid", uid);
-            map.put("3rd_type", "QQ");
-            map.put("name", info.get("screen_name").toString());
-            map.put("head_img", info.get("profile_image_url").toString());
-        } else if (platform == SHARE_MEDIA.SINA) {
-            map.put("openid", uid);
-            map.put("3rd_type", "SINA");
-            map.put("name", info.get("screen_name").toString());
-            map.put("head_img", info.get("profile_image_url").toString());
-        } else if (platform == SHARE_MEDIA.WEIXIN) {
-            map.put("openid", uid);
-            map.put("3rd_type", "WEIXIN");
-            map.put("name", info.get("nickname").toString());
-            map.put("head_img", info.get("headimgurl").toString());
-        }
-
-        map.put("device_type", "android");
-        map.put("login_from", "0");
-        AjaxParams param = new AjaxParams(map);
-        new FinalHttp().post(Constants.URL_THIRD_PARTY_LOGIN, param, new AjaxCallBack<Object>() {
-
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                LogOut.debug("错误码：" + errorNo);
-                dismissDialog();
-                Toast.makeText(getApplicationContext(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                dismissDialog();
-                LogOut.debug("成功:" + t.toString());
-
-                try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            loginSuccess(data);
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    UIUtils.showToast(LoginActivity.this, "登录失败,请稍后重试");
-                }
-
-            }
-        });
-
-    }
-
-
-    /**
-     * 授权。如果授权成功，则获取用户信息
-     */
-    private void login_with_social(final SHARE_MEDIA platform) {
-        mController.doOauthVerify(LoginActivity.this, platform, new UMAuthListener() {
-
-            @Override
-            public void onStart(SHARE_MEDIA platform) {
-                // Toast.makeText(LoginActivity.this, "start", 0).show();
-            }
-
-            @Override
-            public void onError(SocializeException e, SHARE_MEDIA platform) {
-            }
-
-            @Override
-            public void onComplete(Bundle value, SHARE_MEDIA platform) {
-                // Toast.makeText(LoginActivity.this, "onComplete", 0).show();
-                qq_uid = value.getString("uid");
-
-                if (!TextUtils.isEmpty(qq_uid)) {
-                    getUserInfo(qq_uid, platform);
+    mHandler =
+        new Handler() {
+          @Override
+          public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+              case 0:
+                if (msg.obj.toString().equalsIgnoreCase("0")) {
+                  login_getcode.setText("获取验证码");
+                  login_getcode.setClickable(true);
+                  login_getcode.setFocusable(true);
+                  login_getcode.setBackgroundDrawable(
+                      getResources().getDrawable(R.drawable.bg_login_getcode));
                 } else {
-                    Toast.makeText(LoginActivity.this, "授权失败...", Toast.LENGTH_SHORT).show();
+                  login_getcode.setText("重发验证码" + msg.obj + "s");
                 }
+                break;
             }
+          }
+        };
+  }
 
-            @Override
-            public void onCancel(SHARE_MEDIA platform) {
-            }
-        });
+  private void setConfig() {
+    // 设置qq的
+    String appId = "1104934408";
+    String appKey = "bRW2glhUCR6aJYIZ";
+    // 添加QQ支持, 并且设置QQ分享内容的target url
+    UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(LoginActivity.this, appId, appKey);
+    qqSsoHandler.addToSocialSDK();
+
+    // 设置新浪SSO handler
+    mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+    // 添加微信平台
+    UMWXHandler wxHandler =
+        new UMWXHandler(
+            LoginActivity.this, "wx93aa45d30bf6cba3", "7a4ec42a0c548c6e39ce9ed25cbc6bd7");
+    wxHandler.addToSocialSDK();
+  }
+
+  private void initView() {
+
+    setTitleName("免费注册与登录");
+    int is_show_back = getIntent().getIntExtra("is_show_back", 1);
+    if (is_show_back == 1) {
+      requestBackBtn();
     }
-
-    /**
-     * 获取授权平台的用户信息，并注册新帐号
-     */
-    private void getUserInfo(final String uid, final SHARE_MEDIA platform) {
-        mController.getPlatformInfo(LoginActivity.this, platform, new UMDataListener() {
-
-            @Override
-            public void onStart() {
-
+    finalBitmap = FinalBitmap.create(this);
+    defDrawable = (BitmapDrawable) getResources().getDrawable(R.drawable.login_logo);
+    et_user = (EditText) findViewById(R.id.login_user_name);
+    et_pwd = (EditText) findViewById(R.id.login_password);
+    et_pwd.setOnEditorActionListener(
+        new TextView.OnEditorActionListener() {
+          @Override
+          public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+              login_nomal();
+              return true;
             }
-
-            // 获取到的信息
-            // {is_yellow_year_vip=0, vip=0, level=0, province=北京,
-            // yellow_vip_level=0, is_yellow_vip=0, gender=男,
-            // screen_name=清风飘叶, msg=,
-            // profile_image_url=http://q.qlogo.cn/qqapp/1104722481/E14A56D79EFE74A653DB958C5DDA84B0/100,
-            // city=海淀}
-            @Override
-            public void onComplete(int status, Map<String, Object> info) {
-                if (status == StatusCode.ST_CODE_SUCCESSED) {
-                    LogOut.debug("用户信息:" + info.toString());
-                    // Toast.makeText(LoginActivity.this, info.toString(), Toast.LENGTH_LONG).show();
-
-                    login_3rd(uid, platform, info);
-
-                }
-            }
-
+            return false;
+          }
         });
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
-        if (ssoHandler != null) {
-            ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+    login_getcode = (TextView) findViewById(R.id.login_getcode);
+    login_not_get_captcha = (TextView) findViewById(R.id.login_not_get_captcha);
+    login_btn = (TextView) findViewById(R.id.login_btn);
+    tv_user_tip = (TextView) findViewById(R.id.tv_user_tip);
+    tv_nocode_tip = (TextView) findViewById(R.id.tv_nocode_tip);
+    tv_number = (TextView) findViewById(R.id.tv_number);
+    login_nocode_tip = (LinearLayout) findViewById(R.id.login_nocode_tip);
+
+    mLogoIcon = (ImageView) findViewById(R.id.m_logo_icon);
+    qq_login_btn = (ImageView) findViewById(R.id.qq_login_btn);
+    sina_login_btn = (ImageView) findViewById(R.id.sina_login_btn);
+    wx_login_btn = (ImageView) findViewById(R.id.wx_login_btn);
+
+    finalBitmap.display(mLogoIcon, Constants.LOGO_ICON_URL);
+
+    login_btn.setOnClickListener(this);
+    login_getcode.setOnClickListener(this);
+    login_not_get_captcha.setOnClickListener(this);
+    tv_user_tip.setOnClickListener(this);
+
+    qq_login_btn.setOnClickListener(this);
+    sina_login_btn.setOnClickListener(this);
+    wx_login_btn.setOnClickListener(this);
+
+    initLocation();
+  }
+
+  /** 获取用户当前位置的经纬度 */
+  private void initLocation() {
+    locationClient = new LocationClient(this);
+    LocationClientOption option = new LocationClientOption();
+    option.setOpenGps(true); // 是否打开GPS
+    option.setCoorType("bd09ll"); // 设置返回值的坐标类型。
+    option.setPriority(LocationClientOption.NetWorkFirst); // 设置定位优先级
+    option.setProdName("Secretary"); // 设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+    option.setScanSpan(UPDATE_TIME); // 设置定时定位的时间间隔。单位毫秒
+    option.setIsNeedAddress(true); // 设置返回城市
+    option.setIsNeedLocationDescribe(true);
+    locationClient.setLocOption(option);
+  }
+
+  @Override
+  public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.qq_login_btn:
+        login_with_social(SHARE_MEDIA.QQ);
+        break;
+      case R.id.sina_login_btn:
+        login_with_social(SHARE_MEDIA.SINA);
+        break;
+      case R.id.wx_login_btn:
+        login_with_social(SHARE_MEDIA.WEIXIN);
+        break;
+      case R.id.login_getcode: // 获取验证码
+        String reg_phone = et_user.getText().toString().trim();
+        if (BasicToolUtil.checkMobileNum(this, reg_phone)) {
+          getSmsToken(reg_phone);
         }
+
+        break;
+      case R.id.login_btn: // 登录
+        login_nomal();
+        break;
+      case R.id.login_not_get_captcha: // 没有收到
+        String styledText = "<font color='blue'>" + Constants.SERVICE_NUMBER + "</font>";
+        Spanned number = Html.fromHtml("<u>" + styledText + "</u>");
+        tv_number.setText(number, TextView.BufferType.SPANNABLE);
+        String text = getResources().getString(R.string.login_no_code_tip);
+        tv_nocode_tip.setText(text, TextView.BufferType.SPANNABLE);
+        if (login_nocode_tip.getVisibility() == View.INVISIBLE) {
+          login_nocode_tip.setVisibility(View.VISIBLE);
+        }
+
+        tv_number.setOnClickListener(
+            new OnClickListener() {
+
+              @Override
+              public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "4001691615"));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+              }
+            });
+
+        break;
+      case R.id.tv_user_tip: // 用户协议
+        ToActivityUtil.gotoWebPage(LoginActivity.this, "用户使用协议", Constants.URL_WEB_AGREE);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /** 普通登录 */
+  private void login_nomal() {
+    final String mobile = et_user.getText().toString().trim();
+    String sms_token = et_pwd.getText().toString().trim();
+
+    if (StringUtils.isEmpty(mobile)) {
+      Toast.makeText(this, "手机号不能为空", Toast.LENGTH_SHORT).show();
+      return;
+    }
+    if (StringUtils.isEmpty(sms_token)) {
+      Toast.makeText(this, "验证码不能为空", Toast.LENGTH_SHORT).show();
+      return;
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
-    }
+    showDialog();
 
-    /**
-     * 获取手机验证码
-     */
-    private void getSmsToken(String mobile) {
-        showDialog();
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("mobile", mobile);
+    map.put("sms_token", sms_token);
+    map.put("device_type", "android");
+    map.put("login_from", "0");
+    AjaxParams param = new AjaxParams(map);
+    new FinalHttp()
+        .post(
+            Constants.URL_LOGIN,
+            param,
+            new AjaxCallBack<Object>() {
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("mobile", mobile);
-        map.put("sms_type", "0");
-        AjaxParams param = new AjaxParams(map);
-        new FinalHttp().get(Constants.URL_GET_SMS_TOKEN, param, new AjaxCallBack<Object>() {
-
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 LogOut.debug("错误码：" + errorNo);
                 dismissDialog();
-                Toast.makeText(getApplicationContext(), getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.network_failure),
+                        Toast.LENGTH_SHORT)
+                    .show();
+              }
 
-            @Override
-            public void onSuccess(Object t) {
+              @Override
+              public void onSuccess(Object t) {
                 super.onSuccess(t);
                 dismissDialog();
                 LogOut.debug("成功:" + t.toString());
 
                 try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            login_not_get_captcha.setVisibility(View.VISIBLE);
-                            login_getcode.setClickable(false);
-                            login_getcode.setFocusable(false);
-                            login_getcode.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_login_getcode_over));
-
-                            Toast.makeText(getApplicationContext(), "验证码获取成功", Toast.LENGTH_SHORT).show();
-
-                            new Thread() {
-                                int a = 60;
-
-                                @Override
-                                public void run() {
-                                    while (a > 0) {
-                                        try {
-                                            sleep(1000);
-                                            a--;
-                                            Message msg = mHandler.obtainMessage(0, a);
-                                            mHandler.sendMessage(msg);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-
-                                ;
-                            }.start();
-
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_missing), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            Toast.makeText(LoginActivity.this, getString(R.string.param_illegal), Toast.LENGTH_SHORT).show();
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
-                        }
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      loginSuccess(data);
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_missing),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_illegal),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
                     }
+                  }
                 } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
+                  e.printStackTrace();
+                  UIUtils.showToast(LoginActivity.this, "登录失败,请稍后重试");
                 }
-
-            }
-        });
-
-    }
-
-    ;
-
-    /**
-     * 后台接口登陆成功，开始登陆环信
-     */
-    private void loginSuccess(String data) {
-        if (null == data) {
-            Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        try {
-            Gson gson = new Gson();
-            user = gson.fromJson(data, User.class);
-        }catch (Exception e){
-            user = null;
-        }
-        if(null == user ){
-            Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        DBHelper.updateUser(LoginActivity.this, user);
-        // 登录成功
-        Toast.makeText(getApplicationContext(), "登录成功！", Toast.LENGTH_SHORT).show();
-
-        // 获取用户详情，之后去登陆环信
-        getUserInfo();
-
-        try{
-            //登录成功定位当前位置
-            locationClient.start();
-            locationClient.registerLocationListener(new BDLocationListener() {
-                @Override
-                public void onReceiveLocation(BDLocation location) {
-                    if (location == null) {
-                        return;
-                    }
-                    if (DBHelper.getUser(LoginActivity.this) != null) {
-                        post_trail(location);
-                    }
-                }
+              }
             });
-        }catch (Exception e){
+  }
 
-        }
-        String clientidFromWeb = user.getClient_id();
-        if (StringUtils.isEmpty(clientidFromWeb) || !StringUtils.isEquals(clientidFromWeb, clientid)) {
-            bind_user(user.getId(), clientid);
-        }
+  /**
+   * 第三方登录
+   *
+   * @param uid
+   * @param platform 来源
+   * @param info qq用户信息:{is_yellow_year_vip=0, vip=0, level=0, province=北京, yellow_vip_level=0,
+   *     is_yellow_vip=0, gender=男, screen_name=清风飘叶, msg=,
+   *     profile_image_url=http://q.qlogo.cn/qqapp/1104934408/06183F86F7AA0ABE4314055856835450/100,
+   *     city=海淀} time: 1441082419979
+   */
+  private void login_3rd(final String uid, SHARE_MEDIA platform, final Map<String, Object> info) {
+    showDialog();
+
+    Map<String, String> map = new HashMap<String, String>();
+    if (platform == SHARE_MEDIA.QQ) {
+      map.put("openid", uid);
+      map.put("3rd_type", "QQ");
+      map.put("name", info.get("screen_name").toString());
+      map.put("head_img", info.get("profile_image_url").toString());
+    } else if (platform == SHARE_MEDIA.SINA) {
+      map.put("openid", uid);
+      map.put("3rd_type", "SINA");
+      map.put("name", info.get("screen_name").toString());
+      map.put("head_img", info.get("profile_image_url").toString());
+    } else if (platform == SHARE_MEDIA.WEIXIN) {
+      map.put("openid", uid);
+      map.put("3rd_type", "WEIXIN");
+      map.put("name", info.get("nickname").toString());
+      map.put("head_img", info.get("headimgurl").toString());
     }
 
-    /**
-     * 获取用户详情接口
-     */
-    private void getUserInfo() {
-        if (user.getId() == null) {
-            Toast.makeText(LoginActivity.this, "用户信息错误", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    map.put("device_type", "android");
+    map.put("login_from", "0");
+    AjaxParams param = new AjaxParams(map);
+    new FinalHttp()
+        .post(
+            Constants.URL_THIRD_PARTY_LOGIN,
+            param,
+            new AjaxCallBack<Object>() {
 
-        if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
-            return;
-        }
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                LogOut.debug("错误码：" + errorNo);
+                dismissDialog();
+                Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.network_failure),
+                        Toast.LENGTH_SHORT)
+                    .show();
+              }
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user.getId());
-        AjaxParams param = new AjaxParams(map);
+              @Override
+              public void onSuccess(Object t) {
+                super.onSuccess(t);
+                dismissDialog();
+                LogOut.debug("成功:" + t.toString());
 
-        showDialog();
-        new FinalHttp().get(Constants.URL_GET_USER_INFO, param, new AjaxCallBack<Object>() {
+                try {
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      loginSuccess(data);
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_missing),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_illegal),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  }
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                  UIUtils.showToast(LoginActivity.this, "登录失败,请稍后重试");
+                }
+              }
+            });
+  }
+
+  /** 授权。如果授权成功，则获取用户信息 */
+  private void login_with_social(final SHARE_MEDIA platform) {
+    mController.doOauthVerify(
+        LoginActivity.this,
+        platform,
+        new UMAuthListener() {
+
+          @Override
+          public void onStart(SHARE_MEDIA platform) {
+            // Toast.makeText(LoginActivity.this, "start", 0).show();
+          }
+
+          @Override
+          public void onError(SocializeException e, SHARE_MEDIA platform) {}
+
+          @Override
+          public void onComplete(Bundle value, SHARE_MEDIA platform) {
+            // Toast.makeText(LoginActivity.this, "onComplete", 0).show();
+            qq_uid = value.getString("uid");
+
+            if (!TextUtils.isEmpty(qq_uid)) {
+              getUserInfo(qq_uid, platform);
+            } else {
+              Toast.makeText(LoginActivity.this, "授权失败...", Toast.LENGTH_SHORT).show();
+            }
+          }
+
+          @Override
+          public void onCancel(SHARE_MEDIA platform) {}
+        });
+  }
+
+  /** 获取授权平台的用户信息，并注册新帐号 */
+  private void getUserInfo(final String uid, final SHARE_MEDIA platform) {
+    mController.getPlatformInfo(
+        LoginActivity.this,
+        platform,
+        new UMDataListener() {
+
+          @Override
+          public void onStart() {}
+
+          // 获取到的信息
+          // {is_yellow_year_vip=0, vip=0, level=0, province=北京,
+          // yellow_vip_level=0, is_yellow_vip=0, gender=男,
+          // screen_name=清风飘叶, msg=,
+          // profile_image_url=http://q.qlogo.cn/qqapp/1104722481/E14A56D79EFE74A653DB958C5DDA84B0/100,
+          // city=海淀}
+          @Override
+          public void onComplete(int status, Map<String, Object> info) {
+            if (status == StatusCode.ST_CODE_SUCCESSED) {
+              LogOut.debug("用户信息:" + info.toString());
+              // Toast.makeText(LoginActivity.this, info.toString(), Toast.LENGTH_LONG).show();
+
+              login_3rd(uid, platform, info);
+            }
+          }
+        });
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
+    if (ssoHandler != null) {
+      ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+    }
+  }
+
+  @Override
+  public void onBackPressed() {
+    super.onBackPressed();
+    this.finish();
+  }
+
+  /** 获取手机验证码 */
+  private void getSmsToken(String mobile) {
+    showDialog();
+
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("mobile", mobile);
+    map.put("sms_type", "0");
+    AjaxParams param = new AjaxParams(map);
+    new FinalHttp()
+        .get(
+            Constants.URL_GET_SMS_TOKEN,
+            param,
+            new AjaxCallBack<Object>() {
+
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
+                super.onFailure(t, errorNo, strMsg);
+                LogOut.debug("错误码：" + errorNo);
+                dismissDialog();
+                Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.network_failure),
+                        Toast.LENGTH_SHORT)
+                    .show();
+              }
+
+              @Override
+              public void onSuccess(Object t) {
+                super.onSuccess(t);
+                dismissDialog();
+                LogOut.debug("成功:" + t.toString());
+
+                try {
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      login_not_get_captcha.setVisibility(View.VISIBLE);
+                      login_getcode.setClickable(false);
+                      login_getcode.setFocusable(false);
+                      login_getcode.setBackgroundDrawable(
+                          getResources().getDrawable(R.drawable.bg_login_getcode_over));
+
+                      Toast.makeText(getApplicationContext(), "验证码获取成功", Toast.LENGTH_SHORT).show();
+
+                      new Thread() {
+                        int a = 60;
+
+                        @Override
+                        public void run() {
+                          while (a > 0) {
+                            try {
+                              sleep(1000);
+                              a--;
+                              Message msg = mHandler.obtainMessage(0, a);
+                              mHandler.sendMessage(msg);
+                            } catch (InterruptedException e) {
+                              e.printStackTrace();
+                            }
+                          }
+                        };
+                      }.start();
+
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_missing),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.param_illegal),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    } else {
+                      Toast.makeText(
+                              LoginActivity.this,
+                              getString(R.string.servers_error),
+                              Toast.LENGTH_SHORT)
+                          .show();
+                    }
+                  }
+                } catch (JSONException e) {
+                  e.printStackTrace();
+                  Toast.makeText(
+                          LoginActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT)
+                      .show();
+                }
+              }
+            });
+  };
+
+  /** 后台接口登陆成功，开始登陆环信 */
+  private void loginSuccess(String data) {
+    if (null == data) {
+      Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+      return;
+    }
+    try {
+      Gson gson = new Gson();
+      user = gson.fromJson(data, User.class);
+    } catch (Exception e) {
+      user = null;
+    }
+    if (null == user) {
+      Toast.makeText(getApplicationContext(), "登录失败，请重试", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    DBHelper.updateUser(LoginActivity.this, user);
+    // 登录成功
+    Toast.makeText(getApplicationContext(), "登录成功！", Toast.LENGTH_SHORT).show();
+
+    // 获取用户详情，之后去登陆环信
+    getUserInfo();
+
+    try {
+      // 登录成功定位当前位置
+      locationClient.start();
+      locationClient.registerLocationListener(
+          new BDLocationListener() {
             @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
+            public void onReceiveLocation(BDLocation location) {
+              if (location == null) {
+                return;
+              }
+              if (DBHelper.getUser(LoginActivity.this) != null) {
+                post_trail(location);
+              }
+            }
+          });
+    } catch (Exception e) {
+
+    }
+    String clientidFromWeb = user.getClient_id();
+    clientid =
+        SpFileUtil.getString(
+            LoginActivity.this, SpFileUtil.FILE_UI_PARAMETER, SpFileUtil.KEY_CLIENT_ID, "");
+    if (StringUtils.isEmpty(clientidFromWeb) || !StringUtils.isEquals(clientidFromWeb, clientid)) {
+      bind_user(user.getId(), clientid);
+    }
+  }
+
+  /** 获取用户详情接口 */
+  private void getUserInfo() {
+    if (user.getId() == null) {
+      Toast.makeText(LoginActivity.this, "用户信息错误", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
+      Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT)
+          .show();
+      return;
+    }
+
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("user_id", user.getId());
+    AjaxParams param = new AjaxParams(map);
+
+    showDialog();
+    new FinalHttp()
+        .get(
+            Constants.URL_GET_USER_INFO,
+            param,
+            new AjaxCallBack<Object>() {
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
                 dismissDialog();
-                Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(
+                        LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT)
+                    .show();
+              }
 
-            @Override
-            public void onSuccess(Object t) {
+              @Override
+              public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 dismissDialog();
                 LogOut.i("========", "用户详情 onSuccess：" + t);
                 try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                try {
-                                    userInfo = gson.fromJson(data, UserInfo.class);
-                                    if (null != userInfo) {
-                                        loginIm();// 去登陆环信 放到友盟登录成功之后
-//                                updateCalendarMark();// 请求日历数据
-//                                getUserMsg();//更新用户未读信息状态
-                                        DBHelper.updateUserInfo(LoginActivity.this, userInfo);
-                                    }
-                                } catch (Exception e) {
-                                    UIUtils.showToast(LoginActivity.this, "登录失败，请重试");
-                                }
-
-                            } else {
-                                UIUtils.showToast(LoginActivity.this, "数据错误");
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      if (StringUtils.isNotEmpty(data)) {
+                        Gson gson = new Gson();
+                        try {
+                          userInfo = gson.fromJson(data, UserInfo.class);
+                          if (null != userInfo) {
+                            loginIm(); // 去登陆环信 放到友盟登录成功之后
+                            //                                updateCalendarMark();// 请求日历数据
+                            //                                getUserMsg();//更新用户未读信息状态
+                            DBHelper.updateUserInfo(LoginActivity.this, userInfo);
+                          }
+                        } catch (Exception e) {
+                          UIUtils.showToast(LoginActivity.this, "登录失败，请重试");
                         }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
 
+                      } else {
+                        UIUtils.showToast(LoginActivity.this, "数据错误");
+                      }
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      errorMsg = getString(R.string.servers_error);
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      errorMsg = getString(R.string.param_missing);
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      errorMsg = getString(R.string.param_illegal);
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      errorMsg = msg;
+                    } else {
+                      errorMsg = getString(R.string.servers_error);
+                    }
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  errorMsg = getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息|
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(LoginActivity.this, errorMsg);
+                  UIUtils.showToast(LoginActivity.this, errorMsg);
                 }
-            }
-        });
+              }
+            });
+  }
 
-    }
+  /** 获得用户消息列表接口 */
+  private void getUserMsg() {
+    User user = DBHelper.getUser(this);
+    if (user != null) {
+      if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
+        Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT)
+            .show();
+        return;
+      }
 
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("user_id", user.getId());
+      map.put(
+          "service_date", DateUtils.getStringByPattern(System.currentTimeMillis(), "yyyy-MM-dd"));
+      AjaxParams param = new AjaxParams(map);
 
-    /**
-     * 获得用户消息列表接口
-     */
-    private void getUserMsg() {
-        User user = DBHelper.getUser(this);
-        if (user != null) {
-            if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-                Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("user_id", user.getId());
-            map.put("service_date", DateUtils.getStringByPattern(System.currentTimeMillis(), "yyyy-MM-dd"));
-            AjaxParams param = new AjaxParams(map);
-
-            new FinalHttp().get(Constants.URL_GET_USER_MSG_LIST, param, new AjaxCallBack<Object>() {
+      new FinalHttp()
+          .get(
+              Constants.URL_GET_USER_MSG_LIST,
+              param,
+              new AjaxCallBack<Object>() {
                 @Override
                 public void onFailure(Throwable t, int errorNo, String strMsg) {
-                    super.onFailure(t, errorNo, strMsg);
-                    Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                  super.onFailure(t, errorNo, strMsg);
+                  Toast.makeText(
+                          LoginActivity.this,
+                          getString(R.string.network_failure),
+                          Toast.LENGTH_SHORT)
+                      .show();
                 }
 
                 @Override
                 public void onSuccess(Object t) {
-                    super.onSuccess(t);
-                    String errorMsg = "";
-                    try {
-                        if (StringUtils.isNotEmpty(t.toString())) {
-                            JSONObject obj = new JSONObject(t.toString());
-                            int status = obj.getInt("status");
-                            String msg = obj.getString("msg");
-                            String data = obj.getString("data");
-                            if (status == Constants.STATUS_SUCCESS) { // 正确
-                                if (StringUtils.isNotEmpty(data)) {
-                                    Gson gson = new Gson();
-                                    List<UserMsg> userMsgs = gson.fromJson(data, new TypeToken<ArrayList<UserMsg>>() {
-                                    }.getType());
+                  super.onSuccess(t);
+                  String errorMsg = "";
+                  try {
+                    if (StringUtils.isNotEmpty(t.toString())) {
+                      JSONObject obj = new JSONObject(t.toString());
+                      int status = obj.getInt("status");
+                      String msg = obj.getString("msg");
+                      String data = obj.getString("data");
+                      if (status == Constants.STATUS_SUCCESS) { // 正确
+                        if (StringUtils.isNotEmpty(data)) {
+                          Gson gson = new Gson();
+                          List<UserMsg> userMsgs =
+                              gson.fromJson(data, new TypeToken<ArrayList<UserMsg>>() {}.getType());
 
-                                    if (userMsgs != null && userMsgs.size() > 1) {
-                                        SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, true);
-                                    } else {
-                                        SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
-                                    }
-                                } else {
-                                    SpFileUtil.saveBoolean(LoginActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
-                                }
-                            } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                                errorMsg = getString(R.string.servers_error);
-                            } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                                errorMsg = getString(R.string.param_missing);
-                            } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                                errorMsg = getString(R.string.param_illegal);
-                            } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                                errorMsg = msg;
-                            } else {
-                                errorMsg = getString(R.string.servers_error);
-                            }
+                          if (userMsgs != null && userMsgs.size() > 1) {
+                            SpFileUtil.saveBoolean(
+                                LoginActivity.this,
+                                SpFileUtil.KEY_MSG_UNREAD,
+                                SpFileUtil.KEY_MSG_UNREAD,
+                                true);
+                          } else {
+                            SpFileUtil.saveBoolean(
+                                LoginActivity.this,
+                                SpFileUtil.KEY_MSG_UNREAD,
+                                SpFileUtil.KEY_MSG_UNREAD,
+                                false);
+                          }
+                        } else {
+                          SpFileUtil.saveBoolean(
+                              LoginActivity.this,
+                              SpFileUtil.KEY_MSG_UNREAD,
+                              SpFileUtil.KEY_MSG_UNREAD,
+                              false);
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                      } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                         errorMsg = getString(R.string.servers_error);
+                      } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                        errorMsg = getString(R.string.param_missing);
+                      } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                        errorMsg = getString(R.string.param_illegal);
+                      } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                        errorMsg = msg;
+                      } else {
+                        errorMsg = getString(R.string.servers_error);
+                      }
                     }
-                    // 操作失败，显示错误信息|
-                    if (!StringUtils.isEmpty(errorMsg.trim())) {
-                        UIUtils.showToast(LoginActivity.this, errorMsg);
-                    }
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                    errorMsg = getString(R.string.servers_error);
+                  }
+                  // 操作失败，显示错误信息|
+                  if (!StringUtils.isEmpty(errorMsg.trim())) {
+                    UIUtils.showToast(LoginActivity.this, errorMsg);
+                  }
                 }
-            });
-        }
+              });
+    }
+  }
+
+  private void loginUmengComm() {}
+
+  /** 登录环信 */
+  public void loginIm() {
+    final String currentUsername = userInfo.getIm_username();
+    final String currentPassword = userInfo.getIm_password();
+
+    if (!EaseCommonUtils.isNetWorkConnected(this)) {
+      Toast.makeText(this, R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
+      return;
+    }
+    if (TextUtils.isEmpty(currentUsername)) {
+      Toast.makeText(this, R.string.User_name_cannot_be_empty, Toast.LENGTH_SHORT).show();
+      return;
+    }
+    if (TextUtils.isEmpty(currentPassword)) {
+      Toast.makeText(this, R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
+      return;
     }
 
-    private void loginUmengComm() {
-
-
-
-
-
-
-    }
-
-
-    /**
-     * 登录环信
+    showDialog();
+    /*
+     * progressShow = true; final ProgressDialog pd = new ProgressDialog(EMLoginActivity.this); pd.setCanceledOnTouchOutside(false);
+     * pd.setOnCancelListener(new OnCancelListener() {
+     *
+     * @Override public void onCancel(DialogInterface dialog) { progressShow = false; } }); pd.setMessage(getString(R.string.Is_landing));
+     * pd.show();
      */
-    public void loginIm() {
-        final String currentUsername = userInfo.getIm_username();
-        final String currentPassword = userInfo.getIm_password();
 
-        if (!EaseCommonUtils.isNetWorkConnected(this)) {
-            Toast.makeText(this, R.string.network_isnot_available, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(currentUsername)) {
-            Toast.makeText(this, R.string.User_name_cannot_be_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(currentPassword)) {
-            Toast.makeText(this, R.string.Password_cannot_be_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
+    final long start = System.currentTimeMillis();
+    // 调用sdk登陆方法登陆聊天服务器
+    EMChatManager.getInstance()
+        .login(
+            currentUsername,
+            currentPassword,
+            new EMCallBack() {
 
-        showDialog();
-        /*
-         * progressShow = true; final ProgressDialog pd = new ProgressDialog(EMLoginActivity.this); pd.setCanceledOnTouchOutside(false);
-         * pd.setOnCancelListener(new OnCancelListener() {
-         * 
-         * @Override public void onCancel(DialogInterface dialog) { progressShow = false; } }); pd.setMessage(getString(R.string.Is_landing));
-         * pd.show();
-         */
-
-        final long start = System.currentTimeMillis();
-        // 调用sdk登陆方法登陆聊天服务器
-        EMChatManager.getInstance().login(currentUsername, currentPassword, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
+              @Override
+              public void onSuccess() {
                 /*
                  * if (!progressShow) { return; }
                  */
@@ -858,298 +931,317 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
                 // boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
                 // MyApplication.currentUserNick.trim());
-                boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(userInfo.getName());
+                boolean updatenick =
+                    EMChatManager.getInstance().updateCurrentUserNick(userInfo.getName());
                 if (!updatenick) {
-                    Log.e("LoginActivity", "update current user nick fail");
+                  Log.e("LoginActivity", "update current user nick fail");
                 }
                 // 异步获取当前用户的昵称和头像(从自己服务器获取，demo使用的一个第三方服务)
                 // EMDemoHelper.getInstance().getUserProfileManager().asyncGetCurrentUserInfo();
                 String nickName = userInfo.getName();
                 String avatar = userInfo.getHead_img();
                 if (StringUtils.isEmpty(nickName)) {
-                    nickName = userInfo.getMobile();
+                  nickName = userInfo.getMobile();
                 }
                 if (!StringUtils.isEmpty(nickName)) {
-                    EMDemoHelper.getInstance().getUserProfileManager().setCurrentUserNick(nickName);
+                  EMDemoHelper.getInstance().getUserProfileManager().setCurrentUserNick(nickName);
                 }
                 if (!StringUtils.isEmpty(avatar)) {
-                    EMDemoHelper.getInstance().getUserProfileManager().setCurrentUserAvatar(avatar);
+                  EMDemoHelper.getInstance().getUserProfileManager().setCurrentUserAvatar(avatar);
                 }
 
                 // 进入主页面
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                runOnUiThread(
+                    new Runnable() {
+                      @Override
+                      public void run() {
                         dismissDialog();
-                        Toast.makeText(getApplicationContext(), "IM登录成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "IM登录成功！", Toast.LENGTH_SHORT)
+                            .show();
                         if (user.getIs_new_user() == 0) {
-                            Constants.BACK_TYPE = 0;
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+                          Constants.BACK_TYPE = 0;
+                          Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                          startActivity(intent);
                         } else if (user.getIs_new_user() == 1) {
-                            Constants.BACK_TYPE = 1;
-                            Intent intent = new Intent(LoginActivity.this, MainPlusActivity.class);
-                            overridePendingTransition(R.anim.activity_open, 0);
-                            startActivity(intent);
+                          Constants.BACK_TYPE = 1;
+                          Intent intent = new Intent(LoginActivity.this, MainPlusActivity.class);
+                          overridePendingTransition(R.anim.activity_open, 0);
+                          startActivity(intent);
                         }
-                        //登录成功标志位
-                        SpFileUtil.saveBoolean(getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, true);
+                        // 登录成功标志位
+                        SpFileUtil.saveBoolean(
+                            getApplication(),
+                            SpFileUtil.LOGIN_STATUS,
+                            Constants.LOGIN_STATUS,
+                            true);
                         finish();
-                    }
-                });
+                      }
+                    });
+              }
 
-            }
+              @Override
+              public void onProgress(int progress, String status) {}
 
-            @Override
-            public void onProgress(int progress, String status) {
-            }
-
-            @Override
-            public void onError(final int code, final String message) {
+              @Override
+              public void onError(final int code, final String message) {
                 /*
                  * if (!progressShow) { return; }
                  */
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                runOnUiThread(
+                    new Runnable() {
+                      @Override
+                      public void run() {
                         dismissDialog();
-                        Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + message, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
+                        Toast.makeText(
+                                getApplicationContext(),
+                                getString(R.string.Login_failed) + message,
+                                Toast.LENGTH_SHORT)
+                            .show();
+                      }
+                    });
+              }
+            });
+  }
 
-    /**
-     * 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点
-     */
-    @Deprecated
-    private void updateCalendarMark() {
-        // int year = CalendarUtils.getCurrentYear();
-        // int month = CalendarUtils.getCurrentMonth();
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH) + 1;// 月
-        int year = cal.get(Calendar.YEAR); // 年
+  /** 一次获取多个月份的首页日历数据，并更新本地数据库存储，用来显示标记圆点 */
+  @Deprecated
+  private void updateCalendarMark() {
+    // int year = CalendarUtils.getCurrentYear();
+    // int month = CalendarUtils.getCurrentMonth();
+    Calendar cal = Calendar.getInstance();
+    int month = cal.get(Calendar.MONTH) + 1; // 月
+    int year = cal.get(Calendar.YEAR); // 年
 
-        getTotalByMonth(year + "", month + "");
+    getTotalByMonth(year + "", month + "");
 
-      /*  for (int i = 0; i < 8; i++) {
-            if (month == 12) {
-                month = 1;
-                year += 1;
-            } else {
-                month += 1;
-            }
-            getTotalByMonth(year + "", month + "");
-        }*/
-    }
-
-    /**
-     * 按月份获取卡片日期分布接口
-     *
-     * @param year  年份，格式为 YYYY
-     * @param month 月份，格式为 MM
-     */
-    @Deprecated //此处不再获取
-    public void getTotalByMonth(String year, String month) {
-
-        String user_id = DBHelper.getUser(LoginActivity.this).getId();
-
-        if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
-            Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
-            return;
+    /*  for (int i = 0; i < 8; i++) {
+        if (month == 12) {
+            month = 1;
+            year += 1;
+        } else {
+            month += 1;
         }
+        getTotalByMonth(year + "", month + "");
+    }*/
+  }
 
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id + "");
-        map.put("year", year);
-        map.put("month", month);
-        AjaxParams param = new AjaxParams(map);
+  /**
+   * 按月份获取卡片日期分布接口
+   *
+   * @param year 年份，格式为 YYYY
+   * @param month 月份，格式为 MM
+   */
+  @Deprecated // 此处不再获取
+  public void getTotalByMonth(String year, String month) {
 
-        new FinalHttp().get(Constants.URL_GET_TOTAL_BY_MONTH, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
+    String user_id = DBHelper.getUser(LoginActivity.this).getId();
+
+    if (!NetworkUtils.isNetworkConnected(LoginActivity.this)) {
+      Toast.makeText(LoginActivity.this, getString(R.string.net_not_open), Toast.LENGTH_SHORT)
+          .show();
+      return;
+    }
+
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("user_id", user_id + "");
+    map.put("year", year);
+    map.put("month", month);
+    AjaxParams param = new AjaxParams(map);
+
+    new FinalHttp()
+        .get(
+            Constants.URL_GET_TOTAL_BY_MONTH,
+            param,
+            new AjaxCallBack<Object>() {
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                // Toast.makeText(SplashActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
+                // Toast.makeText(SplashActivity.this, getString(R.string.network_failure),
+                // Toast.LENGTH_SHORT).show();
+              }
 
-            @Override
-            public void onSuccess(Object t) {
+              @Override
+              public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 LogOut.i("========", "onSuccess：" + t);
                 try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                ArrayList<CalendarMark> calendarMarks = gson.fromJson(data, new TypeToken<ArrayList<CalendarMark>>() {
-                                }.getType());
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      if (StringUtils.isNotEmpty(data)) {
+                        Gson gson = new Gson();
+                        ArrayList<CalendarMark> calendarMarks =
+                            gson.fromJson(
+                                data, new TypeToken<ArrayList<CalendarMark>>() {}.getType());
 
-                                DBHelper db = DBHelper.getInstance(LoginActivity.this);
-                                for (int i = 0; i < calendarMarks.size(); i++) {
-                                    db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
-                                }
-                            } else {
-
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
+                        DBHelper db = DBHelper.getInstance(LoginActivity.this);
+                        for (int i = 0; i < calendarMarks.size(); i++) {
+                          db.add(calendarMarks.get(i), calendarMarks.get(i).getService_date());
                         }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
+                      } else {
 
+                      }
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      errorMsg = getString(R.string.servers_error);
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      errorMsg = getString(R.string.param_missing);
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      errorMsg = getString(R.string.param_illegal);
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      errorMsg = msg;
+                    } else {
+                      errorMsg = getString(R.string.servers_error);
+                    }
+                  }
+                } catch (Exception e) {
+                  e.printStackTrace();
+                  errorMsg = getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息
                 // if(!StringUtils.isEmpty(errorMsg.trim())){
                 // UIUtils.showToast(SplashActivity.this, errorMsg);
                 // }
-            }
-        });
+              }
+            });
+  }
 
-    }
+  /** 绑定接口 */
+  private void bind_user(String user_id, String client_id) {
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("user_id", user_id);
+    map.put("device_type", "android");
+    map.put("client_id", client_id);
+    AjaxParams param = new AjaxParams(map);
 
-    /**
-     * 绑定接口
-     */
-    private void bind_user(String user_id, String client_id) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id);
-        map.put("device_type", "android");
-        map.put("client_id", client_id);
-        AjaxParams param = new AjaxParams(map);
-
-        new FinalHttp().post(Constants.URL_POST_PUSH_BIND, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
+    new FinalHttp()
+        .post(
+            Constants.URL_POST_PUSH_BIND,
+            param,
+            new AjaxCallBack<Object>() {
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(LoginActivity.this, LoginActivity.this.getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(
+                        LoginActivity.this,
+                        LoginActivity.this.getString(R.string.network_failure),
+                        Toast.LENGTH_SHORT)
+                    .show();
+              }
 
-            @Override
-            public void onSuccess(Object t) {
+              @Override
+              public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 LogOut.i("========", "onSuccess：" + t);
                 try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-//                            UIUtils.showToast(LoginActivity.this, "推送绑定成功");
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = LoginActivity.this.getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = LoginActivity.this.getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = LoginActivity.this.getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = LoginActivity.this.getString(R.string.servers_error);
-                        }
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      errorMsg = LoginActivity.this.getString(R.string.servers_error);
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      errorMsg = LoginActivity.this.getString(R.string.param_missing);
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      errorMsg = LoginActivity.this.getString(R.string.param_illegal);
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      errorMsg = msg;
+                    } else {
+                      errorMsg = LoginActivity.this.getString(R.string.servers_error);
                     }
+                  }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = LoginActivity.this.getString(R.string.servers_error);
-
+                  e.printStackTrace();
+                  errorMsg = LoginActivity.this.getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息|
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(LoginActivity.this, errorMsg);
+                  UIUtils.showToast(LoginActivity.this, errorMsg);
                 }
-            }
-        });
-    }
+              }
+            });
+  }
 
-    /**
-     * 获取当前地理位置
-     */
-    private void post_trail(BDLocation location) {
-        String user_id = DBHelper.getUser(LoginActivity.this).getId();
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user_id);
-        map.put("lat", location.getLatitude() + "");
-        map.put("lng", location.getLongitude() + "");
-        map.put("poi_name", location.getProvince());
-        map.put("city", location.getCity());
-        AjaxParams param = new AjaxParams(map);
+  /** 获取当前地理位置 */
+  private void post_trail(BDLocation location) {
+    String user_id = DBHelper.getUser(LoginActivity.this).getId();
+    Map<String, String> map = new HashMap<String, String>();
+    map.put("user_id", user_id);
+    map.put("lat", location.getLatitude() + "");
+    map.put("lng", location.getLongitude() + "");
+    map.put("poi_name", location.getProvince());
+    map.put("city", location.getCity());
+    AjaxParams param = new AjaxParams(map);
 
-        new FinalHttp().post(Constants.URL_POST_TRAIL, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
+    new FinalHttp()
+        .post(
+            Constants.URL_POST_TRAIL,
+            param,
+            new AjaxCallBack<Object>() {
+              @Override
+              public void onFailure(Throwable t, int errorNo, String strMsg) {
                 super.onFailure(t, errorNo, strMsg);
-                Toast.makeText(LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        LoginActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT)
+                    .show();
                 if (locationClient != null && locationClient.isStarted()) {
-                    locationClient.stop();
-                    locationClient = null;
+                  locationClient.stop();
+                  locationClient = null;
                 }
-            }
+              }
 
-            @Override
-            public void onSuccess(Object t) {
+              @Override
+              public void onSuccess(Object t) {
                 super.onSuccess(t);
                 String errorMsg = "";
                 try {
-                    if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (locationClient != null && locationClient.isStarted()) {
-                                locationClient.stop();
-                                locationClient = null;
-                            }
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
+                  if (StringUtils.isNotEmpty(t.toString())) {
+                    JSONObject obj = new JSONObject(t.toString());
+                    int status = obj.getInt("status");
+                    String msg = obj.getString("msg");
+                    String data = obj.getString("data");
+                    if (status == Constants.STATUS_SUCCESS) { // 正确
+                      if (locationClient != null && locationClient.isStarted()) {
+                        locationClient.stop();
+                        locationClient = null;
+                      }
+                    } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                      errorMsg = getString(R.string.servers_error);
+                    } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                      errorMsg = getString(R.string.param_missing);
+                    } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                      errorMsg = getString(R.string.param_illegal);
+                    } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                      errorMsg = msg;
+                    } else {
+                      errorMsg = getString(R.string.servers_error);
                     }
+                  }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    errorMsg = getString(R.string.servers_error);
-
+                  e.printStackTrace();
+                  errorMsg = getString(R.string.servers_error);
                 }
                 // 操作失败，显示错误信息|
                 if (!StringUtils.isEmpty(errorMsg.trim())) {
-                    UIUtils.showToast(LoginActivity.this, errorMsg);
+                  UIUtils.showToast(LoginActivity.this, errorMsg);
                 }
-            }
-        });
-    }
+              }
+            });
+  }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // 关闭定位
-        if (locationClient != null && locationClient.isStarted()) {
-            locationClient.stop();
-            locationClient = null;
-        }
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    // 关闭定位
+    if (locationClient != null && locationClient.isStarted()) {
+      locationClient.stop();
+      locationClient = null;
     }
-
+  }
 }

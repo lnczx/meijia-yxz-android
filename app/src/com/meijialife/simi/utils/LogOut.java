@@ -2,18 +2,21 @@ package com.meijialife.simi.utils;
 
 import android.util.Log;
 
+import com.meijialife.simi.BuildConfig;
+
 public class LogOut {
-    private static final boolean isOnlineModel = false;//这是总开关,是否是上线模式(当上线时置为true)
-    protected static final String TAG = "Debug";
+  private static final boolean isOnlineModel = BuildConfig.DEBUG;
+  protected static final String TAG = "Debug";
 
-    public static void i(String tag, String content) {
-        if (!isOnlineModel)
-            Log.i(tag, content);
-    }
+  public static void i(String tag, String content) {
+    if (!isOnlineModel) Log.i(tag, content + "  " + "time: " + System.currentTimeMillis());
+  }
 
-    public static void debug(String content) {
-        if (!isOnlineModel)
-            Log.d(TAG, content + "  " + "time: " + System.currentTimeMillis());
-    }
-    
+  public static void i(String content) {
+    if (!isOnlineModel) Log.i("===bolor==", content + "  " + "time: " + System.currentTimeMillis());
+  }
+
+  public static void debug(String content) {
+    if (!isOnlineModel) Log.d(TAG, content + "  " + "time: " + System.currentTimeMillis());
+  }
 }

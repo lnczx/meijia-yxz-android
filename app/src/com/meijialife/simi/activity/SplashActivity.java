@@ -72,7 +72,7 @@ import java.util.TimerTask;
 public class SplashActivity extends Activity implements Runnable {
 
   private static final int sleepTime = 2000;
-  public static String clientid;
+  public String clientid;
   /** 获取当前位置经纬度 */
   private LocationClient locationClient = null;
 
@@ -473,6 +473,12 @@ public class SplashActivity extends Activity implements Runnable {
                         DBHelper.updateUserInfo(SplashActivity.this, userInfo);
 
                         String clientidFromWeb = userInfo.getClient_id();
+                        clientid =
+                            SpFileUtil.getString(
+                                SplashActivity.this,
+                                SpFileUtil.FILE_UI_PARAMETER,
+                                SpFileUtil.KEY_CLIENT_ID,
+                                "");
                         if (StringUtils.isEmpty(clientidFromWeb)
                             || !StringUtils.isEquals(clientidFromWeb, clientid)) {
                           bind_user(userInfo.getId(), clientid);
@@ -676,7 +682,7 @@ public class SplashActivity extends Activity implements Runnable {
   private void getBaseDatas() {
 
     User user = DBHelper.getUser(SplashActivity.this);
-    if(user == null){
+    if (user == null) {
       return;
     }
 

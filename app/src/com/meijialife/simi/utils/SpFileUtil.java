@@ -26,6 +26,7 @@ public class SpFileUtil {
   public static final String KEY_ALAERM_CYCLE = "alarm_cycle"; // 闹钟周期key
   public static final String KEY_MSG_UNREAD = "msg_unread"; // 未读消息key
   public static final String KEY_YOULIAO_RED = "youliao_msg_unread"; // 未读消息key
+  public static final String KEY_CLIENT_ID = "client_id"; // 个推id
 
   /** @WARNING Be careful, this maybe overwrite a exist value.<br> */
   public static void removeKey(Context context, String filename, String key) {
