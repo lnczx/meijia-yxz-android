@@ -46,7 +46,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.fra.HaveInfoFragment;
-import com.meijialife.simi.fra.Home1NewFra;
+import com.meijialife.simi.fra.HomeFragment;
 import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.RoundImageView;
@@ -310,7 +310,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         //                if (!slideMenu.isMainScreenShowing()) {
         //                    return;
         //                }
-        change(new Home1NewFra());
+        change(new HomeFragment());
         setSelected(mBt1);
         updateTitle(1);
         SlideMenu.isUse = false;

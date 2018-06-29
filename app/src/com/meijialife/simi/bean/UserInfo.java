@@ -12,88 +12,96 @@ public class UserInfo implements Serializable {
 
     /** 用户ID **/
     public String id;
-    
+
     /** 手机号 **/
     private String mobile;
-    
+
     /** 第三方登陆类型 qq/weixin/weibo **/
 //    private String third_type;
-    
+
     /** 第三方登陆openid **/
 //    private String open_id;
-    
+
     /**  **/
     private String province_name;
-    
+
     /** 称呼 **/
     private String name;
-    
+
     /**  **/
     private String sex;
-    
+
     /** 头像url **/
     private String head_img;
-    
+
     /**  **/
     private String rest_money;
-    
+
     /**  **/
     private int score;
-    
+
     /** 用户类型 0 = 普通用户 1= 秘书 2 = 服务商 **/
     private String user_type;
-    
+
     /**  **/
     private int is_approval;
-    
+
     /** 注册来源 **/
     private int add_from;
-    
+
     /**  **/
     private long add_time;
-    
+
     /**  **/
     private long update_time;
-    
+
     /**  **/
     private String user_id;
-    
+
     /** 私秘卡有效期,返回值如 "有效期:2015-02-24至2015-03-24" **/
     private String senior_range;
-    
+
     /** 是否有真人管家服务 1=是   0=否（用机器人管家） **/
     private String is_senior;
-    
+
     private String sec_id;
-    
+
     /** 秘书Im账号 **/
     private String im_sec_username;
-    
+
     /** 秘书Im昵称 **/
     private String im_sec_nickname;
-    
+
     /** 即时通讯账号（环信） **/
     private String im_username;
-    
+
     /** 机器人管家IM账号 **/
 //    private String im_robot_username;
-    
+
     /** 机器人管家IM昵称 **/
 //    private String im_robot_nickname;
-    
+
     /** 即时通讯密码（环信） **/
     private String im_password;
     /** 百度云 **/
     private String client_id;
     /**是否为某个公司职员0=否 1=是**/
     private int has_company;
-    
+
     private String company_id;//所属公司Id
-    
+
     private String company_name;//公司名称
-    
-    
-    
+
+    private int vip ;
+
+    public int getVip() {
+        return vip;
+    }
+
+    public void setVip(int vip) {
+        this.vip = vip;
+    }
+
     public String getSenior_range() {
         return senior_range;
     }
@@ -158,7 +166,7 @@ public class UserInfo implements Serializable {
         this.mobile = mobile;
     }
 
-  
+
 
     public String getProvince_name() {
         return province_name;

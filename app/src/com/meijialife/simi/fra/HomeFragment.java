@@ -78,7 +78,7 @@ import java.util.Map;
  *
  * @author RUI
  */
-public class Home1NewFra extends BaseFragment implements OnClickListener, ListItemClickHelps {
+public class HomeFragment extends BaseFragment implements OnClickListener, ListItemClickHelps {
 
     private View v;
     private FinalBitmap finalBitmap;

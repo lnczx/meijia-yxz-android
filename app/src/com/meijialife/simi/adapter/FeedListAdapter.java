@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,9 +21,12 @@ import com.meijialife.simi.activity.FeedAnswerActivity;
 import com.meijialife.simi.activity.FeedDetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.bean.FeedData;
+import com.meijialife.simi.bean.User;
+import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.ui.RoundImageView;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
+import com.simi.easemob.db.DbOpenHelper;
 
 /**
  * 文章、动态、问答列表适配器
@@ -76,6 +80,7 @@ public final class FeedListAdapter extends BaseAdapter {
             holder.m_tv_question_content = (TextView) convertView.findViewById(R.id.m_tv_question_content);
             holder.m_tv_question_time = (TextView) convertView.findViewById(R.id.m_tv_question_time);
             holder.m_tv_user_name = (TextView) convertView.findViewById(R.id.m_tv_user_name);
+            holder.iv_vip_icon = (ImageView) convertView.findViewById(R.id.iv_vip_icon);
             holder.m_tv_question_status = (TextView) convertView.findViewById(R.id.m_tv_question_status);
             holder.m_tv_question_count = (TextView) convertView.findViewById(R.id.m_tv_question_count);
             holder.m_iv_question_gold = (RoundImageView) convertView.findViewById(R.id.m_iv_question_gold);
@@ -104,11 +109,12 @@ public final class FeedListAdapter extends BaseAdapter {
 
         finalBitmap.display(holder.m_iv_user_icon, feedData.getHead_img());
 
+
         if (feedData.getStatus() == 0) {
             holder.m_tv_question_status.setText("我来答");
             holder.m_tv_question_status.setSelected(true);
             holder.m_tv_question_status.setEnabled(true);
-           
+
         } else if(feedData.getStatus() == 1){
             holder.m_tv_question_status.setText("已采纳");
             holder.m_tv_question_status.setSelected(false);
@@ -134,6 +140,19 @@ public final class FeedListAdapter extends BaseAdapter {
             }
         });
 
+        try{
+          User user = DBHelper.getUser(context);
+          if(null !=user){
+           String userId = feedData.getUser_id();
+            if (StringUtils.isEquals(user.getId(), userId) && user.getVip() < 3) {
+                holder.iv_vip_icon.setVisibility(View.VISIBLE);
+            }else{
+                holder.iv_vip_icon.setVisibility(View.GONE);
+            }
+            }  }catch (Throwable e){
+            e.printStackTrace();
+        }
+
         return convertView;
     }
 
@@ -147,6 +166,7 @@ public final class FeedListAdapter extends BaseAdapter {
         RoundImageView m_iv_question_gold;// 赏金图标
         RoundImageView m_iv_user_icon;// 用户头像
         LinearLayout m_ll_gold;//金币布局
+        ImageView iv_vip_icon;
     }
 
 }

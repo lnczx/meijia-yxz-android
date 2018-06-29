@@ -3,7 +3,7 @@
     xmlns:imagecontrol="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
@@ -13,14 +13,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="2"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.meijialife.simi.ui.RoundImageView
                 android:id="@+id/m_iv_icon"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp" >
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/m_tv_name"
@@ -65,9 +65,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
                     android:text="评论"
-                    android:textColor="@color/simi_color_gray" 
-                    android:visibility="gone"
-                    />
+                    android:textColor="@color/simi_color_gray"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/m_tv_zan"
@@ -77,8 +76,7 @@
                     android:layout_toLeftOf="@id/m_tv_comment"
                     android:text="点赞"
                     android:textColor="@color/simi_color_gray"
-                    android:visibility="gone"
-                     />
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
@@ -102,7 +100,8 @@
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
- <View
+
+    <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/simi_color_line_gray" />

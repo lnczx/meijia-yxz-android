@@ -26,6 +26,7 @@ public class UserIndexData implements Serializable {
     private int score;// 积分
     private String exp;// 经验
     private String level;//用户等级
+    private int vip;
 
     public String getLevel() {
         return level;
@@ -38,7 +39,14 @@ public class UserIndexData implements Serializable {
     public UserIndexData() {
     }
 
-    
+    public int getVip() {
+        return vip;
+    }
+
+    public void setVip(int vip) {
+        this.vip = vip;
+    }
+
     public String getExp() {
         return exp;
     }
