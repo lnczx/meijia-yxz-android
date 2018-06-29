@@ -5,53 +5,49 @@
     android:layout_height="match_parent"
     android:background="@color/title_background_color"
     android:orientation="vertical"
-    android:visibility="gone"
-     >
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/tv_menu_type1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:padding="10dp"
         android:background="@color/activity_bg_color"
-        android:visibility="gone"
-         />
-  <View
-            android:id="@+id/top"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/cut_off_rule" />
+        android:padding="10dp"
+        android:text=""
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cut_off_rule" />
+
     <GridView
         android:id="@+id/gv_application1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/title_background_color"
         android:columnWidth="80dp"
         android:numColumns="4"
-        android:stretchMode="columnWidth"
-   		android:background="@color/title_background_color"
-         >
-    </GridView>
+        android:stretchMode="columnWidth"/>
 
     <TextView
         android:id="@+id/tv_menu_type2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="成长与赚钱" 
-        android:padding="10dp"
         android:background="@color/activity_bg_color"
-       android:visibility="gone" />
+        android:padding="10dp"
+        android:text="成长与赚钱"
+        android:visibility="gone" />
 
     <GridView
         android:id="@+id/gv_application2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/title_background_color"
         android:columnWidth="80dp"
         android:numColumns="4"
-        android:stretchMode="columnWidth" 
-   		android:background="@color/title_background_color"
-   		android:visibility="gone"
-        >
-    </GridView>
+        android:stretchMode="columnWidth"
+        android:visibility="gone"/>
 
 </LinearLayout>

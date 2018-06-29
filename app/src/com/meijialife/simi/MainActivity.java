@@ -39,14 +39,13 @@ import com.meijialife.simi.activity.MyOrderActivity;
 import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.ShareActivity;
-import com.meijialife.simi.activity.SplashActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
 import com.meijialife.simi.bean.CalendarMark;
 import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.fra.Find2Fra;
+import com.meijialife.simi.fra.HaveInfoFragment;
 import com.meijialife.simi.fra.Home1NewFra;
 import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.fra.ScheduleFra;
@@ -55,7 +54,6 @@ import com.meijialife.simi.ui.SlideMenu;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.GetContactsRunnable;
 import com.meijialife.simi.utils.SpFileUtil;
-import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
 import com.simi.easemob.EMConstant;
 import com.simi.easemob.EMDemoHelper;
@@ -318,7 +316,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         SlideMenu.isUse = false;
         view_title_bar.setVisibility(View.GONE);
         break;
-      case R.id.tab_bt_2: // 发现
+      case R.id.tab_bt_2: // 有料
         changeFind();
         break;
       case R.id.tab_bt_3: // 日程
@@ -400,14 +398,14 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     }
   }
 
-  /** 切换到发现Fragement */
+  /** 切换到有料Fragement */
   public void changeFind() {
     currentTabIndex = 2;
     //        if (!slideMenu.isMainScreenShowing()) {
     //            return;
     //        }
     view_title_bar.setVisibility(View.GONE);
-    change(new Find2Fra(this));
+    change(new HaveInfoFragment(this));
     setSelected(mBt2);
     updateTitle(2);
     SlideMenu.isUse = false;
