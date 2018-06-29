@@ -13,7 +13,7 @@
         android:id="@+id/m_banner"
         layout="@layout/banner" />
 
-    <com.meijialife.simi.ui.IndicatorTabBarForTrial
+    <com.meijialife.simi.ui.IndicatorTabBar
         android:id="@+id/m_trial_tabBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
