@@ -4,21 +4,20 @@
     android:layout_height="@dimen/title_bar_height"
     android:background="@color/simi_color_red"
     android:gravity="center_vertical"
-    android:visibility="visible"
-     >
+    android:visibility="visible">
 
     <RelativeLayout
         android:id="@+id/rl_total_search"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/find2_fra_bg_gv"
-        android:gravity="center" >
+        android:gravity="center">
 
         <RelativeLayout
             android:id="@+id/rl_search"
@@ -26,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:gravity="center" >
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_search"
@@ -56,8 +55,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:src="@drawable/iconfont_yuyin"
-            android:visibility="invisible"
-             />
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </RelativeLayout>
