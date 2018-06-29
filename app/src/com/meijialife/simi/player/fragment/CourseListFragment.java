@@ -1,6 +1,5 @@
 package com.meijialife.simi.player.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -20,6 +19,7 @@ import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoCatalog;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.StringUtils;
@@ -36,6 +36,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  目录
+ */
 public class CourseListFragment extends BaseFragment {
 
     public static final String INTENT_KEY_LABEL = "keyLabel";
@@ -93,10 +96,8 @@ public class CourseListFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getActivity(), CourseActivity.class);
-//                intent.putExtra("videoListData", videoDatas.get(position));
-//                startActivity(intent);
-//                getActivity().finish();
+                String videoId = ""+videoDatas.get(position).getService_price_id();
+                ((CourseActivity)getActivity()).onCatalogClick(videoId);
             }
         });
     }
@@ -151,11 +152,6 @@ public class CourseListFragment extends BaseFragment {
                                 Gson gson = new Gson();
                                 List<VideoCatalog> videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoCatalog>>() {
                                 }.getType());
-
-                                videoDatas.add(videoDatas.get(0));
-                                videoDatas.add(videoDatas.get(0));
-                                videoDatas.add(videoDatas.get(0));
-                                videoDatas.add(videoDatas.get(0));
 
                                 setVideoDatas(videoDatas);
                             } else {

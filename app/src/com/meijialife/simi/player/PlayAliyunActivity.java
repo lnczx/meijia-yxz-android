@@ -1,6 +1,5 @@
 package com.meijialife.simi.player;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,48 +16,34 @@ import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.aliyun.vodplayerview.widget.AliyunScreenMode;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.meijialife.simi.R;
-import com.ykcloud.sdk.opentools.player.VODPlayer;
+import com.meijialife.simi.utils.UIUtils;
 
 public class PlayAliyunActivity extends AppCompatActivity {
 
     private String TAG = "PlayVodActivity";
 
-    /*public static final String CONSTANCE_VID = "vid";
-    public static final String CONSTANCE_CLIENT_ID = "client_id";
-    public static final String CONSTANCE_CLIENT_SECRET = "client_secret";
-    private String vid;*/
-
-    private final String client_id = "199b3f31e08d160c";
-    private final String client_secret = "08865c02e2f9dd9c7f11a72a02ddda9a";
-
-    RelativeLayout layout_player;
-    VODPlayer player;
+    private RelativeLayout layout_player;
     private AliyunVodPlayerView mAliyunVodPlayerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_aliyun_vod);
-//        parseExtra();
-//        initView();
-        //找到播放器对象
-        mAliyunVodPlayerView = (AliyunVodPlayerView) findViewById(R.id.video_view);
+        layout_player = (RelativeLayout) findViewById(R.id.layout_player);
     }
 
-    private void parseExtra() {
-        /*vid = getIntent().getStringExtra(CONSTANCE_VID);
-        client_id = getIntent().getStringExtra(CONSTANCE_CLIENT_ID);
-        client_secret = getIntent().getStringExtra(CONSTANCE_CLIENT_SECRET);*/
-//        initSdk();
+    private void initPlayerView(){
+        if(mAliyunVodPlayerView != null){
+            mAliyunVodPlayerView.onDestroy();
+            layout_player.removeAllViews();
+        }
+        mAliyunVodPlayerView = new AliyunVodPlayerView(this);
+        mAliyunVodPlayerView.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtils.dp2Px(getApplicationContext(), 200)));
+        layout_player.addView(mAliyunVodPlayerView);
     }
-
-//    private void initSdk() {
-//        //初始化播放sdk
-//        YKAPIFactory.initSDK(this, client_id, client_secret);
-//    }
 
     public void playAliyunLocalSource(String videourl) {
-
+        initPlayerView();
         AliyunLocalSource.AliyunLocalSourceBuilder asb = new AliyunLocalSource.AliyunLocalSourceBuilder();
         asb.setSource(videourl);
         mAliyunVodPlayerView.setLocalSource(asb.build());
@@ -72,7 +57,7 @@ public class PlayAliyunActivity extends AppCompatActivity {
     }
 
     public void playAliyunPlayAuth(String authInfo, String videoId) {
-
+        initPlayerView();
         //auth方式
         AliyunPlayAuth.AliyunPlayAuthBuilder aliyunPlayAuthBuilder = new AliyunPlayAuth.AliyunPlayAuthBuilder();
         aliyunPlayAuthBuilder.setVid(videoId);
@@ -127,10 +112,6 @@ public class PlayAliyunActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if (player != null) {
-//            player.destroyVideo();
-//            player = null;
-//        }
 
         if (mAliyunVodPlayerView != null) {
             mAliyunVodPlayerView.onDestroy();
@@ -172,18 +153,6 @@ public class PlayAliyunActivity extends AppCompatActivity {
      * 点击返回按钮
      */
     public void onBackClicked() {
-
         finish();
-//        if (player != null) {
-//            //获得vodPlayer横屏还是竖屏
-//            int mScreenState = player.getScreenState();
-//            if (mScreenState == VODPlayer.Orientation_portrait) {
-//                //如果是竖屏 则退出播放器
-//                finish();
-//            } else {
-//                //如果是横屏 则变为横屏
-//                player.changeOrientation(VODPlayer.Orientation_portrait);
-//            }
-//        }
     }
 }

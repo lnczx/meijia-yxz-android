@@ -13,12 +13,13 @@
             android:id="@+id/tv_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:paddingTop="1dp"
             android:paddingBottom="1dp"
             android:background="@drawable/video_catalog_tag_shape_bg"
             android:layout_marginTop="10dp"
+            android:textSize="14sp"
             android:text="视频"/>
 
         <TextView

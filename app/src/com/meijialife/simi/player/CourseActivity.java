@@ -111,9 +111,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         initBottomView();
 
         if (StringUtils.isNotEmpty(videoId)) {
-            getVideoDetail(videoId);
+            getVideoDetail(videoId, false);
         } else {
-            getVideoDetail(videoListData.getArticle_id());
+            getVideoDetail(videoListData.getArticle_id(), false);
         }
 
         showLabels();
@@ -169,6 +169,11 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(titleList.size()-1);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    public void onCatalogClick(String videoId){
+        this.videoId = videoId;
+        getVideoDetail(videoId, true);
     }
 
     /**
@@ -355,8 +360,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
      * 获得视频详情
      *
      * @param article_id 文章id
+     * @param fromCatalog 来自目录点击
      */
-    public void getVideoDetail(String article_id) {
+    public void getVideoDetail(String article_id, final boolean fromCatalog) {
         if (!NetworkUtils.isNetworkConnected(this)) {
             Toast.makeText(this, getString(R.string.net_not_open), Toast.LENGTH_SHORT).show();
             return;
@@ -397,12 +403,12 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
 
                                 Gson gson = new Gson();
                                 video = gson.fromJson(data, VideoData.class);
-                                detailFragment.setVideo(video);
-                                listFragment.setVideo(video);
-
                                 showData();
-                                getVideoRelateList();
-
+                                if(!fromCatalog){
+                                    detailFragment.setVideo(video);
+                                    listFragment.setVideo(video);
+                                    getVideoRelateList();
+                                }
                             } else {
                                 errorMsg = getString(R.string.servers_error);
                             }
@@ -777,6 +783,6 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
 
 //        if(resultCode == PayOrderActivity.RESULT_CODE_PAY_OK){//购买课程回来后
 //        }
-        getVideoDetail(videoListData.getArticle_id());
+        getVideoDetail(videoListData.getArticle_id(), false);
     }
 }

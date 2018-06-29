@@ -94,10 +94,10 @@
                 android:id="@+id/layout_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <com.aliyun.vodplayerview.widget.AliyunVodPlayerView
-                    android:id="@+id/video_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                <!--<com.aliyun.vodplayerview.widget.AliyunVodPlayerView-->
+                    <!--android:id="@+id/video_view"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="200dp" />-->
             </RelativeLayout>
             <!--播放器上覆盖的缩略图-->
             <ImageView
