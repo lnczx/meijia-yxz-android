@@ -59,7 +59,6 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/m_tv_buy"
-
             android:background="@color/simi_color_blue"
             android:gravity="center"
             android:text="免费咨询"

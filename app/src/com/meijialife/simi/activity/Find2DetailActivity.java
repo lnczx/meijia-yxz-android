@@ -42,227 +42,237 @@ import com.meijialife.simi.utils.UIUtils;
 /**
  * @description：发现详情--秘书助理，综合服务，设计策划
  * @author： kerryg
- * @date:2015年11月13日 
+ * @date:2015年11月13日
  */
 public class Find2DetailActivity extends BaseActivity {
 
-    private ListView listview;
-    private SecretaryAdapter adapter;//服务商适配器
-    private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
-    private String service_type_ids;
-    private String sub_service_type_ids;
-    private String title_name;
-    
-    private ArrayList<Partner> myPartnerList;
-    private ArrayList<Partner> totalPartnerList;
-    //布局控件定义
-    private PullToRefreshListView mPullRefreshListView;//上拉刷新的控件 
-    private int page = 1;
-   
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.find_2_detail_activity);
-        super.onCreate(savedInstanceState);
-        
-        isLogin();
-        init();
-    }
-    /**
-     * 是否登录
-     */
-    private void isLogin(){
-        Boolean login = SpFileUtil.getBoolean(getApplication(),SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
-        if(!login){
-           startActivity(new Intent(Find2DetailActivity.this,LoginActivity.class));
-           finish();
-           return;
-       } 
-    }
-    /*
-     * 初始化适配器
-     */
-    public void init() {
-        
+  private ListView listview;
+  private SecretaryAdapter adapter; // 服务商适配器
+  private ArrayList<Partner> partnerList; // 所有服务商--秘书列表
+  private String service_type_ids;
+  private String sub_service_type_ids;
+  private String title_name;
 
-        service_type_ids = getIntent().getStringExtra("service_type_ids");
-        sub_service_type_ids = getIntent().getStringExtra("sub_service_type_ids");
-        requestBackBtn();
-        setTitleName(title_name);
-        initPartnerView();
+  private ArrayList<Partner> myPartnerList;
+  private ArrayList<Partner> totalPartnerList;
+  // 布局控件定义
+  private PullToRefreshListView mPullRefreshListView; // 上拉刷新的控件
+  private int page = 1;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    setContentView(R.layout.find_2_detail_activity);
+    super.onCreate(savedInstanceState);
+
+    isLogin();
+    init();
+    setTitleName("详情");
+  }
+  /** 是否登录 */
+  private void isLogin() {
+    Boolean login =
+        SpFileUtil.getBoolean(
+            getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
+    if (!login) {
+      startActivity(new Intent(Find2DetailActivity.this, LoginActivity.class));
+      finish();
+      return;
     }
-    private void initPartnerView(){
-        totalPartnerList = new ArrayList<Partner>();
-        myPartnerList = new ArrayList<Partner>();
-        mPullRefreshListView = (PullToRefreshListView)findViewById(R.id.pull_refresh_detail_list);
-        adapter = new SecretaryAdapter(this);   
-        mPullRefreshListView.setAdapter(adapter);
-        mPullRefreshListView.setMode(Mode.BOTH);
-        initIndicator();
-        getPartnerList(service_type_ids, sub_service_type_ids,page);
-        mPullRefreshListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //下拉刷新任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
-                page = 1;
-                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                getPartnerList(service_type_ids, sub_service_type_ids,page);
-                adapter.notifyDataSetChanged(); 
+  }
+  /*
+   * 初始化适配器
+   */
+  public void init() {
+
+    service_type_ids = getIntent().getStringExtra("service_type_ids");
+    sub_service_type_ids = getIntent().getStringExtra("sub_service_type_ids");
+    requestBackBtn();
+    setTitleName(title_name);
+    initPartnerView();
+  }
+
+  private void initPartnerView() {
+    totalPartnerList = new ArrayList<Partner>();
+    myPartnerList = new ArrayList<Partner>();
+    mPullRefreshListView = (PullToRefreshListView) findViewById(R.id.pull_refresh_detail_list);
+    adapter = new SecretaryAdapter(this);
+    mPullRefreshListView.setAdapter(adapter);
+    mPullRefreshListView.setMode(Mode.BOTH);
+    initIndicator();
+    getPartnerList(service_type_ids, sub_service_type_ids, page);
+    mPullRefreshListView.setOnRefreshListener(
+        new OnRefreshListener2<ListView>() {
+          @Override
+          public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+            // 下拉刷新任务
+            String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
+            page = 1;
+            refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+            getPartnerList(service_type_ids, sub_service_type_ids, page);
+            adapter.notifyDataSetChanged();
+          }
+
+          @Override
+          public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+            // 上拉加载任务
+            String label = DateUtils.getStringByPattern(System.currentTimeMillis(), "MM_dd HH:mm");
+            refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+            if (myPartnerList != null && myPartnerList.size() >= 10) {
+              page = page + 1;
+              getPartnerList(service_type_ids, sub_service_type_ids, page);
+              adapter.notifyDataSetChanged();
+            } else {
+              Toast.makeText(Find2DetailActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+              mPullRefreshListView.onRefreshComplete();
             }
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
-                //上拉加载任务
-                String label = DateUtils.getStringByPattern(System.currentTimeMillis(),
-                        "MM_dd HH:mm");
-                refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-                if(myPartnerList!=null && myPartnerList.size()>=10){
-                    page = page+1;
-                    getPartnerList(service_type_ids, sub_service_type_ids,page);
-                    adapter.notifyDataSetChanged(); 
-                }else {
-                    Toast.makeText(Find2DetailActivity.this,"请稍后，没有更多加载数据",Toast.LENGTH_SHORT).show();
-                    mPullRefreshListView.onRefreshComplete(); 
+          }
+        });
+    mPullRefreshListView.setOnItemClickListener(
+        new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Partner partner = totalPartnerList.get(position);
+            Intent intent = new Intent(Find2DetailActivity.this, PartnerActivity.class);
+            //                intent.putExtra("Partner",totalPartnerList.get(position));]
+            int userId = totalPartnerList.get(position).getUser_id();
+            int ServiceTypeId = totalPartnerList.get(position).getService_type_id();
+            intent.putExtra("partner_user_id", String.valueOf(userId));
+
+            intent.putExtra("service_type_id", String.valueOf(ServiceTypeId));
+            startActivity(intent);
+          }
+        });
+  }
+
+  /** 设置下拉刷新提示 */
+  private void initIndicator() {
+    ILoadingLayout startLabels = mPullRefreshListView.getLoadingLayoutProxy(true, false);
+    startLabels.setPullLabel("下拉刷新"); // 刚下拉时，显示的提示
+    startLabels.setRefreshingLabel("正在刷新..."); // 刷新时
+    startLabels.setReleaseLabel("释放更新"); // 下来达到一定距离时，显示的提示
+
+    ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(false, true);
+    endLabels.setPullLabel("上拉加载");
+    endLabels.setRefreshingLabel("正在刷新..."); // 刷新时
+    endLabels.setReleaseLabel("释放加载"); // 下来达到一定距离时，显示的提示
+  }
+  /**
+   * 获取对应的服务商列表接口
+   *
+   * @param service_type_ids
+   */
+  public void getPartnerList(String service_type_ids, String sub_service_type_ids, int page) {
+    User user = DBHelper.getUser(this);
+    if (user != null) {
+      if (!NetworkUtils.isNetworkConnected(this)) {
+        Toast.makeText(this, getString(R.string.net_not_open), 0).show();
+        return;
+      }
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("user_id", user.getId());
+      map.put("page", "" + page);
+
+      // 如果是专家面授，则调用方式不一样
+      String url = Constants.URL_GET_USER_LIST;
+      if (service_type_ids.indexOf("317") >= 0) {
+        url = Constants.URL_GET_USER_LIST_SUB_TYPE;
+        map.put("sub_service_type_ids", sub_service_type_ids);
+      } else {
+        map.put("service_type_ids", service_type_ids);
+      }
+
+      AjaxParams param = new AjaxParams(map);
+      showDialog();
+      new FinalHttp()
+          .get(
+              url,
+              param,
+              new AjaxCallBack<Object>() {
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                  super.onFailure(t, errorNo, strMsg);
+                  dismissDialog();
+                  Toast.makeText(
+                          Find2DetailActivity.this,
+                          getString(R.string.network_failure),
+                          Toast.LENGTH_SHORT)
+                      .show();
                 }
-            }
-        });
-        mPullRefreshListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Partner partner = totalPartnerList.get(position);
-                Intent intent = new Intent(Find2DetailActivity.this,PartnerActivity.class);
-//                intent.putExtra("Partner",totalPartnerList.get(position));]
-                int userId = totalPartnerList.get(position).getUser_id();
-                int ServiceTypeId = totalPartnerList.get(position).getService_type_id();
-                intent.putExtra("partner_user_id", String.valueOf(userId));
 
-                intent.putExtra("service_type_id", String.valueOf(ServiceTypeId));
-                startActivity(intent);
-            }
-        });
-    }
-    
-    /**
-     * 设置下拉刷新提示
-     */
-    private void initIndicator()  
-    {  
-        ILoadingLayout startLabels = mPullRefreshListView  
-                .getLoadingLayoutProxy(true, false);  
-        startLabels.setPullLabel("下拉刷新");// 刚下拉时，显示的提示  
-        startLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        startLabels.setReleaseLabel("释放更新");// 下来达到一定距离时，显示的提示  
-  
-        ILoadingLayout endLabels = mPullRefreshListView.getLoadingLayoutProxy(  
-                false, true);  
-        endLabels.setPullLabel("上拉加载");
-        endLabels.setRefreshingLabel("正在刷新...");// 刷新时  
-        endLabels.setReleaseLabel("释放加载");// 下来达到一定距离时，显示的提示  
-    }
-    /**
-     * 获取对应的服务商列表接口
-     * @param service_type_ids
-     */
-    public void getPartnerList(String service_type_ids, String sub_service_type_ids, int page) {
-        User  user = DBHelper.getUser(this);
-        if(user!=null){
-        if (!NetworkUtils.isNetworkConnected(this)) {
-            Toast.makeText(this, getString(R.string.net_not_open), 0).show();
-            return;
-        }
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("user_id", user.getId());
-        map.put("page", ""+page);
-
-            //如果是专家面授，则调用方式不一样
-            String url = Constants.URL_GET_USER_LIST;
-        if (service_type_ids.indexOf("317") >= 0) {
-            url = Constants.URL_GET_USER_LIST_SUB_TYPE;
-            map.put("sub_service_type_ids", sub_service_type_ids);
-        } else {
-            map.put("service_type_ids", service_type_ids);
-        }
-
-        AjaxParams param = new AjaxParams(map);
-        showDialog();
-        new FinalHttp().get(url, param, new AjaxCallBack<Object>() {
-            @Override
-            public void onFailure(Throwable t, int errorNo, String strMsg) {
-                super.onFailure(t, errorNo, strMsg);
-                dismissDialog();
-                Toast.makeText(Find2DetailActivity.this, getString(R.string.network_failure), Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onSuccess(Object t) {
-                super.onSuccess(t);
-                String errorMsg = "";
-                dismissDialog();
-                try {
+                @Override
+                public void onSuccess(Object t) {
+                  super.onSuccess(t);
+                  String errorMsg = "";
+                  dismissDialog();
+                  try {
                     if (StringUtils.isNotEmpty(t.toString())) {
-                        JSONObject obj = new JSONObject(t.toString());
-                        int status = obj.getInt("status");
-                        String msg = obj.getString("msg");
-                        String data = obj.getString("data");
-                        if (status == Constants.STATUS_SUCCESS) { // 正确
-                            if (StringUtils.isNotEmpty(data)) {
-                                Gson gson = new Gson();
-                                myPartnerList = gson.fromJson(data, new TypeToken<ArrayList<Partner>>() {
-                                }.getType());
-//                                adapter.setData(partnerList);
-                                showData(myPartnerList);
-                            } /*else {
-                                adapter.setData(new ArrayList<Partner>());
-                            }*/
-                        } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
-                            errorMsg = getString(R.string.servers_error);
-                        } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
-                            errorMsg = getString(R.string.param_missing);
-                        } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
-                            errorMsg = getString(R.string.param_illegal);
-                        } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
-                            errorMsg = msg;
-                        } else {
-                            errorMsg = getString(R.string.servers_error);
-                        }
+                      JSONObject obj = new JSONObject(t.toString());
+                      int status = obj.getInt("status");
+                      String msg = obj.getString("msg");
+                      String data = obj.getString("data");
+                      if (status == Constants.STATUS_SUCCESS) { // 正确
+                        if (StringUtils.isNotEmpty(data)) {
+                          Gson gson = new Gson();
+                          myPartnerList =
+                              gson.fromJson(data, new TypeToken<ArrayList<Partner>>() {}.getType());
+                          //                                adapter.setData(partnerList);
+                          showData(myPartnerList);
+                        } /*else {
+                              adapter.setData(new ArrayList<Partner>());
+                          }*/
+                      } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
+                        errorMsg = getString(R.string.servers_error);
+                      } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数
+                        errorMsg = getString(R.string.param_missing);
+                      } else if (status == Constants.STATUS_PARAM_ILLEGA) { // 参数值非法
+                        errorMsg = getString(R.string.param_illegal);
+                      } else if (status == Constants.STATUS_OTHER_ERROR) { // 999其他错误
+                        errorMsg = msg;
+                      } else {
+                        errorMsg = getString(R.string.servers_error);
+                      }
                     }
-                } catch (Exception e) {
+                  } catch (Exception e) {
                     e.printStackTrace();
                     mPullRefreshListView.onRefreshComplete();
                     errorMsg = getString(R.string.servers_error);
-                }
-                // 操作失败，显示错误信息
-                if (!StringUtils.isEmpty(errorMsg.trim())) {
+                  }
+                  // 操作失败，显示错误信息
+                  if (!StringUtils.isEmpty(errorMsg.trim())) {
                     mPullRefreshListView.onRefreshComplete();
                     UIUtils.showToast(Find2DetailActivity.this, errorMsg);
+                  }
                 }
-            }
-        });}else{
-            startActivity(new Intent(Find2DetailActivity.this,LoginActivity.class));
-            finish();
-        }
+              });
+    } else {
+      startActivity(new Intent(Find2DetailActivity.this, LoginActivity.class));
+      finish();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        page = 1;
-        myPartnerList = null;
-        totalPartnerList = null;
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    page = 1;
+    myPartnerList = null;
+    totalPartnerList = null;
+  }
+  /**
+   * 处理数据加载的方法
+   *
+   * @param list
+   */
+  private void showData(List<Partner> myParterList) {
+    if (myParterList != null && myParterList.size() > 0) {
+      if (page == 1) {
+        totalPartnerList.clear();
+      }
+      for (Partner partner : myParterList) {
+        totalPartnerList.add(partner);
+      }
+      // 给适配器赋值
+      adapter.setData(totalPartnerList);
     }
-    /**
-     * 处理数据加载的方法
-     * @param list
-     */
-    private void showData(List<Partner> myParterList){
-        if(myParterList!=null && myParterList.size()>0){
-            if(page==1){
-                totalPartnerList.clear();
-            }
-            for (Partner partner : myParterList) {
-                totalPartnerList.add(partner);
-            }
-            //给适配器赋值
-            adapter.setData(totalPartnerList);
-        }
-        mPullRefreshListView.onRefreshComplete();
-    }
+    mPullRefreshListView.onRefreshComplete();
+  }
 }

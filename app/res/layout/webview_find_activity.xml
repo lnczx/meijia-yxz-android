@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/activity_bg_color"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <include
             android:id="@+id/view_webview_title_bar"
@@ -23,13 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:visibility="gone" >
+        android:background="@color/black"
+        android:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black" >
-        </LinearLayout>
 
         <Button
             android:id="@+id/bt_button"
@@ -38,10 +34,20 @@
             android:layout_alignParentRight="true"
             android:background="@color/simi_color_red"
             android:gravity="center"
-            android:text="咨询"
+            android:text="了解更多"
             android:textColor="@color/white"
-            android:textSize="@dimen/title_bar_text_size"
-            android:textStyle="bold" />
+            android:textSize="@dimen/font_size_16" />
+
+        <TextView
+            android:id="@+id/tv_call_server"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/bt_button"
+            android:background="@color/simi_color_blue"
+            android:gravity="center"
+            android:text="免费咨询"
+            android:textColor="@color/simi_color_white"
+            android:textSize="@dimen/font_size_16" />
     </RelativeLayout>
 
 </RelativeLayout>
