@@ -6,16 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.meijialife.simi.Constants;
+import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.VideoCatalog;
+import com.meijialife.simi.photo.util.FileUtils;
+import com.meijialife.simi.player.download.MDownloadListener;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.woblog.android.downloader.DownloadService;
+import cn.woblog.android.downloader.callback.DownloadManager;
+import cn.woblog.android.downloader.domain.DownloadInfo;
 
 /**
  * 视频目录列表适配器
@@ -26,6 +31,9 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 	private List<VideoCatalog> videoDatas;
 	private LayoutInflater layoutInflater;
 
+	private DownloadManager downloadManager;
+	private DownloadInfo downloadInfo;
+
 	/**
 	 * @param context
 	 */
@@ -33,6 +41,8 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
 		this.videoDatas = new ArrayList<>();
+		downloadManager = DownloadService.getDownloadManager(MyApplication.applicationContext);
+		FileUtils.createFolder(Constants.PATH_VIDEO_CACHE);
 	}
 	
 	public void setData(List<VideoCatalog> videoDatas) {
@@ -57,7 +67,7 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 
 	@Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
+		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.video_catalog_list_item, null);//
 			holder = new ViewHolder();
@@ -70,13 +80,45 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 
 		final VideoCatalog videoData = videoDatas.get(position);
 		holder.tv_title.setText(videoData.getTitle());
+
+
+		downloadInfo = downloadManager.getDownloadById(videoData.getVideo_url().hashCode());
+		holder.tv_download.setText("");
+		if(downloadInfo != null){
+			//已在下载任务，重新绑定监听
+			if(downloadInfo.getStatus() == DownloadInfo.STATUS_COMPLETED){
+				holder.tv_download.setText("已下载");
+			}
+			downloadInfo.setDownloadListener(new MDownloadListener(holder.tv_download));
+		}else {
+			holder.tv_download.setText("下载");
+		}
+
 		holder.tv_download.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String url = videoData.getVideo_url();
-				String path = Constants.PATH_VIDEO_CACHE + File.separator + videoData.getTitle();
+				String name = videoData.getTitle() + url.substring(url.lastIndexOf("."), url.length());
+				String path = Constants.PATH_VIDEO_CACHE + File.separator + name;
 
-				Toast.makeText(context, "download", Toast.LENGTH_SHORT).show();
+				if (downloadInfo != null) {
+					//已在下载队列中，根据状态处理
+					switch (downloadInfo.getStatus()) {
+						case DownloadInfo.STATUS_NONE:
+						case DownloadInfo.STATUS_PAUSED:
+						case DownloadInfo.STATUS_ERROR:
+							downloadManager.resume(downloadInfo);
+							break;
+					}
+				} else {
+					//新建下载任务
+					downloadInfo = new DownloadInfo.Builder()
+							.setUrl(url)
+							.setPath(path)
+							.build();
+					downloadInfo.setDownloadListener(new MDownloadListener(holder.tv_download));
+					downloadManager.download(downloadInfo);
+				}
 			}
 		});
 

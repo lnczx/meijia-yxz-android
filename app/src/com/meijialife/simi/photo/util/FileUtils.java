@@ -85,4 +85,15 @@ public class FileUtils {
 		return true;
 	}
 
+	/**
+	 * 创建具体目录
+	 * @param path   文件路径
+	 */
+	public static void createFolder(String path) {
+		File folder = new File(path);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+	}
+
 }

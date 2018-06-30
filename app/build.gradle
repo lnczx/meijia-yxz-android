@@ -115,5 +115,7 @@ dependencies {
     compile(name: 'AliyunVodPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayerView', ext: 'aar')
     compile 'com.android.support:design:25.3.0'
+
+    compile 'cn.woblog.android:downloader:1.0.1'
 }
 

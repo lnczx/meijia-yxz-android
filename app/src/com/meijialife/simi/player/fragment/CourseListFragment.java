@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  *  目录
  */
@@ -96,8 +97,8 @@ public class CourseListFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String videoId = ""+videoDatas.get(position).getService_price_id();
-                ((CourseActivity)getActivity()).onCatalogClick(videoId);
+                VideoCatalog catalog = videoDatas.get(position);
+                ((CourseActivity)getActivity()).onCatalogClick(catalog);
             }
         });
     }

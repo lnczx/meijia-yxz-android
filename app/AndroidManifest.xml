@@ -1222,6 +1222,13 @@ _
             android:configChanges="orientation|keyboard|locale|screenSize|layoutDirection"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.MainFriendsActivity" />
+
+        <service android:name="cn.woblog.android.downloader.DownloadService">
+            <intent-filter>
+                <action android:name="cn.woblog.android.downloader.DOWNLOAD_SERVICE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

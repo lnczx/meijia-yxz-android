@@ -43,3 +43,7 @@
 -keep class com.umeng.socialize.sensor.**
 -keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
 -keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+#download sdk
+-keep public class * implements cn.woblog.android.downloader.db.DownloadDBController
+-keep class cn.woblog.android.downloader.domain.** { *; }

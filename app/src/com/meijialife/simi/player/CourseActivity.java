@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.meijialife.simi.Constants;
+import com.meijialife.simi.MyApplication;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
@@ -40,6 +41,7 @@ import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.VideoAliData;
+import com.meijialife.simi.bean.VideoCatalog;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
@@ -69,6 +71,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.woblog.android.downloader.DownloadService;
+import cn.woblog.android.downloader.callback.DownloadManager;
+import cn.woblog.android.downloader.domain.DownloadInfo;
 
 /**
  * 课程详情
@@ -101,6 +107,8 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     private BitmapDrawable defDrawable;
     private String videoId;
 
+    private DownloadManager downloadManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +134,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     }
 
     private void init() {
+        downloadManager = DownloadService.getDownloadManager(MyApplication.applicationContext);
         videoId = getIntent().getStringExtra("videoId");
         videoListData = (VideoList) getIntent().getSerializableExtra("videoListData");
         finalBitmap = FinalBitmap.create(this);
@@ -171,9 +180,21 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
-    public void onCatalogClick(String videoId){
-        this.videoId = videoId;
-        getVideoDetail(videoId, true);
+    /**
+     * 目录item被点击
+     * @param catalog
+     */
+    public void onCatalogClick(VideoCatalog catalog){
+        this.videoId = String.valueOf(catalog.getService_price_id());
+
+        DownloadInfo downloadInfo = downloadManager.getDownloadById(catalog.getVideo_url().hashCode());
+        if(downloadInfo != null
+                && downloadInfo.getStatus() == DownloadInfo.STATUS_COMPLETED){
+            //本地已下载，直接播放本地视频
+            playAliyunLocalSource(downloadInfo.getPath());
+        }else{
+            getVideoDetail(videoId, true);
+        }
     }
 
     /**
