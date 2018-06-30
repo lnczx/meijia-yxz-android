@@ -7,6 +7,7 @@ import com.meijialife.simi.bean.ContactBean;
 import com.meijialife.simi.bean.Friend;
 import com.meijialife.simi.bean.TagData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -803,6 +804,11 @@ public class Constants {
      * 本地临时文件根目录
      **/
     public static final String PATH_ROOT = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Simi";
+
+    /**
+     * 视频下载目录
+     **/
+    public static final String PATH_VIDEO_CACHE = PATH_ROOT + File.separator + "videoCache";
 
 
     /*

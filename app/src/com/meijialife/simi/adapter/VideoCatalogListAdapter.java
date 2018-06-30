@@ -6,10 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.bean.VideoCatalog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +68,17 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		VideoCatalog videoData = videoDatas.get(position);
+		final VideoCatalog videoData = videoDatas.get(position);
 		holder.tv_title.setText(videoData.getTitle());
+		holder.tv_download.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String url = videoData.getVideo_url();
+				String path = Constants.PATH_VIDEO_CACHE + File.separator + videoData.getTitle();
+
+				Toast.makeText(context, "download", Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		return convertView;
 	}
@@ -74,9 +86,8 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		TextView tv_title; //标题
 		TextView tv_download; //下载
-
 	}
 
-	 
+
 
 }

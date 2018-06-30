@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -13,6 +11,7 @@
             android:id="@+id/tv_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:paddingTop="1dp"
@@ -28,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginRight="36dp"
             android:layout_toRightOf="@id/tv_tag"
             android:text="视频名称"
             android:textColor="@color/index_second_title_color"
@@ -37,7 +36,10 @@
         <TextView
             android:id="@+id/tv_download_state"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:gravity="center"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:text="下载"
