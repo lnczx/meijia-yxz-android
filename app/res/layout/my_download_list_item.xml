@@ -34,17 +34,6 @@
             android:textColor="@color/index_second_title_color"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tv_download_state"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="下载"
-            android:textColor="@color/home1_color_gray" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -88,10 +88,14 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 			//已在下载任务，重新绑定监听
 			if(downloadInfo.getStatus() == DownloadInfo.STATUS_COMPLETED){
 				holder.tv_download.setText("已下载");
+			}else if(downloadInfo.getStatus() == DownloadInfo.STATUS_DOWNLOADING){
+				holder.tv_download.setText("下载中");
 			}
 			downloadInfo.setDownloadListener(new MDownloadListener(holder.tv_download));
+			holder.tv_download.setTextColor(context.getResources().getColor(R.color.common_input_text_color));
 		}else {
 			holder.tv_download.setText("下载");
+			holder.tv_download.setTextColor(context.getResources().getColor(R.color.simi_color_red));
 		}
 
 		holder.tv_download.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +122,7 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 							.build();
 					downloadInfo.setDownloadListener(new MDownloadListener(holder.tv_download));
 					downloadManager.download(downloadInfo);
+					holder.tv_download.setTextColor(context.getResources().getColor(R.color.common_input_text_color));
 				}
 			}
 		});

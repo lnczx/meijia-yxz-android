@@ -2,6 +2,8 @@ package com.meijialife.simi.player.download;
 
 import android.widget.TextView;
 
+import java.text.NumberFormat;
+
 import cn.woblog.android.downloader.callback.DownloadListener;
 import cn.woblog.android.downloader.exception.DownloadException;
 
@@ -11,34 +13,38 @@ import cn.woblog.android.downloader.exception.DownloadException;
 public class MDownloadListener implements DownloadListener {
 
     private TextView mTextView;
+    private NumberFormat numberFormat;
 
     public MDownloadListener(TextView textView){
         mTextView = textView;
+        numberFormat = NumberFormat.getInstance();
+        numberFormat.setMaximumFractionDigits(2);
     }
 
     @Override
     public void onStart() {
-        mTextView.setText("start");
+        mTextView.setText("");
     }
 
     @Override
     public void onWaited() {
-        mTextView.setText("waited");
+        //mTextView.setText("");
     }
 
     @Override
     public void onPaused() {
-        mTextView.setText("paused");
+        //mTextView.setText("");
     }
 
     @Override
     public void onDownloading(long progress, long size) {
-        mTextView.setText("" + progress + "/" + size);
+        String progresStr = numberFormat.format(progress / size * 100);
+        mTextView.setText("下载中(" + progresStr + "%)");
     }
 
     @Override
     public void onRemoved() {
-        mTextView.setText("removed");
+        //mTextView.setText("");
     }
 
     @Override

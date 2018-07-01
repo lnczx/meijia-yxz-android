@@ -13,6 +13,7 @@ import com.meijialife.simi.bean.ParamsBean;
 import com.meijialife.simi.bean.VideoChannel;
 import com.meijialife.simi.fra.MyCollectionNewsFra;
 import com.meijialife.simi.fra.MyCollectionVideoFra;
+import com.meijialife.simi.fra.MyDownloadFragment;
 import com.meijialife.simi.inter.ListItemClickHelps;
 import com.meijialife.simi.ui.IndicatorTabBarForTrial;
 
@@ -32,6 +33,7 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
 
     private MyCollectionNewsFra newsFra;
     private MyCollectionVideoFra videoFra;
+    private MyDownloadFragment downloadFra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
         channels = new ArrayList<>();
         channels.add(new VideoChannel("0", "文章"));
         channels.add(new VideoChannel("1", "视频"));
+        channels.add(new VideoChannel("2", "下载"));
         updateChannel(channels);
         currentChannel = channels.get(0);
     }
@@ -75,8 +78,9 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
      * 切换fragement
      */
     private void change(Fragment fragment) {
-        if (null == mFM)
+        if (null == mFM) {
             mFM = getSupportFragmentManager();
+        }
         FragmentTransaction ft = mFM.beginTransaction();
         ft.replace(R.id.content_container, fragment);
         ft.commit();
@@ -102,12 +106,18 @@ public class MyCollectionListActivity extends FragmentActivity implements OnClic
                 newsFra = new MyCollectionNewsFra();
             }
             change(newsFra);
-        }else{
+        }else if (currentChannel.getChannel_id().equals("1")){
             //视频
             if(videoFra == null){
                 videoFra = new MyCollectionVideoFra();
             }
             change(videoFra);
+        }else if (currentChannel.getChannel_id().equals("2")){
+            //下载
+            if(downloadFra == null){
+                downloadFra = new MyDownloadFragment();
+            }
+            change(downloadFra);
         }
     }
 

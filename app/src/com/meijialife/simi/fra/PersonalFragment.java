@@ -320,7 +320,7 @@ public class PersonalFragment extends Fragment implements OnClickListener {
       case R.id.layout_person_order: // 订单
         startActivity(new Intent(getActivity(), MyOrderActivity.class));
         break;
-      case R.id.layout_person_shoucang: // 我的收藏
+      case R.id.layout_person_shoucang: // 我的收藏与下载
         startActivity(new Intent(getActivity(), MyCollectionListActivity.class));
         break;
       case R.id.layout_person_youhuiquan: // 优惠券
