@@ -38,7 +38,8 @@ public class MDownloadListener implements DownloadListener {
 
     @Override
     public void onDownloading(long progress, long size) {
-        String progresStr = numberFormat.format(progress / size * 100);
+        double pro = (progress / (double)size) * 100;
+        String progresStr = numberFormat.format(pro);
         mTextView.setText("下载中(" + progresStr + "%)");
     }
 

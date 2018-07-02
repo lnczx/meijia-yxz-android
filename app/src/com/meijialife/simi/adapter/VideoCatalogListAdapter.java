@@ -119,6 +119,8 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 					downloadInfo = new DownloadInfo.Builder()
 							.setUrl(url)
 							.setPath(path)
+							.setVideoTitle(videoData.getTitle())
+							.setVideoImageUrl(videoData.getImg_url())
 							.build();
 					downloadInfo.setDownloadListener(new MDownloadListener(holder.tv_download));
 					downloadManager.download(downloadInfo);

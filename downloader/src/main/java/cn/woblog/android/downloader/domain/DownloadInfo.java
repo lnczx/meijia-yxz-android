@@ -74,6 +74,10 @@ public class DownloadInfo implements Serializable {
 
   private List<DownloadThreadInfo> downloadThreadInfos;
 
+  /**Boluo HR video name*/
+  private String videoTitle;
+  /**Boluo HR video image_url*/
+  private String videoImageUrl;
 
   public DownloadException getException() {
     return exception;
@@ -97,6 +101,22 @@ public class DownloadInfo implements Serializable {
 
   public void setUri(String uri) {
     this.uri = uri;
+  }
+
+  public String getVideoTitle() {
+    return videoTitle;
+  }
+
+  public void setVideoTitle(String videoTitle) {
+    this.videoTitle = videoTitle;
+  }
+
+  public String getVideoImageUrl() {
+    return videoImageUrl;
+  }
+
+  public void setVideoImageUrl(String videoImageUrl) {
+    this.videoImageUrl = videoImageUrl;
   }
 
   public String getPath() {
@@ -219,6 +239,8 @@ public class DownloadInfo implements Serializable {
     private long createAt = -1;
     private String url;
     private String path;
+    private String videoTitle;
+    private String videoImageUrl;
 
     public Builder() {
 
@@ -246,6 +268,16 @@ public class DownloadInfo implements Serializable {
       this.id = id;
     }
 
+    public Builder setVideoTitle(String title) {
+      this.videoTitle = title;
+      return this;
+    }
+
+    public Builder setVideoImageUrl(String imageUrl) {
+      this.videoImageUrl = imageUrl;
+      return this;
+    }
+
     public DownloadInfo build() {
       DownloadInfo downloadInfo = new DownloadInfo();
 
@@ -260,6 +292,10 @@ public class DownloadInfo implements Serializable {
       }
 
       downloadInfo.setPath(path);
+
+      downloadInfo.setVideoTitle(videoTitle);
+
+      downloadInfo.setVideoImageUrl(videoImageUrl);
 
       if (createAt == -1) {
         setCreateAt(System.currentTimeMillis());
