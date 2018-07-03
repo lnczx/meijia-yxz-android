@@ -256,7 +256,13 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             if (video.getNeed_playauth() == "1") {
                 getVideoAuth(video.getArticle_id(), video.getVideo_url());
             } else {
-                playAliyunLocalSource(video.getVideo_url());
+                DownloadInfo downloadInfo = downloadManager.getDownloadById(video.getVideo_url().hashCode());
+                if(downloadInfo != null && downloadInfo.getStatus() == DownloadInfo.STATUS_COMPLETED){
+                    //本地已下载，直接播放本地视频
+                    playAliyunLocalSource(downloadInfo.getPath());
+                }else{
+                    playAliyunLocalSource(video.getVideo_url());
+                }
             }
         } else {//未参加过
             btn_take.setVisibility(View.VISIBLE);

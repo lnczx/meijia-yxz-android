@@ -1,5 +1,6 @@
 package com.meijialife.simi.fra;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.adapter.MyDownloadListAdapter;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.database.DBHelper;
+import com.meijialife.simi.player.CourseActivity;
 import com.meijialife.simi.utils.UIUtils;
 
 import java.util.ArrayList;
@@ -86,8 +88,10 @@ public class MyDownloadFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DownloadInfo catalog = downloadInfoList.get(position);
-
+                DownloadInfo downloadInfo = downloadInfoList.get(position);
+                Intent intent = new Intent(getActivity(), CourseActivity.class);
+                intent.putExtra("videoId", downloadInfo.getVideoId());
+                startActivity(intent);
             }
         });
     }

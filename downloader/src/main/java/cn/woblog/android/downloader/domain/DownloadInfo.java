@@ -74,6 +74,8 @@ public class DownloadInfo implements Serializable {
 
   private List<DownloadThreadInfo> downloadThreadInfos;
 
+  /**Boluo HR video id*/
+  private String videoId;
   /**Boluo HR video name*/
   private String videoTitle;
   /**Boluo HR video image_url*/
@@ -101,6 +103,14 @@ public class DownloadInfo implements Serializable {
 
   public void setUri(String uri) {
     this.uri = uri;
+  }
+
+  public String getVideoId() {
+    return videoId;
+  }
+
+  public void setVideoId(String videoId) {
+    this.videoId = videoId;
   }
 
   public String getVideoTitle() {
@@ -239,6 +249,7 @@ public class DownloadInfo implements Serializable {
     private long createAt = -1;
     private String url;
     private String path;
+    private String videoId;
     private String videoTitle;
     private String videoImageUrl;
 
@@ -268,6 +279,11 @@ public class DownloadInfo implements Serializable {
       this.id = id;
     }
 
+    public Builder setVideoId(String id){
+      this.videoId = id;
+      return this;
+    }
+
     public Builder setVideoTitle(String title) {
       this.videoTitle = title;
       return this;
@@ -292,6 +308,8 @@ public class DownloadInfo implements Serializable {
       }
 
       downloadInfo.setPath(path);
+
+      downloadInfo.setVideoId(videoId);
 
       downloadInfo.setVideoTitle(videoTitle);
 

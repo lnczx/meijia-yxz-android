@@ -22,7 +22,7 @@ public final class DefaultDownloadDBController implements DownloadDBController {
   public static final String[] DOWNLOAD_INFO_COLUMNS = new String[]{"_id", "supportRanges",
       "createAt", "uri",
       "path", "size", "progress",
-      "status", "videoTitle", "videoImageUrl"};
+      "status", "videoId", "videoTitle", "videoImageUrl"};
 
   public static final String[] DOWNLOAD_THREAD_INFO_COLUMNS = new String[]{"_id", "threadId",
       "downloadInfoId", "uri",
@@ -32,7 +32,7 @@ public final class DefaultDownloadDBController implements DownloadDBController {
       DefaultDownloadHelper.TABLE_NAME_DOWNLOAD_THREAD_INFO);
 
   public static final String SQL_UPDATE_DOWNLOAD_INFO = String.format(
-      "REPLACE INTO %s (_id,supportRanges,createAt,uri,path,size,progress,status,videoTitle,videoImageUrl) VALUES(?,?,?,?,?,?,?,?,?,?);",
+      "REPLACE INTO %s (_id,supportRanges,createAt,uri,path,size,progress,status,videoId,videoTitle,videoImageUrl) VALUES(?,?,?,?,?,?,?,?,?,?,?);",
       DefaultDownloadHelper.TABLE_NAME_DOWNLOAD_INFO);
 
   public static final String SQL_UPDATE_DOWNLOADING_INFO_STATUS = String.format(
@@ -118,8 +118,9 @@ public final class DefaultDownloadDBController implements DownloadDBController {
     downloadInfo.setSize(cursor.getLong(5));
     downloadInfo.setProgress(cursor.getLong(6));
     downloadInfo.setStatus(cursor.getInt(7));
-    downloadInfo.setVideoTitle(cursor.getString(8));
-    downloadInfo.setVideoImageUrl(cursor.getString(9));
+    downloadInfo.setVideoId(cursor.getString(8));
+    downloadInfo.setVideoTitle(cursor.getString(9));
+    downloadInfo.setVideoImageUrl(cursor.getString(10));
   }
 
   @Override
@@ -153,7 +154,7 @@ public final class DefaultDownloadDBController implements DownloadDBController {
             downloadInfo.getId(), downloadInfo.getSupportRanges(),
             downloadInfo.getCreateAt(), downloadInfo.getUri(), downloadInfo.getPath(),
             downloadInfo.getSize(), downloadInfo.getProgress(), downloadInfo.getStatus(),
-            downloadInfo.getVideoTitle(), downloadInfo.getVideoImageUrl()});
+            downloadInfo.getVideoId(), downloadInfo.getVideoTitle(), downloadInfo.getVideoImageUrl()});
   }
 
   @Override
