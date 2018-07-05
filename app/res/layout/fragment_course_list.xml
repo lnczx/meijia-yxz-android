@@ -4,19 +4,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/listview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="#f7f7f7"
-                android:dividerHeight="1dp" />
-        </LinearLayout>
-    </ScrollView>
+            android:divider="#f7f7f7"
+            android:dividerHeight="1dp" />
+    </LinearLayout>
 </LinearLayout>
