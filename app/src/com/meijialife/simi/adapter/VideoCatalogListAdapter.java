@@ -13,6 +13,8 @@ import com.meijialife.simi.R;
 import com.meijialife.simi.bean.VideoCatalog;
 import com.meijialife.simi.photo.util.FileUtils;
 import com.meijialife.simi.player.download.MDownloadListener;
+import com.meijialife.simi.utils.StringUtils;
+import com.meijialife.simi.utils.UIUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -102,6 +104,10 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				String url = videoData.getVideo_url();
+				if(StringUtils.isEmpty(url)){
+					UIUtils.showToast(context,"视频下载链接为空");
+					return;
+				}
 				String name = videoData.getTitle() + url.substring(url.lastIndexOf("."), url.length());
 				String path = Constants.PATH_VIDEO_CACHE + File.separator + name;
 
