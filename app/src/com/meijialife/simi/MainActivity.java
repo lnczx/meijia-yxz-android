@@ -45,8 +45,8 @@ import com.meijialife.simi.bean.Contact;
 import com.meijialife.simi.bean.User;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
-import com.meijialife.simi.fra.Find2Fra;
-import com.meijialife.simi.fra.Home1NewFra;
+import com.meijialife.simi.fra.HaveInfoFragment;
+import com.meijialife.simi.fra.HomeFragment;
 import com.meijialife.simi.fra.PersonalFragment;
 import com.meijialife.simi.fra.ScheduleFra;
 import com.meijialife.simi.ui.RoundImageView;
@@ -310,7 +310,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //                if (!slideMenu.isMainScreenShowing()) {
 //                    return;
 //                }
-                change(new Home1NewFra());
+                change(new HomeFragment());
                 setSelected(mBt1);
                 updateTitle(1);
                 SlideMenu.isUse = false;
@@ -396,7 +396,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     }
 
     /**
-     * 切换到发现Fragement
+     * 切换到有料Fragement
      */
     public void changeFind() {
         currentTabIndex = 2;
@@ -404,7 +404,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //            return;
 //        }
         view_title_bar.setVisibility(View.GONE);
-        change(new Find2Fra(this));
+        change(new HaveInfoFragment(this));
         setSelected(mBt2);
         updateTitle(2);
         SlideMenu.isUse = false;
