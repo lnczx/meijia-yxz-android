@@ -2,26 +2,21 @@ package com.meijialife.simi.player;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +30,6 @@ import com.meijialife.simi.activity.BindMobileActivity;
 import com.meijialife.simi.activity.CommentForNewFrgActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PayOrderActivity;
-import com.meijialife.simi.activity.PointsShopActivity;
-import com.meijialife.simi.adapter.VideoRelateListAdapter;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
@@ -48,14 +41,12 @@ import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.player.adapter.FragmentAdapterUtils;
 import com.meijialife.simi.player.fragment.CourseDetailFragment;
 import com.meijialife.simi.player.fragment.CourseListFragment;
-import com.meijialife.simi.player.fragment.CourseMoreFragment;
+import com.meijialife.simi.player.fragment.WebViewFragment;
 import com.meijialife.simi.ui.CustomShareBoard;
-import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
-import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
 import com.simi.easemob.utils.ShareConfig;
 
@@ -92,7 +83,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     private List<Fragment> fragmentList;
     private CourseDetailFragment detailFragment;
     private CourseListFragment listFragment;
-    private CourseMoreFragment moreFragment;
+    private WebViewFragment moreFragment;
 
     private TextView btn_take;//参加该课程按钮
     private EditText comment_content;// 评论输入框
@@ -124,7 +115,6 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             getVideoDetail(videoListData.getArticle_id(), false);
         }
 
-        showLabels();
     }
 
     @Override
@@ -160,6 +150,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     }
 
     private void showLabels(){
+        if(video == null){
+            return;
+        }
         titleList = new ArrayList<>();
         titleList.add("介绍");
         titleList.add("目录");
@@ -167,7 +160,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
 
         detailFragment = CourseDetailFragment.getInstace(titleList.get(0));
         listFragment = CourseListFragment.getInstace(titleList.get(1));
-        moreFragment = CourseMoreFragment.getInstace(titleList.get(2));
+        moreFragment = WebViewFragment.getInstace(video.getVideo_more_url());
 
         fragmentList = new ArrayList<>();
         fragmentList.add(detailFragment);
@@ -432,6 +425,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                                 video = gson.fromJson(data, VideoData.class);
                                 showData();
                                 if(!fromCatalog){
+                                    showLabels();
                                     detailFragment.setVideo(video);
                                     listFragment.setVideo(video);
                                     getVideoRelateList();
