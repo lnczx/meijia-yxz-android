@@ -154,6 +154,9 @@ public class CourseListFragment extends BaseFragment {
                                 List<VideoCatalog> videoDatas = gson.fromJson(data, new TypeToken<ArrayList<VideoCatalog>>() {
                                 }.getType());
 
+                                for (VideoCatalog catalog : videoDatas){
+                                    catalog.setImg_url(video.getImg_url());
+                                }
                                 setVideoDatas(videoDatas);
                             } else {
                                 //无相关课程
