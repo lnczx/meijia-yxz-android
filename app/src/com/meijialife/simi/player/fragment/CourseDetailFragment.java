@@ -132,8 +132,10 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
 
     public void setVideoDatas(List<VideoList> videoDatas) {
         this.videoDatas = videoDatas;
-        videoAdapter.setData(videoDatas);
-        UIUtils.setListViewHeightBasedOnChildren(listView);
+        if(videoAdapter != null){
+            videoAdapter.setData(videoDatas);
+            UIUtils.setListViewHeightBasedOnChildren(listView);
+        }
     }
 
     @Override
@@ -166,7 +168,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void showData() {
-        if (video == null) {
+        if (video == null || tv_vname == null) {
             return;
         }
         tv_vname.setText(video.getTitle());

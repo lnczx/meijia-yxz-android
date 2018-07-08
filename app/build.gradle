@@ -115,9 +115,9 @@ dependencies {
     compile(name: 'AliyunVodPlayer', ext: 'aar')
     compile(name: 'AliyunVodPlayerView', ext: 'aar')
     compile 'com.android.support:design:25.3.0'
-
     //download sdk
     //compile 'cn.woblog.android:downloader:1.0.1'
     implementation project(':downloader')
+    implementation 'jetty:javax.servlet:5.1.12'
 }
 

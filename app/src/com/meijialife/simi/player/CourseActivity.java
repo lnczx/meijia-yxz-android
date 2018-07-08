@@ -153,6 +153,9 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
         if(video == null){
             return;
         }
+        if(fragmentList != null && fragmentList.size() > 0){
+            return;
+        }
         titleList = new ArrayList<>();
         titleList.add("介绍");
         titleList.add("目录");
@@ -639,15 +642,16 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
                         String msg = obj.getString("msg");
                         String data = obj.getString("data");
                         if (status == Constants.STATUS_SUCCESS) { // 正确
+                            /*
                             btn_take.setVisibility(View.GONE);
                             iv_thum.setVisibility(View.GONE);
-
                             VideoAliData videoAliData = new Gson().fromJson(data, VideoAliData.class);
                             if (videoAliData.getNeed_playauth() == 1) {//auth
                                 getVideoAuth(video.getArticle_id(), videoAliData.getVideo_url());
                             } else if (videoAliData.getNeed_playauth() == 0) {
                                 playAliyunLocalSource(videoAliData.getVideo_url());
-                            }
+                            }*/
+                            getVideoDetail(video.getArticle_id(), false);
                         } else if (status == Constants.STATUS_SERVER_ERROR) { // 服务器错误
                             Toast.makeText(CourseActivity.this, getString(R.string.servers_error), Toast.LENGTH_SHORT).show();
                         } else if (status == Constants.STATUS_PARAM_MISS) { // 缺失必选参数

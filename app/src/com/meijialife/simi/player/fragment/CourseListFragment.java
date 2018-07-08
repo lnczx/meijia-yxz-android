@@ -67,7 +67,6 @@ public class CourseListFragment extends BaseFragment {
         if (getArguments() != null) {
             label = getArguments().getString(INTENT_KEY_LABEL);
         }
-        user = DBHelper.getUser(getActivity());
 
         initView(mView);
         initListView(mView);
@@ -110,14 +109,17 @@ public class CourseListFragment extends BaseFragment {
 
     public void setVideoDatas(List<VideoCatalog> videoDatas) {
         this.videoDatas = videoDatas;
-        videoAdapter.setData(videoDatas);
-        UIUtils.setListViewHeightBasedOnChildren(listView);
+        if(videoAdapter != null) {
+            videoAdapter.setData(videoDatas, video.getIs_join());
+            UIUtils.setListViewHeightBasedOnChildren(listView);
+        }
     }
 
     /**
      * 获得视频目录
      */
     public void getVideoList() {
+        user = DBHelper.getUser(getActivity());
         if (video == null || user == null) {
             return;
         }

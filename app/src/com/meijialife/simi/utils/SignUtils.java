@@ -11,8 +11,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.meijia.utils.StringUtil;
-
 /**
  * 传递参数签名类
  * @author lnczx
@@ -53,7 +51,7 @@ public class SignUtils {
 		}
 		for (Entry<String, String> kv : map.entrySet()) {
 //				builder.append(kv.getKey() + "=" + URLEncoder.encode(kv.getValue(), "UTF-8") + "&");
-			if (!StringUtil.isEmpty(kv.getValue())) builder.append(kv.getKey() + "=" + kv.getValue() + "&");
+			if (!StringUtils.isEmpty(kv.getValue())) builder.append(kv.getKey() + "=" + kv.getValue() + "&");
 		}
 
 		if (builder.length() > 0) {

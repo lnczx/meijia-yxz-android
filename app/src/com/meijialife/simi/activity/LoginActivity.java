@@ -43,6 +43,7 @@ import com.meijialife.simi.utils.BasicToolUtil;
 import com.meijialife.simi.utils.DateUtils;
 import com.meijialife.simi.utils.LogOut;
 import com.meijialife.simi.utils.NetworkUtils;
+import com.meijialife.simi.utils.SignUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
@@ -293,11 +294,12 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     showDialog();
 
-    Map<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<>();
     map.put("mobile", mobile);
     map.put("sms_token", sms_token);
     map.put("device_type", "android");
     map.put("login_from", "0");
+    map = SignUtils.getSignParams(map);
     AjaxParams param = new AjaxParams(map);
     new FinalHttp()
         .post(
@@ -548,9 +550,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
   private void getSmsToken(String mobile) {
     showDialog();
 
-    Map<String, String> map = new HashMap<String, String>();
+    HashMap<String, String> map = new HashMap<String, String>();
     map.put("mobile", mobile);
     map.put("sms_type", "0");
+    map = SignUtils.getSignParams(map);
     AjaxParams param = new AjaxParams(map);
     new FinalHttp()
         .get(
