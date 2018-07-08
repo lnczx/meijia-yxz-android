@@ -92,6 +92,7 @@ public class UserInfo implements Serializable {
 
     private String company_name;//公司名称
 
+    /**0 = vip会员 1 = 超级vip 2 = 企业vip*/
     private int vip ;
 
     public int getVip() {
@@ -100,6 +101,10 @@ public class UserInfo implements Serializable {
 
     public void setVip(int vip) {
         this.vip = vip;
+    }
+
+    public boolean isVip(){
+        return vip == 0 || vip == 1 || vip == 2;
     }
 
     public String getSenior_range() {

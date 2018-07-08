@@ -33,6 +33,7 @@ import com.meijialife.simi.activity.PayOrderActivity;
 import com.meijialife.simi.bean.PartnerDetail;
 import com.meijialife.simi.bean.ServicePrices;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.VideoAliData;
 import com.meijialife.simi.bean.VideoCatalog;
 import com.meijialife.simi.bean.VideoData;
@@ -94,6 +95,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     private VideoData video;//视频详细信息
 
     private User user;
+    private UserInfo userInfo;
     private FinalBitmap finalBitmap;
     private BitmapDrawable defDrawable;
     private String videoId;
@@ -121,6 +123,7 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         user = DBHelper.getUser(CourseActivity.this);
+        userInfo = DBHelper.getUserInfo(CourseActivity.this);
     }
 
     private void init() {
@@ -571,13 +574,18 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             Toast.makeText(this, "数据错误", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (user == null) {
+        if (user == null || userInfo == null) {
             startActivity(new Intent(CourseActivity.this, LoginActivity.class));
             return;
         }
         float price = Float.parseFloat(video.getDis_price());
-        if (price > 0) {//去支付
-            toPay();
+        if (price > 0) {//收费课程
+            if(userInfo.isVip()){
+                //vip免费
+                postJoin();
+            }else{
+                toPay();
+            }
         } else {//免费
             postJoin();
         }
