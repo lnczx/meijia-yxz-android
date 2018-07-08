@@ -84,6 +84,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
     private FrameLayout mBt5;
     private FragmentManager mFM = null;
     private int currentTabIndex; // 1=首页 2=发现 3=秘友 4=我的
+    private ImageView youliaoUnreadImageView;
 
     //    private static SlideMenu slideMenu;// 侧边栏
     private RoundImageView left_menu_header_im;// 侧边栏用户头像
@@ -254,6 +255,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 //        mBt5 = (LinearLayout) findViewById(R.id.tab_bt_5);
         unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
         unreadImageView = (ImageView) findViewById(R.id.unread_im_number);
+        youliaoUnreadImageView = findViewById(R.id.unread_youliao_number);
 
         mBt1.setOnClickListener(this);
         mBt2.setOnClickListener(this);
@@ -318,6 +320,8 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 break;
             case R.id.tab_bt_2: // 发现
                 changeFind();
+                SpFileUtil.saveInt(this, SpFileUtil.FILE_UI_PARAMETER, SpFileUtil.KEY_YOULIAO_RED, 0);
+                updateUnRead();
                 break;
             case R.id.tab_bt_3: // 日程
                 if (user != null) {
@@ -605,6 +609,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
         if (!isConflict && !isCurrentAccountRemoved) {
             updateUnreadLabel();
         }
+        updateUnRead();
 
         // unregister this event listener when this activity enters the
         // background
@@ -632,16 +637,6 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     @Override
     protected void onStart() {
-
-        //更新用户未读消息
-        boolean flag = SpFileUtil.getBoolean(MainActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
-        if (flag) {
-            unreadImageView.setVisibility(View.VISIBLE);
-        } else {
-            unreadImageView.setVisibility(View.INVISIBLE);
-        }
-
-
         super.onStart();
     }
 
@@ -711,6 +706,31 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
                 }
             }
         });
+    }
+
+    /**
+     * 更新用户未读消息
+     */
+    private void updateUnRead(){
+        //日历
+        if(unreadImageView != null){
+            boolean flag = SpFileUtil.getBoolean(MainActivity.this, SpFileUtil.KEY_MSG_UNREAD, SpFileUtil.KEY_MSG_UNREAD, false);
+            if (flag) {
+                unreadImageView.setVisibility(View.VISIBLE);
+            } else {
+                unreadImageView.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        //有料
+        if(youliaoUnreadImageView != null){
+            int youliaoFlag = SpFileUtil.getInt(MainActivity.this, SpFileUtil.FILE_UI_PARAMETER, SpFileUtil.KEY_YOULIAO_RED, 0);
+            if(youliaoFlag == 1){
+                youliaoUnreadImageView.setVisibility(View.VISIBLE);
+            }else{
+                youliaoUnreadImageView.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     /**

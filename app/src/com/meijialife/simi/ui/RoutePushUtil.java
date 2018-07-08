@@ -40,6 +40,7 @@ import com.meijialife.simi.bean.ReceiverBean;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.player.CourseActivity;
+import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 
 import static android.R.attr.id;
@@ -98,6 +99,10 @@ public class RoutePushUtil {
                     intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     notify(PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+                    if(StringUtils.isNotEmpty(params) && "youliao-redpoint".equalsIgnoreCase(params)){
+                        SpFileUtil.saveInt(context, SpFileUtil.FILE_UI_PARAMETER,
+                                SpFileUtil.KEY_YOULIAO_RED, 1);
+                    }
                 } else if (action.equals("discover")) {// 发现
                    /* MainActivity mainActivity =MyApplication.getInstance().getMainActivity();
                     mainActivity.changeFind();*/
