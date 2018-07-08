@@ -49,6 +49,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
     private TextView tv_exchange;//金币兑换代金券
     private TextView tv_more;//了解更多
     private TextView tv_detail;//概述
+    private TextView tv_vip;//免费听课点这里
 
     /**
      * 相关视频列表
@@ -101,9 +102,11 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         tv_exchange = (TextView) rootView.findViewById(R.id.tv_exchange);
         tv_more = (TextView) rootView.findViewById(R.id.tv_more);
         tv_detail = (TextView) rootView.findViewById(R.id.tv_detail);
+        tv_vip = rootView.findViewById(R.id.tv_vip);
 
         tv_exchange.setOnClickListener(this);
         tv_more.setOnClickListener(this);
+        tv_vip.setOnClickListener(this);
     }
 
     private void initListView(View rootView) {
@@ -163,6 +166,9 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
                 } else {
                     Toast.makeText(getActivity(), "数据错误", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.tv_vip://免费听课点这里
+                ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JULEBU_URL);
                 break;
         }
     }
