@@ -7,7 +7,7 @@
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">@color/simi_color_red</item>
+        <item name="colorPrimaryDark">@color/black</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorAccent">@color/simi_color_red</item>
         <item name="android:windowNoTitle">true</item>

@@ -31,7 +31,7 @@ public class Constants {
 
 
     // 获取验证码接口
-    public final static String URL_GET_SMS_TOKEN = ROOT_URL + "user/get_sms_token.json";
+    public final static String URL_GET_SMS_TOKEN = ROOT_URL + "user/get_login_sms_token.json";
     // 登录
     public final static String URL_LOGIN = ROOT_URL + "user/login.json";
     // 第三方登陆
