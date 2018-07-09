@@ -16,7 +16,7 @@ import com.meijialife.simi.activity.CompanyListActivity;
 import com.meijialife.simi.activity.CompanyListsActivity;
 import com.meijialife.simi.activity.CompanyRegisterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
-import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.FindServerDetailActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.MainPlusApplicationActivity;
@@ -35,7 +35,7 @@ import com.meijialife.simi.activity.MyWalletActivity;
 import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
-import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.activity.WebViewDetailsActivity;
 import com.meijialife.simi.bean.ReceiverBean;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
@@ -251,7 +251,7 @@ public class RoutePushUtil {
                     intent.putExtra("flag", false);
                     notify(PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
                 } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
-                    intent = new Intent(context, Find2DetailActivity.class);
+                    intent = new Intent(context, FindServerDetailActivity.class);
                     intent.putExtra("service_type_ids", params);
                     intent.putExtra("title_name", "");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -302,7 +302,7 @@ public class RoutePushUtil {
                 }
             } else if (category.equals("h5+list")) {
                 if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
-                    intent = new Intent(context, WebViewsFindActivity.class);
+                    intent = new Intent(context, WebViewDetailsActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", params);

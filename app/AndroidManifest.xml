@@ -859,12 +859,12 @@ _
         -->
         <!-- 发现详情页面 -->
         <activity
-            android:name="com.meijialife.simi.activity.Find2DetailActivity"
+            android:name="com.meijialife.simi.activity.FindServerDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
         <!-- 发现页面webView -->
         <activity
-            android:name="com.meijialife.simi.activity.WebViewsFindActivity"
+            android:name="com.meijialife.simi.activity.WebViewDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden"></activity>
         <activity

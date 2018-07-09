@@ -170,7 +170,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
                 String service_type_ids = findBean.getService_type_ids().toString().trim();
                 String sub_service_type_ids = findBean.getSub_service_type_ids().toString().trim();
                 if (goto_type.equals("h5")) {
-                    Intent intent = new Intent(AllPartnerListActivity.this, WebViewsFindActivity.class);
+                    Intent intent = new Intent(AllPartnerListActivity.this, WebViewDetailsActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", "");
@@ -181,14 +181,14 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
                     if(!is_login){
                         startActivity(new Intent(AllPartnerListActivity.this,LoginActivity.class));
                     }else{
-                        Intent intent = new Intent(AllPartnerListActivity.this, Find2DetailActivity.class);
+                        Intent intent = new Intent(AllPartnerListActivity.this, FindServerDetailActivity.class);
                         intent.putExtra("service_type_ids", service_type_ids);
                         intent.putExtra("sub_service_type_ids", sub_service_type_ids);
                         intent.putExtra("title_name", title_name);
                         startActivity(intent);
                     }
                 } else if (goto_type.equals("h5+list")) {
-                    Intent intent = new Intent(AllPartnerListActivity.this, WebViewsFindActivity.class);
+                    Intent intent = new Intent(AllPartnerListActivity.this, WebViewDetailsActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", title_name);
                     intent.putExtra("service_type_ids", service_type_ids);

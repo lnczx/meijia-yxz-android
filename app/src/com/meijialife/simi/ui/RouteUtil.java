@@ -14,7 +14,7 @@ import com.meijialife.simi.activity.CompanyListsActivity;
 import com.meijialife.simi.activity.CompanyRegisterActivity;
 import com.meijialife.simi.activity.DiscountCardActivity;
 import com.meijialife.simi.activity.FeedDetailActivity;
-import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.FindServerDetailActivity;
 import com.meijialife.simi.activity.FriendApplyActivity;
 import com.meijialife.simi.activity.FriendPageActivity;
 import com.meijialife.simi.activity.LoginActivity;
@@ -37,7 +37,7 @@ import com.meijialife.simi.activity.OrderDetailsActivity;
 import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
-import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.activity.WebViewDetailsActivity;
 import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.database.DBHelper;
 import com.meijialife.simi.player.CourseActivity;
@@ -188,7 +188,7 @@ public class RouteUtil {
                         intent.putExtra("flag", false);
                         context.startActivity(intent);
                     } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
-                        intent = new Intent(context, Find2DetailActivity.class);
+                        intent = new Intent(context, FindServerDetailActivity.class);
                         intent.putExtra("service_type_ids", params);
                         intent.putExtra("title_name", params2);
                         context.startActivity(intent);
@@ -236,7 +236,7 @@ public class RouteUtil {
                     }
                 }
             } else if (category.equals("h5+list")) {
-                intent = new Intent(context, WebViewsFindActivity.class);
+                intent = new Intent(context, WebViewDetailsActivity.class);
                 intent.putExtra("url", goto_url);
                 intent.putExtra("title_name", params2);
                 intent.putExtra("service_type_ids", params);
@@ -365,7 +365,7 @@ public class RouteUtil {
                     intent.putExtra("flag", false);
                     context.startActivity(intent);
                 } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
-                    intent = new Intent(context, Find2DetailActivity.class);
+                    intent = new Intent(context, FindServerDetailActivity.class);
                     intent.putExtra("service_type_ids", params);
                     intent.putExtra("title_name", "");
                     context.startActivity(intent);
@@ -410,7 +410,7 @@ public class RouteUtil {
                 }
             } else if (category.equals("h5+list")) {
                 if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
-                    intent = new Intent(context, WebViewsFindActivity.class);
+                    intent = new Intent(context, WebViewDetailsActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", params);
@@ -581,7 +581,7 @@ public class RouteUtil {
                     intent.putExtra("flag", false);
                     context.startActivity(intent);
                 } else if (action.equals("p_user_list")) {// 跳转到服务人员列表
-                    intent = new Intent(context, Find2DetailActivity.class);
+                    intent = new Intent(context, FindServerDetailActivity.class);
                     intent.putExtra("service_type_ids", params);
                     intent.putExtra("title_name", "");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -627,7 +627,7 @@ public class RouteUtil {
                 }
             } else if (category.equals("h5+list")) {
                 if (action.equals("p_user_list")) {// 先跳转到h5再跳到服务人员列表
-                    intent = new Intent(context, WebViewsFindActivity.class);
+                    intent = new Intent(context, WebViewDetailsActivity.class);
                     intent.putExtra("url", goto_url);
                     intent.putExtra("title_name", "");
                     intent.putExtra("service_type_ids", params);

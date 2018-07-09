@@ -6,11 +6,10 @@ import android.content.Intent;
 import com.easemob.easeui.EaseConstant;
 import com.meijialife.simi.activity.ArticleDetailActivity;
 import com.meijialife.simi.activity.MainFriendsActivity;
+import com.meijialife.simi.activity.PartnerActivity;
 import com.meijialife.simi.activity.WebViewActivity;
-import com.meijialife.simi.activity.WebViewPartnerActivity;
+import com.meijialife.simi.activity.WebViewDetailsActivity;
 import com.simi.easemob.ui.ChatActivity;
-
-import org.bitlet.weupnp.Main;
 
 /**
  * activity跳转类
@@ -31,6 +30,35 @@ public class ToActivityUtil {
         intent.putExtra("url", url);
         intent.putExtra("title", title);
         mContext.startActivity(intent);
+    }
+
+    /**
+     * 打开vip咨询的网页
+     *
+     * @param mContext
+     * @param title
+     * @param url
+     */
+    public static void gotoImWebPage(Context mContext, String title, String url, boolean isVip) {
+        if (null == mContext) return;
+        Intent intent = new Intent(mContext, WebViewDetailsActivity.class);
+        intent.putExtra("url", url);
+        intent.putExtra("title", title);
+        intent.putExtra("isVip", isVip);
+        mContext.startActivity(intent);
+    }
+
+    /**
+     * 会员购买页面
+     *
+     * @param mContext
+     */
+    public static void gotoVipWebPage(Context mContext) {
+        if (null == mContext) return;
+        Intent intent2 = new Intent(mContext, PartnerActivity.class);
+        intent2.putExtra("partner_user_id", "987");
+        intent2.putExtra("service_type_id", "306");
+        mContext.startActivity(intent2);
     }
 
     /**
@@ -66,7 +94,7 @@ public class ToActivityUtil {
      * @param mContext
      */
 
-    public static void gotoArticleDetailActivity(Context mContext, String url, String id,   String Contents) {
+    public static void gotoArticleDetailActivity(Context mContext, String url, String id, String Contents) {
         if (null == mContext) return;
         Intent intent = new Intent(mContext, ArticleDetailActivity.class);
         intent.putExtra("url", url);

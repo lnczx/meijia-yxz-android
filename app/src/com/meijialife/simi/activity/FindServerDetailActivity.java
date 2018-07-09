@@ -44,7 +44,7 @@ import com.meijialife.simi.utils.UIUtils;
  * @author： kerryg
  * @date:2015年11月13日
  */
-public class Find2DetailActivity extends BaseActivity {
+public class FindServerDetailActivity extends BaseActivity {
 
   private ListView listview;
   private SecretaryAdapter adapter; // 服务商适配器
@@ -74,7 +74,7 @@ public class Find2DetailActivity extends BaseActivity {
         SpFileUtil.getBoolean(
             getApplication(), SpFileUtil.LOGIN_STATUS, Constants.LOGIN_STATUS, false);
     if (!login) {
-      startActivity(new Intent(Find2DetailActivity.this, LoginActivity.class));
+      startActivity(new Intent(FindServerDetailActivity.this, LoginActivity.class));
       finish();
       return;
     }
@@ -122,7 +122,7 @@ public class Find2DetailActivity extends BaseActivity {
               getPartnerList(service_type_ids, sub_service_type_ids, page);
               adapter.notifyDataSetChanged();
             } else {
-              Toast.makeText(Find2DetailActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
+              Toast.makeText(FindServerDetailActivity.this, "请稍后，没有更多加载数据", Toast.LENGTH_SHORT).show();
               mPullRefreshListView.onRefreshComplete();
             }
           }
@@ -132,7 +132,7 @@ public class Find2DetailActivity extends BaseActivity {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Partner partner = totalPartnerList.get(position);
-            Intent intent = new Intent(Find2DetailActivity.this, PartnerActivity.class);
+            Intent intent = new Intent(FindServerDetailActivity.this, PartnerActivity.class);
             //                intent.putExtra("Partner",totalPartnerList.get(position));]
             int userId = totalPartnerList.get(position).getUser_id();
             int ServiceTypeId = totalPartnerList.get(position).getService_type_id();
@@ -193,7 +193,7 @@ public class Find2DetailActivity extends BaseActivity {
                   super.onFailure(t, errorNo, strMsg);
                   dismissDialog();
                   Toast.makeText(
-                          Find2DetailActivity.this,
+                          FindServerDetailActivity.this,
                           getString(R.string.network_failure),
                           Toast.LENGTH_SHORT)
                       .show();
@@ -240,12 +240,12 @@ public class Find2DetailActivity extends BaseActivity {
                   // 操作失败，显示错误信息
                   if (!StringUtils.isEmpty(errorMsg.trim())) {
                     mPullRefreshListView.onRefreshComplete();
-                    UIUtils.showToast(Find2DetailActivity.this, errorMsg);
+                    UIUtils.showToast(FindServerDetailActivity.this, errorMsg);
                   }
                 }
               });
     } else {
-      startActivity(new Intent(Find2DetailActivity.this, LoginActivity.class));
+      startActivity(new Intent(FindServerDetailActivity.this, LoginActivity.class));
       finish();
     }
   }

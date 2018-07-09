@@ -168,7 +168,8 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
                 }
                 break;
             case R.id.tv_vip://免费听课点这里
-                ToActivityUtil.gotoWebPage(getActivity(), null, Constants.PERSION_JULEBU_URL);
+                ToActivityUtil.gotoImWebPage(getActivity(), null, Constants.PERSION_JULEBU_URL,true);
+
                 break;
         }
     }

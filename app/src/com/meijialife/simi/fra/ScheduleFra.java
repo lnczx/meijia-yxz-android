@@ -30,11 +30,11 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.R;
 import com.meijialife.simi.activity.AlarmListActivity;
-import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.FindServerDetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.MainPlusAffairActivity;
 import com.meijialife.simi.activity.WebViewsActivity;
-import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.activity.WebViewDetailsActivity;
 import com.meijialife.simi.adapter.ListAdapter;
 import com.meijialife.simi.adapter.UserMsgListAdapter;
 import com.meijialife.simi.bean.AppHelpData;
@@ -269,18 +269,18 @@ public class ScheduleFra extends BaseFragment implements OnClickListener  {
             String goto_url = info.getGoto_url().trim();
             String service_type_ids = info.getService_type_ids().trim();
             if (goto_type.equals("h5")) {
-                Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                Intent intent = new Intent(getActivity(), WebViewDetailsActivity.class);
                 intent.putExtra("url", goto_url);
                 intent.putExtra("title_name", "");
                 intent.putExtra("service_type_ids", "");
                 startActivity(intent);
             } else if (goto_type.equals("app")) {
-                Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
+                Intent intent = new Intent(getActivity(), FindServerDetailActivity.class);
                 intent.putExtra("service_type_ids", service_type_ids);
                 intent.putExtra("title_name", title_name);
                 startActivity(intent);
             } else if (goto_type.equals("h5+list")) {
-                Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+                Intent intent = new Intent(getActivity(), WebViewDetailsActivity.class);
                 intent.putExtra("url", goto_url);
                 intent.putExtra("title_name", title_name);
                 intent.putExtra("service_type_ids", service_type_ids);

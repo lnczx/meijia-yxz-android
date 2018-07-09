@@ -37,10 +37,10 @@ import com.meijialife.simi.BaseFragment;
 import com.meijialife.simi.Constants;
 import com.meijialife.simi.MainActivity;
 import com.meijialife.simi.R;
-import com.meijialife.simi.activity.Find2DetailActivity;
+import com.meijialife.simi.activity.FindServerDetailActivity;
 import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.SearchViewActivity;
-import com.meijialife.simi.activity.WebViewsFindActivity;
+import com.meijialife.simi.activity.WebViewDetailsActivity;
 import com.meijialife.simi.adapter.Find2Adapter;
 import com.meijialife.simi.adapter.FindAllAdapter;
 import com.meijialife.simi.bean.AppHelpData;
@@ -227,7 +227,7 @@ public class HaveInfoFragment extends BaseFragment {
             String goto_url = findBean.getGoto_url().trim();
             String service_type_ids = findBean.getService_type_ids().toString().trim();
             if (goto_type.equals("h5")) {
-              Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+              Intent intent = new Intent(getActivity(), WebViewDetailsActivity.class);
               intent.putExtra("url", goto_url);
               intent.putExtra("title_name", "");
               intent.putExtra("service_type_ids", "");
@@ -242,13 +242,13 @@ public class HaveInfoFragment extends BaseFragment {
               if (!is_login) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
               } else {
-                Intent intent = new Intent(getActivity(), Find2DetailActivity.class);
+                Intent intent = new Intent(getActivity(), FindServerDetailActivity.class);
                 intent.putExtra("service_type_ids", service_type_ids);
                 intent.putExtra("title_name", title_name);
                 startActivity(intent);
               }
             } else if (goto_type.equals("h5+list")) {
-              Intent intent = new Intent(getActivity(), WebViewsFindActivity.class);
+              Intent intent = new Intent(getActivity(), WebViewDetailsActivity.class);
               intent.putExtra("url", goto_url);
               intent.putExtra("title_name", title_name);
               intent.putExtra("service_type_ids", service_type_ids);
