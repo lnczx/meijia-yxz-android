@@ -122,7 +122,7 @@ public class MainActivity extends EMBaseActivity implements OnClickListener, EME
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.main);
+        setContentView(R.layout.layout_main);
         super.onCreate(savedInstanceState);
 
 
