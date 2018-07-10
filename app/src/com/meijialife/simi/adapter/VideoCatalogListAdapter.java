@@ -37,7 +37,6 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 	private int isJoin;
 
 	private DownloadManager downloadManager;
-	private DownloadInfo downloadInfo;
 
 	/**
 	 * @param context
@@ -94,7 +93,7 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 
 
 		if(isJoin == 1){
-			downloadInfo = downloadManager.getDownloadById(videoData.getVideo_url().hashCode());
+			DownloadInfo downloadInfo = downloadManager.getDownloadById(videoData.getVideo_url().hashCode());
 			holder.tv_download.setText("");
 			if(downloadInfo != null){
 				//已在下载任务，重新绑定监听
@@ -121,6 +120,7 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 					String name = videoData.getTitle() + url.substring(url.lastIndexOf("."), url.length());
 					String path = Constants.PATH_VIDEO_CACHE + File.separator + name;
 
+					DownloadInfo downloadInfo = downloadManager.getDownloadById(url.hashCode());
 					if (downloadInfo != null) {
 						//已在下载队列中，根据状态处理
 						switch (downloadInfo.getStatus()) {

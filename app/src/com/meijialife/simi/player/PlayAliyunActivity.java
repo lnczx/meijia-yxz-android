@@ -16,6 +16,7 @@ import com.aliyun.vodplayerview.utils.ScreenUtils;
 import com.aliyun.vodplayerview.widget.AliyunScreenMode;
 import com.aliyun.vodplayerview.widget.AliyunVodPlayerView;
 import com.meijialife.simi.R;
+import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
 
 public class PlayAliyunActivity extends AppCompatActivity {
@@ -43,6 +44,9 @@ public class PlayAliyunActivity extends AppCompatActivity {
     }
 
     public void playAliyunLocalSource(String videourl) {
+        if(StringUtils.isEmpty(videourl)) {
+            return;
+        }
         initPlayerView();
         AliyunLocalSource.AliyunLocalSourceBuilder asb = new AliyunLocalSource.AliyunLocalSourceBuilder();
         asb.setSource(videourl);

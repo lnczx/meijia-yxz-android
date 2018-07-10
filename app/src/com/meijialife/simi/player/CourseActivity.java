@@ -184,15 +184,14 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
      * @param catalog
      */
     public void onCatalogClick(VideoCatalog catalog){
-        this.videoId = String.valueOf(catalog.getService_price_id());
-
-        DownloadInfo downloadInfo = downloadManager.getDownloadById(catalog.getVideo_url().hashCode());
+        String url = catalog.getVideo_url();
+        DownloadInfo downloadInfo = downloadManager.getDownloadById(url.hashCode());
         if(downloadInfo != null
                 && downloadInfo.getStatus() == DownloadInfo.STATUS_COMPLETED){
             //本地已下载，直接播放本地视频
             playAliyunLocalSource(downloadInfo.getPath());
         }else{
-            getVideoDetail(videoId, true);
+            playAliyunLocalSource(url);
         }
     }
 
