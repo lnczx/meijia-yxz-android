@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
     private User user;
     private VideoData video;//视频详细信息
 
+    private ScrollView scrollview;
     private LinearLayout ll_all;
     private TextView tv_vname;//课程名称
     private TextView tv_tname;//讲师
@@ -92,6 +94,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
      * @param rootView
      */
     private void initView(View rootView) {
+        scrollview = rootView.findViewById(R.id.scrollview);
         ll_all = (LinearLayout) rootView.findViewById(R.id.ll_all);
         tv_vname = (TextView) rootView.findViewById(R.id.tv_vname);
         tv_tname = (TextView) rootView.findViewById(R.id.tv_tname);
@@ -138,6 +141,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         if(videoAdapter != null){
             videoAdapter.setData(videoDatas);
             UIUtils.setListViewHeightBasedOnChildren(listView);
+            scrollview.scrollTo(0, 0);
         }
     }
 
