@@ -147,8 +147,8 @@ public class TrialCourseListActivity extends Activity
                 adBean.getGoto_type(),
                 adBean.getAction(),
                 adBean.getGoto_url(),
-                adBean.getParams(),
-                adBean.getService_type_ids());
+                adBean.getService_type_ids(),
+                adBean.getParams());
           }
         });
   }

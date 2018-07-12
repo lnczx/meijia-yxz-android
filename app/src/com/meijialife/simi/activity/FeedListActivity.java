@@ -159,8 +159,8 @@ public class FeedListActivity extends BaseActivity implements OnClickListener, L
                 adBean.getGoto_type(),
                 adBean.getAction(),
                 adBean.getGoto_url(),
-                adBean.getParams(),
-                adBean.getService_type_ids());
+                adBean.getService_type_ids(),
+                adBean.getParams());
           }
         });
   }
