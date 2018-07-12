@@ -35,6 +35,8 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 
 	/**是否参加该课程 1=已参加*/
 	private int isJoin;
+	/**当前播放的视频*/
+	private String currentVideoUrl;
 
 	private DownloadManager downloadManager;
 
@@ -57,6 +59,11 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 	public void setData(List<VideoCatalog> videoDatas, int isJoin) {
 	    this.videoDatas = videoDatas;
 	    this.isJoin = isJoin;
+		notifyDataSetChanged();
+	}
+
+	public void setCurrentVideoUrl(String currentVideoUrl) {
+		this.currentVideoUrl = currentVideoUrl;
 		notifyDataSetChanged();
 	}
 
@@ -90,7 +97,11 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 
 		final VideoCatalog videoData = videoDatas.get(position);
 		holder.tv_title.setText(videoData.getTitle());
-
+		if(StringUtils.isEquals(currentVideoUrl, videoData.getVideo_url())){
+			holder.tv_title.setTextColor(context.getResources().getColor(R.color.video_list_playing_text_color));
+		}else{
+			holder.tv_title.setTextColor(context.getResources().getColor(R.color.index_second_title_color));
+		}
 
 		if(isJoin == 1){
 			DownloadInfo downloadInfo = downloadManager.getDownloadById(videoData.getVideo_url().hashCode());
@@ -106,7 +117,7 @@ public final class VideoCatalogListAdapter extends BaseAdapter {
 				holder.tv_download.setTextColor(context.getResources().getColor(R.color.common_input_text_color));
 			}else {
 				holder.tv_download.setText("下载");
-				holder.tv_download.setTextColor(context.getResources().getColor(R.color.simi_color_red));
+				holder.tv_download.setTextColor(context.getResources().getColor(R.color.video_list_playing_text_color));
 			}
 
 			holder.tv_download.setOnClickListener(new View.OnClickListener() {

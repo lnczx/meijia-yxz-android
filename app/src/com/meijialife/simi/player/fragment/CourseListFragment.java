@@ -98,6 +98,7 @@ public class CourseListFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 VideoCatalog catalog = videoDatas.get(position);
                 ((CourseActivity)getActivity()).onCatalogClick(catalog);
+                videoAdapter.setCurrentVideoUrl(catalog.getVideo_url());
             }
         });
     }
@@ -105,6 +106,7 @@ public class CourseListFragment extends BaseFragment {
     public void setVideo(VideoData video) {
         this.video = video;
         getVideoList();
+        videoAdapter.setCurrentVideoUrl(video.getVideo_url());
     }
 
     public void setVideoDatas(List<VideoCatalog> videoDatas) {

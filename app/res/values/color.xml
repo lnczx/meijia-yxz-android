@@ -142,5 +142,7 @@
     <color name="index_third_title_color">#e6e6e6</color>
     <color name="index_first_title_color">#666666</color>
 
+    <color name="video_list_playing_text_color">#ff7700</color>
+
 
 </resources>
