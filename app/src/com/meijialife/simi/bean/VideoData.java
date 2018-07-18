@@ -58,6 +58,15 @@ public class VideoData implements Serializable {
     private String vid;
     private String service_price_id;
 
+    /**该课程卖给vip0的价格*/
+    private String price_vip_0;
+
+    /**该课程卖给vip1的价格*/
+    private String price_vip_1;
+
+    /**该课程卖给vip2的价格*/
+    private String price_vip_2;
+
     public String getImg_url() {
         return img_url;
     }
@@ -250,7 +259,55 @@ public class VideoData implements Serializable {
         this.service_price_id = service_price_id;
     }
 
-//    /**
+    public String getPrice_vip_0() {
+        return price_vip_0;
+    }
+
+    public void setPrice_vip_0(String price_vip_0) {
+        this.price_vip_0 = price_vip_0;
+    }
+
+    public String getPrice_vip_1() {
+        return price_vip_1;
+    }
+
+    public void setPrice_vip_1(String price_vip_1) {
+        this.price_vip_1 = price_vip_1;
+    }
+
+    public String getPrice_vip_2() {
+        return price_vip_2;
+    }
+
+    public void setPrice_vip_2(String price_vip_2) {
+        this.price_vip_2 = price_vip_2;
+    }
+
+    /**
+     * 获取当前vip用户的价格
+     * @param vip 对应当前用户的vip级别
+     * @return
+     */
+    public String getVipPrice(int vip){
+        String vipPrice = null;
+        switch (vip){
+            case 0:
+                vipPrice = price_vip_0;
+                break;
+            case 1:
+                vipPrice = price_vip_1;
+                break;
+            case 2:
+                vipPrice = price_vip_2;
+                break;
+        }
+        if(vipPrice == null){
+            vipPrice = "";
+        }
+        return vipPrice;
+    }
+
+    //    /**
 //     * 频道ID
 //     */
 //    private String channel_id;

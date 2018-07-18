@@ -49,6 +49,7 @@ import com.meijialife.simi.utils.NetworkUtils;
 import com.meijialife.simi.utils.SpFileUtil;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 import com.simi.easemob.utils.ShareConfig;
 
 import net.tsz.afinal.FinalBitmap;
@@ -578,13 +579,11 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             return;
         }
         float price = Float.parseFloat(video.getDis_price());
+        if(userInfo.isVip()){
+            price = Float.parseFloat(video.getVipPrice(userInfo.getVip()));
+        }
         if (price > 0) {//收费课程
-            if(userInfo.isVip()){
-                //vip免费
-                postJoin();
-            }else{
-                toPay();
-            }
+            toPay();
         } else {//免费
             postJoin();
         }
@@ -600,10 +599,15 @@ public class CourseActivity extends PlayAliyunActivity implements View.OnClickLi
             return;
         }
 
+        String price = video.getDis_price();
+        if(userInfo.isVip()){
+            price = video.getVipPrice(userInfo.getVip());
+        }
+
         PartnerDetail partnerDetail = new PartnerDetail();
         partnerDetail.setUser_id(Integer.parseInt(video.getPartner_user_id()));
         partnerDetail.setService_type_id(Integer.parseInt(video.getService_type_id()));
-        ServicePrices prices = new ServicePrices(Long.parseLong(video.getService_price_id()), Double.parseDouble(video.getPrice()), Double.parseDouble(video.getDis_price()), Long.parseLong(video.getService_price_id()), video.getTitle());
+        ServicePrices prices = new ServicePrices(Long.parseLong(video.getService_price_id()), Double.parseDouble(video.getPrice()), Double.parseDouble(price), Long.parseLong(video.getService_price_id()), video.getTitle());
 
         Intent intent = new Intent(CourseActivity.this, PayOrderActivity.class);
 //        intent.putExtra("from",PayOrderActivity.FROM_MEMBER);

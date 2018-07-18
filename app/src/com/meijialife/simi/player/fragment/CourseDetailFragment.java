@@ -22,6 +22,7 @@ import com.meijialife.simi.activity.LoginActivity;
 import com.meijialife.simi.activity.PointsShopActivity;
 import com.meijialife.simi.adapter.VideoRelateListAdapter;
 import com.meijialife.simi.bean.User;
+import com.meijialife.simi.bean.UserInfo;
 import com.meijialife.simi.bean.VideoData;
 import com.meijialife.simi.bean.VideoList;
 import com.meijialife.simi.database.DBHelper;
@@ -30,6 +31,7 @@ import com.meijialife.simi.ui.VideoPopWindow;
 import com.meijialife.simi.utils.StringUtils;
 import com.meijialife.simi.utils.ToActivityUtil;
 import com.meijialife.simi.utils.UIUtils;
+import com.meijialife.simi.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
     public static final String INTENT_KEY_LABEL = "keyLabel";
     private String label;
     private User user;
+    private UserInfo userInfo;
     private VideoData video;//视频详细信息
 
     private ScrollView scrollview;
@@ -77,6 +80,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
             label = getArguments().getString(INTENT_KEY_LABEL);
         }
         user = DBHelper.getUser(getActivity());
+        userInfo = DBHelper.getUserInfo(getActivity());
 
         initView(mView);
         initListView(mView);
@@ -185,7 +189,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         tv_vname.setText(video.getTitle());
         tv_tname.setText("讲师:" + video.getTeacher());
         tv_count.setText(video.getTotal_view() + " 人学过");
-        tv_price.setText("￥" + video.getDis_price());
+        tv_price.setText("￥" + getPrice());
         tv_orig_price.setText("￥" + video.getPrice());
         if (isHtml(video.getContent())) {
             tv_detail.setText(Html.fromHtml(video.getContent()));
@@ -198,6 +202,14 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
             VideoPopWindow popWindow = new VideoPopWindow(getActivity(), "提醒", video.getContent_desc(), video.getGoto_url(), video.getArticle_id());
             popWindow.showPopupWindow(ll_all);
         }
+    }
+
+    private String getPrice(){
+        String price = video.getDis_price();
+        if(userInfo.isVip()){
+            price = Utils.decimalFormat(video.getVipPrice(userInfo.getVip()));
+        }
+        return price;
     }
 
     /**
