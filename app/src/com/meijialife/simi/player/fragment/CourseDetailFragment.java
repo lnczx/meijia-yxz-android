@@ -44,7 +44,6 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
     private UserInfo userInfo;
     private VideoData video;//视频详细信息
 
-    private ScrollView scrollview;
     private LinearLayout ll_all;
     private TextView tv_vname;//课程名称
     private TextView tv_tname;//讲师
@@ -82,7 +81,6 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         user = DBHelper.getUser(getActivity());
         userInfo = DBHelper.getUserInfo(getActivity());
 
-        initView(mView);
         initListView(mView);
         return mView;
     }
@@ -92,29 +90,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         super.onViewCreated(view, savedInstanceState);
     }
 
-    /**
-     * 初始化界面
-     *
-     * @param rootView
-     */
-    private void initView(View rootView) {
-        scrollview = rootView.findViewById(R.id.scrollview);
-        ll_all = (LinearLayout) rootView.findViewById(R.id.ll_all);
-        tv_vname = (TextView) rootView.findViewById(R.id.tv_vname);
-        tv_tname = (TextView) rootView.findViewById(R.id.tv_tname);
-        tv_count = (TextView) rootView.findViewById(R.id.tv_count);
-        tv_price = (TextView) rootView.findViewById(R.id.tv_price);
-        tv_orig_price = (TextView) rootView.findViewById(R.id.tv_orig_price);
-        tv_orig_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        tv_exchange = (TextView) rootView.findViewById(R.id.tv_exchange);
-        tv_more = (TextView) rootView.findViewById(R.id.tv_more);
-        tv_detail = (TextView) rootView.findViewById(R.id.tv_detail);
-        tv_vip = rootView.findViewById(R.id.tv_vip);
 
-        tv_exchange.setOnClickListener(this);
-        tv_more.setOnClickListener(this);
-        tv_vip.setOnClickListener(this);
-    }
 
     private void initListView(View rootView) {
         videoDatas = new ArrayList<VideoList>();
@@ -133,6 +109,26 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
                 getActivity().finish();
             }
         });
+
+        View headerView= LinearLayout.inflate(getActivity(),R.layout.fragment_course_header_view,null);
+        listView.addHeaderView(headerView);
+
+        ll_all = (LinearLayout) headerView.findViewById(R.id.ll_all);
+        tv_vname = (TextView) headerView.findViewById(R.id.tv_vname);
+        tv_tname = (TextView) headerView.findViewById(R.id.tv_tname);
+        tv_count = (TextView) headerView.findViewById(R.id.tv_count);
+        tv_price = (TextView) headerView.findViewById(R.id.tv_price);
+        tv_orig_price = (TextView) headerView.findViewById(R.id.tv_orig_price);
+        tv_orig_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        tv_exchange = (TextView) headerView.findViewById(R.id.tv_exchange);
+        tv_more = (TextView) headerView.findViewById(R.id.tv_more);
+        tv_detail = (TextView) headerView.findViewById(R.id.tv_detail);
+        tv_vip = headerView.findViewById(R.id.tv_vip);
+
+        tv_exchange.setOnClickListener(this);
+        tv_more.setOnClickListener(this);
+        tv_vip.setOnClickListener(this);
+
     }
 
     public void setVideo(VideoData video) {
@@ -144,8 +140,7 @@ public class CourseDetailFragment extends BaseFragment implements View.OnClickLi
         this.videoDatas = videoDatas;
         if(videoAdapter != null){
             videoAdapter.setData(videoDatas);
-            UIUtils.setListViewHeightBasedOnChildren(listView);
-            scrollview.scrollTo(0, 0);
+//            UIUtils.setListViewHeightBasedOnChildren(listView);
         }
     }
 

@@ -103,6 +103,7 @@
     <!--邀请成员加入-->
     <string name="invite_friend_btn">1.点击按钮分享邀请链接，成员填写后即可加入</string>
     <string name="invite_friend_qr">2.请同事在App中扫描下方二维码，立即加入</string>
+    <string name="content_detail">本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。本课程内容涉及心理学、哲学、管理学。</string>
 
 
 </resources>
