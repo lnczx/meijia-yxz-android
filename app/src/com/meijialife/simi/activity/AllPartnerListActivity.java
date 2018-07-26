@@ -80,7 +80,7 @@ public class AllPartnerListActivity extends BaseActivity implements OnClickListe
             public void onItemClick(int position) {
                 AdData adBean = adBeanList.get(position);
                 RouteUtil routeUtil = new RouteUtil(AllPartnerListActivity.this);
-                routeUtil.Routing(adBean.getGoto_type(), adBean.getAction(), adBean.getGoto_url(), adBean.getService_type_ids(), adBean.getParams());
+                routeUtil.Routing(adBean.getGoto_type(), adBean.getAction(), adBean.getGoto_url(), adBean.getParams(), adBean.getService_type_ids());
             }
         });
     }
