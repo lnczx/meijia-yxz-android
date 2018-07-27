@@ -255,9 +255,9 @@ public class MyPushReceiver extends BroadcastReceiver {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
     builder.setContentTitle(receiverBean.getRt());
     builder.setContentText(receiverBean.getRc());
-    builder.setSmallIcon(R.drawable.ic_launcher_logo);
+    builder.setSmallIcon(R.drawable.icon);
     builder.setLargeIcon(
-        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon));
     builder.setDefaults(Notification.DEFAULT_ALL);
     builder.setContentIntent(pendingIntent);
     builder.setAutoCancel(true);
@@ -291,9 +291,9 @@ public class MyPushReceiver extends BroadcastReceiver {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
     builder.setContentTitle(receiverBean.getRt());
     builder.setContentText(receiverBean.getRc());
-    builder.setSmallIcon(R.drawable.ic_launcher_logo);
+    builder.setSmallIcon(R.drawable.icon);
     builder.setLargeIcon(
-        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon));
     builder.setDefaults(Notification.DEFAULT_ALL);
     builder.setContentIntent(pendingIntent);
     builder.setAutoCancel(true);
@@ -320,9 +320,9 @@ public class MyPushReceiver extends BroadcastReceiver {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
     builder.setContentTitle(receiverBean.getRt());
     builder.setContentText(receiverBean.getRc());
-    builder.setSmallIcon(R.drawable.ic_launcher_logo);
+    builder.setSmallIcon(R.drawable.icon);
     builder.setLargeIcon(
-        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon));
     builder.setDefaults(Notification.DEFAULT_ALL);
     builder.setContentIntent(pendingIntent);
     builder.setAutoCancel(true);
@@ -346,9 +346,9 @@ public class MyPushReceiver extends BroadcastReceiver {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
     builder.setContentTitle(receiverBean.getRt());
     builder.setContentText(receiverBean.getRc());
-    builder.setSmallIcon(R.drawable.ic_launcher_logo);
+    builder.setSmallIcon(R.drawable.icon);
     builder.setLargeIcon(
-        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher_logo));
+        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon));
     builder.setDefaults(Notification.DEFAULT_ALL);
     builder.setContentIntent(pendingIntent);
     builder.setAutoCancel(true);

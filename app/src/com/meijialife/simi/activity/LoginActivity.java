@@ -198,7 +198,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     sina_login_btn = (ImageView) findViewById(R.id.sina_login_btn);
     wx_login_btn = (ImageView) findViewById(R.id.wx_login_btn);
 
-    finalBitmap.display(mLogoIcon, Constants.LOGO_ICON_URL);
+//    finalBitmap.display(mLogoIcon, Constants.LOGO_ICON_URL);
 
     login_btn.setOnClickListener(this);
     login_getcode.setOnClickListener(this);

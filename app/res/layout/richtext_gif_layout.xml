@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         fresco:actualImageScaleType="centerCrop"
-        fresco:placeholderImage="@drawable/ic_launcher_logo"
+        fresco:placeholderImage="@drawable/icon"
         fresco:placeholderImageScaleType="centerCrop"/>
 
     <TextView

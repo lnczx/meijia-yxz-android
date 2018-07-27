@@ -82,7 +82,7 @@ public class ShareConfig {
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
         
-        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+        UMImage localImage = new UMImage(mContext, R.drawable.icon);
 
         UMImage pImage = null;
 
@@ -118,10 +118,10 @@ public class ShareConfig {
         
         // 设置QQ空间分享内容
         QZoneShareContent qzone = new QZoneShareContent();
-        qzone.setShareContent("【" + title + "】（分享自#菠萝HR#）");
+        qzone.setShareContent("【" + title + "】（分享自#会计学堂#）");
         
         qzone.setTargetUrl(webUrl);
-        qzone.setTitle("菠萝HR");
+        qzone.setTitle("会计学堂");
         qzone.setShareMedia(localImage);
 
         if (pImage != null) {
@@ -172,7 +172,7 @@ public class ShareConfig {
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(content);
 
-        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+        UMImage localImage = new UMImage(mContext, R.drawable.icon);
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
         weixinContent.setShareContent(content);
@@ -222,7 +222,7 @@ public class ShareConfig {
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
 
-        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+        UMImage localImage = new UMImage(mContext, R.drawable.icon);
 
         WeiXinShareContent weixinContent = new WeiXinShareContent();
         weixinContent.setShareContent(Constants.SHARE_CONTENT);
@@ -282,7 +282,7 @@ public class ShareConfig {
         qZoneSsoHandler.addToSocialSDK();
         mController.setShareContent(Constants.SHARE_CONTENT);
 
-        UMImage localImage = new UMImage(mContext, R.drawable.ic_launcher_logo);
+        UMImage localImage = new UMImage(mContext, R.drawable.icon);
 //        UMImage urlImage = new UMImage(mContext, "http://www.umeng.com/images/pic/social/integrated_3.png");
         // UMImage resImage = new UMImage(mContext, R.drawable.icon);
 

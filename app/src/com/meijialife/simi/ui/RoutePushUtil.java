@@ -70,7 +70,7 @@ public class RoutePushUtil {
     public static void notify(PendingIntent intent) {
         NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(mReceiverBean.getRc()).setContentText(mReceiverBean.getRc())
-                .setSmallIcon(R.drawable.ic_launcher_logo)
+                .setSmallIcon(R.drawable.icon)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(mReceiverBean.getRc()));
         mNotifyBuilder.setContentIntent(intent);
 
