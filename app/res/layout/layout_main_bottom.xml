@@ -91,7 +91,7 @@
                         android:layout_marginLeft="7dp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="有料"
+                        android:text="练习"
                         android:textColor="@color/tab_text_color_selector"
                         android:textSize="@dimen/bottom_bar_text_size" />
                 </LinearLayout>
@@ -117,6 +117,7 @@
                 android:layout_width="0.0sp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1.0"
+                android:visibility="gone"
                 android:gravity="center"
                 android:orientation="vertical" />
 
@@ -156,7 +157,7 @@
                         android:layout_marginLeft="7dp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="日程"
+                        android:text="答疑"
                         android:textColor="@color/tab_text_color_selector"
                         android:textSize="@dimen/bottom_bar_text_size" />
                 </LinearLayout>
@@ -227,6 +228,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:layout_centerHorizontal="true">
 
         <TextView
