@@ -5,8 +5,8 @@ android {
     repositories {
         jcenter()
     }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -31,8 +31,8 @@ android {
     defaultConfig {
         applicationId "com.meijialife.kuaiji"
         useLibrary 'org.apache.http.legacy'
-        minSdkVersion 18
-        targetSdkVersion 21
+        minSdkVersion 19
+        targetSdkVersion 26
 
 //        Enabling multidex support.
         multiDexEnabled true
@@ -84,7 +84,7 @@ android {
         }
 
         // Move the tests to tests/java, tests/res, etc...
-        instrumentTest.setRoot('tests')
+//        instrumentTest.setRoot('tests')
 
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
@@ -101,23 +101,26 @@ repositories {
 
 
 dependencies {
-    compile fileTree(include: '*.jar', dir: 'libs')
-    compile project(':pullToRefresh')
-    compile project(':easeui')
-    compile('com.android.support:support-v4:25.3.0') {
+    implementation fileTree(include: '*.jar', dir: 'libs')
+    implementation project(':pullToRefresh')
+    implementation project(':easeui')
+    implementation('com.android.support:support-v4:25.3.0') {
         exclude module: 'support-v4'
     }
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'org.jsoup:jsoup:1.10.3'
-    compile 'com.facebook.fresco:fresco:1.5.0'
-    compile project(':vodPlayerRelease')
-    compile(name: 'AlivcPlayer', ext: 'aar')
-    compile(name: 'AliyunVodPlayer', ext: 'aar')
-    compile(name: 'AliyunVodPlayerView', ext: 'aar')
-    compile 'com.android.support:design:25.3.0'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation 'org.jsoup:jsoup:1.10.3'
+    implementation 'com.facebook.fresco:fresco:1.5.0'
+    implementation project(':vodPlayerRelease')
+    implementation(name: 'AlivcPlayer', ext: 'aar')
+    implementation(name: 'AliyunVodPlayer', ext: 'aar')
+    implementation(name: 'AliyunVodPlayerView', ext: 'aar')
+    implementation 'com.android.support:design:25.3.0'
     //download sdk
-    //compile 'cn.woblog.android:downloader:1.0.1'
+    //implementation 'cn.woblog.android:downloader:1.0.1'
     implementation project(':downloader')
     implementation 'jetty:javax.servlet:5.1.12'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
 

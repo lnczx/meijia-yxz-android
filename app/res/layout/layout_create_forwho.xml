@@ -15,7 +15,7 @@
         android:background="@color/cut_off_rule" />
 
     <ListView
-        android:id="@+id/android:list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dip"

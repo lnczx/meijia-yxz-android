@@ -47,3 +47,6 @@
 #download sdk
 -keep public class * implements cn.woblog.android.downloader.db.DownloadDBController
 -keep class cn.woblog.android.downloader.domain.** { *; }
+
+
+-ignorewarnings
