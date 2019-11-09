@@ -1,4 +1,0 @@
-include ':meijia-lib-easeui'
-include ':base_library_pullToRefresh_chenyoca'
-include ':meijia-xcloud-android'
-
